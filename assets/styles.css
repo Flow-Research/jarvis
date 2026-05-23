@@ -1,14 +1,14 @@
 :root {
   color-scheme: dark;
-  --void: #050704;
+  --void: #070807;
   --carbon: #0b0f0c;
-  --panel: #101711;
-  --panel-2: #151d16;
+  --panel: #101310;
+  --panel-2: #171b17;
   --ink: #f4f0e6;
   --muted: #9ba89b;
-  --line: rgb(205 231 205 / 16%);
-  --line-strong: rgb(205 231 205 / 32%);
-  --mint: #78f7b4;
+  --line: rgb(232 238 228 / 10%);
+  --line-strong: rgb(232 238 228 / 18%);
+  --mint: #73e6a6;
   --mint-2: #24b979;
   --cyan: #6fd9ff;
   --amber: #ffb86b;
@@ -31,8 +31,8 @@ body {
   min-height: 100vh;
   overflow-x: hidden;
   background:
-    linear-gradient(90deg, rgb(120 247 180 / 5%) 1px, transparent 1px),
-    linear-gradient(rgb(120 247 180 / 4%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(120 247 180 / 2.4%) 1px, transparent 1px),
+    linear-gradient(rgb(120 247 180 / 2%) 1px, transparent 1px),
     linear-gradient(135deg, #050704 0%, #0b0f0c 48%, #120f0a 100%);
   background-size: 72px 72px, 72px 72px, auto;
   color: var(--ink);
@@ -48,7 +48,7 @@ body::before {
   z-index: -2;
   pointer-events: none;
   background:
-    linear-gradient(115deg, transparent 0 28%, rgb(120 247 180 / 10%) 28% 29%, transparent 29% 100%),
+    linear-gradient(115deg, transparent 0 28%, rgb(120 247 180 / 5%) 28% 29%, transparent 29% 100%),
     linear-gradient(72deg, transparent 0 68%, rgb(255 184 107 / 8%) 68% 69%, transparent 69% 100%);
 }
 
@@ -83,13 +83,13 @@ button {
 }
 
 .shell {
-  width: min(1540px, calc(100% - 32px));
+  width: min(1440px, calc(100% - 40px));
   margin: 0 auto;
-  padding: 18px 0 44px;
+  padding: 14px 0 40px;
 }
 
 .topbar {
-  min-height: 70px;
+  min-height: 62px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -114,7 +114,7 @@ button {
   border-radius: 8px;
   background: rgb(120 247 180 / 10%);
   color: var(--mint);
-  font-weight: 900;
+  font-weight: 780;
   box-shadow: 0 0 34px rgb(120 247 180 / 16%);
 }
 
@@ -152,16 +152,16 @@ button {
 }
 
 .hero-grid {
-  min-height: 520px;
+  min-height: calc(100svh - 84px);
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 380px;
-  gap: 28px;
+  grid-template-columns: minmax(360px, 0.66fr) minmax(560px, 1fr);
+  gap: 24px;
   align-items: center;
-  padding: 54px 0 34px;
+  padding: 26px 0 18px;
 }
 
 .hero-copy {
-  max-width: 980px;
+  max-width: 680px;
   min-width: 0;
 }
 
@@ -170,39 +170,92 @@ button {
   margin: 0;
   color: var(--mint);
   font-size: 0.73rem;
-  font-weight: 900;
-  letter-spacing: 0.13em;
+  font-weight: 720;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 
 .hero-copy h1 {
-  max-width: 1040px;
-  margin: 14px 0 18px;
-  font-size: clamp(3.2rem, 8vw, 8.7rem);
-  line-height: 0.88;
+  max-width: 660px;
+  margin: 12px 0 16px;
+  font-size: clamp(2.35rem, 4.1vw, 4.65rem);
+  line-height: 0.98;
+  font-weight: 760;
   letter-spacing: 0;
   text-wrap: balance;
   overflow-wrap: break-word;
 }
 
 .hero-text {
-  max-width: 760px;
+  max-width: 610px;
   margin: 0;
   color: #c8d3c8;
-  font-size: clamp(1rem, 1.6vw, 1.24rem);
-  line-height: 1.7;
+  font-size: clamp(1rem, 1.16vw, 1.12rem);
+  line-height: 1.62;
   overflow-wrap: break-word;
 }
 
-.hero-actions {
+.scenario-card {
+  max-width: 610px;
+  margin-top: 18px;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgb(255 255 255 / 4%);
+}
+
+.scenario-card span {
+  display: block;
+  color: var(--amber);
+  font-size: 0.72rem;
+  font-weight: 720;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.scenario-card strong {
+  display: block;
+  margin-top: 6px;
+  color: var(--ink);
+  font-size: 1.02rem;
+}
+
+.scenario-card p {
+  margin: 7px 0 0;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.proof-row {
   display: flex;
   flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.proof-row span {
+  min-height: 32px;
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgb(255 255 255 / 5%);
+  color: #cfdbcf;
+  font-size: 0.78rem;
+  font-weight: 650;
+  padding: 0 11px;
+}
+
+.hero-actions {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
   gap: 10px;
-  margin-top: 28px;
+  margin-top: 22px;
 }
 
 .command {
-  min-height: 46px;
+  min-height: 42px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -210,13 +263,24 @@ button {
   border-radius: 8px;
   background: rgb(244 240 230 / 7%);
   color: var(--ink);
-  font-weight: 900;
+  font-weight: 720;
   padding: 0 16px;
   cursor: pointer;
   transition:
     transform 180ms ease,
     border-color 180ms ease,
     background-color 180ms ease;
+}
+
+.command-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.command.compact {
+  min-height: 44px;
+  padding: 0 12px;
 }
 
 .command:hover {
@@ -242,11 +306,7 @@ button {
 }
 
 .mission-panel,
-.simulator,
-.story-strip article,
-.rail,
-.operating-stage,
-.sequence {
+.operating-stage {
   border: 1px solid var(--line);
   background:
     linear-gradient(180deg, rgb(255 255 255 / 5%), rgb(255 255 255 / 2%)),
@@ -255,13 +315,30 @@ button {
   backdrop-filter: blur(18px);
 }
 
+.simulator,
+.rail,
+.sequence {
+  border: 1px solid var(--line);
+  background: rgb(255 255 255 / 3%);
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.story-strip article {
+  border: 0;
+  border-top: 1px solid var(--line);
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
 .mission-panel {
   position: relative;
   overflow: hidden;
   min-width: 0;
-  min-height: 360px;
+  min-height: 290px;
   border-radius: 8px;
-  padding: 22px;
+  padding: 18px;
 }
 
 .mission-panel::before {
@@ -276,10 +353,10 @@ button {
 .mission-panel::after {
   content: "WS-1042";
   position: absolute;
-  right: -18px;
-  bottom: 18px;
-  color: rgb(120 247 180 / 10%);
-  font-size: 5rem;
+  right: 14px;
+  bottom: 12px;
+  color: rgb(120 247 180 / 5%);
+  font-size: 3.1rem;
   font-weight: 950;
   letter-spacing: 0;
 }
@@ -290,7 +367,7 @@ button {
   display: flex;
   align-items: center;
   gap: 10px;
-  min-height: 44px;
+  min-height: 38px;
   color: var(--mint);
   font-weight: 900;
 }
@@ -310,17 +387,28 @@ button {
   }
 }
 
+.panel-label {
+  position: relative;
+  z-index: 1;
+  margin: 0 0 8px;
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 950;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
 .mission-grid {
   position: relative;
   z-index: 1;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
-  margin: 36px 0 0;
+  margin: 22px 0 0;
 }
 
 .mission-grid div {
-  min-height: 96px;
+  min-height: 78px;
   display: grid;
   align-content: end;
   gap: 6px;
@@ -333,19 +421,19 @@ button {
 .mission-grid dt {
   color: var(--muted);
   font-size: 0.72rem;
-  font-weight: 900;
+  font-weight: 720;
   text-transform: uppercase;
 }
 
 .mission-grid dd {
   margin: 0;
   color: var(--ink);
-  font-weight: 900;
+  font-weight: 720;
 }
 
 .simulator {
   display: grid;
-  grid-template-columns: 270px minmax(0, 1fr) 340px;
+  grid-template-columns: 270px minmax(0, 1fr);
   gap: 14px;
   border-radius: 8px;
   padding: 14px;
@@ -371,7 +459,7 @@ button {
 }
 
 .sequence li {
-  min-height: 54px;
+  min-height: 48px;
   display: grid;
   grid-template-columns: 34px 1fr;
   gap: 10px;
@@ -399,7 +487,7 @@ button {
   background: rgb(255 255 255 / 5%);
   color: var(--mint);
   font-size: 0.75rem;
-  font-weight: 900;
+  font-weight: 720;
 }
 
 .sequence li.active .step-index {
@@ -410,14 +498,18 @@ button {
 
 .sequence .step-name {
   font-size: 0.9rem;
-  font-weight: 800;
+  font-weight: 650;
   line-height: 1.25;
 }
 
 .operating-stage {
-  min-height: 760px;
-  padding: 18px;
+  min-height: 640px;
+  padding: 16px;
   min-width: 0;
+}
+
+.hero-stage {
+  min-height: 600px;
 }
 
 .stage-top {
@@ -431,7 +523,7 @@ button {
 .stage-top h2 {
   max-width: 760px;
   margin: 8px 0 0;
-  font-size: clamp(1.7rem, 3vw, 3.3rem);
+  font-size: clamp(1.55rem, 2.2vw, 2.5rem);
   line-height: 1;
   letter-spacing: 0;
 }
@@ -443,12 +535,12 @@ button {
   border: 1px solid var(--line);
   border-radius: 999px;
   color: var(--bone);
-  font-weight: 900;
+  font-weight: 720;
 }
 
 .harness-map {
   position: relative;
-  min-height: 520px;
+  min-height: 410px;
   overflow: hidden;
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -475,12 +567,12 @@ button {
 }
 
 .node {
-  width: 220px;
-  min-height: 112px;
+  width: 190px;
+  min-height: 96px;
   display: grid;
   align-content: center;
   gap: 7px;
-  padding: 18px;
+  padding: 14px;
   border: 1px solid var(--line-strong);
   border-radius: 8px;
   background:
@@ -498,7 +590,7 @@ button {
 .core-inner span {
   color: var(--mint);
   font-size: 0.72rem;
-  font-weight: 950;
+  font-weight: 720;
   letter-spacing: 0.11em;
   text-transform: uppercase;
 }
@@ -526,27 +618,27 @@ button {
 }
 
 .human {
-  top: 42px;
-  left: 36px;
+  top: 28px;
+  left: 28px;
 }
 
 .agent {
-  top: 42px;
-  right: 36px;
+  top: 28px;
+  right: 28px;
 }
 
 .request {
-  left: 36px;
-  bottom: 42px;
+  left: 28px;
+  bottom: 28px;
 }
 
 .runtime {
-  right: 36px;
-  bottom: 42px;
+  right: 28px;
+  bottom: 28px;
 }
 
 .core {
-  width: 280px;
+  width: 228px;
   aspect-ratio: 1;
   left: 50%;
   top: 50%;
@@ -567,7 +659,7 @@ button {
 }
 
 .ring-b {
-  inset: 28px;
+  inset: 24px;
   border-color: rgb(111 217 255 / 24%);
   animation: rotate 9s linear infinite reverse;
 }
@@ -600,7 +692,7 @@ button {
 }
 
 .core-inner {
-  width: 184px;
+  width: 150px;
   aspect-ratio: 1;
   display: grid;
   place-items: center;
@@ -638,30 +730,30 @@ button {
 }
 
 .beam-human {
-  top: 148px;
-  left: 240px;
-  width: 260px;
+  top: 122px;
+  left: 208px;
+  width: 220px;
   transform: rotate(21deg);
 }
 
 .beam-agent {
-  top: 148px;
-  right: 240px;
-  width: 260px;
+  top: 122px;
+  right: 208px;
+  width: 220px;
   transform: rotate(159deg);
 }
 
 .beam-runtime {
-  bottom: 154px;
-  right: 240px;
-  width: 265px;
+  bottom: 126px;
+  right: 208px;
+  width: 220px;
   transform: rotate(201deg);
 }
 
 .beam-request {
-  bottom: 154px;
-  left: 240px;
-  width: 265px;
+  bottom: 126px;
+  left: 208px;
+  width: 220px;
   transform: rotate(-21deg);
 }
 
@@ -683,7 +775,7 @@ button {
   display: grid;
   grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
   gap: 14px;
-  margin-top: 14px;
+  margin-top: 12px;
 }
 
 .phase-brief p,
@@ -693,8 +785,8 @@ button {
 }
 
 .phase-brief p {
-  min-height: 140px;
-  padding: 18px;
+  min-height: 118px;
+  padding: 16px;
   border: 1px solid var(--line);
   border-radius: 8px;
   background: rgb(255 255 255 / 5%);
@@ -720,16 +812,17 @@ button {
 }
 
 .phase-brief li {
-  padding: 12px 14px;
+  padding: 10px 12px;
 }
 
 .right-stack {
   display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 14px;
 }
 
 .rail {
-  padding: 16px;
+  padding: 14px;
 }
 
 .rail-head {
@@ -797,14 +890,14 @@ button {
 }
 
 .story-strip article {
-  min-height: 210px;
+  min-height: auto;
   border-radius: 8px;
-  padding: 18px;
+  padding: 22px 0 0;
 }
 
 .story-strip span {
   color: var(--mint);
-  font-weight: 950;
+  font-weight: 720;
 }
 
 .story-strip h3 {
@@ -818,14 +911,13 @@ button {
   line-height: 1.58;
 }
 
-@media (max-width: 1260px) {
-  .hero-grid,
+@media (max-width: 1340px) {
   .simulator {
     grid-template-columns: 1fr;
   }
 
   .mission-panel {
-    min-height: auto;
+    min-height: 260px;
   }
 
   .right-stack,
@@ -838,13 +930,19 @@ button {
   }
 }
 
+@media (max-width: 1260px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 760px) {
   .shell {
-    width: calc(100vw - 20px);
-    max-width: 360px;
-    margin: 0 10px;
-    padding-top: 10px;
-    overflow: hidden;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 10px 10px 40px;
+    overflow: visible;
   }
 
   .topbar,
@@ -853,41 +951,90 @@ button {
     flex-direction: column;
   }
 
+  .topbar-meta {
+    display: grid;
+    grid-template-columns: 1fr;
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .topbar-meta span {
+    width: fit-content;
+    max-width: 100%;
+    min-height: 28px;
+    font-size: 0.72rem;
+    padding-inline: 8px;
+  }
+
   .hero-grid {
     min-height: auto;
-    padding: 34px 0 18px;
+    padding: 24px 0 16px;
     width: 100%;
     max-width: 100%;
-    overflow: hidden;
+    overflow: visible;
+  }
+
+  .hero-grid > *,
+  .hero-copy > *,
+  .simulator > *,
+  .right-stack > * {
+    min-width: 0;
+    max-width: 100%;
   }
 
   .hero-copy {
     width: 100%;
-    max-width: 100%;
-    overflow: hidden;
+    max-width: 330px;
+    overflow: visible;
   }
 
   .hero-copy h1 {
-    max-width: min(100%, 345px);
-    font-size: clamp(2.55rem, 10.8vw, 3rem);
-    line-height: 0.95;
+    max-width: 330px;
+    font-size: clamp(1.92rem, 8.2vw, 2.28rem);
+    line-height: 1.02;
     text-wrap: auto;
   }
 
   .hero-text {
-    max-width: 100%;
-    font-size: 1rem;
+    width: 100%;
+    max-width: 330px;
+    font-size: 0.96rem;
+    line-height: 1.55;
+  }
+
+  .scenario-card {
+    max-width: 330px;
+    margin-top: 14px;
+    padding: 12px;
+    overflow-wrap: break-word;
+  }
+
+  .proof-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    max-width: 330px;
+    margin-top: 14px;
+  }
+
+  .proof-row span {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+    font-size: 0.72rem;
+    padding-inline: 8px;
   }
 
   .hero-actions {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-columns: 1fr;
     width: 100%;
-    max-width: 100%;
+    max-width: calc(100vw - 20px);
   }
 
-  .hero-actions .primary {
-    grid-column: 1 / -1;
+  .command-group {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
   }
 
   .command {
@@ -896,12 +1043,26 @@ button {
     padding-inline: 10px;
   }
 
+  .command.primary {
+    min-height: 46px;
+  }
+
   .mission-grid,
   .right-stack,
   .story-strip,
   .phase-brief,
   .sequence ol {
     grid-template-columns: 1fr;
+  }
+
+  .simulator {
+    width: 100%;
+    max-width: calc(100vw - 20px);
+    overflow: visible;
+  }
+
+  .hero-stage {
+    max-width: calc(100vw - 20px);
   }
 
   .simulator,
