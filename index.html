@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Jarvis Human-Agent Simulation</title>
+    <meta
+      name="description"
+      content="Interactive simulation of the Jarvis human-agent collaboration harness."
+    />
+    <link rel="stylesheet" href="./assets/styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="hero" aria-labelledby="page-title">
+        <div class="hero-copy">
+          <p class="eyebrow">Jarvis human-agent collaboration harness</p>
+          <h1 id="page-title">A human and an autonomous agent work through one governed WorkSession.</h1>
+          <p class="hero-text">
+            This simulation shows Jarvis as the harness layer: memory, policy,
+            tools, requests, reviews, evidence, and learning wrapped around one
+            autonomous agent and its human.
+          </p>
+        </div>
+        <div class="hero-status" aria-label="Simulation status">
+          <span class="status-dot"></span>
+          <span id="hero-state">Ready to start WorkSession</span>
+        </div>
+      </section>
+
+      <section class="controls" aria-label="Simulation controls">
+        <button class="primary" id="startBtn" type="button">Start simulation</button>
+        <button id="prevBtn" type="button">Previous</button>
+        <button id="nextBtn" type="button">Next step</button>
+        <button id="autoBtn" type="button" aria-pressed="false">Auto play</button>
+        <button id="resetBtn" type="button">Reset</button>
+      </section>
+
+      <section class="workspace" aria-label="Jarvis simulation workspace">
+        <div class="left-rail">
+          <section class="panel compact" aria-labelledby="session-title">
+            <div class="panel-head">
+              <span class="panel-kicker">WorkSession</span>
+              <h2 id="session-title">WS-1042</h2>
+            </div>
+            <dl class="session-facts">
+              <div>
+                <dt>HumanAgentPair</dt>
+                <dd>Abi + Jarvis</dd>
+              </div>
+              <div>
+                <dt>Status</dt>
+                <dd id="session-status">created</dd>
+              </div>
+              <div>
+                <dt>Policy</dt>
+                <dd>local_dev_safe</dd>
+              </div>
+              <div>
+                <dt>Runtime</dt>
+                <dd>local alpha</dd>
+              </div>
+            </dl>
+          </section>
+
+          <section class="panel" aria-labelledby="timeline-title">
+            <div class="panel-head">
+              <span class="panel-kicker">Sequence</span>
+              <h2 id="timeline-title">Timeline</h2>
+            </div>
+            <ol class="timeline" id="timeline"></ol>
+          </section>
+        </div>
+
+        <section class="stage" aria-label="System stage">
+          <div class="stage-header">
+            <div>
+              <span class="panel-kicker">Current step</span>
+              <h2 id="step-title">Start the WorkSession</h2>
+            </div>
+            <span class="step-counter" id="step-counter">1 / 9</span>
+          </div>
+
+          <div class="system-map" aria-label="Jarvis architecture map">
+            <div class="actor human" data-node="human">
+              <span class="node-label">Human</span>
+              <strong>sets intent</strong>
+            </div>
+            <div class="actor agent" data-node="agent">
+              <span class="node-label">Agent</span>
+              <strong>executes work</strong>
+            </div>
+            <div class="kernel" data-node="kernel">
+              <span class="node-label">Jarvis kernel</span>
+              <strong>policy, memory, evidence</strong>
+            </div>
+            <div class="runtime" data-node="runtime">
+              <span class="node-label">Runtime</span>
+              <strong>session, files, sandbox</strong>
+            </div>
+            <div class="request" data-node="request">
+              <span class="node-label">Request inbox</span>
+              <strong>approve, narrow, deny</strong>
+            </div>
+            <svg class="flow-lines" viewBox="0 0 900 460" aria-hidden="true">
+              <path id="line-human-kernel" d="M150 92 C260 90 300 168 390 188" />
+              <path id="line-agent-kernel" d="M750 92 C640 90 600 168 510 188" />
+              <path id="line-kernel-runtime" d="M450 240 C448 285 448 315 450 360" />
+              <path id="line-kernel-request" d="M392 218 C250 240 185 300 148 365" />
+              <path id="line-request-human" d="M110 350 C75 255 75 155 120 110" />
+              <path id="line-runtime-agent" d="M520 360 C650 325 740 235 760 120" />
+            </svg>
+          </div>
+
+          <div class="step-card">
+            <p id="step-summary">
+              The human gives Jarvis a real objective. Jarvis creates the
+              collaboration record before the agent starts.
+            </p>
+            <ul class="step-events" id="step-events"></ul>
+          </div>
+        </section>
+
+        <div class="right-rail">
+          <section class="panel" aria-labelledby="memory-title">
+            <div class="panel-head">
+              <span class="panel-kicker">Context</span>
+              <h2 id="memory-title">Memory</h2>
+            </div>
+            <ul class="state-list" id="memory-list"></ul>
+          </section>
+
+          <section class="panel" aria-labelledby="policy-title">
+            <div class="panel-head">
+              <span class="panel-kicker">Control</span>
+              <h2 id="policy-title">Policy</h2>
+            </div>
+            <ul class="state-list" id="policy-list"></ul>
+          </section>
+
+          <section class="panel" aria-labelledby="evidence-title">
+            <div class="panel-head">
+              <span class="panel-kicker">Proof</span>
+              <h2 id="evidence-title">Evidence</h2>
+            </div>
+            <ul class="state-list" id="evidence-list"></ul>
+          </section>
+        </div>
+      </section>
+
+      <section class="explain" aria-label="Jarvis summary">
+        <div>
+          <h2>What this proves</h2>
+          <p>
+            Jarvis is not the chat UI and not the runtime itself. Jarvis is the
+            collaboration layer that lets an agent work autonomously inside
+            policy, ask when it hits a boundary, learn from review, and carry
+            evidence forward.
+          </p>
+        </div>
+        <div class="summary-grid">
+          <article>
+            <h3>Human</h3>
+            <p>Provides intent, judgment, review, corrections, and approval.</p>
+          </article>
+          <article>
+            <h3>Agent</h3>
+            <p>Plans, executes, uses tools, collects evidence, and learns.</p>
+          </article>
+          <article>
+            <h3>Jarvis</h3>
+            <p>Owns WorkSession, memory, policy, requests, skills, and evidence.</p>
+          </article>
+          <article>
+            <h3>Runtime</h3>
+            <p>Provides durable execution, files, sandbox, streaming, and recovery.</p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <script src="./assets/app.js"></script>
+  </body>
+</html>

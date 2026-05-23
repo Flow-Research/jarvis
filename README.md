@@ -3,6 +3,37 @@
 Jarvis is the open-source harness where a human and an autonomous agent share
 memory, skills, tools, context, policy, and learning over time.
 
+## Interactive Simulation
+
+This repository includes a static browser simulation:
+
+- [index.html](./index.html) - interactive end-to-end Jarvis walkthrough
+- [assets/styles.css](./assets/styles.css) - simulation interface
+- [assets/app.js](./assets/app.js) - WorkSession step engine
+
+Run it locally:
+
+```bash
+python3 -m http.server 4173
+```
+
+Then open:
+
+```txt
+http://localhost:4173
+```
+
+Deploy it as a URL:
+
+1. Open the GitHub repository settings.
+2. Go to Pages.
+3. Set source to `Deploy from a branch`.
+4. Select branch `main`.
+5. Select folder `/root`.
+6. Save.
+
+GitHub Pages will serve the simulation from the repository Pages URL.
+
 Jarvis is the durable operating layer for collaboration:
 
 ```txt
