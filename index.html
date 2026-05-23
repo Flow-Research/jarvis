@@ -8,8 +8,8 @@
       name="description"
       content="A cinematic interactive simulation of Jarvis as a human-agent collaboration harness."
     />
-    <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml" />
-    <link rel="stylesheet" href="./assets/styles.css" />
+    <link rel="icon" href="./assets/favicon.svg?v=stable1" type="image/svg+xml" />
+    <link rel="stylesheet" href="./assets/styles.css?v=stable1" />
   </head>
   <body>
     <canvas id="signalCanvas" aria-hidden="true"></canvas>
@@ -24,8 +24,8 @@
         </a>
         <div class="topbar-meta">
           <span>WorkSession WS-1042</span>
-          <span>policy: local_dev_safe</span>
-          <span>status: <b id="topbarStatus">created</b></span>
+          <span>local_dev_safe</span>
+          <span id="topbarStatus">created</span>
         </div>
       </header>
 
@@ -33,49 +33,65 @@
         <div class="hero-copy">
           <p class="kicker">Interactive architecture simulation</p>
           <h1 id="page-title">
-            Jarvis is the WorkSession layer between a human and an autonomous agent.
+            The human gives intent. The agent executes. Jarvis governs the work.
           </h1>
           <p class="hero-text">
-            Runtime runs the work. Jarvis governs collaboration, memory,
-            policy, requests, reviews, evidence, and learning.
+            Watch one WorkSession move through memory, policy, sandbox,
+            request approval, review, evidence, and learning. This is the
+            harness layer that lets a personal agent work with its human
+            without constant babysitting.
           </p>
-          <div class="scenario-card" aria-label="Visible scenario">
-            <span>Scenario</span>
-            <strong>Inspect a project and draft a plan.</strong>
-            <p>
-              Network starts denied. When the agent asks for external context,
-              Jarvis creates a Request instead of silently fetching.
-            </p>
-          </div>
-          <div class="proof-row" aria-label="Jarvis proof points">
-            <span>HumanAgentPair</span>
-            <span>WorkSession</span>
-            <span>Context/Memory</span>
-            <span>Policy-wrapped tools</span>
-            <span>Request/Review</span>
-            <span>Evidence/Learning</span>
-          </div>
           <div class="hero-actions" aria-label="Simulation controls">
             <button class="command primary" id="startBtn" type="button">
               Launch WorkSession
             </button>
-            <div class="command-group" aria-label="Playback controls">
-              <button class="command compact" id="prevBtn" type="button">Back</button>
-              <button class="command compact" id="nextBtn" type="button">Advance</button>
-              <button
-                class="command compact"
-                id="autoBtn"
-                type="button"
-                aria-pressed="false"
-              >
-                Autoplay
-              </button>
-              <button class="command compact ghost" id="resetBtn" type="button">Reset</button>
-            </div>
+            <button class="command" id="prevBtn" type="button">Back</button>
+            <button class="command" id="nextBtn" type="button">Advance</button>
+            <button
+              class="command"
+              id="autoBtn"
+              type="button"
+              aria-pressed="false"
+            >
+              Autoplay
+            </button>
+            <button class="command ghost" id="resetBtn" type="button">Reset</button>
           </div>
         </div>
 
-        <section class="operating-stage hero-stage" aria-label="Operating surface">
+        <aside class="mission-panel" aria-label="Live mission state">
+          <div class="mission-header">
+            <span class="pulse"></span>
+            <span id="missionState">Ready</span>
+          </div>
+          <dl class="mission-grid">
+            <div>
+              <dt>Pair</dt>
+              <dd>Abi + Jarvis</dd>
+            </div>
+            <div>
+              <dt>Runtime</dt>
+              <dd>Local alpha</dd>
+            </div>
+            <div>
+              <dt>Evidence</dt>
+              <dd id="evidenceCount">01 item</dd>
+            </div>
+            <div>
+              <dt>Autonomy</dt>
+              <dd>bounded</dd>
+            </div>
+          </dl>
+        </aside>
+      </section>
+
+      <section class="simulator" aria-label="Jarvis operating simulation">
+        <nav class="sequence" aria-label="WorkSession steps">
+          <div class="section-label">Execution path</div>
+          <ol id="timeline"></ol>
+        </nav>
+
+        <section class="operating-stage" aria-label="Operating surface">
           <div class="stage-top">
             <div>
               <span class="section-label">Current phase</span>
@@ -109,8 +125,8 @@
 
             <div class="node runtime" data-node="runtime">
               <span>Runtime substrate</span>
-              <strong>internal session</strong>
-              <small>sandbox files stream</small>
+              <strong>durable execution</strong>
+              <small>session files sandbox stream</small>
             </div>
 
             <div class="node request" data-node="request">
@@ -132,13 +148,6 @@
             <ul id="eventLog"></ul>
           </div>
         </section>
-      </section>
-
-      <section class="simulator" aria-label="Jarvis operating simulation">
-        <nav class="sequence" aria-label="WorkSession steps">
-          <div class="section-label">Execution path</div>
-          <ol id="timeline"></ol>
-        </nav>
 
         <aside class="right-stack" aria-label="State rails">
           <section class="rail policy-rail" aria-labelledby="policyTitle">
@@ -206,6 +215,6 @@
       </section>
     </main>
 
-    <script src="./assets/app.js"></script>
+    <script src="./assets/app.js?v=stable1"></script>
   </body>
 </html>

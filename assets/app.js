@@ -273,8 +273,8 @@ function setStep(nextIndex) {
   }, 0);
 
   els.topbarStatus.textContent = step.status;
-  if (els.missionState) els.missionState.textContent = step.mission;
-  if (els.evidenceCount) els.evidenceCount.textContent = `${pad(evidenceTotal)} items`;
+  els.missionState.textContent = step.mission;
+  els.evidenceCount.textContent = `${pad(evidenceTotal)} items`;
   els.stepTitle.textContent = step.title;
   els.stepCounter.textContent = `${pad(current + 1)} / ${pad(steps.length)}`;
   els.stepSummary.textContent = step.summary;
