@@ -3,179 +3,215 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Jarvis Human-Agent Simulation</title>
+    <title>Jarvis Human-Agent Operating Simulation</title>
     <meta
       name="description"
-      content="Interactive simulation of the Jarvis human-agent collaboration harness."
+      content="A cinematic interactive simulation of Jarvis as a human-agent collaboration harness."
     />
+    <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="./assets/styles.css" />
   </head>
   <body>
-    <main class="app-shell">
-      <section class="hero" aria-labelledby="page-title">
+    <canvas id="signalCanvas" aria-hidden="true"></canvas>
+    <main class="shell">
+      <header class="topbar" aria-label="Jarvis simulation header">
+        <a class="brand" href="./">
+          <span class="brand-mark">J</span>
+          <span>
+            <strong>Jarvis</strong>
+            <small>human-agent harness</small>
+          </span>
+        </a>
+        <div class="topbar-meta">
+          <span>WorkSession WS-1042</span>
+          <span>local_dev_safe</span>
+          <span id="topbarStatus">created</span>
+        </div>
+      </header>
+
+      <section class="hero-grid" aria-labelledby="page-title">
         <div class="hero-copy">
-          <p class="eyebrow">Jarvis human-agent collaboration harness</p>
-          <h1 id="page-title">A human and an autonomous agent work through one governed WorkSession.</h1>
+          <p class="kicker">Interactive architecture simulation</p>
+          <h1 id="page-title">
+            The human gives intent. The agent executes. Jarvis governs the work.
+          </h1>
           <p class="hero-text">
-            This simulation shows Jarvis as the harness layer: memory, policy,
-            tools, requests, reviews, evidence, and learning wrapped around one
-            autonomous agent and its human.
+            Watch one WorkSession move through memory, policy, sandbox,
+            request approval, review, evidence, and learning. This is the
+            harness layer that lets a personal agent work with its human
+            without constant babysitting.
           </p>
-        </div>
-        <div class="hero-status" aria-label="Simulation status">
-          <span class="status-dot"></span>
-          <span id="hero-state">Ready to start WorkSession</span>
-        </div>
-      </section>
-
-      <section class="controls" aria-label="Simulation controls">
-        <button class="primary" id="startBtn" type="button">Start simulation</button>
-        <button id="prevBtn" type="button">Previous</button>
-        <button id="nextBtn" type="button">Next step</button>
-        <button id="autoBtn" type="button" aria-pressed="false">Auto play</button>
-        <button id="resetBtn" type="button">Reset</button>
-      </section>
-
-      <section class="workspace" aria-label="Jarvis simulation workspace">
-        <div class="left-rail">
-          <section class="panel compact" aria-labelledby="session-title">
-            <div class="panel-head">
-              <span class="panel-kicker">WorkSession</span>
-              <h2 id="session-title">WS-1042</h2>
-            </div>
-            <dl class="session-facts">
-              <div>
-                <dt>HumanAgentPair</dt>
-                <dd>Abi + Jarvis</dd>
-              </div>
-              <div>
-                <dt>Status</dt>
-                <dd id="session-status">created</dd>
-              </div>
-              <div>
-                <dt>Policy</dt>
-                <dd>local_dev_safe</dd>
-              </div>
-              <div>
-                <dt>Runtime</dt>
-                <dd>local alpha</dd>
-              </div>
-            </dl>
-          </section>
-
-          <section class="panel" aria-labelledby="timeline-title">
-            <div class="panel-head">
-              <span class="panel-kicker">Sequence</span>
-              <h2 id="timeline-title">Timeline</h2>
-            </div>
-            <ol class="timeline" id="timeline"></ol>
-          </section>
+          <div class="hero-actions" aria-label="Simulation controls">
+            <button class="command primary" id="startBtn" type="button">
+              Launch WorkSession
+            </button>
+            <button class="command" id="prevBtn" type="button">Back</button>
+            <button class="command" id="nextBtn" type="button">Advance</button>
+            <button
+              class="command"
+              id="autoBtn"
+              type="button"
+              aria-pressed="false"
+            >
+              Autoplay
+            </button>
+            <button class="command ghost" id="resetBtn" type="button">Reset</button>
+          </div>
         </div>
 
-        <section class="stage" aria-label="System stage">
-          <div class="stage-header">
+        <aside class="mission-panel" aria-label="Live mission state">
+          <div class="mission-header">
+            <span class="pulse"></span>
+            <span id="missionState">Ready</span>
+          </div>
+          <dl class="mission-grid">
             <div>
-              <span class="panel-kicker">Current step</span>
-              <h2 id="step-title">Start the WorkSession</h2>
+              <dt>Pair</dt>
+              <dd>Abi + Jarvis</dd>
             </div>
-            <span class="step-counter" id="step-counter">1 / 9</span>
+            <div>
+              <dt>Runtime</dt>
+              <dd>Local alpha</dd>
+            </div>
+            <div>
+              <dt>Evidence</dt>
+              <dd id="evidenceCount">01 item</dd>
+            </div>
+            <div>
+              <dt>Autonomy</dt>
+              <dd>bounded</dd>
+            </div>
+          </dl>
+        </aside>
+      </section>
+
+      <section class="simulator" aria-label="Jarvis operating simulation">
+        <nav class="sequence" aria-label="WorkSession steps">
+          <div class="section-label">Execution path</div>
+          <ol id="timeline"></ol>
+        </nav>
+
+        <section class="operating-stage" aria-label="Operating surface">
+          <div class="stage-top">
+            <div>
+              <span class="section-label">Current phase</span>
+              <h2 id="stepTitle">Start the WorkSession</h2>
+            </div>
+            <span class="counter" id="stepCounter">01 / 09</span>
           </div>
 
-          <div class="system-map" aria-label="Jarvis architecture map">
-            <div class="actor human" data-node="human">
-              <span class="node-label">Human</span>
-              <strong>sets intent</strong>
+          <div class="harness-map" aria-label="Human-agent architecture map">
+            <div class="node human" data-node="human">
+              <span>Human</span>
+              <strong>intent + judgment</strong>
+              <small>review, approve, teach</small>
             </div>
-            <div class="actor agent" data-node="agent">
-              <span class="node-label">Agent</span>
-              <strong>executes work</strong>
+
+            <div class="node agent" data-node="agent">
+              <span>Agent</span>
+              <strong>autonomous worker</strong>
+              <small>plan, execute, learn</small>
             </div>
-            <div class="kernel" data-node="kernel">
-              <span class="node-label">Jarvis kernel</span>
-              <strong>policy, memory, evidence</strong>
+
+            <div class="core" data-node="kernel">
+              <div class="core-ring ring-a"></div>
+              <div class="core-ring ring-b"></div>
+              <div class="core-inner">
+                <span>Jarvis kernel</span>
+                <strong>WorkSession</strong>
+                <small>memory policy tools evidence</small>
+              </div>
             </div>
-            <div class="runtime" data-node="runtime">
-              <span class="node-label">Runtime</span>
-              <strong>session, files, sandbox</strong>
+
+            <div class="node runtime" data-node="runtime">
+              <span>Runtime substrate</span>
+              <strong>durable execution</strong>
+              <small>session files sandbox stream</small>
             </div>
-            <div class="request" data-node="request">
-              <span class="node-label">Request inbox</span>
-              <strong>approve, narrow, deny</strong>
+
+            <div class="node request" data-node="request">
+              <span>Request inbox</span>
+              <strong>human gate</strong>
+              <small>approve narrow deny takeover</small>
             </div>
-            <svg class="flow-lines" viewBox="0 0 900 460" aria-hidden="true">
-              <path id="line-human-kernel" d="M150 92 C260 90 300 168 390 188" />
-              <path id="line-agent-kernel" d="M750 92 C640 90 600 168 510 188" />
-              <path id="line-kernel-runtime" d="M450 240 C448 285 448 315 450 360" />
-              <path id="line-kernel-request" d="M392 218 C250 240 185 300 148 365" />
-              <path id="line-request-human" d="M110 350 C75 255 75 155 120 110" />
-              <path id="line-runtime-agent" d="M520 360 C650 325 740 235 760 120" />
-            </svg>
+
+            <div class="data-beam beam-human"></div>
+            <div class="data-beam beam-agent"></div>
+            <div class="data-beam beam-runtime"></div>
+            <div class="data-beam beam-request"></div>
           </div>
 
-          <div class="step-card">
-            <p id="step-summary">
-              The human gives Jarvis a real objective. Jarvis creates the
-              collaboration record before the agent starts.
+          <div class="phase-brief">
+            <p id="stepSummary">
+              Jarvis creates the collaboration record before the agent starts.
             </p>
-            <ul class="step-events" id="step-events"></ul>
+            <ul id="eventLog"></ul>
           </div>
         </section>
 
-        <div class="right-rail">
-          <section class="panel" aria-labelledby="memory-title">
-            <div class="panel-head">
-              <span class="panel-kicker">Context</span>
-              <h2 id="memory-title">Memory</h2>
+        <aside class="right-stack" aria-label="State rails">
+          <section class="rail policy-rail" aria-labelledby="policyTitle">
+            <div class="rail-head">
+              <span class="section-label">Control plane</span>
+              <h3 id="policyTitle">Policy gate</h3>
             </div>
-            <ul class="state-list" id="memory-list"></ul>
+            <div class="gate-meter" id="gateMeter">
+              <span></span>
+            </div>
+            <ul id="policyList"></ul>
           </section>
 
-          <section class="panel" aria-labelledby="policy-title">
-            <div class="panel-head">
-              <span class="panel-kicker">Control</span>
-              <h2 id="policy-title">Policy</h2>
+          <section class="rail" aria-labelledby="memoryTitle">
+            <div class="rail-head">
+              <span class="section-label">Context plane</span>
+              <h3 id="memoryTitle">Memory loaded</h3>
             </div>
-            <ul class="state-list" id="policy-list"></ul>
+            <ul id="memoryList"></ul>
           </section>
 
-          <section class="panel" aria-labelledby="evidence-title">
-            <div class="panel-head">
-              <span class="panel-kicker">Proof</span>
-              <h2 id="evidence-title">Evidence</h2>
+          <section class="rail" aria-labelledby="evidenceTitle">
+            <div class="rail-head">
+              <span class="section-label">Proof plane</span>
+              <h3 id="evidenceTitle">Evidence ledger</h3>
             </div>
-            <ul class="state-list" id="evidence-list"></ul>
+            <ul id="evidenceList"></ul>
           </section>
-        </div>
+        </aside>
       </section>
 
-      <section class="explain" aria-label="Jarvis summary">
-        <div>
-          <h2>What this proves</h2>
+      <section class="story-strip" aria-label="Jarvis model summary">
+        <article>
+          <span>01</span>
+          <h3>WorkSession is the surface</h3>
           <p>
-            Jarvis is not the chat UI and not the runtime itself. Jarvis is the
-            collaboration layer that lets an agent work autonomously inside
-            policy, ask when it hits a boundary, learn from review, and carry
-            evidence forward.
+            Every serious interaction has a durable collaboration record:
+            messages, tools, files, requests, reviews, evidence, and learning.
           </p>
-        </div>
-        <div class="summary-grid">
-          <article>
-            <h3>Human</h3>
-            <p>Provides intent, judgment, review, corrections, and approval.</p>
-          </article>
-          <article>
-            <h3>Agent</h3>
-            <p>Plans, executes, uses tools, collects evidence, and learns.</p>
-          </article>
-          <article>
-            <h3>Jarvis</h3>
-            <p>Owns WorkSession, memory, policy, requests, skills, and evidence.</p>
-          </article>
-          <article>
-            <h3>Runtime</h3>
-            <p>Provides durable execution, files, sandbox, streaming, and recovery.</p>
-          </article>
-        </div>
+        </article>
+        <article>
+          <span>02</span>
+          <h3>Policy creates autonomy</h3>
+          <p>
+            The agent works inside grants. It asks only when permission,
+            context, or judgment is missing.
+          </p>
+        </article>
+        <article>
+          <span>03</span>
+          <h3>Memory is governed</h3>
+          <p>
+            Human corrections become learning proposals. Durable memory changes
+            only after policy and review.
+          </p>
+        </article>
+        <article>
+          <span>04</span>
+          <h3>Evidence travels with work</h3>
+          <p>
+            Jarvis records what happened as it happens, then exports a manifest
+            the human and agent can carry forward.
+          </p>
+        </article>
       </section>
     </main>
 
