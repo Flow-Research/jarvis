@@ -66,8 +66,8 @@ This supplies the production runtime substrate without forking Cloudflare.
 
 ```txt
 JarvisHost
-  runtime actor mapped to one HumanAgentPair
-  owns pair-level routing and shared runtime configuration
+  runtime actor mapped to one HumanWorker + AgentWorker relationship
+  owns worker-level routing and shared runtime configuration
   does not own Jarvis collaboration semantics
 
 JarvisWorkSessionActor

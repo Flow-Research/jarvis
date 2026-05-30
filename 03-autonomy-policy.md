@@ -1,9 +1,9 @@
 # Autonomy And Policy
 
-Jarvis lets the agent work without human babysitting.
+Jarvis lets the AgentWorker work without human babysitting.
 
-The human defines boundaries. The agent operates inside them. When the agent
-needs something outside them, it creates a request.
+The HumanWorker defines boundaries. The AgentWorker operates inside them. When
+the AgentWorker needs something outside them, it creates a request.
 
 ## Autonomy Levels
 
@@ -26,8 +26,8 @@ full_autonomy_in_scope
 
 Autonomy is set at multiple levels:
 
-- agent default
-- HumanAgentPair default
+- AgentWorker default
+- HumanWorker + AgentWorker relationship default
 - WorkSession
 - project/workspace
 - tool
@@ -36,7 +36,7 @@ Autonomy is set at multiple levels:
 
 ## Capability Grants
 
-A capability grant gives the agent permission to act inside a scope.
+A capability grant gives the AgentWorker permission to act inside a scope.
 
 ```txt
 grant

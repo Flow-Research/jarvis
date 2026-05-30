@@ -1,7 +1,11 @@
 # Architecture
 
-Jarvis coordinates a human and an autonomous agent across memory, work
-sessions, tools, policy, reviews, and learning.
+Jarvis is the protocol for policy-governed collaboration between human workers
+and agent workers.
+
+It defines how a human and an agent become a working team: shared goals,
+policy, requests, review, takeover, contribution records, evidence, memory,
+learning, and skills.
 
 ## Layer Model
 
@@ -9,235 +13,422 @@ sessions, tools, policy, reviews, and learning.
 Interface layer
   chat, CLI, desktop, mobile, browser, messaging, custom apps
 
-Jarvis collaboration layer
-  work sessions, requests, reviews, takeover, evidence, contributions
+Jarvis protocol layer
+  workers, WorkSessions, policies, requests, reviews, takeover,
+  contributions, evidence, learning records, memory proposals,
+  skill proposals
 
-Jarvis context and learning layer
-  memory retrieval, context assembly, skill loading, learning proposals
+Capability layer
+  tools, MCP servers, files, browser, shell, sandbox actions, connectors
 
-Jarvis capability layer
-  tools, MCP servers, sandbox actions, files, browser, shell, connectors
+Runtime adapter layer
+  model loop, durable actors, sessions, files, tool execution, sandbox,
+  scheduling, streaming, recovery
 
-Jarvis policy layer
-  autonomy levels, grants, risk classes, request rules, audit decisions
-
-Runtime substrate
-  durable actors, sessions, files, tool loop, sandbox, scheduling, streaming
+Infrastructure layer
+  Cloudflare, local runtime, external services, databases, queues, object
+  stores, model providers
 ```
 
-The interface is replaceable. The runtime is replaceable by contract. Jarvis is
-the collaboration, context, learning, and policy layer in the middle.
+Interfaces are replaceable. Runtimes are replaceable. Infrastructure is
+replaceable. Jarvis protocol semantics are the stable center.
 
-## Kernel Primitives
+## Core Protocol Contracts
 
-### Actor
+### Worker
 
-An entity that can contribute to a session.
+A participant in work.
 
 ```txt
-human | agent | service
+Worker
+  id
+  type: human | agent | service
+  role
+  capabilities
+  authority
+  accountability_scope
 ```
 
-### HumanProfile
+### HumanWorker
 
-Durable human context:
+The human participant.
 
-- name/handle
-- role/domain
-- goals
-- preferences
-- boundaries
-- communication style
-- correction history
+```txt
+HumanWorker
+  worker_id
+  profile_ref
+  policy_authority
+  review_authority
+  domain_context_refs
+  preferences
+  known_patterns
+```
 
-### AgentProfile
+The human supplies goals, judgment, taste, domain context, world context,
+review, correction, approval, and accountability.
 
-Durable agent context:
+### AgentWorker
 
-- persona
-- role
-- instructions
-- autonomy defaults
-- capability defaults
-- skill inventory
-- learned behavior notes
+The agent participant.
 
-### HumanAgentPair
+```txt
+AgentWorker
+  worker_id
+  model_or_agent_ref
+  capability_refs
+  tool_access_profile
+  memory_access_profile
+  autonomy_level
+```
 
-The durable collaboration relationship between one human and one agent.
-
-This is the central Jarvis primitive. It captures how this human and this agent
-work together:
-
-- trust level
-- default autonomy profile
-- shared preferences
-- correction history
-- review patterns
-- learned working style
-- common tools and skills
-- escalation/takeover preferences
-
-HumanProfile describes the human. AgentProfile describes the agent.
-HumanAgentPair describes the partnership.
-
-### Session
-
-Durable conversational and turn state. Session is runtime/internal by default.
-Developers work with WorkSession.
+The agent supplies speed, execution, research, tool use, memory retrieval,
+drafting, automation, evidence collection, and proposed improvements.
 
 ### WorkSession
 
-The durable collaboration record for one focused unit of work.
+The shared unit of work.
 
-`WorkSession` is the default public Jarvis primitive. Every developer-facing
-Jarvis flow starts or resumes a `WorkSession`.
+```txt
+WorkSession
+  id
+  objective
+  source_ref
+  human_worker_id
+  agent_worker_id
+  policy_id
+  status
+  context_manifest
+  event_log_ref
+  contribution_ledger_ref
+  evidence_manifest_ref
+  learning_records
+```
 
-A `WorkSession` owns the collaboration record: messages, actions, file and
-artifact references, requests, reviews, evidence, runtime runs, and learning
-proposals.
-
-`Session` is a runtime persistence primitive. It stores and resumes
-message/turn state for an adapter. `Session` is not the default developer API.
-
-### Run
-
-One execution attempt inside a WorkSession. A WorkSession has one or more runs,
-and each run has one or more turns. Runs bind to runtime execution references,
-leases, checkpoints, and recovery state.
-
-### Memory
-
-Structured knowledge with type, scope, provenance, lifecycle state, confidence,
-priority, and retrieval metadata.
-
-### Skill
-
-Procedural memory. A reusable, inspectable way of performing work.
-
-### Tool
-
-Executable capability with schema, risk class, scope, provenance, and policy
-wrapper.
+A WorkSession is not chat history. It is the durable record of collaboration.
+Every serious Jarvis flow starts or resumes a WorkSession.
 
 ### Policy
 
-Rules that decide permitted autonomous actions and required human input.
+The human-defined boundary for agent action.
+
+```txt
+Policy
+  id
+  allowed_actions
+  denied_actions
+  review_required_actions
+  tool_grants
+  memory_grants
+  external_send_rules
+  risk_classes
+  escalation_rules
+```
+
+The agent acts autonomously inside policy. Outside policy, it creates a
+Request.
 
 ### Request
 
-Agent-created ask for missing permission, context, decision, review, or human
-takeover.
+A structured ask from the agent to the human.
+
+```txt
+Request
+  id
+  work_session_id
+  requester_id
+  reason
+  requested_action
+  missing_permission_or_context
+  risk_class
+  options
+  status
+```
+
+Requests are created when permission, context, judgment, or takeover is needed.
 
 ### Review
 
-Human judgment over a plan, action, artifact, memory update, or skill update.
+A human judgment over work, a request, an artifact, a memory proposal, a skill
+proposal, or an action.
+
+```txt
+Review
+  id
+  work_session_id
+  reviewer_id
+  target_ref
+  decision: approve | deny | narrow | correct | takeover | needs_revision
+  comments
+  required_changes
+```
+
+### Takeover
+
+Temporary direct human control.
+
+```txt
+Takeover
+  id
+  work_session_id
+  actor_id
+  reason
+  lock_epoch
+  resumed_by
+  reconciliation_notes
+```
+
+Takeover creates a lock epoch so autonomous execution cannot continue on stale
+state.
 
 ### Contribution
 
-Traceable action by a human, agent, or service inside a WorkSession.
-
-### Evidence
-
-Artifacts and observations that support what happened during work.
-
-## Agent Operating Environment
-
-For an agent to work seriously, Jarvis needs:
+Who did what.
 
 ```txt
-model adapter
-foundation prompt
-session history
-context assembler
-memory retriever
-skill inventory/loader
-tool registry
-policy engine
-workspace/files
-sandbox executor
-request sink
-event store
-learning worker
-runtime health surface
+Contribution
+  id
+  work_session_id
+  worker_id
+  contribution_type
+  event_refs
+  artifact_refs
+  review_refs
+  confidence
+  limitations
 ```
 
-The runtime supplies mechanics. Jarvis supplies meaning and policy.
+Jarvis records human contribution, agent contribution, service contribution,
+tool contribution, and shared contribution.
+
+### EvidenceManifest
+
+Portable proof of work.
+
+```txt
+EvidenceManifest
+  id
+  work_session_id
+  objective
+  event_chain_root
+  artifacts
+  tool_actions
+  policy_decisions
+  requests
+  reviews
+  contribution_refs
+  limitations
+  export_profile
+```
+
+Evidence is captured during work, not reconstructed after work.
+
+### LearningRecord
+
+What the team learned.
+
+```txt
+LearningRecord
+  id
+  work_session_id
+  actor_id
+  actor_type: human | agent | pair
+  lesson_type
+  source_event_refs
+  proposed_change
+  review_state
+  scope
+```
+
+Jarvis tracks what the human learned, what the agent learned, what the pair
+learned, and what should improve next time.
+
+### MemoryProposal
+
+A proposed durable memory update.
+
+```txt
+MemoryProposal
+  id
+  work_session_id
+  proposed_by
+  memory_scope
+  content
+  provenance
+  confidence
+  review_required
+  status
+```
+
+Memory does not silently mutate. Durable memory changes are proposed,
+reviewed, scoped, and accepted.
+
+### SkillProposal
+
+A proposed reusable way of working.
+
+```txt
+SkillProposal
+  id
+  work_session_id
+  proposed_by
+  skill_name
+  trigger_conditions
+  procedure
+  required_tools
+  review_checks
+  failure_cases
+  status
+```
+
+Skills turn repeated work into reusable process.
+
+## Runtime/Internal Concepts
+
+### Session
+
+`Session` stores runtime message and turn state for an adapter. Session is
+runtime/internal by default. Jarvis does not force most adopters to manage
+low-level sessions directly.
+
+### WorkSessionRun
+
+`WorkSessionRun` is one execution attempt inside a WorkSession. A WorkSession
+can have many runs. Runs bind to runtime execution references, leases,
+checkpoints, recovery state, and stream state.
 
 ## Standard Work Flow
 
 ```txt
-1. Interface starts or resumes a WorkSession for a HumanAgentPair.
-2. Runtime restores durable run/session state.
-3. Jarvis assembles context from human, agent, pair, memory, skills, and active
-   work.
-4. Policy selects visible tools and autonomy limits.
-5. Agent plans and executes within allowed boundaries.
+1. HumanWorker defines intent.
+2. Jarvis starts or resumes a WorkSession.
+3. Policy defines the action boundary.
+4. AgentWorker receives context, memory, skills, and available capabilities.
+5. AgentWorker plans and executes inside policy.
 6. Policy wraps every tool/action.
-7. Missing permission or context becomes a Request.
-8. Events, contributions, and evidence are recorded.
-9. Human reviews when policy requires it or chooses takeover.
-10. Learning worker proposes memory/skill changes.
-11. Confirmed learning affects future WorkSessions.
+7. Missing permission, context, or judgment becomes a Request.
+8. HumanWorker reviews, approves, denies, narrows, corrects, or takes over.
+9. AgentWorker resumes when allowed.
+10. Jarvis records events, contributions, and evidence.
+11. Jarvis proposes memory, skill, and learning updates.
+12. HumanWorker confirms or rejects governed learning.
+13. EvidenceManifest exports.
+14. The next WorkSession starts with confirmed improvements.
 ```
 
 ## Ownership Boundary
 
 Jarvis owns:
 
-- memory semantics
-- session/work semantics
-- collaboration events
-- request/review semantics
-- policy evaluation
-- skill lifecycle
-- tool wrapping
-- evidence capture
-- learning proposals
-- context assembly
-- memory selection
+- protocol contracts
+- worker semantics
+- WorkSession lifecycle
+- policy-governed autonomy
+- request, review, and takeover semantics
+- contribution records
+- evidence manifests
+- learning records
+- memory proposal semantics
+- skill proposal semantics
+- context manifest semantics
+- runtime adapter contracts
 
-Runtime owns:
+Runtime adapters own:
 
+- model/tool loop mechanics
 - durable actors
 - storage primitives
 - streaming transport
 - sandbox mechanics
-- scheduling/recovery
-- model/tool loop mechanics
+- scheduling and recovery
 - run leases and checkpoints
 - idempotent execution support
 
-Interface owns:
+Interfaces own:
 
 - visual layout
 - notifications
 - user interaction controls
+- inbox presentation
 - local input/output conventions
 
-## Important Design Tension
+Products own:
 
-Jarvis is powerful enough to support products and small enough to be usable as
-open-source infrastructure.
+- packaging
+- billing
+- enterprise controls
+- product-specific workflows
+- customer-specific integrations
 
-The kernel excludes product-specific concepts. Product-specific behavior enters
-through adapters, policies, tools, and interfaces.
+## System Boundaries
+
+```txt
+Flow Research
+  sets direction, standards, research agenda, public trust
+
+Jarvis
+  protocol for human-agent collaboration
+
+Garden
+  product workspace built on Jarvis
+
+Workstream
+  task, evaluation, rubric, review, and contribution infrastructure
+
+Harnessy
+  agent environment and capability preparation
+
+Fellowship
+  human development through public work and review
+```
+
+Jarvis connects these systems. It does not become them.
+
+## Workstream Connection
+
+Workstream tasks enter Jarvis through protocol boundaries:
+
+```txt
+Workstream Task
+  -> creates or references WorkSession
+  -> HumanWorker + AgentWorker collaborate
+  -> Jarvis records requests, reviews, contributions, evidence, learning
+  -> EvidenceManifest exports
+  -> Workstream evaluates against rubric
+```
+
+Workstream owns task source, rubric, review routing, evaluation, acceptance,
+and contribution scoring.
+
+Jarvis owns collaboration, policy, requests, reviews, learning, contribution
+records, and evidence packages.
+
+## Garden Connection
+
+Garden is a Jarvis-compatible product workspace for human-agent teams.
+
+Garden can implement workspace UI, identity integration, inboxes, connectors,
+permissions UI, audit UI, cost tracking, agent operations, and enterprise
+controls.
+
+Garden's implementation details remain Garden's product layer. Jarvis exposes
+protocol contracts, not Garden internals.
 
 ## Minimum Developer Entry Point
 
-The public API flow is:
-
 ```txt
-create or load HumanAgentPair
+create HumanWorker
+create AgentWorker
 start WorkSession
-attach tools/skills/policy
-send human intent
-observe events/requests/evidence
+attach Policy
+attach tools, skills, and memory
+send objective
+observe events, requests, contributions, and evidence
 review or take over when needed
-complete session
+complete WorkSession
 inspect learning proposals
+export EvidenceManifest
 ```
 
 Low-level runtime sessions, model turns, context snapshots, and adapter-specific
-actors remain below this surface unless the developer asks for advanced
-runtime control.
+actors remain below this surface unless an advanced runtime integration
+explicitly exposes them.

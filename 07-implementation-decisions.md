@@ -8,7 +8,7 @@ model.
 
 - WorkSession is the public developer-facing primitive.
 - Session is runtime/internal by default.
-- HumanAgentPair is the durable relationship between one human and one agent.
+- HumanWorker and AgentWorker are the first-class protocol participants.
 - Every serious interaction creates a WorkSession.
 - Casual chat creates a lightweight WorkSession with reduced transcript detail.
 - Requests, approvals, grants, policy decisions, tool calls, memory proposals,

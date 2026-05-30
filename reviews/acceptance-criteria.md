@@ -92,7 +92,8 @@ npm run jarvis:session -- --objective "Inspect the scaffold and create a plan"
 
 Expected result:
 
-- a HumanAgentPair exists
+- a HumanWorker exists
+- an AgentWorker exists
 - a WorkSession is created
 - a runtime/internal Session reference is created below the WorkSession
 - the event stream emits `work_session_started`

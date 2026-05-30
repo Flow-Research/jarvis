@@ -8,13 +8,13 @@ const steps = [
     activeNodes: ["human", "kernel"],
     activeBeams: ["beam-human"],
     summary:
-      "The human gives Jarvis a real objective. Jarvis creates the durable collaboration record before the agent starts.",
+      "The HumanWorker gives Jarvis a real objective. Jarvis creates the durable collaboration record before the AgentWorker starts.",
     events: [
-      "Human intent: inspect project and produce an implementation plan.",
-      "HumanAgentPair loaded: Abi + Jarvis.",
-      "WorkSession WS-1042 created as the public collaboration surface."
+      "HumanWorker intent: inspect project and produce an implementation plan.",
+      "AgentWorker assigned with bounded autonomy.",
+      "WorkSession WS-1042 created as the protocol source of truth."
     ],
-    memory: ["Human preference: direct architecture language.", "Shared rule: ask when permission or judgment is missing."],
+    memory: ["HumanWorker preference: direct protocol language.", "Shared rule: ask when permission or judgment is missing."],
     policy: ["Policy profile attached: local_dev_safe.", "Default network posture: denied."],
     evidence: ["work_session_started event", "initial trace context"]
   },
@@ -27,14 +27,14 @@ const steps = [
     activeNodes: ["kernel", "agent"],
     activeBeams: ["beam-agent"],
     summary:
-      "Jarvis selects the context the agent can use: human memory, project memory, skill inventory, active policy, and tool grants.",
+      "Jarvis selects the context the AgentWorker can use: human memory, project memory, skill inventory, active policy, and tool grants.",
     events: [
       "MemorySelector chooses scoped human, shared, and project memory.",
       "SkillResolver loads research and project-inspection skills.",
       "ContextManifest stores retrieval reasons and hashes."
     ],
     memory: [
-      "Project memory: Jarvis owns the harness layer.",
+      "Project memory: Jarvis owns the collaboration protocol.",
       "Skill memory: inspect repo before proposing implementation.",
       "Context manifest: memory ids, skill ids, policy profile, tool hash."
     ],
@@ -50,9 +50,9 @@ const steps = [
     activeNodes: ["agent", "kernel", "runtime"],
     activeBeams: ["beam-agent", "beam-runtime"],
     summary:
-      "The agent works inside the allowed scope. Jarvis wraps each tool call while the runtime supplies session state, files, sandbox, and streaming.",
+      "The AgentWorker works inside the allowed scope. Jarvis wraps each action while the runtime adapter supplies session state, files, sandbox, and streaming.",
     events: [
-      "Agent proposes plan and starts project inspection.",
+      "AgentWorker proposes plan and starts project inspection.",
       "Policy allows read-only local file inspection.",
       "Runtime opens workspace and sandbox lease."
     ],
@@ -72,9 +72,9 @@ const steps = [
     activeNodes: ["agent", "kernel", "request"],
     activeBeams: ["beam-agent", "beam-request"],
     summary:
-      "The agent asks for network access. Jarvis denies the action, converts the blocked intent into a structured Request, and pauses that branch of work.",
+      "The AgentWorker asks for network access. Jarvis denies the action, converts the blocked intent into a structured Request, and pauses that branch of work.",
     events: [
-      "Agent requests network_fetch for example.com.",
+      "AgentWorker requests network_fetch for example.com.",
       "GrantResolver denies uncovered network dimension.",
       "Request created with risk, host, expiry, action hash, and safe alternative."
     ],
@@ -94,13 +94,13 @@ const steps = [
     activeNodes: ["human", "request", "kernel"],
     activeBeams: ["beam-request", "beam-human"],
     summary:
-      "The human does not micromanage the task. They approve a narrow capability and hand the work back to the agent.",
+      "The HumanWorker does not micromanage the task. They approve a narrow capability and hand the work back to the AgentWorker.",
     events: [
       "Inbox displays the exact blocked action and risk.",
-      "Human approves network_fetch:example.com for this WorkSession.",
+      "HumanWorker approves network_fetch:example.com for this WorkSession.",
       "One-use approval token binds to request version and action hash."
     ],
-    memory: ["Human review pattern becomes a learning signal."],
+    memory: ["HumanWorker review pattern becomes a learning signal."],
     policy: [
       "Temporary grant created.",
       "Grant expires with WorkSession.",
@@ -117,11 +117,11 @@ const steps = [
     activeNodes: ["agent", "kernel", "runtime"],
     activeBeams: ["beam-agent", "beam-runtime"],
     summary:
-      "The agent resumes from the WorkSession event log, uses the approved scope, and produces a draft artifact with traceable evidence.",
+      "The AgentWorker resumes from the WorkSession event log, uses the approved scope, and produces a draft artifact with traceable evidence.",
     events: [
       "WorkSession resumes after request resolution.",
       "Runtime executes approved fetch through policy wrapper.",
-      "Agent writes a plan artifact into the workspace."
+      "AgentWorker writes a plan artifact into the workspace."
     ],
     memory: ["ContextManifest updates with approval event.", "Learning remains proposed until review."],
     policy: [
@@ -139,14 +139,14 @@ const steps = [
     activeNodes: ["human", "kernel", "agent"],
     activeBeams: ["beam-human", "beam-agent"],
     summary:
-      "The human reviews the artifact. Jarvis records correction as teaching material instead of burying it inside chat history.",
+      "The HumanWorker reviews the artifact. Jarvis records correction as teaching material instead of burying it inside chat history.",
     events: [
-      "Human approves the plan structure.",
-      "Human corrects tone: direct architecture contract language.",
+      "HumanWorker approves the plan structure.",
+      "HumanWorker corrects tone: direct protocol contract language.",
       "Jarvis creates memory and skill update proposals."
     ],
     memory: [
-      "Memory proposal: use direct system-contract wording.",
+      "Memory proposal: use direct protocol-contract wording.",
       "Skill proposal: roadmap review checklist.",
       "State: proposed, not automatically confirmed."
     ],
@@ -168,7 +168,7 @@ const steps = [
       "Manifest includes event-chain root, item hashes, reviews, policy decisions, and artifacts.",
       "Redacted exports remain derived from raw immutable evidence."
     ],
-    memory: ["Confirmed memory waits for human decision."],
+    memory: ["Confirmed memory waits for HumanWorker decision."],
     policy: ["Debug and export surfaces apply redaction.", "Outbox remains closed unless approved."],
     evidence: ["EvidenceManifest JSON", "artifact refs", "known limitations"]
   },
@@ -181,14 +181,14 @@ const steps = [
     activeNodes: ["human", "kernel", "agent"],
     activeBeams: ["beam-human", "beam-agent"],
     summary:
-      "The next WorkSession starts smarter because confirmed memory, reviewed skills, and evidence move forward with the human-agent pair.",
+      "The next WorkSession starts smarter because confirmed memory, reviewed skills, and evidence move forward with the HumanWorker and AgentWorker.",
     events: [
-      "Human confirms useful learning.",
+      "HumanWorker confirms useful learning.",
       "Skill update is versioned.",
       "Next WorkSession inherits confirmed memory only."
     ],
     memory: [
-      "Confirmed: direct architecture-contract wording.",
+      "Confirmed: direct protocol-contract wording.",
       "Confirmed: ask before external network access.",
       "Skill v1: project-roadmap-review."
     ],

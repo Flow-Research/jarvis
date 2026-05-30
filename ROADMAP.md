@@ -1,6 +1,6 @@
 # Jarvis Roadmap
 
-Jarvis is the open-source human-agent collaboration harness. The roadmap turns
+Jarvis is the open-source human-agent collaboration protocol. The roadmap turns
 the architecture into buildable releases.
 
 The first release proves one thing: a human and an autonomous agent can work
@@ -10,11 +10,12 @@ account.
 
 ## Roadmap Contract
 
-Jarvis v0.1 delivers the harness, not a product shell.
+Jarvis v0.1 delivers the protocol implementation, not a product shell.
 
 Jarvis owns:
 
-- HumanAgentPair
+- HumanWorker
+- AgentWorker
 - WorkSession
 - memory and learning
 - policy and autonomy
@@ -35,7 +36,7 @@ infrastructure.
 
 ```txt
 v0.1 Local Alpha
-  buildable open-source harness with local runtime
+  buildable open-source protocol implementation with local runtime
 
 v0.2 Cloudflare Runtime Beta
   production reference adapter using Cloudflare primitives
@@ -43,7 +44,7 @@ v0.2 Cloudflare Runtime Beta
 v0.3 Connector And Skill Ecosystem
   stronger MCP, skill bundles, examples, and runtime extension points
 
-v1.0 Stable Harness
+v1.0 Stable Protocol
   stable public API, runtime adapter contract, policy model, and migration path
 ```
 
@@ -62,15 +63,17 @@ npm run jarvis:dev
 npm run jarvis:session -- --objective "Inspect this project and propose a plan"
 ```
 
-The run creates a HumanAgentPair, starts a WorkSession, streams events, blocks a
-policy-denied action, creates a structured Request, accepts a scoped approval,
-resumes work, records evidence, and exports an EvidenceManifest.
+The run creates a HumanWorker and AgentWorker, starts a WorkSession, streams
+events, blocks a policy-denied action, creates a structured Request, accepts a
+scoped approval, resumes work, records contributions and evidence, proposes
+learning, and exports an EvidenceManifest.
 
 ### v0.1 Must-Have Slice
 
 v0.1 includes only the golden-path subset of each system:
 
-- one HumanAgentPair
+- one HumanWorker
+- one AgentWorker
 - one active WorkSession at a time per local project
 - one local SQLite store
 - one local filesystem workspace
@@ -160,7 +163,8 @@ Output:
 - Actor
 - HumanProfile
 - AgentProfile
-- HumanAgentPair
+- HumanWorker
+- AgentWorker
 - WorkSession
 - WorkSessionRun
 - runtime/internal Session reference
@@ -368,7 +372,7 @@ semantics into Cloudflare-specific code.
 Output:
 
 - `@jarvis/runtime-cloudflare`
-- `JarvisHost` mapped to HumanAgentPair
+- `JarvisHost` mapped to a HumanWorker + AgentWorker relationship
 - `JarvisWorkSessionActor` mapped to WorkSession or WorkSessionRun
 - Think integration for low-level session/message persistence, streaming,
   model/tool loop mechanics, checkpoints, and recovery
@@ -410,7 +414,7 @@ Done when:
 - adapter authors can implement the required ports without reading runtime
   internals
 
-## v1.0 Stable Harness
+## v1.0 Stable Protocol
 
 Goal: stabilize the public contracts.
 
@@ -656,7 +660,8 @@ npm run jarvis:session -- --objective "Inspect the scaffold and create a plan"
 
 Pass artifacts:
 
-- HumanAgentPair exists
+- HumanWorker exists
+- AgentWorker exists
 - WorkSession exists
 - runtime/internal Session ref exists below WorkSession
 - `work_session_started` event exists

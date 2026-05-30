@@ -38,7 +38,9 @@ Owns the domain contracts:
 - Actor
 - HumanProfile
 - AgentProfile
-- HumanAgentPair
+- Worker
+- HumanWorker
+- AgentWorker
 - WorkSession
 - WorkSessionRun
 - runtime/internal Session reference type

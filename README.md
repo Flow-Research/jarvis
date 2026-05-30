@@ -1,7 +1,15 @@
-# Jarvis Human-Agent Collaboration Harness
+# Jarvis Human-Agent Collaboration Protocol
 
-Jarvis is the open-source harness where a human and an autonomous agent share
-memory, skills, tools, context, policy, and learning over time.
+Jarvis is the human-agent collaboration protocol.
+
+It defines how human workers and agent workers coordinate under shared goals
+and human-defined policy, so they can complete work together, review each
+other, record contributions, capture evidence, and learn across WorkSessions.
+
+Jarvis is not a product, personal agent, chatbot, cloud runtime, model
+provider, sandbox, task marketplace, enterprise workspace, Garden, Workstream,
+or Harnessy. Products, agents, runtimes, and external systems integrate with
+Jarvis by implementing its protocol contracts.
 
 ## Interactive Simulation
 
@@ -11,63 +19,351 @@ https://flow-research.github.io/jarvis_human_agent/
 
 The page is served directly by GitHub Pages from this repository.
 
-Jarvis is the durable operating layer for collaboration:
+## One-Line Definition
 
-```txt
-human judgment + agent execution + shared memory + safe autonomy + evidence
-```
+Jarvis is the open protocol that lets human workers and agent workers
+collaborate under shared goals and policy, producing durable WorkSessions,
+reviewable Requests, attributable Contributions, governed Learning, and
+portable Evidence.
 
-The agent works independently inside predefined boundaries.
-The human does not babysit every action. When the agent needs missing
-permission, missing context, or human judgment, it creates a request that the
-human approves, denies, narrows, answers, or takes over.
+## Plain English Definition
 
-## Scope
+Jarvis is how humans and agents work together properly.
 
-This design is only about Jarvis.
+The human does not just prompt. The agent does not just answer. They both
+participate in the work.
 
-Jarvis does not define product interface ownership, external work ownership,
-external identity ownership, or enterprise workspace ownership. Those systems
-integrate with Jarvis through interfaces and adapters. Jarvis stands alone as
-the harness.
+The human gives direction, judgment, context, correction, approval, and
+accountability. The agent plans, executes, researches, drafts, uses tools,
+collects evidence, and proposes improvements.
+
+Jarvis defines the rules of that collaboration so any product, runtime, model,
+task system, or external service can plug in.
 
 ## Thesis
 
-An autonomous agent still needs an operating environment:
+The winning unit is not the human alone and not the agent alone. The winning
+unit is the human-agent team.
 
-- durable sessions
-- durable files and state
-- model calls
-- context assembly
-- memory retrieval
-- tool execution
-- sandboxed command/code execution
-- scheduling/background work
-- policy and approvals
-- event/evidence capture
-- recovery after failure
+Jarvis formalizes the loop where:
 
-Cloudflare provides the first Jarvis runtime substrate:
-Agents, Think, Durable Objects, Workspace, Sandbox, Containers, R2, Worker
-Loader, service bindings, alarms, and durable execution patterns.
+```txt
+human judgment + agent execution + policy + review + evidence + learning
+```
 
-Jarvis owns the layer above that substrate:
+compound across real work.
 
-- human-agent collaboration semantics
-- structured memory and learning
-- autonomy policy
-- request/review/takeover flows
-- skills as procedural memory
-- policy-wrapped tools
-- evidence and contribution records
+## Core Loop
+
+```txt
+1. Human defines intent.
+2. Policy defines boundaries.
+3. Agent works inside those boundaries.
+4. Agent asks when blocked.
+5. Human reviews, approves, denies, narrows, corrects, or takes over.
+6. Work continues.
+7. Contributions are recorded.
+8. Evidence is captured.
+9. Learning is proposed.
+10. Confirmed learning improves the next WorkSession.
+```
+
+## Central Object
+
+`WorkSession` is the center of Jarvis.
+
+A WorkSession is not chat history. A WorkSession is the durable record of real
+human-agent collaboration.
+
+It contains:
+
+- objective
+- human worker
+- agent worker
+- policy
+- available capabilities
+- context
+- events
+- requests
+- reviews
+- tool actions
+- artifacts
+- contributions
+- evidence
+- learning proposals
+- final outcome
+
+## First-Class Workers
+
+Jarvis does not model `User + Assistant`.
+
+Jarvis models `HumanWorker + AgentWorker`.
+
+### HumanWorker
+
+The human is:
+
+- goal setter
+- domain expert
+- reviewer
+- teacher
+- quality judge
+- policy owner
+- accountable actor
+- source of taste
+- source of world context
+
+### AgentWorker
+
+The agent is:
+
+- autonomous worker
+- executor
+- researcher
+- context retriever
+- tool user
+- draft producer
+- evidence collector
+- learning participant
+
+## Core Protocol Contracts
+
+Jarvis v0 defines these contracts:
+
+```txt
+Worker
+  id
+  type: human | agent | service
+  role
+  capabilities
+  authority
+  accountability_scope
+
+HumanWorker
+  worker_id
+  profile_ref
+  policy_authority
+  review_authority
+  domain_context_refs
+  preferences
+  known_patterns
+
+AgentWorker
+  worker_id
+  model_or_agent_ref
+  capability_refs
+  tool_access_profile
+  memory_access_profile
+  autonomy_level
+
+WorkSession
+  id
+  objective
+  source_ref
+  human_worker_id
+  agent_worker_id
+  policy_id
+  status
+  context_manifest
+  event_log_ref
+  contribution_ledger_ref
+  evidence_manifest_ref
+  learning_records
+
+Policy
+  id
+  allowed_actions
+  denied_actions
+  review_required_actions
+  tool_grants
+  memory_grants
+  external_send_rules
+  risk_classes
+  escalation_rules
+
+Request
+  id
+  work_session_id
+  requester_id
+  reason
+  requested_action
+  missing_permission_or_context
+  risk_class
+  options
+  status
+
+Review
+  id
+  work_session_id
+  reviewer_id
+  target_ref
+  decision: approve | deny | narrow | correct | takeover | needs_revision
+  comments
+  required_changes
+
+Takeover
+  id
+  work_session_id
+  actor_id
+  reason
+  lock_epoch
+  resumed_by
+  reconciliation_notes
+
+Contribution
+  id
+  work_session_id
+  worker_id
+  contribution_type
+  event_refs
+  artifact_refs
+  review_refs
+  confidence
+  limitations
+
+EvidenceManifest
+  id
+  work_session_id
+  objective
+  event_chain_root
+  artifacts
+  tool_actions
+  policy_decisions
+  requests
+  reviews
+  contribution_refs
+  limitations
+  export_profile
+
+LearningRecord
+  id
+  work_session_id
+  actor_id
+  actor_type: human | agent | pair
+  lesson_type
+  source_event_refs
+  proposed_change
+  review_state
+  scope
+
+MemoryProposal
+  id
+  work_session_id
+  proposed_by
+  memory_scope
+  content
+  provenance
+  confidence
+  review_required
+  status
+
+SkillProposal
+  id
+  work_session_id
+  proposed_by
+  skill_name
+  trigger_conditions
+  procedure
+  required_tools
+  review_checks
+  failure_cases
+  status
+```
+
+## Protocol Laws
+
+1. Jarvis is not a product.
+2. Jarvis is not a personal agent.
+3. Jarvis does not prescribe infrastructure.
+4. WorkSession is the source of truth.
+5. Policy governs autonomy.
+6. Learning is governed.
+7. Evidence is captured during work.
+8. Contributions are attributable.
+9. Human judgment remains central.
+10. Every session should improve the next session.
+
+## Boundaries
+
+Jarvis owns:
+
+- collaboration protocol semantics
+- WorkSession lifecycle
+- policy-governed autonomy
+- request, review, and takeover semantics
+- contribution records
+- evidence manifests
+- governed memory and learning proposals
+- skill proposal semantics
 - runtime adapter contracts
+
+Jarvis does not own:
+
+- product UI
+- external task marketplaces
+- external identity systems
+- enterprise workspace controls
+- model providers
+- cloud providers
+- sandbox implementations
+- database implementations
+
+Cloudflare remains a first-class implementation substrate because it provides
+the primitives Jarvis needs for durable agents. Cloudflare is not the public
+identity of Jarvis.
+
+## System Boundaries
+
+```txt
+Flow Research
+  direction, standards, research agenda, public trust
+
+Jarvis
+  protocol for human-agent collaboration
+
+Garden
+  product workspace built on Jarvis
+
+Workstream
+  task, evaluation, rubric, review, and contribution infrastructure
+
+Harnessy
+  agent environment and capability preparation
+
+Fellowship
+  human development through public work and review
+```
+
+Jarvis connects these systems. It does not become them.
+
+## What Jarvis v0 Must Prove
+
+```txt
+1. Create HumanWorker.
+2. Create AgentWorker.
+3. Start WorkSession.
+4. Attach Policy.
+5. Send objective.
+6. Agent acts inside policy.
+7. Agent hits blocked action.
+8. Agent creates Request.
+9. Human approves, denies, narrows, answers, or takes over.
+10. Agent resumes.
+11. Jarvis records Contribution.
+12. Jarvis captures Evidence.
+13. Jarvis proposes Learning.
+14. Human confirms or rejects Learning.
+15. EvidenceManifest exports.
+```
+
+If v0 proves this loop, Jarvis is real.
 
 ## Document Map
 
-- [00-principles.md](./00-principles.md) - first principles, non-goals, and
-  design constraints.
-- [01-architecture.md](./01-architecture.md) - system layers, kernel
-  primitives, and boundaries.
+- [00-principles.md](./00-principles.md) - protocol principles, laws,
+  non-goals, and design constraints.
+- [01-architecture.md](./01-architecture.md) - system layers, protocol
+  primitives, and ownership boundaries.
 - [02-memory.md](./02-memory.md) - memory taxonomy, lifecycle, provenance,
   retrieval, and write policy.
 - [03-autonomy-policy.md](./03-autonomy-policy.md) - autonomy levels,
@@ -88,111 +384,3 @@ Jarvis owns the layer above that substrate:
   defaults, required ports, persistence schema, and stream protocol.
 - [ROADMAP.md](./ROADMAP.md) - release roadmap, milestones, team workstreams,
   decision gates, risks, and immediate next actions.
-
-## Architecture Contract
-
-Jarvis core is runtime-neutral. Runtime adapters implement infrastructure ports.
-Jarvis kernel services own collaboration, policy, memory, learning, skills,
-tools, requests, reviews, and evidence.
-
-Cloudflare is not the public identity of Jarvis. Cloudflare is the first-class
-runtime implementation because it provides the primitives Jarvis requires.
-
-The local development runtime is included for open-source adoption and
-testability.
-
-## First Usable Jarvis
-
-The first open-source release contains a buildable Jarvis harness, not a
-reference essay.
-
-The initial distribution is:
-
-```txt
-@jarvis/core
-  actors, HumanAgentPair, WorkSession, Run, Request, Review, Contribution,
-  EvidenceManifest, memory records, policy records, and event contracts
-
-@jarvis/memory
-  scoped memory store, retrieval policy, provenance, lifecycle, correction
-  learning pipeline, and context manifest support
-
-@jarvis/policy
-  autonomy levels, grants, risk classes, grant resolution, request creation,
-  takeover locks, outbox protocol, credential broker contracts, and audit events
-
-@jarvis/skills
-  skill manifest, skill inventory, skill activation gates, skill versioning,
-  and skill loading contracts
-
-@jarvis/tools
-  policy-wrapped tool registry, MCP gateway contracts, sandbox tool contracts,
-  trust labels, and tool failure records
-
-@jarvis/runtime-cloudflare
-  first-class Cloudflare adapter using Agents, Think, Durable Objects,
-  Workspace, Sandbox/Containers, R2, Worker Loader, alarms, and service bindings
-
-@jarvis/runtime-local
-  local development adapter using SQLite, local filesystem workspace, local
-  Docker or namespace-isolated sandbox behind policy, local scheduler, and SSE
-  streaming
-```
-
-The first usable flow is:
-
-```txt
-create HumanAgentPair
-start WorkSession
-attach memory store
-attach policy profile
-attach skills and policy-wrapped tools
-send human intent
-run agent inside policy
-create Request when permission/context/judgment is missing
-review, approve, deny, narrow, or take over
-record events, contributions, and evidence
-run learning pass
-persist confirmed memory and skill updates
-resume the WorkSession later
-```
-
-The public harness starts with WorkSession. Low-level runtime sessions remain
-internal unless an advanced runtime integration explicitly exposes them.
-
-## Jarvis Spine
-
-Jarvis is built around these primitives:
-
-```txt
-HumanAgentPair
-  durable relationship between one human and one agent
-
-WorkSession
-  public collaboration record, not just chat
-
-Request/Review/Takeover
-  control plane for safe autonomy
-
-Contribution Ledger
-  inspectable record of human, agent, and service actions
-
-Evidence Manifest
-  exportable package of artifacts, traces, reviews, and limitations
-
-Governed Learning
-  memory and skill changes flow through policy and review gates
-```
-
-## Design Constraints
-
-Jarvis incorporates these constraints:
-
-- durable sessions, files, tools, sandbox execution, streaming, and recovery
-- structured memory with provenance, lifecycle, scope, and review state
-- connector and tool execution through policy wrappers
-- untrusted external content fenced as data, not instruction
-- agent identity, human review, authorization, and evidence capture
-- inspectable long-running work with resumable state
-
-These constraints are part of the Jarvis architecture.
