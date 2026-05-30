@@ -25,32 +25,28 @@ WorkSession gives these a home.
 
 ## Shape
 
+The canonical WorkSession shape is defined in
+[11-core-protocol-objects.md](./11-core-protocol-objects.md). This document
+explains how the record behaves during collaboration.
+
 ```txt
 WorkSession
   id
-  title
+  protocol_version
   objective
   human_worker_id
   agent_worker_id
-  actor refs
-  host source
-  host execution refs when present
-  autonomy level
-  active policy
-  active context
-  memory snapshot refs
-  skill refs
-  tool grants
-  events
-  contributions
-  requests
-  reviews
-  evidence manifest
-  outcome
+  policy_id
+  status
+  context_manifest_ref
+  event_log_ref
+  contribution_ledger_ref
+  evidence_manifest_ref
+  learning_record_refs
 ```
 
-A WorkSession contains many work events and may reference host execution
-attempts. Jarvis records protocol facts, not host execution objects.
+A WorkSession contains many protocol events. Jarvis records protocol facts, not
+host execution objects.
 
 ## Events
 
@@ -88,9 +84,10 @@ Contribution records make collaboration inspectable:
 
 ```txt
 Contribution
-  actor id
-  actor type
   work_session_id
+  contributor_worker_id
+  contributor_actor_id
+  contributor_type: human | agent | service | tool | shared
   event refs
   contribution type
   content/artifact refs
@@ -124,9 +121,10 @@ A review is human judgment over a target:
 
 ```txt
 Review
-  reviewer
+  reviewer_worker_id
+  reviewer_actor_id
   target event/contribution/artifact
-  decision: approve | reject | revise | take_over | needs_context
+  decision: approve | deny | narrow | correct | takeover | needs_revision
   notes
   resulting actions
 ```

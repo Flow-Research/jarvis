@@ -15,10 +15,13 @@ Jarvis defines protocol contracts:
 
 ```txt
 Worker
+Actor
 HumanWorker
 AgentWorker
 WorkSession
+JarvisEvent
 Policy
+PolicyDecision
 Request
 Review
 Takeover

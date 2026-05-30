@@ -240,11 +240,11 @@ Takeover also has locking semantics:
 - record human edits as authoritative events
 - require reconciliation before agent autonomy resumes
 
-Every takeover creates a WorkSession lock epoch. Every tool call, sandbox
-lease, background job, memory write, skill update, and outbox token carries the
-current epoch and re-checks it at commit. Takeover increments the epoch,
-revokes outstanding tokens and leases, and moves unknown in-flight effects into
-reconciliation.
+Every takeover creates a WorkSession lock epoch. Every tool call,
+host-issued action token, background job, memory write, skill update, and
+outbox token carries the current epoch and re-checks it at commit. Takeover
+increments the epoch, revokes outstanding tokens, and moves unknown in-flight
+effects into reconciliation.
 
 Takeover state machine:
 
@@ -396,27 +396,26 @@ what scope, what evidence.
 
 ## Tamper-Evident Audit
 
-Every policy decision emits `PolicyDecisionEvent`:
+Every policy decision creates a `PolicyDecision` and a corresponding
+`JarvisEvent`:
 
 ```txt
-decision_id
-previous_event_hash
-sequence
-actor_id
+PolicyDecision
+id
 work_session_id
-run_id
-action_type
-normalized_args_hash
+actor_id
+policy_id
+requested_action
+normalized_action_hash
+risk_class
 data_sensitivity
-selected_grant_id
-denied_grant_ids
-tool_id
-tool_schema_hash
-model_id
-approver_id
+selected_grant_refs
+denied_grant_refs
 result
-timestamp
+reason
+request_id
 evidence_refs
+created_at
 ```
 
 Events are sequenced and hash-linked in the host's durable record. Hosts that

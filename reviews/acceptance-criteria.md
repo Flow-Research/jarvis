@@ -6,6 +6,8 @@ Jarvis architecture is accepted only when these criteria hold.
 
 - Jarvis is defined as the human-agent collaboration and learning-loop
   protocol.
+- `11-core-protocol-objects.md` is the source of truth for v0 object
+  definitions.
 - Jarvis is a compatibility protocol for multiple humans, agents, products,
   hosts, and external systems.
 - Jarvis does not define execution stack, cloud, database, queue, sandbox,

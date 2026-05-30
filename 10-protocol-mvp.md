@@ -70,6 +70,7 @@ HumanWorker
 AgentWorker
 WorkSession
 Policy
+PolicyDecision
 Request
 Review
 Takeover

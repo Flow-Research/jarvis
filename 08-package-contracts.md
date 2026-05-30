@@ -36,6 +36,10 @@ SDKs, database clients, cloud SDKs, sandbox SDKs, or UI frameworks.
 
 Owns the core protocol contracts:
 
+Canonical object definitions live in
+[11-core-protocol-objects.md](./11-core-protocol-objects.md). The package
+exports must match that document.
+
 - ids
 - Actor
 - Worker
@@ -43,6 +47,7 @@ Owns the core protocol contracts:
 - AgentWorker
 - WorkSession
 - Policy
+- PolicyDecision
 - Request
 - Review
 - Takeover

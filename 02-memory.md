@@ -132,7 +132,7 @@ observed
   captured but untrusted
 
 suggested
-  proposed by a learning worker
+  proposed by a learning pass or protocol actor
 
 confirmed
   accepted by the human or trusted workflow

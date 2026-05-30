@@ -160,153 +160,34 @@ The agent is:
 
 ## Core Protocol Contracts
 
-Jarvis v0 defines these contracts:
+Jarvis v0 defines these contracts. The canonical object shapes and invariants
+are in [11-core-protocol-objects.md](./11-core-protocol-objects.md).
 
 ```txt
 Worker
-  id
-  type: human | agent | service
-  role
-  capabilities
-  authority
-  accountability_scope
-
 Actor
-  id
-  worker_id
-  type: human | agent | service
-  event_authority
-  contribution_scope
-
 HumanWorker
-  worker_id
-  profile_ref
-  policy_authority
-  review_authority
-  domain_context_refs
-  preferences
-  known_patterns
-
 AgentWorker
-  worker_id
-  model_or_agent_ref
-  capability_refs
-  tool_access_profile
-  memory_access_profile
-  autonomy_level
-
 WorkSession
-  id
-  objective
-  source_ref
-  human_worker_id
-  agent_worker_id
-  policy_id
-  status
-  context_manifest
-  event_log_ref
-  contribution_ledger_ref
-  evidence_manifest_ref
-  learning_records
-
+JarvisEvent
 Policy
-  id
-  allowed_actions
-  denied_actions
-  review_required_actions
-  tool_grants
-  memory_grants
-  external_send_rules
-  risk_classes
-  escalation_rules
-
+PolicyDecision
 Request
-  id
-  work_session_id
-  requester_id
-  reason
-  requested_action
-  missing_permission_or_context
-  risk_class
-  options
-  status
-
 Review
-  id
-  work_session_id
-  reviewer_id
-  target_ref
-  decision: approve | deny | narrow | correct | takeover | needs_revision
-  comments
-  required_changes
-
 Takeover
-  id
-  work_session_id
-  actor_id
-  reason
-  lock_epoch
-  resumed_by
-  reconciliation_notes
-
 Contribution
-  id
-  work_session_id
-  worker_id
-  contribution_type
-  event_refs
-  artifact_refs
-  review_refs
-  confidence
-  limitations
-
 EvidenceManifest
-  id
-  work_session_id
-  objective
-  event_chain_root
-  artifacts
-  tool_actions
-  policy_decisions
-  requests
-  reviews
-  contribution_refs
-  limitations
-  export_profile
-
 LearningRecord
-  id
-  work_session_id
-  actor_id
-  subject_type: human | agent | pair
-  lesson_type
-  source_event_refs
-  proposed_change
-  review_state
-  scope
-
 MemoryProposal
-  id
-  work_session_id
-  proposed_by
-  memory_scope
-  content
-  provenance
-  confidence
-  review_required
-  status
-
 SkillProposal
-  id
-  work_session_id
-  proposed_by
-  skill_name
-  trigger_conditions
-  procedure
-  required_tools
-  review_checks
-  failure_cases
-  status
+Request
+Review
+Takeover
+Contribution
+EvidenceManifest
+LearningRecord
+MemoryProposal
+SkillProposal
 ```
 
 ## Protocol Laws
@@ -395,5 +276,7 @@ If v0 proves this loop, Jarvis is real.
 - [09-host-integration.md](./09-host-integration.md) - how products and hosts
   implement Jarvis without inheriting infrastructure assumptions.
 - [10-protocol-mvp.md](./10-protocol-mvp.md) - the smallest protocol proof.
+- [11-core-protocol-objects.md](./11-core-protocol-objects.md) - canonical
+  object definitions, invariants, statuses, and portable export surface.
 - [ROADMAP.md](./ROADMAP.md) - release roadmap, milestones, decision gates,
   risks, and immediate next actions.

@@ -15,7 +15,9 @@ Jarvis owns:
 - HumanWorker
 - AgentWorker
 - WorkSession
+- JarvisEvent
 - Policy
+- PolicyDecision
 - Request
 - Review
 - Takeover
@@ -152,7 +154,9 @@ Output:
 - HumanWorker
 - AgentWorker
 - WorkSession
+- JarvisEvent
 - Policy
+- PolicyDecision
 - Request
 - Review
 - Takeover
@@ -165,6 +169,7 @@ Output:
 
 Done when:
 
+- every schema matches `11-core-protocol-objects.md`
 - schemas serialize to stable JSON
 - required fields are explicit
 - status values are enumerated
@@ -404,7 +409,7 @@ Control: learning becomes MemoryProposal or SkillProposal until reviewed.
 
 1. Keep the repository protocol-only.
 2. Keep execution and cloud ownership outside the protocol.
-3. Freeze core protocol terms.
+3. Use `11-core-protocol-objects.md` as the source of truth for core terms.
 4. Draft JSON examples for each protocol contract.
 5. Define conformance tests for the golden path.
 6. Update the live simulation to show host/execution as outside Jarvis.

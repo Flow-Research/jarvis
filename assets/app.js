@@ -83,7 +83,7 @@ const steps = [
       "network_fetch: blocked.",
       "Approval required for one host and one WorkSession only."
     ],
-    evidence: ["tool_denied", "PolicyDecisionEvent", "request_created"]
+    evidence: ["tool_denied", "PolicyDecision", "request_created"]
   },
   {
     title: "Human Approval",
