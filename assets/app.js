@@ -47,14 +47,14 @@ const steps = [
     mission: "Agent executing",
     gate: 46,
     gateColor: "#78f7b4",
-    activeNodes: ["agent", "kernel", "runtime"],
-    activeBeams: ["beam-agent", "beam-runtime"],
+    activeNodes: ["agent", "kernel", "host"],
+    activeBeams: ["beam-agent", "beam-host"],
     summary:
-      "The AgentWorker works inside the allowed scope. Jarvis wraps each action while the runtime adapter supplies session state, files, sandbox, and streaming.",
+      "The AgentWorker works inside the allowed scope. Jarvis records the protocol facts while the host product handles execution, tools, storage, and interface.",
     events: [
       "AgentWorker proposes plan and starts project inspection.",
       "Policy allows read-only local file inspection.",
-      "Runtime opens workspace and sandbox lease."
+      "Host opens its workspace and execution environment."
     ],
     memory: ["Active memory remains scoped to this project.", "No new durable memory yet."],
     policy: [
@@ -114,13 +114,13 @@ const steps = [
     mission: "Artifact produced",
     gate: 82,
     gateColor: "#78f7b4",
-    activeNodes: ["agent", "kernel", "runtime"],
-    activeBeams: ["beam-agent", "beam-runtime"],
+    activeNodes: ["agent", "kernel", "host"],
+    activeBeams: ["beam-agent", "beam-host"],
     summary:
       "The AgentWorker resumes from the WorkSession event log, uses the approved scope, and produces a draft artifact with traceable evidence.",
     events: [
       "WorkSession resumes after request resolution.",
-      "Runtime executes approved fetch through policy wrapper.",
+      "Host executes the approved action and records the protocol event.",
       "AgentWorker writes a plan artifact into the workspace."
     ],
     memory: ["ContextManifest updates with approval event.", "Learning remains proposed until review."],
@@ -159,8 +159,8 @@ const steps = [
     mission: "Manifest ready",
     gate: 96,
     gateColor: "#78f7b4",
-    activeNodes: ["kernel", "runtime"],
-    activeBeams: ["beam-runtime"],
+    activeNodes: ["kernel", "host"],
+    activeBeams: ["beam-host"],
     summary:
       "Jarvis exports a manifest showing what happened, what was approved, what context was used, what artifact was produced, and what limits remain.",
     events: [

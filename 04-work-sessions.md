@@ -49,9 +49,8 @@ WorkSession
   outcome
 ```
 
-A WorkSession contains many runs. A run is one runtime execution attempt and
-contains many turns/tool calls. The WorkSession stores runtime execution
-references, not runtime adapter objects.
+A WorkSession contains many work events and may reference host execution
+attempts. Jarvis records protocol facts, not host execution objects.
 
 ## Events
 
@@ -80,8 +79,8 @@ work_session_completed
 
 The event log supports observability, debugging, evidence, and learning.
 
-The event log is append-only. Runtime checkpoints accelerate resume,
-but events are the source of truth.
+The event log is append-only. Host checkpoints may accelerate resume, but
+events are the source of truth.
 
 ## Contributions
 
@@ -243,19 +242,19 @@ A WorkSession is resumable:
 - restore relevant memory snapshot
 - explain what remains
 
-The agent continues without losing context after runtime
-sleep, restart, or human delay.
+The agent continues without losing context after host interruption, restart, or
+human delay.
 
 ## Durability And Recovery
 
-Durable execution requires:
+Durable collaboration requires:
 
 - append-only event log as source of truth
 - checkpoints for fast resume
 - idempotency keys for tool calls
-- run leases to prevent duplicate execution
+- host leases or equivalent guards to prevent duplicate execution
 - retry policy for recoverable failures
-- recovery states for interrupted runs
+- recovery states for interrupted work
 - external-send outbox for side effects
 - request store with resume tokens
 

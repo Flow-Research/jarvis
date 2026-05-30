@@ -70,6 +70,28 @@ Jarvis exists to formalize the loop where the human improves the agent, the
 agent improves the human's leverage, and completed WorkSessions improve the
 next WorkSession.
 
+## Jarvis Is About Work
+
+Jarvis is not an agent protocol.
+
+The industry usually starts with agent-centric questions:
+
+- how do agents get smarter?
+- how do agents become autonomous?
+- how do agents use tools?
+- how do agents execute tasks?
+
+Jarvis starts from a different primitive:
+
+```txt
+Work happens.
+Humans participate.
+Agents participate.
+Systems participate.
+```
+
+The WorkSession is the center because it is the protocol record for work.
+
 ## WorkSession Is The Source Of Truth
 
 A WorkSession is not chat history.
@@ -131,6 +153,15 @@ Human, agent, service, tool, and shared contributions must remain
 distinguishable. The record must not collapse the work into "the agent did it"
 or "the human did it."
 
+## Accountability Remains Attributable
+
+Execution can be delegated. Accountability cannot disappear.
+
+The agent may execute, research, draft, automate, and collect evidence. The
+human remains an accountable actor for judgment, policy, review, and final
+tradeoffs. Jarvis records enough contribution and evidence for accountability
+to remain inspectable.
+
 ## Evidence Is Captured During Work
 
 Evidence is produced as collaboration happens:
@@ -174,40 +205,36 @@ A SkillProposal captures:
 - provenance
 - review state
 
-## Runtime-Agnostic, Cloudflare-First
+## Infrastructure Is Outside Jarvis
 
 Jarvis protocol semantics do not require any cloud, model provider, sandbox,
-database, queue, or runtime.
+database, queue, deployment platform, or execution stack.
 
-Cloudflare remains a first-class implementation substrate because it provides
-strong primitives for durable agents. Cloudflare is an implementation path, not
-the public identity of Jarvis.
+Products decide how to run agents, where to store data, which sandbox to use,
+which model to call, and which infrastructure to deploy on. Jarvis defines the
+collaboration protocol those systems implement.
 
 ## Protocol Laws
 
 1. Jarvis is not a product.
 2. Jarvis is not a personal agent.
-3. Jarvis does not prescribe infrastructure.
+3. Jarvis does not prescribe infrastructure or execution.
 4. WorkSession is the source of truth.
 5. Policy governs autonomy.
 6. Learning is governed.
 7. Evidence is captured during work.
 8. Contributions are attributable.
 9. Human judgment remains central.
-10. Every session should improve the next session.
+10. Execution may be delegated; accountability remains attributable.
+11. Every session should improve the next session.
 
 ## Non-Goals
 
 Jarvis is not:
 
-- Garden
-- Workstream
-- Harnessy
-- a Cloudflare fork
 - a product UI
 - a personal agent application
 - a chatbot
-- a runtime clone
 - a model provider
 - a sandbox implementation
 - a database implementation

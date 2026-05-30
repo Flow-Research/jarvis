@@ -77,8 +77,8 @@ The agent sees a skill inventory first:
 - when to use
 - risk/tool requirements
 
-Full skill bodies and supporting files load on demand. This preserves
-context budget and lets the runtime cache stable inventories.
+Full skill bodies and supporting files load on demand. This preserves context
+budget and lets the host cache stable inventories.
 
 ## Tool Model
 

@@ -7,31 +7,31 @@ It defines how a human and an agent become a working team: shared goals,
 policy, requests, review, takeover, contribution records, evidence, memory,
 learning, and skills.
 
+Jarvis is not an agent protocol. The architectural primitive is work. A
+WorkSession exists first, and HumanWorker, AgentWorker, services, and tools
+participate in that work.
+
 ## Layer Model
 
 ```txt
-Interface layer
-  chat, CLI, desktop, mobile, browser, messaging, custom apps
+Products and hosts
+  product workspaces, task systems, CLI apps, chat apps, custom products
 
-Jarvis protocol layer
+Jarvis protocol
   workers, WorkSessions, policies, requests, reviews, takeover,
   contributions, evidence, learning records, memory proposals,
   skill proposals
 
-Capability layer
-  tools, MCP servers, files, browser, shell, sandbox actions, connectors
-
-Runtime adapter layer
-  model loop, durable actors, sessions, files, tool execution, sandbox,
-  scheduling, streaming, recovery
-
-Infrastructure layer
-  Cloudflare, local runtime, external services, databases, queues, object
-  stores, model providers
+External implementation choices
+  models, tools, MCP servers, sandboxes, storage, queues, clouds,
+  local machines, deployment platforms, product interfaces
 ```
 
-Interfaces are replaceable. Runtimes are replaceable. Infrastructure is
-replaceable. Jarvis protocol semantics are the stable center.
+Only the middle layer is Jarvis.
+
+Products and hosts decide how to execute work. Jarvis defines the protocol
+records and state transitions that make the work collaborative, governed,
+reviewable, attributable, and portable.
 
 ## Core Protocol Contracts
 
@@ -282,20 +282,6 @@ SkillProposal
 
 Skills turn repeated work into reusable process.
 
-## Runtime/Internal Concepts
-
-### Session
-
-`Session` stores runtime message and turn state for an adapter. Session is
-runtime/internal by default. Jarvis does not force most adopters to manage
-low-level sessions directly.
-
-### WorkSessionRun
-
-`WorkSessionRun` is one execution attempt inside a WorkSession. A WorkSession
-can have many runs. Runs bind to runtime execution references, leases,
-checkpoints, recovery state, and stream state.
-
 ## Standard Work Flow
 
 ```txt
@@ -304,7 +290,7 @@ checkpoints, recovery state, and stream state.
 3. Policy defines the action boundary.
 4. AgentWorker receives context, memory, skills, and available capabilities.
 5. AgentWorker plans and executes inside policy.
-6. Policy wraps every tool/action.
+6. Policy evaluates every meaningful action.
 7. Missing permission, context, or judgment becomes a Request.
 8. HumanWorker reviews, approves, denies, narrows, corrects, or takes over.
 9. AgentWorker resumes when allowed.
@@ -330,88 +316,29 @@ Jarvis owns:
 - memory proposal semantics
 - skill proposal semantics
 - context manifest semantics
-- runtime adapter contracts
+- protocol conformance rules
 
-Runtime adapters own:
+Products and hosts own:
 
-- model/tool loop mechanics
-- durable actors
-- storage primitives
-- streaming transport
-- sandbox mechanics
-- scheduling and recovery
-- run leases and checkpoints
-- idempotent execution support
-
-Interfaces own:
-
-- visual layout
-- notifications
-- user interaction controls
-- inbox presentation
-- local input/output conventions
-
-Products own:
-
-- packaging
+- user interface
+- authentication and accounts
+- execution environment
+- model/provider selection
+- tool execution
+- sandboxing
+- storage
+- queues and scheduling
+- deployment
+- observability
 - billing
-- enterprise controls
-- product-specific workflows
-- customer-specific integrations
+- organization controls
 
-## System Boundaries
+## External System Boundary
 
-```txt
-Flow Research
-  sets direction, standards, research agenda, public trust
-
-Jarvis
-  protocol for human-agent collaboration
-
-Garden
-  product workspace built on Jarvis
-
-Workstream
-  task, evaluation, rubric, review, and contribution infrastructure
-
-Harnessy
-  agent environment and capability preparation
-
-Fellowship
-  human development through public work and review
-```
-
-Jarvis connects these systems. It does not become them.
-
-## Workstream Connection
-
-Workstream tasks enter Jarvis through protocol boundaries:
-
-```txt
-Workstream Task
-  -> creates or references WorkSession
-  -> HumanWorker + AgentWorker collaborate
-  -> Jarvis records requests, reviews, contributions, evidence, learning
-  -> EvidenceManifest exports
-  -> Workstream evaluates against rubric
-```
-
-Workstream owns task source, rubric, review routing, evaluation, acceptance,
-and contribution scoring.
-
-Jarvis owns collaboration, policy, requests, reviews, learning, contribution
-records, and evidence packages.
-
-## Garden Connection
-
-Garden is a Jarvis-compatible product workspace for human-agent teams.
-
-Garden can implement workspace UI, identity integration, inboxes, connectors,
-permissions UI, audit UI, cost tracking, agent operations, and enterprise
-controls.
-
-Garden's implementation details remain Garden's product layer. Jarvis exposes
-protocol contracts, not Garden internals.
+External systems can start WorkSessions, consume EvidenceManifests, route
+Reviews, evaluate Contributions, or provide context and skills. Jarvis defines
+the protocol records exchanged with those systems. It does not define their
+product architecture.
 
 ## Minimum Developer Entry Point
 
@@ -429,6 +356,5 @@ inspect learning proposals
 export EvidenceManifest
 ```
 
-Low-level runtime sessions, model turns, context snapshots, and adapter-specific
-actors remain below this surface unless an advanced runtime integration
-explicitly exposes them.
+The developer entry point is protocol-first. Execution, hosting, storage, and
+UI are implementation choices outside Jarvis.

@@ -2,152 +2,99 @@
 
 Jarvis architecture is accepted only when these criteria hold.
 
-Each criterion maps to a buildable part of the harness.
-
 ## Scope
 
-- The design stays focused on Jarvis.
-- Jarvis does not define product interface ownership, external work ownership,
-  or external identity ownership.
-- Cloudflare is first-class runtime substrate, not the public identity.
+- Jarvis is defined as the human-agent collaboration protocol.
+- Jarvis does not define execution stack, cloud, database, queue, sandbox,
+  deployment, model provider, authentication, billing, or product UI.
+- external products and systems integrate with Jarvis through protocol
+  contracts.
 
 ## Human-Agent Collaboration
 
-- The human is an active contributor, reviewer, and teacher.
-- The agent is autonomous and bounded.
-- The human takes over and hands work back through a defined state machine.
+- HumanWorker is an active contributor, reviewer, teacher, and accountable
+  actor.
+- AgentWorker is an autonomous but policy-bounded contributor.
+- HumanWorker can approve, deny, narrow, correct, request revision, or take
+  over.
 - Corrections become structured learning signals.
 
-## Memory
+## WorkSession
+
+- WorkSession is the source of truth.
+- WorkSession captures goals, events, requests, reviews, takeovers,
+  contributions, evidence, artifacts, learning, and final outcome.
+- WorkSession is not reduced to chat history.
+
+## Policy
+
+- Policy defines what the AgentWorker can do.
+- Action outside policy creates Request.
+- Request is reviewable and attributable.
+- Review decisions are explicit.
+- Takeover prevents stale autonomous continuation.
+
+## Memory And Skills
 
 - Memory scopes are explicit.
 - Memory has lifecycle and provenance.
-- Untrusted sources never become durable memory automatically.
-- Conflicts, stale memory, and project leakage have defined controls.
-
-## Autonomy And Policy
-
-- The agent works without babysitting inside predefined policy.
-- Capability grants and risk classes are enforceable.
-- Requests are structured and reviewable.
-- Sandbox, network, filesystem, credential, and external-send risks are covered.
-- Allow/deny decisions are inspectable and auditable.
-
-## Work Sessions
-
-- WorkSession captures more than chat.
-- Events, contributions, requests, reviews, and evidence are represented.
-- Evidence is inspectable without turning Jarvis into accounting software.
-- WorkSessions resume after human delay or runtime recovery; runtime Sessions
-  remain adapter-internal.
-
-## Skills And Tools
-
+- Durable memory changes require MemoryProposal and review state.
 - Skills are procedural memory.
-- Skill updates are governed.
-- Tools are policy-wrapped.
-- MCP and tool poisoning risks are addressed.
-- Tool outputs are untrusted data by default.
+- Skill changes require SkillProposal and review state.
 
-## Runtime
+## Evidence And Contribution
 
-- Cloudflare is used deeply where it is strong.
-- Kernel primitives do not import Cloudflare types.
-- Local development runtime runs the core harness without Cloudflare setup.
-- Observability is sufficient for debugging agent behavior.
+- Contributions distinguish human, agent, service, tool, and shared work.
+- Evidence is captured during work.
+- EvidenceManifest includes policy decisions, requests, reviews,
+  contributions, artifacts, and limitations.
+- EvidenceManifest is portable across products.
 
-## v0.1 Acceptance Tests
+## v0.1 Protocol Acceptance
 
-The first build passes these checks:
+The first protocol release passes these checks:
 
 ```txt
-npm create jarvis@latest my-jarvis
-cd my-jarvis
-npm install
-npm run test
+create HumanWorker
+create AgentWorker
+start WorkSession
+attach Policy
+record objective
+record allowed AgentWorker action
+record policy-denied AgentWorker action
+create Request
+record HumanWorker Review
+resume work after approval or correction
+record Contribution
+record EvidenceManifest item
+record LearningRecord
+create MemoryProposal or SkillProposal
+export protocol record
 ```
 
 Expected result:
 
-- scaffold installs without Cloudflare credentials
-- `jarvis.config.ts` validates
-- `src/agent.ts`, `src/policy.ts`, `src/tools.ts`, `src/skills.ts`, and
-  `src/memory.ts` compile
-- `.jarvis/local.db` is created during test setup
+- all records validate against schema
+- WorkSession status transitions are valid
+- Request cannot resolve without Review
+- Review supports approve, deny, narrow, correct, takeover, and needs_revision
+- Takeover creates lock state
+- Contribution references events or artifacts
+- EvidenceManifest references the WorkSession event chain
+- exported records contain no product-private infrastructure requirement
 
-```txt
-npm run jarvis:dev
-```
+## Conformance Acceptance
 
-Expected result:
+A product is Jarvis-compatible when it can prove:
 
-- local runtime starts with SQLite, local filesystem workspace, isolated
-  sandbox, and SSE stream
-- startup prints the local runtime URL and active policy profile
-- no secret or provider key is required for runtime boot
+- WorkSession is the source of truth.
+- Policy gates autonomous action.
+- blocked action creates Request.
+- Review resolves Request.
+- Takeover prevents stale continuation.
+- Contributions are attributable.
+- EvidenceManifest is portable.
+- Learning is governed.
 
-```txt
-npm run jarvis:session -- --objective "Inspect the scaffold and create a plan"
-```
-
-Expected result:
-
-- a HumanWorker exists
-- an AgentWorker exists
-- a WorkSession is created
-- a runtime/internal Session reference is created below the WorkSession
-- the event stream emits `work_session_started`
-- a context manifest is persisted
-
-```txt
-npm run jarvis:session -- --objective "Fetch example.com and summarize it"
-```
-
-Expected result:
-
-- default network-denied policy blocks the fetch
-- Jarvis creates a structured request
-- request contains risk class, requested host, expected result, expiry,
-  canonical action hash, and narrower alternative
-
-```txt
-npm run jarvis:requests
-npm run jarvis:approve -- --request <id> --scope "network_fetch:example.com"
-```
-
-Expected result:
-
-- request resolves with a one-use approval token
-- stale approval replay fails
-- WorkSession resumes
-- policy decision event records selected grant ids by dimension
-
-```txt
-npm run jarvis:evidence -- --work-session <id>
-```
-
-Expected result:
-
-- EvidenceManifest JSON exports
-- manifest includes event-chain root, evidence item hashes, request/review
-  records, policy decisions, context manifest ref, artifact refs, and known
-  limitations
-- redacted export is a derived artifact and raw immutable evidence remains
-  unchanged
-
-Restart test:
-
-```txt
-npm run jarvis:dev
-npm run jarvis:session -- --objective "Trigger a blocked external send"
-stop runtime
-npm run jarvis:dev
-npm run jarvis:requests
-```
-
-Expected result:
-
-- pending request survives restart
-- WorkSession resumes from event log and checkpoint
-- runtime/internal Session remains adapter-internal
-- no outbox commit happens before approval
+Conformance does not require any specific execution stack, cloud provider,
+database, sandbox, queue, deployment platform, or UI.

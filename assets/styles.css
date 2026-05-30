@@ -540,7 +540,7 @@ button {
   bottom: 42px;
 }
 
-.runtime {
+.host {
   right: 36px;
   bottom: 42px;
 }
@@ -651,7 +651,7 @@ button {
   transform: rotate(159deg);
 }
 
-.beam-runtime {
+.beam-host {
   bottom: 154px;
   right: 240px;
   width: 265px;
@@ -949,7 +949,7 @@ button {
     bottom: auto;
   }
 
-  .runtime {
+  .host {
     top: 638px;
     bottom: auto;
   }

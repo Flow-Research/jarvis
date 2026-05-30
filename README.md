@@ -6,9 +6,9 @@ It defines how human workers and agent workers coordinate under shared goals
 and human-defined policy, so they can complete work together, review each
 other, record contributions, capture evidence, and learn across WorkSessions.
 
-Jarvis is not a product, personal agent, chatbot, cloud runtime, model
-provider, sandbox, task marketplace, enterprise workspace, Garden, Workstream,
-or Harnessy. Products, agents, runtimes, and external systems integrate with
+Jarvis is not a product, personal agent, chatbot, model provider, cloud stack,
+sandbox, task marketplace, enterprise workspace, or capability harness.
+Products, agents, execution environments, and external systems integrate with
 Jarvis by implementing its protocol contracts.
 
 ## Interactive Simulation
@@ -37,13 +37,29 @@ The human gives direction, judgment, context, correction, approval, and
 accountability. The agent plans, executes, researches, drafts, uses tools,
 collects evidence, and proposes improvements.
 
-Jarvis defines the rules of that collaboration so any product, runtime, model,
-task system, or external service can plug in.
+Jarvis defines the rules of that collaboration so any product, model, task
+system, execution environment, or external service can plug in.
 
 ## Thesis
 
 The winning unit is not the human alone and not the agent alone. The winning
 unit is the human-agent team.
+
+Jarvis is not an agent protocol. Jarvis is a work protocol.
+
+The primitive is not:
+
+```txt
+User -> Agent -> Answer
+```
+
+The primitive is:
+
+```txt
+WorkSession -> HumanWorker -> AgentWorker -> Review -> Evidence -> Learning
+```
+
+Work exists first. Humans, agents, services, and tools participate in the work.
 
 Jarvis formalizes the loop where:
 
@@ -73,7 +89,7 @@ compound across real work.
 `WorkSession` is the center of Jarvis.
 
 A WorkSession is not chat history. A WorkSession is the durable record of real
-human-agent collaboration.
+human-agent collaboration around a focused unit of work.
 
 It contains:
 
@@ -281,7 +297,8 @@ SkillProposal
 7. Evidence is captured during work.
 8. Contributions are attributable.
 9. Human judgment remains central.
-10. Every session should improve the next session.
+10. Execution may be delegated; accountability remains attributable.
+11. Every session should improve the next session.
 
 ## Boundaries
 
@@ -295,7 +312,7 @@ Jarvis owns:
 - evidence manifests
 - governed memory and learning proposals
 - skill proposal semantics
-- runtime adapter contracts
+- implementation boundary contracts
 
 Jarvis does not own:
 
@@ -304,37 +321,9 @@ Jarvis does not own:
 - external identity systems
 - enterprise workspace controls
 - model providers
-- cloud providers
-- sandbox implementations
+- cloud providers or deployment choices
+- sandbox implementations or execution stacks
 - database implementations
-
-Cloudflare remains a first-class implementation substrate because it provides
-the primitives Jarvis needs for durable agents. Cloudflare is not the public
-identity of Jarvis.
-
-## System Boundaries
-
-```txt
-Flow Research
-  direction, standards, research agenda, public trust
-
-Jarvis
-  protocol for human-agent collaboration
-
-Garden
-  product workspace built on Jarvis
-
-Workstream
-  task, evaluation, rubric, review, and contribution infrastructure
-
-Harnessy
-  agent environment and capability preparation
-
-Fellowship
-  human development through public work and review
-```
-
-Jarvis connects these systems. It does not become them.
 
 ## What Jarvis v0 Must Prove
 
@@ -372,15 +361,14 @@ If v0 proves this loop, Jarvis is real.
   events, reviews, evidence, and learning loops.
 - [05-skills-tools.md](./05-skills-tools.md) - skills, tools, MCP, sandbox
   policy, and tool wrapping.
-- [06-runtime-adapters.md](./06-runtime-adapters.md) - Cloudflare-first runtime
-  adapter and local/runtime-neutral boundaries.
-- [07-implementation-decisions.md](./07-implementation-decisions.md) -
-  implementation choices that remain below the architecture layer.
+- [06-integration-boundaries.md](./06-integration-boundaries.md) - product,
+  host, and external system boundaries.
+- [07-protocol-decisions.md](./07-protocol-decisions.md) - fixed protocol
+  decisions and explicit non-decisions.
 - [08-package-contracts.md](./08-package-contracts.md) - package graph,
   exports, ownership, forbidden imports, and release tests.
-- [09-default-project.md](./09-default-project.md) - `create-jarvis`
-  scaffold, config, CLI flow, and golden path API.
-- [10-local-runtime-mvp.md](./10-local-runtime-mvp.md) - local runtime
-  defaults, required ports, persistence schema, and stream protocol.
+- [09-host-integration.md](./09-host-integration.md) - how products and hosts
+  implement Jarvis without inheriting infrastructure assumptions.
+- [10-protocol-mvp.md](./10-protocol-mvp.md) - the smallest protocol proof.
 - [ROADMAP.md](./ROADMAP.md) - release roadmap, milestones, team workstreams,
   decision gates, risks, and immediate next actions.

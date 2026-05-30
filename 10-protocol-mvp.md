@@ -1,0 +1,140 @@
+# Protocol MVP
+
+Jarvis v0 proves the protocol loop. It does not ship an execution stack.
+
+The MVP is a reference protocol package, schema set, conformance tests, and a
+minimal interactive demo showing how HumanWorker and AgentWorker collaborate
+inside a WorkSession.
+
+## MVP Scope
+
+Jarvis v0 includes:
+
+- protocol schemas
+- event envelope
+- WorkSession lifecycle
+- Policy decision model
+- Request model
+- Review model
+- Takeover model
+- Contribution ledger model
+- EvidenceManifest model
+- LearningRecord model
+- MemoryProposal model
+- SkillProposal model
+- conformance tests
+- export format
+
+Jarvis v0 excludes:
+
+- execution adapters
+- cloud integration
+- local execution
+- model calls
+- sandboxes
+- storage implementation
+- queues
+- deployment
+- product UI
+- authentication
+- billing
+
+Those are implementation concerns for products and hosts.
+
+## Golden Path
+
+```txt
+1. Create HumanWorker.
+2. Create AgentWorker.
+3. Start WorkSession.
+4. Attach Policy.
+5. Record objective.
+6. Record AgentWorker action inside policy.
+7. Record blocked action outside policy.
+8. Create Request.
+9. Record HumanWorker Review decision.
+10. Resume work after approval or correction.
+11. Record Contribution entries.
+12. Capture EvidenceManifest entries.
+13. Create LearningRecord.
+14. Create MemoryProposal or SkillProposal.
+15. Export portable protocol record.
+```
+
+## Required Protocol Records
+
+```txt
+Worker
+HumanWorker
+AgentWorker
+WorkSession
+Policy
+Request
+Review
+Takeover
+Contribution
+EvidenceManifest
+LearningRecord
+MemoryProposal
+SkillProposal
+JarvisEvent
+```
+
+## Event Envelope
+
+Every protocol event includes:
+
+```txt
+id
+sequence
+type
+work_session_id
+actor_id
+timestamp
+trace_context
+payload
+previous_hash
+event_hash
+```
+
+The event chain makes the collaboration inspectable and exportable.
+
+## WorkSession Statuses
+
+```txt
+created
+active
+waiting_on_human
+takeover
+reconciling
+completed
+failed
+closed
+```
+
+Jarvis defines valid transitions. Implementing products decide how they store,
+stream, or execute the session.
+
+## Conformance Tests
+
+The MVP conformance suite checks:
+
+- a WorkSession cannot start without HumanWorker, AgentWorker, objective, and
+  Policy.
+- policy-denied action creates Request.
+- Request resolution requires Review.
+- approval can narrow scope.
+- takeover creates a lock epoch.
+- stale autonomous events after takeover are rejected.
+- Contribution entries reference events or artifacts.
+- EvidenceManifest references policy decisions, requests, reviews,
+  contributions, artifacts, and limitations.
+- MemoryProposal and SkillProposal require provenance and review state.
+- exported protocol records do not require product-private infrastructure
+  fields.
+
+## Success Condition
+
+Jarvis v0 is successful when a product team can implement the protocol without
+adopting any Jarvis-owned execution stack, cloud stack, database, sandbox, or
+UI.

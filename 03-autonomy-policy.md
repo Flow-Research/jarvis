@@ -160,7 +160,7 @@ requested scope
 expected result
 alternatives
 expiration
-work_session_id, run_id, and runtime_session_ref when present
+work_session_id
 evidence/context
 ```
 
@@ -305,7 +305,7 @@ reviewed
   human approval or materialized send authorization is attached
 
 committed
-  runtime receives a one-time send token and performs the action
+  host receives a one-time send token and performs the action
 
 receipted
   immutable send receipt is appended to evidence
@@ -337,7 +337,7 @@ Rules:
   environments
 - no long-lived secret injection by default
 - non-extractable broker handles or broker-executed operations
-- tool-bound scoped tokens only when extraction risk is eliminated by runtime
+- tool-bound scoped tokens only when extraction risk is eliminated by host
   controls
 - short expiry
 - redaction in logs and debug views
@@ -419,8 +419,8 @@ timestamp
 evidence_refs
 ```
 
-Events are sequenced and hash-linked in durable stores. Runtimes that cannot
-support hash-linked audit records mark audit integrity as degraded.
+Events are sequenced and hash-linked in the host's durable record. Hosts that
+cannot support hash-linked audit records mark audit integrity as degraded.
 
 Degraded audit integrity automatically denies `credentialed`, `send_external`,
 `public_publish`, `financial`, `destructive`, `privilege_change`,

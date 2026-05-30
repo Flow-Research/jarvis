@@ -1,783 +1,399 @@
 # Jarvis Roadmap
 
-Jarvis is the open-source human-agent collaboration protocol. The roadmap turns
-the architecture into buildable releases.
+Jarvis is the open-source human-agent collaboration protocol.
 
-The first release proves one thing: a human and an autonomous agent can work
-together through shared memory, governed autonomy, requests, reviews, evidence,
-and resumable WorkSessions without requiring a product interface or Cloudflare
-account.
+The roadmap turns the protocol into stable contracts, schemas, conformance
+tests, examples, and documentation. It does not create an execution stack.
 
 ## Roadmap Contract
 
-Jarvis v0.1 delivers the protocol implementation, not a product shell.
-
 Jarvis owns:
 
+- Worker
 - HumanWorker
 - AgentWorker
 - WorkSession
-- memory and learning
-- policy and autonomy
-- requests, reviews, and takeover
-- skills and policy-wrapped tools
-- evidence and contribution records
-- runtime adapter contracts
-- local development runtime
+- Policy
+- Request
+- Review
+- Takeover
+- Contribution
+- EvidenceManifest
+- LearningRecord
+- MemoryProposal
+- SkillProposal
+- protocol event envelope
+- protocol export format
+- conformance tests
 
-Jarvis does not own product interface, external work ownership, external
-identity ownership, or enterprise workspace ownership.
+Jarvis does not own:
 
-Cloudflare remains the first-class production runtime. The local runtime exists
-so developers can install, inspect, test, and extend Jarvis without production
-infrastructure.
+- product UI
+- authentication
+- product internals
+- task/evaluation system internals
+- capability-preparation system internals
+- model providers
+- tool execution
+- MCP hosting
+- sandboxes
+- databases
+- queues
+- cloud providers
+- deployment
+- local execution
+- operational monitoring
+
+Those are product and host responsibilities.
 
 ## Release Strategy
 
 ```txt
-v0.1 Local Alpha
-  buildable open-source protocol implementation with local runtime
+v0.1 Protocol Alpha
+  stable vocabulary, schemas, event envelope, and golden-path conformance
 
-v0.2 Cloudflare Runtime Beta
-  production reference adapter using Cloudflare primitives
+v0.2 Evidence And Learning Beta
+  stronger EvidenceManifest, Contribution, MemoryProposal, and SkillProposal
+  contracts
 
-v0.3 Connector And Skill Ecosystem
-  stronger MCP, skill bundles, examples, and runtime extension points
+v0.3 Ecosystem Conformance
+  host conformance suite, examples, and product integration guides
 
 v1.0 Stable Protocol
-  stable public API, runtime adapter contract, policy model, and migration path
+  stable public protocol, compatibility rules, export format, and migration
+  policy
 ```
 
-## v0.1 Local Alpha
+## v0.1 Protocol Alpha
 
-Goal: ship the smallest complete Jarvis that proves the human-agent loop.
+Goal: prove the smallest complete human-agent collaboration loop.
 
-Exit condition:
+The protocol must express:
 
 ```txt
-npm create jarvis@latest my-jarvis
-cd my-jarvis
-npm install
-npm run test
-npm run jarvis:dev
-npm run jarvis:session -- --objective "Inspect this project and propose a plan"
+HumanWorker defines intent
+Policy defines boundaries
+AgentWorker acts inside policy
+blocked action becomes Request
+HumanWorker reviews or takes over
+AgentWorker resumes when allowed
+Contribution records who did what
+EvidenceManifest captures proof during work
+LearningRecord captures what improved
+MemoryProposal and SkillProposal remain governed
 ```
-
-The run creates a HumanWorker and AgentWorker, starts a WorkSession, streams
-events, blocks a policy-denied action, creates a structured Request, accepts a
-scoped approval, resumes work, records contributions and evidence, proposes
-learning, and exports an EvidenceManifest.
 
 ### v0.1 Must-Have Slice
 
-v0.1 includes only the golden-path subset of each system:
+- protocol schemas for all core contracts
+- event envelope
+- WorkSession status transitions
+- Policy decision model
+- Request and Review lifecycle
+- Takeover lifecycle
+- Contribution ledger shape
+- EvidenceManifest shape
+- LearningRecord shape
+- MemoryProposal shape
+- SkillProposal shape
+- portable export profile
+- conformance tests for the golden path
+- one static interactive simulation
+- one host integration guide
 
-- one HumanWorker
-- one AgentWorker
-- one active WorkSession at a time per local project
-- one local SQLite store
-- one local filesystem workspace
-- one SSE event stream
-- one default policy profile: `local_dev_safe`
-- one request flow: blocked action to scoped approval to resume
-- one memory path: seed memory, context manifest, learning proposal
-- one skill path: local skill manifest loaded through activation gates
-- one tool path: policy-wrapped local sandbox command
-- one MCP path: capability inventory capture and quarantine only
-- one evidence path: JSON EvidenceManifest plus referenced artifacts
-- one CLI path matching the TypeScript golden path
+### v0.1 Excludes
 
-v0.1 excludes:
-
-- multi-user collaboration
-- recurring background jobs
+- execution packages
+- cloud implementation
+- local execution implementation
+- model calls
+- sandbox execution
+- persistent storage implementation
+- queues and scheduling
 - hosted UI
-- remote artifact replication
-- external skill registry
-- Cloudflare production runtime implementation
-- hosted connector catalog
-- billing, reward, or attribution settlement
+- auth
+- billing
+- task routing
+- product implementation
 
-The Cloudflare runtime package exists in v0.1 as a contract stub only. The
-implementation begins in v0.2.
-
-### Milestone 0: Architecture Lock
+## Milestone 0: Protocol Lock
 
 Owner: Architecture
 
-Supports: Kernel, Policy And Safety, Runtime, Developer Experience
-
 Output:
 
-- design docs remain in `/home/abiorh/flow/jarvis-design`
-- architecture contract is frozen for v0.1
-- package graph is frozen
-- public WorkSession API names are frozen
-- local runtime defaults are frozen
-- acceptance tests are frozen
+- official definition is frozen
+- core terms are frozen
+- system boundaries are frozen
+- non-goals are frozen
 
 Done when:
 
-- [README.md](./README.md), [08-package-contracts.md](./08-package-contracts.md),
-  [09-default-project.md](./09-default-project.md), and
-  [10-local-runtime-mvp.md](./10-local-runtime-mvp.md) agree
-- no v0.1 package invents new ownership outside its contract
+- README, Principles, Architecture, Package Contracts, Protocol MVP, and
+  Acceptance Criteria all agree.
+- no Jarvis document assigns execution, cloud, database, sandbox, or deployment
+  ownership to Jarvis.
 
-### Milestone 1: Repository And Package Scaffold
+## Milestone 1: Protocol Schemas
 
-Owner: Developer Experience
-
-Supports: Kernel, Runtime
+Owner: Protocol
 
 Output:
 
-- monorepo initialized
-- packages created:
-  - `@jarvis/core`
-  - `@jarvis/memory`
-  - `@jarvis/policy`
-  - `@jarvis/skills`
-  - `@jarvis/tools`
-  - `@jarvis/runtime-local`
-  - `@jarvis/runtime-cloudflare` contract stub
-- dependency boundaries enforced
-- shared build, typecheck, test, and lint commands exist
-- generated scaffold package exists as `create-jarvis`
-
-Done when:
-
-- kernel packages import no runtime packages
-- kernel packages import no Cloudflare types
-- runtime packages import kernel packages through public exports only
-- `@jarvis/runtime-cloudflare` exports only contract placeholders in v0.1
-- package boundary tests fail on forbidden imports
-
-### Milestone 2: Core Domain Kernel
-
-Owner: Kernel
-
-Supports: Policy And Safety, Runtime, Developer Experience
-
-Output:
-
-- Actor
-- HumanProfile
-- AgentProfile
+- Worker
 - HumanWorker
 - AgentWorker
 - WorkSession
-- WorkSessionRun
-- runtime/internal Session reference
+- Policy
 - Request
 - Review
+- Takeover
 - Contribution
 - EvidenceManifest
-- EvidenceItem
-- event envelope
-- trace context
-- status transitions
+- LearningRecord
+- MemoryProposal
+- SkillProposal
+- JarvisEvent
 
 Done when:
 
-- WorkSession status transitions reject invalid transitions
-- event envelopes require ids, sequence, timestamps, actor, trace context, and
-  hash fields
-- WorkSession remains the public primitive
-- runtime/internal Session remains adapter-internal
+- schemas serialize to stable JSON
+- required fields are explicit
+- status values are enumerated
+- references are typed
+- no schema requires implementation-private fields
 
-### Milestone 3: Local Runtime Foundation
+## Milestone 2: WorkSession Lifecycle
 
-Owner: Runtime
-
-Supports: Kernel, Policy And Safety, Developer Experience
+Owner: Protocol
 
 Output:
 
-- SQLite persistence
-- local filesystem workspace
-- `.jarvis` internal storage
-- SSE event stream
-- local runtime config loader
-- run leases and lock epochs
-- checkpoint store
-- request store
-- evidence store
+- WorkSession status transition table
+- event ordering rules
+- event hash-chain rules
+- objective recording rules
+- completion rules
+- failure and close rules
 
 Done when:
 
-- local runtime starts without Cloudflare credentials
-- WorkSession persists across process restart
-- pending requests survive restart
-- SSE stream replays missed events from `Last-Event-ID`
-- mutating runtime commits verify active WorkSession lock epoch
+- invalid transitions fail conformance tests
+- every WorkSession has HumanWorker, AgentWorker, Policy, and objective
+- events remain attributable to a Worker or service
 
-### Milestone 4: Policy And Request Control Plane
+## Milestone 3: Policy, Request, Review, Takeover
 
-Owner: Policy And Safety
-
-Supports: Kernel, Runtime, Developer Experience
+Owner: Safety
 
 Output:
 
-- autonomy levels
-- risk classes
-- capability grants
-- grant vector resolution
-- structured requests
-- one-use approval tokens
-- takeover lock epoch
-- external-send outbox contracts
-- credential broker contracts
-- tamper-evident policy events
+- policy decision shape
+- grant and denial shape
+- Request creation rules
+- Review decision rules
+- approval narrowing rules
+- takeover lock rules
+- reconciliation rules
 
 Done when:
 
-- uncovered action dimensions deny execution
-- conflicting grants deny and create a Request
-- stale approval tokens fail
-- takeover cancels, fences, or reconciles in-flight work
-- degraded audit integrity blocks high-risk modes
-- external send cannot bypass the outbox
+- policy-denied action creates Request
+- Request cannot resolve without Review
+- Review can approve, deny, narrow, correct, take over, or request revision
+- takeover rejects stale autonomous continuation
 
-### Milestone 5: Memory And Learning
+## Milestone 4: Contribution And Evidence
 
-Owner: Memory And Learning
-
-Supports: Kernel, Policy And Safety, Developer Experience
+Owner: Evidence
 
 Output:
 
-- memory records
-- memory scopes
-- lifecycle states
-- provenance
-- trust labels
-- memory write policy matrix
-- context manifest
-- memory selector
-- learning proposals after WorkSession runs
-
-v0.1 subset:
-
-- seed memory files
-- project memory scope
-- shared memory scope
-- context manifest
-- memory proposal records
-- manual confirmation through API/CLI test helper
+- Contribution record
+- EvidenceItem record
+- EvidenceManifest record
+- artifact reference shape
+- limitation shape
+- export profile
 
 Done when:
 
-- model-derived memory cannot confirm itself
-- untrusted tool output cannot become durable memory automatically
-- project memory cannot leak into another project
-- context manifests explain selected memories, skills, policy, and tool
-  inventory
-- learning pass proposes memory updates without mutating durable memory
+- human, agent, service, and shared contributions are distinguishable
+- EvidenceManifest references policy decisions, requests, reviews,
+  contributions, artifacts, and limitations
+- evidence is captured during work, not reconstructed after completion
 
-### Milestone 6: Skills, Tools, MCP, And Sandbox Contracts
+## Milestone 5: Governed Learning
 
-Owner: Skills And Tools
-
-Supports: Policy And Safety, Runtime, Developer Experience
+Owner: Learning
 
 Output:
 
-- skill manifest and bundle format
-- skill inventory
-- skill activation gates
-- policy-wrapped tool registry
-- MCP gateway contracts
-- MCP capability inventory hashing and quarantine
-- sandbox tool contract
-- tool output trust labels
-- tool failure records
-
-v0.1 subset:
-
-- local skill manifest loading
-- skill activation gates
-- one policy-wrapped sandbox command tool
-- MCP inventory capture and quarantine
-- no external MCP execution by default
+- LearningRecord
+- MemoryProposal
+- SkillProposal
+- provenance rules
+- review-state rules
+- scope rules
 
 Done when:
 
-- unreviewed skill updates stay inactive
-- raw tools cannot bypass policy wrappers
-- changed MCP capability inventory enters quarantine
-- MCP prompts/resources never become instruction authority
-- sandbox execution produces evidence and policy decisions
+- learning can be attributed to human, agent, or pair
+- memory changes require proposal and review state
+- skill changes require proposal and review state
+- unreviewed learning cannot become durable protocol memory
 
-### Milestone 7: Agent Loop And Golden Path
-
-Owner: Runtime
-
-Supports: Kernel, Policy And Safety, Memory And Learning, Skills And Tools,
-Developer Experience
-
-Output:
-
-- `createJarvisLocalRuntime`
-- `pairs.create`
-- `workSessions.start`
-- `workSessions.send`
-- `workSessions.events`
-- `requests.resolve`
-- `workSessions.complete`
-- CLI commands:
-  - `jarvis:dev`
-  - `jarvis:session`
-  - `jarvis:requests`
-  - `jarvis:approve`
-  - `jarvis:evidence`
-
-Done when:
-
-- a fresh scaffold runs the golden path API
-- CLI and TypeScript API operate on the same WorkSession contracts
-- default network-denied policy creates a structured Request
-- approval resumes the WorkSession
-- final run exports an EvidenceManifest
-
-### Milestone 8: v0.1 Alpha Hardening
+## Milestone 6: Conformance Suite
 
 Owner: Developer Experience
 
-Supports: all lanes
+Output:
+
+- golden-path conformance tests
+- failure-mode conformance tests
+- export conformance tests
+- integration checklist
+
+Done when a host can prove:
+
+- WorkSession is the source of truth
+- Policy gates autonomous action
+- blocked action creates Request
+- Review resolves Request
+- Takeover prevents stale continuation
+- Contributions are attributable
+- EvidenceManifest is portable
+- learning is governed
+
+## Milestone 7: Examples And Public Docs
+
+Owner: Developer Experience
 
 Output:
 
-- docs for install, concepts, local runtime, policy, memory, tools, and
-  troubleshooting
-- examples for research, coding-assistant, and local project assistant flows
-- release acceptance tests
-- API reference generated from public exports
-- migration notes for future runtime adapters
+- protocol README
+- glossary
+- protocol diagrams
+- JSON examples
+- host integration guide
+- evaluation-system integration guide
+- host/product integration note
+- interactive simulation
 
 Done when:
 
-- all v0.1 acceptance tests pass
-- scaffold installs from a clean machine
-- no Cloudflare credentials are required for local alpha
-- evidence export includes event-chain root, evidence item hashes,
-  request/review records, policy decisions, context manifest ref, artifact
-  refs, and limitations
+- a team can understand Jarvis without knowing any specific product
+- a product can implement Jarvis without inheriting execution assumptions
+- the public simulation matches the protocol definition
 
-## v0.2 Cloudflare Runtime Beta
+## v0.1 Acceptance
 
-Goal: make Cloudflare the first-class production runtime without moving Jarvis
-semantics into Cloudflare-specific code.
+v0.1 is accepted when:
+
+- protocol schemas are stable enough for implementation
+- conformance tests cover the golden path
+- no protocol contract names a cloud, database, sandbox, or deployment
+  platform
+- public docs describe Jarvis as protocol only
+- live simulation describes Jarvis as protocol only
+
+## v0.2 Evidence And Learning Beta
+
+Goal: strengthen the compounding loop.
 
 Output:
 
-- `@jarvis/runtime-cloudflare`
-- `JarvisHost` mapped to a HumanWorker + AgentWorker relationship
-- `JarvisWorkSessionActor` mapped to WorkSession or WorkSessionRun
-- Think integration for low-level session/message persistence, streaming,
-  model/tool loop mechanics, checkpoints, and recovery
-- Durable Objects/Agents actor mapping
-- Workspace integration
-- Sandbox/Container execution
-- R2 evidence/artifact storage
-- alarms/background work
-- service binding boundaries
+- richer contribution taxonomy
+- stronger evidence export profiles
+- limitation and uncertainty records
+- learning proposal review workflows
+- memory scope compatibility rules
+- skill proposal compatibility rules
 
 Done when:
 
-- Cloudflare adapter invokes Jarvis kernel services for context, policy, tools,
-  events, evidence, and learning
-- Cloudflare runtime passes the same WorkSession behavior tests as local runtime
-- kernel packages still import no Cloudflare types
-- runtime debug surfaces apply Jarvis redaction rules
+- evaluation systems can evaluate a task using Jarvis evidence records
+- host products can show review, learning, and contribution history without
+  changing protocol semantics
+- external products can export compatible EvidenceManifest records
 
-## v0.3 Connector And Skill Ecosystem
+## v0.3 Ecosystem Conformance
 
-Goal: make Jarvis extensible without weakening policy.
+Goal: make Jarvis implementable outside the original host products.
 
 Output:
 
-- skill package publishing format
-- skill trust and review workflow
-- MCP server registration workflow
-- connector examples
-- tool inventory diff UI/API hooks
-- memory import/export contracts
-- evidence export profiles
-- runtime adapter authoring guide
+- host conformance suite
+- compatibility badges
+- version negotiation rules
+- migration examples
+- public implementation checklist
 
 Done when:
 
-- external skills install but remain inactive until reviewed
-- changed skills and MCP capabilities enter quarantine
-- connector examples run through the same policy wrappers
-- adapter authors can implement the required ports without reading runtime
-  internals
+- two independent host shapes can pass the same protocol conformance tests
+- protocol records remain portable across products
+- implementation-private fields stay outside Jarvis exports
 
 ## v1.0 Stable Protocol
 
-Goal: stabilize the public contracts.
+Goal: freeze the protocol surface.
 
 Output:
 
-- stable package APIs
-- stable WorkSession event schema
-- stable memory schema
-- stable policy/grant/request schema
-- stable evidence manifest schema
-- stable runtime adapter contract
-- versioned migration path
-- security review
-- complete documentation set
+- stable protocol schemas
+- stable event envelope
+- stable EvidenceManifest export format
+- stable conformance suite
+- compatibility policy
+- migration policy
 
 Done when:
 
-- v0.1 and v0.2 apps migrate without data loss
-- runtime adapter contract is versioned
-- evidence and policy schemas are versioned
-- compatibility tests cover local and Cloudflare runtimes
-- public docs define every stable primitive
-
-## Team Lanes
-
-### Kernel
-
-Owns:
-
-- `@jarvis/core`
-- event contracts
-- WorkSession lifecycle
-- domain schemas
-- status transitions
-
-### Policy And Safety
-
-Owns:
-
-- `@jarvis/policy`
-- grant resolver
-- requests and approvals
-- takeover lock epoch
-- outbox
-- credential broker
-- audit events
-
-### Memory And Learning
-
-Owns:
-
-- `@jarvis/memory`
-- memory schema
-- memory lifecycle
-- context manifest
-- learning proposals
-- correction pipeline
-
-### Skills And Tools
-
-Owns:
-
-- `@jarvis/skills`
-- `@jarvis/tools`
-- MCP gateway
-- sandbox tool contract
-- tool registry
-- skill bundle format
-
-### Runtime
-
-Owns:
-
-- `@jarvis/runtime-local`
-- `@jarvis/runtime-cloudflare`
-- runtime ports
-- persistence
-- streaming
-- sandbox execution
-- recovery
-
-### Developer Experience
-
-Owns:
-
-- `create-jarvis`
-- CLI
-- examples
-- docs
-- acceptance tests
-- release packaging
-
-## Milestone Ownership Matrix
-
-```txt
-M0 Architecture Lock
-  owner: Architecture
-  supports: all lanes
-  decision owner: architecture lead
-
-M1 Repository And Package Scaffold
-  owner: Developer Experience
-  supports: Kernel, Runtime
-  decision owner: DX lead
-
-M2 Core Domain Kernel
-  owner: Kernel
-  supports: Policy And Safety, Runtime, Developer Experience
-  decision owner: kernel lead
-
-M3 Local Runtime Foundation
-  owner: Runtime
-  supports: Kernel, Policy And Safety, Developer Experience
-  decision owner: runtime lead
-
-M4 Policy And Request Control Plane
-  owner: Policy And Safety
-  supports: Kernel, Runtime, Developer Experience
-  decision owner: safety lead
-
-M5 Memory And Learning
-  owner: Memory And Learning
-  supports: Kernel, Policy And Safety, Developer Experience
-  decision owner: memory lead
-
-M6 Skills, Tools, MCP, And Sandbox Contracts
-  owner: Skills And Tools
-  supports: Policy And Safety, Runtime, Developer Experience
-  decision owner: tools lead
-
-M7 Agent Loop And Golden Path
-  owner: Runtime
-  supports: all implementation lanes
-  decision owner: runtime lead
-
-M8 v0.1 Alpha Hardening
-  owner: Developer Experience
-  supports: all lanes
-  decision owner: release lead
-```
-
-## Suggested Execution Order
-
-```txt
-Week 0
-  Milestone 0: architecture lock
-  Gate A prerequisite: docs, package contracts, local runtime MVP, acceptance
-  tests accepted
-
-Week 1
-  Milestone 1: repo/package scaffold
-  Milestone 2 starts: core domain records and event envelope
-  Continuous DX: create-jarvis skeleton and first acceptance fixture
-
-Week 2
-  Milestone 2 complete
-  Milestone 3 starts: SQLite, workspace, event store, SSE
-  Continuous DX: scaffold install test runs in CI
-
-Week 3
-  Milestone 3 complete
-  Milestone 4 starts: policy, grants, requests, approvals
-  Continuous DX: restart recovery fixture added
-
-Week 4
-  Milestone 4 complete
-  Milestone 5 starts: memory, context manifest, learning proposals
-  Continuous DX: request/approval fixture added
-
-Week 5
-  Milestone 5 complete
-  Milestone 6 starts: skills, tools, MCP gateway, sandbox contracts
-  Continuous DX: evidence manifest fixture added
-
-Week 6
-  Milestone 6 complete
-  Milestone 7 starts: agent loop, CLI, golden path
-  Continuous DX: CLI golden path fixture added
-
-Week 7
-  Milestone 7 complete
-  Milestone 8 starts: hardening, docs, examples, acceptance tests
-  Continuous DX: clean-machine scaffold test added
-
-Week 8
-  v0.1 alpha cut
-  Cloudflare runtime beta starts
-```
-
-This schedule assumes focused execution by a small team. If one engineer owns
-the full implementation, v0.1 becomes a 10-12 week target. If three engineers
-work in parallel across kernel/policy, runtime, and developer experience, v0.1
-is an 8 week target.
-
-## Decision Gates
-
-### Gate A: Start Implementation
-
-Owner: Architecture
-
-Required:
-
-- architecture docs accepted
-- package contracts accepted
-- local runtime MVP accepted
-- acceptance tests accepted
-- Milestone 0 completed
-
-### Gate B: v0.1 Alpha
+- v1.0 records can be read by future compatible implementations
+- product implementations do not need to adopt any Jarvis-owned execution stack
+- Jarvis remains protocol-only
 
-Owner: Developer Experience
+## Risk Register
 
-Required:
+### Execution Creep
 
-```txt
-npm create jarvis@latest my-jarvis
-cd my-jarvis
-npm install
-npm run test
-```
+Risk: Jarvis starts defining how agents run.
 
-Pass artifacts:
+Control: every execution, cloud, sandbox, database, queue, and deployment
+choice belongs to products and hosts.
 
-- scaffold installs without Cloudflare credentials
-- `jarvis.config.ts` validates
-- `.jarvis/local.db` is created during test setup
-- package boundary tests pass
+### Product Creep
 
-```txt
-npm run jarvis:dev
-```
+Risk: Jarvis becomes a product workspace.
 
-Pass artifacts:
+Control: products implement Jarvis; Jarvis does not inherit product UI,
+identity, operations, or enterprise controls.
 
-- local runtime URL is printed
-- active policy profile is printed
-- SSE stream is available
-- no provider secret is required for runtime boot
+### Task-System Creep
 
-```txt
-npm run jarvis:session -- --objective "Inspect the scaffold and create a plan"
-```
+Risk: Jarvis becomes a task or evaluation system.
 
-Pass artifacts:
+Control: task systems own tasks, rubrics, evaluation, and settlement. Jarvis
+owns the collaboration record that can be evaluated.
 
-- HumanWorker exists
-- AgentWorker exists
-- WorkSession exists
-- runtime/internal Session ref exists below WorkSession
-- `work_session_started` event exists
-- context manifest exists
+### Weak Evidence
 
-```txt
-npm run jarvis:session -- --objective "Fetch example.com and summarize it"
-npm run jarvis:requests
-npm run jarvis:approve -- --request <id> --scope "network_fetch:example.com"
-```
+Risk: Evidence is reconstructed after work and loses trust.
 
-Pass artifacts:
+Control: EvidenceManifest entries are captured during the WorkSession.
 
-- default network-denied policy creates a structured Request
-- Request includes risk class, host, expected result, expiry, canonical action
-  hash, and narrower alternative
-- approval uses a one-use token
-- stale approval replay fails
-- WorkSession resumes
-- policy decision records selected grant ids by dimension
+### Silent Learning
 
-```txt
-npm run jarvis:evidence -- --work-session <id>
-```
+Risk: agent memory mutates without human review.
 
-Pass artifacts:
-
-- EvidenceManifest JSON exports
-- manifest includes event-chain root, evidence item hashes, request/review
-  records, policy decisions, context manifest ref, artifact refs, and known
-  limitations
-- redacted export is derived and raw immutable evidence remains unchanged
-
-Restart fixture:
-
-```txt
-npm run jarvis:dev
-npm run jarvis:session -- --objective "Trigger a blocked external send"
-stop runtime
-npm run jarvis:dev
-npm run jarvis:requests
-```
-
-Pass artifacts:
-
-- pending request survives restart
-- WorkSession resumes from event log and checkpoint
-- runtime/internal Session remains adapter-internal
-- no outbox commit happens before approval
-
-### Gate C: v0.2 Cloudflare Beta
-
-Owner: Runtime
-
-Required:
-
-- Cloudflare runtime passes local runtime behavior tests
-- Cloudflare adapter does not own Jarvis semantics
-- sandbox, storage, streaming, recovery, and evidence work in production
-
-### Gate D: v1.0
-
-Owner: Release
-
-Required:
-
-- public contracts versioned
-- security model reviewed
-- migration path documented
-- runtime adapter contract stable
-- local and Cloudflare compatibility tests pass
-
-## Risks And Controls
-
-### Runtime Scope Creep
-
-Risk: implementation moves Jarvis semantics into local or Cloudflare runtime.
-
-Control: kernel packages own semantics. Runtime packages implement ports.
-
-### Policy Bypass
-
-Risk: raw tools, sandbox commands, MCP capabilities, or external sends bypass
-policy.
-
-Control: every tool is policy-wrapped. External effects pass through outbox.
-
-### Memory Pollution
-
-Risk: model-derived or tool-derived content becomes durable memory without
-review.
-
-Control: memory write policy matrix and lifecycle gates.
-
-### Weak Local Runtime
-
-Risk: local runtime becomes a demo instead of a real harness.
-
-Control: local runtime must pass persistence, restart, request, evidence, and
-policy tests.
-
-### Cloudflare Lock-In
-
-Risk: Cloudflare adapter shapes the public Jarvis API.
-
-Control: kernel packages import no Cloudflare types. Cloudflare implements
-runtime ports only.
+Control: learning becomes MemoryProposal or SkillProposal until reviewed.
 
 ## Immediate Next Actions
 
-1. Complete Gate A with the team.
-2. Create the Jarvis implementation repo.
-3. Copy this design package into `/docs/design` or keep it as the planning
-   source of truth.
-4. Implement Milestone 1 package scaffold.
-5. Add package boundary tests before writing runtime code.
-6. Implement `@jarvis/core` WorkSession, event, request, review, contribution,
-   and evidence contracts.
-7. Implement the local runtime only after the kernel contracts compile.
+1. Keep the repository protocol-only.
+2. Keep execution and cloud ownership outside the protocol.
+3. Freeze core protocol terms.
+4. Draft JSON examples for each protocol contract.
+5. Define conformance tests for the golden path.
+6. Update the live simulation to show host/execution as outside Jarvis.
