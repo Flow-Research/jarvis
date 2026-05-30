@@ -65,6 +65,7 @@ Those are implementation concerns for products and hosts.
 
 ```txt
 Worker
+Actor
 HumanWorker
 AgentWorker
 WorkSession
@@ -130,6 +131,7 @@ The MVP conformance suite checks:
 - EvidenceManifest references policy decisions, requests, reviews,
   contributions, artifacts, and limitations.
 - MemoryProposal and SkillProposal require provenance and review state.
+- LearningRecord can describe human learning, agent learning, or pair learning.
 - exported protocol records do not require product-private infrastructure
   fields.
 

@@ -15,6 +15,8 @@ Jarvis architecture is accepted only when these criteria hold.
 - HumanWorker is an active contributor, reviewer, teacher, and accountable
   actor.
 - AgentWorker is an autonomous but policy-bounded contributor.
+- HumanWorker and AgentWorker are both actors in the protocol.
+- HumanWorker and AgentWorker both learn from completed WorkSessions.
 - HumanWorker can approve, deny, narrow, correct, request revision, or take
   over.
 - Corrections become structured learning signals.

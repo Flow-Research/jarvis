@@ -1,15 +1,14 @@
 # Architecture
 
-Jarvis is the protocol for policy-governed collaboration between human workers
-and agent workers.
+Jarvis is the protocol for policy-governed collaboration and shared learning
+between human workers and agent workers.
 
 It defines how a human and an agent become a working team: shared goals,
 policy, requests, review, takeover, contribution records, evidence, memory,
 learning, and skills.
 
-Jarvis is not an agent protocol. The architectural primitive is work. A
-WorkSession exists first, and HumanWorker, AgentWorker, services, and tools
-participate in that work.
+The architectural center is the HumanWorker + AgentWorker learning loop.
+WorkSession is the durable record of that loop.
 
 ## Layer Model
 
@@ -18,7 +17,7 @@ Products and hosts
   product workspaces, task systems, CLI apps, chat apps, custom products
 
 Jarvis protocol
-  workers, WorkSessions, policies, requests, reviews, takeover,
+  actors, workers, WorkSessions, policies, requests, reviews, takeover,
   contributions, evidence, learning records, memory proposals,
   skill proposals
 
@@ -35,9 +34,22 @@ reviewable, attributable, and portable.
 
 ## Core Protocol Contracts
 
+### Actor
+
+An entity that can create protocol events or receive attribution.
+
+```txt
+Actor
+  id
+  worker_id
+  type: human | agent | service
+  event_authority
+  contribution_scope
+```
+
 ### Worker
 
-A participant in work.
+A participant in a WorkSession.
 
 ```txt
 Worker
@@ -65,7 +77,7 @@ HumanWorker
 ```
 
 The human supplies goals, judgment, taste, domain context, world context,
-review, correction, approval, and accountability.
+review, correction, approval, accountability, and learning.
 
 ### AgentWorker
 
@@ -82,7 +94,8 @@ AgentWorker
 ```
 
 The agent supplies speed, execution, research, tool use, memory retrieval,
-drafting, automation, evidence collection, and proposed improvements.
+drafting, automation, evidence collection, adaptation, and proposed
+improvements.
 
 ### WorkSession
 
@@ -224,7 +237,7 @@ Evidence is captured during work, not reconstructed after work.
 
 ### LearningRecord
 
-What the team learned.
+What the HumanWorker, AgentWorker, or human-agent pair learned.
 
 ```txt
 LearningRecord
@@ -239,8 +252,8 @@ LearningRecord
   scope
 ```
 
-Jarvis tracks what the human learned, what the agent learned, what the pair
-learned, and what should improve next time.
+Jarvis tracks what the human learned, what the agent learned, what the
+human-agent pair learned, and what should improve next time.
 
 ### MemoryProposal
 
@@ -295,10 +308,12 @@ Skills turn repeated work into reusable process.
 8. HumanWorker reviews, approves, denies, narrows, corrects, or takes over.
 9. AgentWorker resumes when allowed.
 10. Jarvis records events, contributions, and evidence.
-11. Jarvis proposes memory, skill, and learning updates.
+11. Jarvis proposes memory, skill, and learning updates for the human, agent,
+    and pair.
 12. HumanWorker confirms or rejects governed learning.
 13. EvidenceManifest exports.
-14. The next WorkSession starts with confirmed improvements.
+14. The HumanWorker, AgentWorker, and next WorkSession start with confirmed
+    improvements.
 ```
 
 ## Ownership Boundary
@@ -306,6 +321,7 @@ Skills turn repeated work into reusable process.
 Jarvis owns:
 
 - protocol contracts
+- actor semantics
 - worker semantics
 - WorkSession lifecycle
 - policy-governed autonomy

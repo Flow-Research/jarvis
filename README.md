@@ -1,10 +1,11 @@
 # Jarvis Human-Agent Collaboration Protocol
 
-Jarvis is the human-agent collaboration protocol.
+Jarvis is the human-agent collaboration and learning-loop protocol.
 
 It defines how human workers and agent workers coordinate under shared goals
 and human-defined policy, so they can complete work together, review each
-other, record contributions, capture evidence, and learn across WorkSessions.
+other, record contributions, capture evidence, and both improve across
+WorkSessions.
 
 Jarvis is not a product, personal agent, chatbot, model provider, cloud stack,
 sandbox, task marketplace, enterprise workspace, or capability harness.
@@ -21,10 +22,10 @@ The page is served directly by GitHub Pages from this repository.
 
 ## One-Line Definition
 
-Jarvis is the open protocol that lets human workers and agent workers
-collaborate under shared goals and policy, producing durable WorkSessions,
-reviewable Requests, attributable Contributions, governed Learning, and
-portable Evidence.
+Jarvis is the open protocol that lets HumanWorkers and AgentWorkers collaborate
+under shared goals and policy, producing durable WorkSessions, reviewable
+Requests, attributable Contributions, governed shared Learning, and portable
+Evidence.
 
 ## Plain English Definition
 
@@ -43,9 +44,7 @@ system, execution environment, or external service can plug in.
 ## Thesis
 
 The winning unit is not the human alone and not the agent alone. The winning
-unit is the human-agent team.
-
-Jarvis is not an agent protocol. Jarvis is a work protocol.
+unit is the human-agent team that learns together.
 
 The primitive is not:
 
@@ -53,18 +52,19 @@ The primitive is not:
 User -> Agent -> Answer
 ```
 
-The primitive is:
+The loop is:
 
 ```txt
-WorkSession -> HumanWorker -> AgentWorker -> Review -> Evidence -> Learning
+HumanWorker + AgentWorker -> WorkSession -> Review -> Evidence -> Shared Learning
 ```
 
-Work exists first. Humans, agents, services, and tools participate in the work.
+The human gets better. The agent gets better. The relationship gets better.
+WorkSession is the durable record of that collaboration and learning loop.
 
 Jarvis formalizes the loop where:
 
 ```txt
-human judgment + agent execution + policy + review + evidence + learning
+human judgment + agent execution + policy + review + evidence + shared learning
 ```
 
 compound across real work.
@@ -81,10 +81,10 @@ compound across real work.
 7. Contributions are recorded.
 8. Evidence is captured.
 9. Learning is proposed.
-10. Confirmed learning improves the next WorkSession.
+10. Confirmed learning improves both workers and the next WorkSession.
 ```
 
-## Central Object
+## Central Record
 
 `WorkSession` is the center of Jarvis.
 
@@ -114,6 +114,9 @@ It contains:
 Jarvis does not model `User + Assistant`.
 
 Jarvis models `HumanWorker + AgentWorker`.
+
+Both are workers. Both are actors. Both contribute to the WorkSession. Both can
+learn from the loop.
 
 ### HumanWorker
 
@@ -154,6 +157,13 @@ Worker
   capabilities
   authority
   accountability_scope
+
+Actor
+  id
+  worker_id
+  type: human | agent | service
+  event_authority
+  contribution_scope
 
 HumanWorker
   worker_id
@@ -298,7 +308,8 @@ SkillProposal
 8. Contributions are attributable.
 9. Human judgment remains central.
 10. Execution may be delegated; accountability remains attributable.
-11. Every session should improve the next session.
+11. HumanWorker and AgentWorker both learn.
+12. Every session should improve the next session.
 
 ## Boundaries
 

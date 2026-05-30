@@ -37,6 +37,7 @@ SDKs, database clients, cloud SDKs, sandbox SDKs, or UI frameworks.
 Owns the core protocol contracts:
 
 - ids
+- Actor
 - Worker
 - HumanWorker
 - AgentWorker
@@ -59,6 +60,7 @@ Exports:
 
 ```txt
 JarvisId
+Actor
 Worker
 HumanWorker
 AgentWorker

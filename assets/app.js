@@ -181,9 +181,9 @@ const steps = [
     activeNodes: ["human", "kernel", "agent"],
     activeBeams: ["beam-human", "beam-agent"],
     summary:
-      "The next WorkSession starts smarter because confirmed memory, reviewed skills, and evidence move forward with the HumanWorker and AgentWorker.",
+      "The next WorkSession starts smarter because the HumanWorker, AgentWorker, and their shared working loop improve from confirmed learning.",
     events: [
-      "HumanWorker confirms useful learning.",
+      "HumanWorker confirms what the human learned, what the agent learned, and what the pair should carry forward.",
       "Skill update is versioned.",
       "Next WorkSession inherits confirmed memory only."
     ],

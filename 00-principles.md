@@ -2,17 +2,17 @@
 
 ## Official Definition
 
-Jarvis is the human-agent collaboration protocol. It defines how human workers
-and agent workers coordinate under shared goals and human-defined policy, so
-they can complete work together, review each other, record contributions,
-capture evidence, and learn across WorkSessions.
+Jarvis is the human-agent collaboration and learning-loop protocol. It defines
+how human workers and agent workers coordinate under shared goals and
+human-defined policy, so they can complete work together, review each other,
+record contributions, capture evidence, and both improve across WorkSessions.
 
 ## One-Line Definition
 
-Jarvis is the open protocol that lets human workers and agent workers
-collaborate under shared goals and policy, producing durable WorkSessions,
-reviewable Requests, attributable Contributions, governed Learning, and
-portable Evidence.
+Jarvis is the open protocol that lets HumanWorkers and AgentWorkers collaborate
+under shared goals and policy, producing durable WorkSessions, reviewable
+Requests, attributable Contributions, governed shared Learning, and portable
+Evidence.
 
 ## Simple Definition
 
@@ -34,6 +34,9 @@ learning. Jarvis models the whole loop.
 Jarvis does not model `User + Assistant`.
 
 Jarvis models `HumanWorker + AgentWorker`.
+
+Both are workers. Both are actors. Both contribute to the WorkSession. Both can
+learn from the loop.
 
 The human is:
 
@@ -64,15 +67,13 @@ to improve over time.
 ## The Winning Unit Is The Team
 
 The winning unit is not the human alone and not the agent alone. The winning
-unit is the human-agent team.
+unit is the human-agent team that learns together.
 
-Jarvis exists to formalize the loop where the human improves the agent, the
-agent improves the human's leverage, and completed WorkSessions improve the
+Jarvis exists to formalize the loop where the human improves, the agent
+improves, the relationship improves, and completed WorkSessions improve the
 next WorkSession.
 
-## Jarvis Is About Work
-
-Jarvis is not an agent protocol.
+## Jarvis Is About The Shared Learning Loop
 
 The industry usually starts with agent-centric questions:
 
@@ -81,16 +82,18 @@ The industry usually starts with agent-centric questions:
 - how do agents use tools?
 - how do agents execute tasks?
 
-Jarvis starts from a different primitive:
+Jarvis starts from a different loop:
 
 ```txt
-Work happens.
-Humans participate.
-Agents participate.
-Systems participate.
+HumanWorker and AgentWorker collaborate.
+HumanWorker reviews, corrects, approves, or takes over.
+AgentWorker executes, proposes, adapts, and records evidence.
+Both workers learn.
+The next WorkSession improves.
 ```
 
-The WorkSession is the center because it is the protocol record for work.
+The WorkSession is central because it is the protocol record of that
+collaboration and learning loop.
 
 ## WorkSession Is The Source Of Truth
 
@@ -187,7 +190,7 @@ Learning must be proposed, reviewed, scoped, and accepted. Jarvis asks:
 
 - what did the human learn?
 - what did the agent learn?
-- what did the pair learn?
+- what did the human-agent pair learn?
 - what should improve next time?
 
 ## Skills Are Procedural Memory
@@ -226,7 +229,8 @@ collaboration protocol those systems implement.
 8. Contributions are attributable.
 9. Human judgment remains central.
 10. Execution may be delegated; accountability remains attributable.
-11. Every session should improve the next session.
+11. HumanWorker and AgentWorker both learn.
+12. Every session should improve the next session.
 
 ## Non-Goals
 

@@ -10,6 +10,7 @@ tests, examples, and documentation. It does not create an execution stack.
 Jarvis owns:
 
 - Worker
+- Actor
 - HumanWorker
 - AgentWorker
 - WorkSession
@@ -79,7 +80,7 @@ HumanWorker reviews or takes over
 AgentWorker resumes when allowed
 Contribution records who did what
 EvidenceManifest captures proof during work
-LearningRecord captures what improved
+LearningRecord captures what the human, agent, and pair learned
 MemoryProposal and SkillProposal remain governed
 ```
 
@@ -141,6 +142,7 @@ Owner: Protocol
 Output:
 
 - Worker
+- Actor
 - HumanWorker
 - AgentWorker
 - WorkSession
@@ -239,6 +241,7 @@ Output:
 Done when:
 
 - learning can be attributed to human, agent, or pair
+- HumanWorker and AgentWorker can both improve from the same WorkSession
 - memory changes require proposal and review state
 - skill changes require proposal and review state
 - unreviewed learning cannot become durable protocol memory
