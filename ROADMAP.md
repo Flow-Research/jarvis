@@ -1,6 +1,7 @@
 # Jarvis Roadmap
 
-Jarvis is the open-source human-agent collaboration protocol.
+Jarvis is the open-source human-agent collaboration and learning-loop
+compatibility protocol.
 
 The roadmap turns the protocol into stable contracts, schemas, conformance
 tests, examples, and documentation. It does not create an execution stack.
@@ -26,6 +27,7 @@ Jarvis owns:
 - protocol event envelope
 - protocol export format
 - conformance tests
+- interoperability rules
 
 Jarvis does not own:
 
@@ -69,6 +71,9 @@ v1.0 Stable Protocol
 
 Goal: prove the smallest complete human-agent collaboration loop.
 
+The alpha proves that the loop is portable, not tied to a single product,
+agent, host, or execution stack.
+
 The protocol must express:
 
 ```txt
@@ -99,6 +104,7 @@ MemoryProposal and SkillProposal remain governed
 - SkillProposal shape
 - portable export profile
 - conformance tests for the golden path
+- interoperability checklist
 - one static interactive simulation
 - one host integration guide
 
@@ -337,6 +343,8 @@ Done when:
 - two independent host shapes can pass the same protocol conformance tests
 - protocol records remain portable across products
 - implementation-private fields stay outside Jarvis exports
+- compatible hosts can exchange WorkSession evidence without sharing
+  infrastructure
 
 ## v1.0 Stable Protocol
 

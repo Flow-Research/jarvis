@@ -51,12 +51,12 @@ Those are implementation concerns for products and hosts.
 5. Record objective.
 6. Record AgentWorker action inside policy.
 7. Record blocked action outside policy.
-8. Create Request.
+8. Create Request from AgentWorker.
 9. Record HumanWorker Review decision.
 10. Resume work after approval or correction.
 11. Record Contribution entries.
 12. Capture EvidenceManifest entries.
-13. Create LearningRecord.
+13. Create LearningRecord for human, agent, or pair learning.
 14. Create MemoryProposal or SkillProposal.
 15. Export portable protocol record.
 ```

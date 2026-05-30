@@ -1,4 +1,4 @@
-# Jarvis Human-Agent Collaboration Protocol
+# Jarvis Human-Agent Collaboration And Learning-Loop Protocol
 
 Jarvis is the human-agent collaboration and learning-loop protocol.
 
@@ -7,10 +7,13 @@ and human-defined policy, so they can complete work together, review each
 other, record contributions, capture evidence, and both improve across
 WorkSessions.
 
-Jarvis is not a product, personal agent, chatbot, model provider, cloud stack,
-sandbox, task marketplace, enterprise workspace, or capability harness.
-Products, agents, execution environments, and external systems integrate with
-Jarvis by implementing its protocol contracts.
+Jarvis stays focused on the collaboration and learning loop. Products, agents,
+execution environments, and external systems integrate with Jarvis by
+implementing its protocol contracts.
+
+Jarvis is a compatibility layer for any HumanWorker, AgentWorker, product,
+host, or external system that needs to participate in governed human-agent
+collaboration.
 
 ## Interactive Simulation
 
@@ -46,6 +49,11 @@ system, execution environment, or external service can plug in.
 The winning unit is not the human alone and not the agent alone. The winning
 unit is the human-agent team that learns together.
 
+The shift is from isolated agent applications to compatible human-agent
+collaboration. The human does not outsource judgment, and the agent does not
+remain a passive tool. They form a working pair that gets better through
+repeated WorkSessions.
+
 The primitive is not:
 
 ```txt
@@ -68,6 +76,11 @@ human judgment + agent execution + policy + review + evidence + shared learning
 ```
 
 compound across real work.
+
+The protocol makes this loop portable: different agents, products, hosts, and
+task systems can exchange the same WorkSession, Request, Review, Contribution,
+EvidenceManifest, and LearningRecord concepts without sharing the same
+infrastructure.
 
 ## Core Loop
 
@@ -265,7 +278,7 @@ LearningRecord
   id
   work_session_id
   actor_id
-  actor_type: human | agent | pair
+  subject_type: human | agent | pair
   lesson_type
   source_event_refs
   proposed_change
@@ -298,24 +311,25 @@ SkillProposal
 
 ## Protocol Laws
 
-1. Jarvis is not a product.
-2. Jarvis is not a personal agent.
+1. Jarvis defines human-agent collaboration and shared learning.
+2. WorkSession is the source of truth.
 3. Jarvis does not prescribe infrastructure.
-4. WorkSession is the source of truth.
-5. Policy governs autonomy.
-6. Learning is governed.
-7. Evidence is captured during work.
-8. Contributions are attributable.
-9. Human judgment remains central.
-10. Execution may be delegated; accountability remains attributable.
-11. HumanWorker and AgentWorker both learn.
-12. Every session should improve the next session.
+4. Policy governs autonomy.
+5. Learning is governed.
+6. Evidence is captured during work.
+7. Contributions are attributable.
+8. Human judgment remains central.
+9. Execution may be delegated; accountability remains attributable.
+10. HumanWorker and AgentWorker both learn.
+11. Every session should improve the next session.
 
 ## Boundaries
 
 Jarvis owns:
 
-- collaboration protocol semantics
+- collaboration and learning-loop protocol semantics
+- interoperability contracts
+- conformance rules
 - WorkSession lifecycle
 - policy-governed autonomy
 - request, review, and takeover semantics
@@ -323,7 +337,7 @@ Jarvis owns:
 - evidence manifests
 - governed memory and learning proposals
 - skill proposal semantics
-- implementation boundary contracts
+- integration boundary contracts
 
 Jarvis does not own:
 
@@ -344,11 +358,11 @@ Jarvis does not own:
 3. Start WorkSession.
 4. Attach Policy.
 5. Send objective.
-6. Agent acts inside policy.
-7. Agent hits blocked action.
-8. Agent creates Request.
-9. Human approves, denies, narrows, answers, or takes over.
-10. Agent resumes.
+6. AgentWorker acts inside policy.
+7. AgentWorker hits blocked action.
+8. AgentWorker creates Request.
+9. HumanWorker approves, denies, narrows, answers, or takes over.
+10. AgentWorker resumes.
 11. Jarvis records Contribution.
 12. Jarvis captures Evidence.
 13. Jarvis proposes Learning.
@@ -370,8 +384,8 @@ If v0 proves this loop, Jarvis is real.
   capability grants, requests, inbox, and takeover.
 - [04-work-sessions.md](./04-work-sessions.md) - collaboration records,
   events, reviews, evidence, and learning loops.
-- [05-skills-tools.md](./05-skills-tools.md) - skills, tools, MCP, sandbox
-  policy, and tool wrapping.
+- [05-skills-tools.md](./05-skills-tools.md) - skills, tools, MCP,
+  execution-policy semantics, and tool governance.
 - [06-integration-boundaries.md](./06-integration-boundaries.md) - product,
   host, and external system boundaries.
 - [07-protocol-decisions.md](./07-protocol-decisions.md) - fixed protocol
@@ -381,5 +395,5 @@ If v0 proves this loop, Jarvis is real.
 - [09-host-integration.md](./09-host-integration.md) - how products and hosts
   implement Jarvis without inheriting infrastructure assumptions.
 - [10-protocol-mvp.md](./10-protocol-mvp.md) - the smallest protocol proof.
-- [ROADMAP.md](./ROADMAP.md) - release roadmap, milestones, team workstreams,
-  decision gates, risks, and immediate next actions.
+- [ROADMAP.md](./ROADMAP.md) - release roadmap, milestones, decision gates,
+  risks, and immediate next actions.

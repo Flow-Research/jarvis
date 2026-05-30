@@ -30,11 +30,11 @@ WorkSession
   id
   title
   objective
-  human_agent_pair_id
-  human actor
-  agent actor
-  interface source
-  run refs
+  human_worker_id
+  agent_worker_id
+  actor refs
+  host source
+  host execution refs when present
   autonomy level
   active policy
   active context
@@ -45,7 +45,7 @@ WorkSession
   contributions
   requests
   reviews
-  evidence bundle
+  evidence manifest
   outcome
 ```
 
@@ -133,12 +133,12 @@ Review
 
 Reviews are teaching moments. They feed memory and skill proposals.
 
-## Evidence Bundle
+## Evidence Manifest
 
 Evidence is gathered during work:
 
 ```txt
-EvidenceBundle
+EvidenceManifest
   source refs
   command transcripts
   tool outputs
@@ -181,7 +181,6 @@ Evidence is exportable as a manifest:
 ```txt
 EvidenceManifest
   work_session_id
-  run ids
   event-chain root
   artifact refs
   artifact hashes

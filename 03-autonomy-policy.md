@@ -56,7 +56,7 @@ Examples:
 
 - read local project files
 - write files under a workspace path
-- run shell commands in sandbox
+- run host-provided execution tools under policy
 - access selected public hosts
 - call a read-only MCP tool
 - create drafts but not send them
@@ -100,13 +100,13 @@ network_fetch
   contact external hosts without sending private data intentionally
 
 data_export
-  move private/session/workspace data outside the sandbox or local harness
+  move private WorkSession or workspace data outside the approved boundary
 
 execute
   run code or commands
 
 send_external
-  send data or messages outside the local harness
+  send data or messages outside the approved boundary
 
 credentialed
   use secrets, tokens, accounts, or delegated identity
@@ -352,9 +352,9 @@ audience-bound, operation-specific, short-lived, no-readback, and paired with
 network restrictions. Jarvis assumes stdout and stderr can leak anything visible
 to the command. General env-var secret injection is not a Jarvis default.
 
-## Sandbox Policy
+## Execution Environment Policy
 
-Sandbox execution is autonomous inside predefined limits:
+When a host provides an execution environment, Jarvis policy defines the limits:
 
 - filesystem scope
 - network mode
@@ -369,8 +369,8 @@ If the agent needs a blocked host, secret, package, or external action, it asks.
 
 Default sandbox posture:
 
-- default sandbox lifecycle is ephemeral per WorkSession run unless a workspace
-  persistence grant exists
+- execution environment lifecycle is ephemeral per WorkSession unless a
+  workspace persistence grant exists
 - no host filesystem access
 - workspace-scoped mounts
 - source files read-only unless write grant exists
@@ -380,7 +380,7 @@ Default sandbox posture:
 - DNS/host allowlists are grant-scoped and expire
 - package installs quarantined and recorded
 - artifact export goes through outbox/export review unless pre-granted
-- risky runs tear down automatically after evidence capture
+- risky execution tears down automatically after evidence capture
 
 ## Failure Modes
 
@@ -439,13 +439,13 @@ research_only
   public fetches through approved tools, no private data export
 
 local_dev_safe
-  read project, write scratch/work dirs, run sandbox commands, no external send
+  read project, write scratch/work dirs, run approved commands, no external send
 
 workspace_write
   modify workspace files with review for broad/destructive changes
 
 sandbox_autonomous
-  run commands and write artifacts inside a bounded sandbox and network policy
+  run commands and write artifacts inside a bounded execution environment
 ```
 
 Developers start with presets and tighten or extend them.

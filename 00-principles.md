@@ -21,6 +21,10 @@ Jarvis is how humans and agents work together.
 The human does not just prompt. The agent does not just answer. Both participate
 in the work.
 
+Jarvis is a compatibility protocol, not one user's workflow. Any product,
+host, human worker, agent worker, or external system can implement the
+contracts and participate in the same collaboration loop.
+
 ## Design From Collaboration, Not Chat
 
 Chat is only one interface. Jarvis is the protocol underneath human-agent work.
@@ -72,6 +76,9 @@ unit is the human-agent team that learns together.
 Jarvis exists to formalize the loop where the human improves, the agent
 improves, the relationship improves, and completed WorkSessions improve the
 next WorkSession.
+
+The protocol makes the loop portable across agents, products, hosts, and task
+systems.
 
 ## Jarvis Is About The Shared Learning Loop
 
@@ -215,14 +222,14 @@ database, queue, deployment platform, or execution stack.
 
 Products decide how to run agents, where to store data, which sandbox to use,
 which model to call, and which infrastructure to deploy on. Jarvis defines the
-collaboration protocol those systems implement.
+collaboration and learning-loop protocol those systems implement.
 
 ## Protocol Laws
 
-1. Jarvis is not a product.
-2. Jarvis is not a personal agent.
-3. Jarvis does not prescribe infrastructure or execution.
-4. WorkSession is the source of truth.
+1. Jarvis defines human-agent collaboration and shared learning.
+2. Jarvis is a compatibility protocol.
+3. WorkSession is the source of truth.
+4. Jarvis does not prescribe infrastructure or execution.
 5. Policy governs autonomy.
 6. Learning is governed.
 7. Evidence is captured during work.
@@ -237,8 +244,6 @@ collaboration protocol those systems implement.
 Jarvis is not:
 
 - a product UI
-- a personal agent application
-- a chatbot
 - a model provider
 - a sandbox implementation
 - a database implementation
@@ -247,4 +252,4 @@ Jarvis is not:
 - an external work ownership system
 
 Jarvis integrates with many systems, but it owns the human-agent collaboration
-protocol.
+and learning-loop protocol.

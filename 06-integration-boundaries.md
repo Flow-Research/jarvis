@@ -1,9 +1,13 @@
 # Integration Boundaries
 
-Jarvis is a protocol. It does not define how work runs.
+Jarvis is a compatibility protocol. It does not define how work runs.
 
 Products and hosts decide where and how execution happens. Jarvis defines the
 protocol records those systems produce and consume.
+
+The goal is that different humans, agents, products, hosts, and external
+systems can share the same collaboration records without sharing the same
+infrastructure.
 
 ## Jarvis Boundary
 

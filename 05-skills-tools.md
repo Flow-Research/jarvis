@@ -1,9 +1,9 @@
 # Skills And Tools
 
-Skills and tools are the action layer of Jarvis.
+Skills and tools are protocol-visible capabilities in Jarvis.
 
-Skills are procedural memory. Tools are executable capabilities. Both must be
-governed by policy.
+Skills are procedural memory. Tools are host-provided capabilities. Both must
+be governed by policy before they affect a WorkSession.
 
 ## Skill Model
 
@@ -98,8 +98,8 @@ provenance
 observability hooks
 ```
 
-The agent sees tools through Jarvis wrappers. Raw capabilities stay
-behind policy.
+The agent sees tools through Jarvis policy contracts. Raw host capabilities
+stay behind policy.
 
 ## MCP Tools
 
@@ -153,11 +153,12 @@ granted. The gateway hashes and diffs the full MCP capability surface. Any
 changed resource, prompt, tool, sampling, elicitation, or roots surface enters
 quarantine before exposure.
 
-## Sandbox Tools
+## Execution Tools
 
-Sandbox execution is core to agent work.
+Execution tools are host-provided capabilities that Jarvis can govern and
+record.
 
-Sandbox tools support:
+Execution tools can support:
 
 - command execution
 - file read/write
@@ -167,7 +168,8 @@ Sandbox tools support:
 - network egress controls
 - process/session inspection
 
-Every sandbox operation is policy-aware and evidence-producing.
+Every execution operation that affects a WorkSession is policy-aware and
+evidence-producing.
 
 ## Tool Output Trust
 

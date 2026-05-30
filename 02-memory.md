@@ -155,7 +155,7 @@ Every memory needs provenance:
 
 ```txt
 source actor
-source session
+source WorkSession
 source event/message/tool call
 source document/file/url when applicable
 created time
@@ -177,7 +177,7 @@ Preferred flow:
 
 ```txt
 1. Turn or WorkSession produces events, reviews, tool outputs, and artifacts.
-2. Learning worker proposes memory changes.
+2. Learning pass proposes memory changes.
 3. Policy classifies each proposal.
 4. Low-risk scoped notes auto-confirm only inside the limits below.
 5. High-impact memory needs human review.
@@ -207,7 +207,7 @@ Default v1 policy:
 | agent inference | preference/boundary | any | no | Requires human review. |
 | tool output | any | any | no | External/tool-derived memory never auto-confirms. |
 | web/file content | fact/source | task/project | no | Suggested with provenance and trust label. |
-| review outcome | correction/outcome | session/task | yes | Can be stored as session fact; promotion needs review. |
+| review outcome | correction/outcome | WorkSession/task | yes | Can be stored as WorkSession fact; promotion needs review. |
 | skill edit | procedure | procedural | no | Requires skill activation gate. |
 
 Auto-confirmable memory must be:
@@ -266,7 +266,7 @@ hostile_suspected
 The context assembler must fence untrusted content in data-only blocks. The
 agent can reason over it as evidence, but it must not treat it as instruction.
 
-Learning workers must not convert instructions found inside tool output, files,
+The learning pass must not convert instructions found inside tool output, files,
 web pages, or connector responses into memory or skills without human review.
 
 Taint propagates into summaries, extracted facts, generated files, evidence,
@@ -282,7 +282,7 @@ Context is layered:
 foundation instructions
 human profile and boundaries
 agent profile and role
-active session/work state
+active WorkSession state
 pinned memory
 recent relevant corrections
 project/task context

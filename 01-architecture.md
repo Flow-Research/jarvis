@@ -32,6 +32,10 @@ Products and hosts decide how to execute work. Jarvis defines the protocol
 records and state transitions that make the work collaborative, governed,
 reviewable, attributable, and portable.
 
+Compatibility is the architecture goal. A HumanWorker, AgentWorker, product,
+host, or external system should be able to participate without adopting another
+system's execution stack or product model.
+
 ## Core Protocol Contracts
 
 ### Actor
@@ -244,7 +248,7 @@ LearningRecord
   id
   work_session_id
   actor_id
-  actor_type: human | agent | pair
+  subject_type: human | agent | pair
   lesson_type
   source_event_refs
   proposed_change
@@ -321,6 +325,8 @@ Skills turn repeated work into reusable process.
 Jarvis owns:
 
 - protocol contracts
+- interoperability semantics
+- conformance rules
 - actor semantics
 - worker semantics
 - WorkSession lifecycle
@@ -332,7 +338,7 @@ Jarvis owns:
 - memory proposal semantics
 - skill proposal semantics
 - context manifest semantics
-- protocol conformance rules
+- portable export semantics
 
 Products and hosts own:
 

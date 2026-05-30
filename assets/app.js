@@ -34,7 +34,7 @@ const steps = [
       "ContextManifest stores retrieval reasons and hashes."
     ],
     memory: [
-      "Project memory: Jarvis owns the collaboration protocol.",
+      "Project memory: Jarvis owns the collaboration and learning-loop protocol.",
       "Skill memory: inspect repo before proposing implementation.",
       "Context manifest: memory ids, skill ids, policy profile, tool hash."
     ],
@@ -61,7 +61,7 @@ const steps = [
       "read_private: allowed for project files.",
       "write_local: allowed only inside workspace scratch paths."
     ],
-    evidence: ["plan_proposed", "tool_allowed", "sandbox_lease_started"]
+    evidence: ["plan_proposed", "tool_allowed", "host_execution_started"]
   },
   {
     title: "Policy Boundary",
@@ -128,7 +128,7 @@ const steps = [
       "Approval is one-use.",
       "Host or payload change invalidates authorization."
     ],
-    evidence: ["tool_executed", "artifact_created", "command_trace"]
+    evidence: ["tool_executed", "artifact_created", "execution_trace"]
   },
   {
     title: "Review And Teach",

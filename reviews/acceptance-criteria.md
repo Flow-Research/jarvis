@@ -4,7 +4,10 @@ Jarvis architecture is accepted only when these criteria hold.
 
 ## Scope
 
-- Jarvis is defined as the human-agent collaboration protocol.
+- Jarvis is defined as the human-agent collaboration and learning-loop
+  protocol.
+- Jarvis is a compatibility protocol for multiple humans, agents, products,
+  hosts, and external systems.
 - Jarvis does not define execution stack, cloud, database, queue, sandbox,
   deployment, model provider, authentication, billing, or product UI.
 - external products and systems integrate with Jarvis through protocol
@@ -69,7 +72,7 @@ record HumanWorker Review
 resume work after approval or correction
 record Contribution
 record EvidenceManifest item
-record LearningRecord
+record LearningRecord for human, agent, or pair learning
 create MemoryProposal or SkillProposal
 export protocol record
 ```
