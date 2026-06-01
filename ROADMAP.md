@@ -6,6 +6,9 @@ compatibility protocol.
 The roadmap turns the protocol into stable contracts, schemas, conformance
 tests, examples, and documentation. It does not create an execution stack.
 
+For the immediate execution plan, see
+[12-30-day-roadmap.md](./12-30-day-roadmap.md).
+
 ## Roadmap Contract
 
 Jarvis owns:

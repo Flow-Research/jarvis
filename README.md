@@ -278,5 +278,7 @@ If v0 proves this loop, Jarvis is real.
 - [10-protocol-mvp.md](./10-protocol-mvp.md) - the smallest protocol proof.
 - [11-core-protocol-objects.md](./11-core-protocol-objects.md) - canonical
   object definitions, invariants, statuses, and portable export surface.
+- [12-30-day-roadmap.md](./12-30-day-roadmap.md) - focused 30-day execution
+  plan for protocol lock, schemas, Garden POC, and interoperability proof.
 - [ROADMAP.md](./ROADMAP.md) - release roadmap, milestones, decision gates,
   risks, and immediate next actions.
