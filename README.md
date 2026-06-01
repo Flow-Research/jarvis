@@ -274,5 +274,7 @@ If v0 proves this loop, Jarvis is real.
   plan for protocol lock, schemas, Garden POC, and interoperability proof.
 - [13-protocol-readiness-review.md](./13-protocol-readiness-review.md) -
   protocol-readiness check against proven protocol patterns.
+- [14-protocol-lock.md](./14-protocol-lock.md) - locked v0 thesis,
+  vocabulary, lifecycle, boundaries, conformance expectations, and schema gate.
 - [ROADMAP.md](./ROADMAP.md) - release roadmap, milestones, decision gates,
   risks, and immediate next actions.
