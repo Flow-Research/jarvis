@@ -131,7 +131,7 @@ Review
 
 Reviews are teaching moments. They feed memory and skill proposals.
 
-## Evidence Manifest
+## Evidence Items
 
 Evidence is gathered during work:
 

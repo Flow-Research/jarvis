@@ -7,6 +7,17 @@ the learning loop. A compatible product, host, CLI, agent system, or external
 service can use different infrastructure, but it must preserve these object
 meanings and state transitions.
 
+## Normative Language
+
+The words `MUST`, `MUST NOT`, `SHOULD`, `SHOULD NOT`, and `MAY` are used as
+protocol requirements.
+
+- `MUST` means a compatible implementation is required to do it.
+- `MUST NOT` means a compatible implementation is required not to do it.
+- `SHOULD` means the behavior is expected unless a documented compatibility
+  reason exists.
+- `MAY` means the behavior is optional.
+
 ## Object Model
 
 Jarvis models a working relationship:
@@ -30,17 +41,17 @@ workers inside a durable WorkSession.
 
 1. Every WorkSession has one primary HumanWorker, one primary AgentWorker, one
    objective, and one active Policy.
-2. HumanWorker and AgentWorker are both workers and both actors.
-3. Every meaningful protocol event is attributable to an Actor.
-4. The AgentWorker acts autonomously only inside Policy.
-5. Action outside Policy creates a Request.
-6. A Request is resolved only by Review or Takeover.
-7. A Review records human judgment over a protocol target.
-8. Takeover creates a lock epoch and blocks stale autonomous continuation.
-9. Contribution records who did what.
-10. EvidenceManifest records portable proof while the WorkSession happens.
-11. LearningRecord records what the human, agent, or pair learned.
-12. Durable memory and skill changes are proposals until governed review
+2. HumanWorker and AgentWorker MUST both be workers and actors.
+3. Every meaningful protocol event MUST be attributable to an Actor.
+4. The AgentWorker MUST act autonomously only inside Policy.
+5. Action outside Policy MUST create a Request.
+6. A Request MUST be resolved only by Review or Takeover.
+7. A Review MUST record human judgment over a protocol target.
+8. Takeover MUST create a lock epoch and block stale autonomous continuation.
+9. Contribution MUST record who did what.
+10. EvidenceManifest MUST record portable proof while the WorkSession happens.
+11. LearningRecord MUST record what the human, agent, or pair learned.
+12. Durable memory and skill changes MUST remain proposals until governed review
     accepts them.
 
 ## Worker
@@ -59,14 +70,15 @@ Worker
   metadata
 ```
 
-Rules:
+Requirements:
 
-- A worker can participate in a WorkSession.
-- A worker can receive attribution through Contribution.
-- A worker can be represented by one or more Actors.
-- A service worker exists for protocol-visible system behavior, not for hiding
-  human or agent responsibility.
-- A tool worker exists only when tool activity needs first-class attribution.
+- A Worker MAY participate in a WorkSession.
+- A Worker MAY receive attribution through Contribution.
+- A Worker MAY be represented by one or more Actors.
+- A service Worker MUST exist only for protocol-visible system behavior, not
+  for hiding human or agent responsibility.
+- A tool Worker SHOULD exist only when tool activity needs first-class
+  attribution.
 
 ## Actor
 
@@ -82,16 +94,16 @@ Actor
   created_at
 ```
 
-Rules:
+Requirements:
 
-- Every event has an `actor_id`.
-- HumanWorker and AgentWorker each have at least one Actor.
-- Service Actors can emit system events, policy decisions, and evidence
-  capture events.
-- Tool Actors can emit tool-result and evidence-capture events when the host
+- Every JarvisEvent MUST have an `actor_id`.
+- HumanWorker and AgentWorker MUST each have at least one Actor.
+- Service Actors MAY emit system events, policy decisions, and evidence capture
+  events.
+- Tool Actors MAY emit tool-result and evidence-capture events when the host
   exposes tool identity.
-- Actor identity must not collapse human, agent, service, and tool actions
-  into one undifferentiated actor.
+- Actor identity MUST NOT collapse human, agent, service, and tool actions into
+  one undifferentiated actor.
 
 ## HumanWorker
 

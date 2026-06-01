@@ -168,7 +168,6 @@ Output:
 - LearningRecord
 - MemoryProposal
 - SkillProposal
-- JarvisEvent
 
 Done when:
 
@@ -196,7 +195,7 @@ Done when:
 
 - invalid transitions fail conformance tests
 - every WorkSession has HumanWorker, AgentWorker, Policy, and objective
-- events remain attributable to a Worker or service
+- events remain attributable to an Actor
 
 ## Milestone 3: Policy, Request, Review, Takeover
 

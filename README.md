@@ -180,14 +180,6 @@ EvidenceManifest
 LearningRecord
 MemoryProposal
 SkillProposal
-Request
-Review
-Takeover
-Contribution
-EvidenceManifest
-LearningRecord
-MemoryProposal
-SkillProposal
 ```
 
 ## Protocol Laws
@@ -280,5 +272,7 @@ If v0 proves this loop, Jarvis is real.
   object definitions, invariants, statuses, and portable export surface.
 - [12-30-day-roadmap.md](./12-30-day-roadmap.md) - focused 30-day execution
   plan for protocol lock, schemas, Garden POC, and interoperability proof.
+- [13-protocol-readiness-review.md](./13-protocol-readiness-review.md) -
+  protocol-readiness check against proven protocol patterns.
 - [ROADMAP.md](./ROADMAP.md) - release roadmap, milestones, decision gates,
   risks, and immediate next actions.

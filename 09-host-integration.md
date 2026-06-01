@@ -65,20 +65,21 @@ const work = startWorkSession({
 });
 
 recordEvent(work.id, {
-  actor_id: human.worker_id,
+  actor_id: human.actor_id,
   type: "objective_recorded"
 });
 
 const decision = evaluatePolicy({
   work_session_id: work.id,
-  actor_id: agent.worker_id,
+  actor_id: agent.actor_id,
   requested_action: "network_fetch:example.com"
 });
 
 if (decision.result === "denied") {
   const request = createRequest({
     work_session_id: work.id,
-    requester_id: agent.worker_id,
+    requester_worker_id: agent.worker_id,
+    requester_actor_id: agent.actor_id,
     reason: "missing_permission",
     requested_action: "network_fetch:example.com",
     risk_class: "network_fetch"
@@ -86,7 +87,8 @@ if (decision.result === "denied") {
 
   recordReview({
     work_session_id: work.id,
-    reviewer_id: human.worker_id,
+    reviewer_worker_id: human.worker_id,
+    reviewer_actor_id: human.actor_id,
     target_ref: request.id,
     decision: "narrow",
     required_changes: "Allow one host for this WorkSession only."
@@ -95,7 +97,9 @@ if (decision.result === "denied") {
 
 recordContribution({
   work_session_id: work.id,
-  worker_id: agent.worker_id,
+  contributor_worker_id: agent.worker_id,
+  contributor_actor_id: agent.actor_id,
+  contributor_type: "agent",
   contribution_type: "draft_artifact"
 });
 

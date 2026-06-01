@@ -179,7 +179,7 @@ Canonical fields include:
 - files touched
 - hosts contacted
 - secrets or credentials requested
-- data that leaves or can leave the harness
+- data that leaves or can leave the approved boundary
 - irreversible effects
 - requested grant scope and expiry
 - narrower alternatives

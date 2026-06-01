@@ -2,8 +2,8 @@
 
 This roadmap turns Jarvis from design into a credible protocol proof.
 
-Jarvis is not an agent framework, runtime, personal agent harness, cloud stack,
-or product UI. Jarvis is the human-agent collaboration and learning-loop
+Jarvis is not an agent framework, runtime, agent harness, cloud stack, or
+product UI. Jarvis is the human-agent collaboration and learning-loop
 protocol. The next 30 days must prove that existing agents and products can be
 wrapped with Jarvis contracts without replacing their runtime.
 
@@ -39,8 +39,8 @@ Jarvis should position itself beside existing standards:
 - AG-UI standardizes agent-to-frontend interaction. Jarvis can feed AG-UI
   interfaces with WorkSession state, Requests, Reviews, and EvidenceManifest
   data, but Jarvis is not a frontend protocol.
-- Agent SDKs such as OpenAI Agents SDK, Cloudflare Agents SDK, Claude Code,
-  Hermes, and OpenClaw provide runtimes, tools, sessions, handoffs, tracing, or
+- Agent SDKs and agent products such as OpenAI Agents SDK, Claude Code, Hermes,
+  and OpenClaw provide runtimes, tools, sessions, handoffs, tracing, or
   execution environments. Jarvis wraps their work into collaboration records
   instead of replacing them.
 
@@ -93,8 +93,8 @@ Done when:
 - no document describes Jarvis as a runtime, product, agent framework, or
   personal agent
 - every core object has a reason to exist
-- we can explain Jarvis in one paragraph without mentioning Garden or
-  Workstream
+- we can explain Jarvis in one paragraph without mentioning any host product
+  or downstream evaluation system
 
 ## Week 2: Schemas, Conformance, And Adapter Surface
 
