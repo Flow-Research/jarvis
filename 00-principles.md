@@ -198,7 +198,7 @@ Learning must be proposed, reviewed, scoped, and accepted. Jarvis asks:
 - what did the human learn?
 - what did the agent learn?
 - what did the human-agent pair learn?
-- what should improve next time?
+- what improves next time?
 
 ## Skills Are Procedural Memory
 
@@ -237,7 +237,7 @@ collaboration and learning-loop protocol those systems implement.
 9. Human judgment remains central.
 10. Execution may be delegated; accountability remains attributable.
 11. HumanWorker and AgentWorker both learn.
-12. Every session should improve the next session.
+12. Every completed WorkSession improves the next WorkSession.
 
 ## Non-Goals
 

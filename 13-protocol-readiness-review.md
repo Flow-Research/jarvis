@@ -16,7 +16,7 @@ task marketplace, or cloud stack.
 
 ## Protocol Patterns Reviewed
 
-Jarvis should follow proven protocol habits from existing standards:
+Jarvis follows proven protocol habits from existing standards:
 
 - HTTP separates semantics from implementation and deployment.
 - OAuth separates actors, grants, authorization, and resource access.
@@ -37,9 +37,9 @@ References:
 - A2A: https://a2a-protocol.org/latest/
 - AG-UI: https://docs.ag-ui.com/
 
-## What Jarvis Must Borrow
+## Protocol Disciplines
 
-Jarvis should borrow these protocol disciplines:
+Jarvis uses these protocol disciplines:
 
 - explicit actors and roles
 - lifecycle states
@@ -89,7 +89,7 @@ The review tightened:
 
 - duplicate core contract names in the README
 - duplicate `JarvisEvent` entry in the roadmap
-- stale `harness` wording in policy docs
+- stale agent-wrapper wording in policy docs
 - host integration pseudocode so actor ids and worker ids are not confused
 - WorkSession evidence section headings
 - roadmap wording that tied protocol explanation to named downstream systems

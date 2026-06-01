@@ -192,9 +192,9 @@ SkillProposal
 6. Evidence is captured during work.
 7. Contributions are attributable.
 8. Human judgment remains central.
-9. Execution may be delegated; accountability remains attributable.
+9. Execution can be delegated; accountability remains attributable.
 10. HumanWorker and AgentWorker both learn.
-11. Every session should improve the next session.
+11. Every completed WorkSession improves the next WorkSession.
 
 ## Boundaries
 
@@ -271,7 +271,7 @@ If v0 proves this loop, Jarvis is real.
 - [11-core-protocol-objects.md](./11-core-protocol-objects.md) - canonical
   object definitions, invariants, statuses, and portable export surface.
 - [12-30-day-roadmap.md](./12-30-day-roadmap.md) - focused 30-day execution
-  plan for protocol lock, schemas, Garden POC, and interoperability proof.
+  plan for protocol lock, schemas, first host POC, and interoperability proof.
 - [13-protocol-readiness-review.md](./13-protocol-readiness-review.md) -
   protocol-readiness check against proven protocol patterns.
 - [14-protocol-lock.md](./14-protocol-lock.md) - locked v0 thesis,
