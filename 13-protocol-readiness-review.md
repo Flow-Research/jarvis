@@ -1,6 +1,6 @@
 # Protocol Readiness Review
 
-This review checks whether Jarvis is ready to move from design into schemas,
+This review confirms Jarvis is ready to move from design into schemas,
 examples, conformance tests, and host proofs.
 
 ## Review Baseline
@@ -116,6 +116,5 @@ The design is ready to start Week 1 execution.
 The protocol thesis is stable. The boundaries are stable. The object set is
 stable enough to begin schemas and examples.
 
-The next work should not reopen whether Jarvis is a protocol. It should define
-the machine-readable contract, versioning, conformance tests, and the first
-Garden POC mapping.
+The next work is the machine-readable contract, versioning, conformance tests,
+and the first host proof mapping.

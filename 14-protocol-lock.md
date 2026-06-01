@@ -1,57 +1,82 @@
 # Protocol Lock
 
-This document locks the first implementable shape of Jarvis.
-
-Jarvis is the human-agent collaboration and learning-loop protocol. It defines
-the durable record of how a HumanWorker and AgentWorker collaborate under
-shared goals and human-defined policy, produce reviewable requests, record
-contributions, capture portable evidence, and learn together across
-WorkSessions.
-
-This lock exists so implementation starts from stable protocol meaning instead
-of drifting into another runtime, agent framework, product UI, or internal
-workflow.
-
-## Lock Status
-
-Status: `locked-for-v0-schema-draft`
-
-Meaning:
-
-- the thesis is locked
-- the boundary is locked
-- the core object names are locked
-- the core lifecycle is locked
-- the conformance expectations are locked
-- field-level schemas are not locked yet
-- extension and version negotiation are not locked yet
-
-Schema work may begin after this document is accepted.
-
-## Official Definition
-
 Jarvis is the human-agent collaboration and learning-loop protocol.
 
-It defines how HumanWorkers and AgentWorkers coordinate under shared goals and
-Policy, so they can complete WorkSessions together, create Requests when the
-agent is blocked, capture Reviews and Takeovers from the human, record
-Contributions, export EvidenceManifests, and govern LearningRecords,
-MemoryProposals, and SkillProposals.
+It defines how a HumanWorker and an AgentWorker work together under shared
+goals and human-defined policy. The protocol records the work, requests,
+reviews, takeovers, contributions, evidence, and learning that happen inside a
+WorkSession.
 
-## Locked Thesis
+This is the v0 lock. Schema work starts from here.
+
+## Locked Status
+
+`locked-for-v0-schema-draft`
+
+Locked now:
+
+- thesis
+- boundary
+- vocabulary
+- lifecycle
+- object relationships
+- core states
+- conformance expectations
+- portable export shape
+
+Not locked yet:
+
+- exact JSON fields
+- version negotiation
+- capability negotiation
+- extension format
+- error codes
+- conformance fixtures
+
+## Definition
+
+Jarvis is the protocol for governed human-agent collaboration and shared
+learning.
+
+The HumanWorker brings goals, judgment, context, correction, review, taste, and
+accountability.
+
+The AgentWorker brings execution, research, planning, drafting, tool use,
+memory retrieval, evidence capture, and workflow acceleration.
+
+Jarvis records how both workers collaborate and improve across WorkSessions.
+
+## Thesis
 
 The valuable unit is the human-agent team.
 
-Jarvis does not optimize for an agent alone. Jarvis does not reduce the human
-to a prompt source. Jarvis defines the protocol record of both workers acting,
-reviewing, correcting, producing evidence, and learning together.
+Not the human alone.
+Not the agent alone.
+Not a chatbot.
+Not a runtime.
+Not a product workspace.
 
-The HumanWorker improves. The AgentWorker improves. The pair improves. The
-next WorkSession should benefit from confirmed learning.
+The HumanWorker improves.
+The AgentWorker improves.
+The pair improves.
+The next WorkSession carries confirmed learning forward.
 
-## Locked Non-Goals
+## Boundary
 
-Jarvis MUST NOT define or own:
+Jarvis owns:
+
+- protocol vocabulary
+- object semantics
+- WorkSession lifecycle
+- event envelope
+- policy decision semantics
+- request, review, and takeover semantics
+- contribution semantics
+- evidence export semantics
+- governed learning semantics
+- conformance expectations
+
+Jarvis does not own:
 
 - agent runtime
 - model provider
@@ -60,21 +85,18 @@ Jarvis MUST NOT define or own:
 - database implementation
 - queue implementation
 - product UI
-- authentication system
-- billing system
+- authentication
+- billing
 - task marketplace
-- payment or settlement system
+- payment or settlement
 - organization workspace internals
-- specific agent framework
-- specific local execution stack
+- local execution stack
 
-Products and hosts MAY use any of those systems. Jarvis only defines the
-protocol records and state transitions those systems must preserve to be
-Jarvis-compatible.
+A host implements Jarvis. A host is not Jarvis.
 
-## Locked Core Vocabulary
+## Vocabulary
 
-The v0 protocol vocabulary is:
+The v0 vocabulary is:
 
 ```txt
 Worker
@@ -95,39 +117,31 @@ MemoryProposal
 SkillProposal
 ```
 
-These names are locked for v0 schema drafting.
+These names are stable for the v0 schema draft.
 
-Any later rename MUST include:
+## Relationship Model
 
-- reason for the rename
-- migration impact
-- affected schema names
-- affected conformance tests
-- compatibility policy
-
-## Locked Relationship Model
-
-Jarvis models:
+Jarvis models this:
 
 ```txt
 HumanWorker + AgentWorker
   collaborate inside WorkSession
   under Policy
   through JarvisEvents
-  with Requests, Reviews, and Takeovers
+  using Requests, Reviews, and Takeovers
   producing Contributions and EvidenceManifest
   generating LearningRecords, MemoryProposals, and SkillProposals
 ```
 
-Jarvis does not model:
+Jarvis does not model this:
 
 ```txt
 User -> Assistant -> Answer
 ```
 
-Chat MAY be one interface. The protocol is the collaboration record.
+Chat can be an interface. The protocol is the collaboration record.
 
-## Locked Lifecycle
+## Lifecycle
 
 The v0 lifecycle is:
 
@@ -142,22 +156,25 @@ The v0 lifecycle is:
 8. assemble context and available capabilities
 9. AgentWorker proposes or performs action
 10. Policy produces PolicyDecision
-11. allowed action records JarvisEvent and Evidence
+11. allowed action records JarvisEvent and evidence
 12. denied or review-required action creates Request
 13. HumanWorker responds through Review or Takeover
-14. approved work resumes inside narrowed or confirmed Policy
+14. approved work resumes inside confirmed or narrowed Policy
 15. Contribution records who did what
 16. EvidenceManifest records portable proof
 17. LearningRecord captures human, agent, or pair learning
-18. MemoryProposal and SkillProposal remain governed until reviewed
+18. MemoryProposal and SkillProposal stay governed until reviewed
 19. WorkSession completes, fails, or closes
 20. portable export is produced
 ```
 
-This lifecycle is the minimum standard. A host MAY add more internal steps, but
-it MUST preserve the protocol lifecycle externally.
+Hosts can add internal steps. The external Jarvis lifecycle stays intact.
 
-## Locked WorkSession States
+## WorkSession
+
+WorkSession is the source of truth.
+
+States:
 
 ```txt
 created
@@ -172,14 +189,18 @@ closed
 
 Rules:
 
-- A WorkSession MUST NOT start without HumanWorker, AgentWorker, objective, and
-  Policy.
-- A WorkSession MUST keep an append-only JarvisEvent log.
-- A WorkSession MUST be the source of truth for Requests, Reviews,
-  Contributions, EvidenceManifest, and LearningRecords.
-- A WorkSession export MUST NOT require product-private infrastructure fields.
+- WorkSession starts with HumanWorker, AgentWorker, objective, and Policy.
+- WorkSession keeps an append-only JarvisEvent log.
+- WorkSession owns Requests, Reviews, Takeovers, Contributions,
+  EvidenceManifest, and LearningRecords.
+- WorkSession export stays free of product-private infrastructure fields.
 
-## Locked Request States
+## Request
+
+Request is the structured way the AgentWorker asks for permission, context,
+judgment, review, or takeover.
+
+States:
 
 ```txt
 pending
@@ -195,13 +216,17 @@ cancelled
 
 Rules:
 
-- A Request MUST belong to one WorkSession.
-- A Request MUST identify requester worker and requester actor.
-- A Request MUST state the reason, requested action or missing context, risk
-  class, status, and creation time.
-- A Request MUST NOT resolve without Review or Takeover.
+- Request belongs to one WorkSession.
+- Request identifies requester worker and requester actor.
+- Request states reason, requested action or missing context, risk class,
+  status, and creation time.
+- Request resolves through Review or Takeover.
 
-## Locked Review Decisions
+## Review
+
+Review records human judgment.
+
+Decisions:
 
 ```txt
 approve
@@ -214,13 +239,13 @@ needs_revision
 
 Rules:
 
-- A Review MUST identify reviewer worker and reviewer actor.
-- A Review MUST target a Request, action, contribution, artifact, memory
-  proposal, skill proposal, evidence item, or final outcome.
-- A Review MAY resolve a Request.
-- A Review MAY create LearningRecord, MemoryProposal, or SkillProposal signals.
+- Review identifies reviewer worker and reviewer actor.
+- Review targets a Request, action, contribution, artifact, memory proposal,
+  skill proposal, evidence item, or final outcome.
+- Review can resolve a Request.
+- Review can create learning signals.
 
-## Locked Takeover Model
+## Takeover
 
 Takeover is temporary direct human control.
 
@@ -237,16 +262,16 @@ closed
 
 Rules:
 
-- Takeover MUST create or increment a lock epoch.
-- Agent actions from an old lock epoch MUST be rejected.
-- Resume MUST require reconciliation.
-- Takeover MUST be recorded as a learning signal.
+- Takeover creates or increments a lock epoch.
+- Agent actions from an old lock epoch are stale.
+- Resume requires reconciliation.
+- Takeover is a learning signal.
 
-## Locked Contribution Model
+## Contribution
 
 Contribution answers who did what.
 
-Contribution types include:
+Contribution types:
 
 ```txt
 intent
@@ -264,7 +289,7 @@ skill_proposal
 submission
 ```
 
-Contributor types are:
+Contributor types:
 
 ```txt
 human
@@ -276,16 +301,16 @@ shared
 
 Rules:
 
-- Contributions MUST distinguish human, agent, service, tool, and shared work.
-- Shared contribution MUST NOT erase individual contributing actors.
-- Contribution is not payment or accounting. It is the protocol attribution
-  record downstream systems MAY evaluate.
+- Human, agent, service, tool, and shared contributions stay distinguishable.
+- Shared contribution does not erase individual actors.
+- Contribution is attribution, not payment or accounting.
+- Downstream systems can evaluate Contribution records.
 
-## Locked Evidence Model
+## Evidence
 
 EvidenceManifest is the portable proof package for a WorkSession.
 
-It MUST include references to:
+It references:
 
 - WorkSession
 - event chain root
@@ -300,16 +325,16 @@ It MUST include references to:
 
 Rules:
 
-- Evidence MUST be captured during work.
-- Evidence MUST NOT be reconstructed only at the end.
-- Redacted exports MUST remain derived from the same event chain.
-- EvidenceManifest MUST be portable across compatible products and hosts.
+- Evidence is captured during work.
+- Evidence is not reconstructed only at the end.
+- Redacted exports stay derived from the same event chain.
+- EvidenceManifest is portable across compatible products and hosts.
 
-## Locked Learning Model
+## Learning
 
 LearningRecord captures what improved because of the WorkSession.
 
-Subject types are:
+Subject types:
 
 ```txt
 human
@@ -319,17 +344,16 @@ pair
 
 Rules:
 
-- Learning MUST NOT mean only agent memory.
-- Jarvis MUST record human learning, agent learning, and pair learning.
-- LearningRecord MAY point to MemoryProposal or SkillProposal.
-- Durable memory and active skill behavior MUST require governed review.
+- Learning is not only agent memory.
+- Jarvis records human learning, agent learning, and pair learning.
+- LearningRecord can point to MemoryProposal or SkillProposal.
+- Durable memory and active skill behavior require governed review.
 
-## Locked Compatibility Target
+## Compatibility
 
-Existing agents and products remain first-class.
+Existing agents and products are first-class.
 
-Jarvis-compatible adapters MUST be able to wrap an existing agent without
-rewriting the agent runtime.
+Jarvis wraps existing agents. It does not replace their runtime.
 
 A compatible adapter maps:
 
@@ -346,53 +370,19 @@ trace/artifact/source/output     -> EvidenceManifest entry
 confirmed improvement            -> LearningRecord / MemoryProposal / SkillProposal
 ```
 
-If an adapter cannot expose a native concept, it MUST either:
+If a host cannot expose a native concept, it records the closest valid Jarvis
+object with explicit limitations or marks the capability unsupported.
 
-- produce the closest valid Jarvis record with explicit limitations, or
-- mark the capability unsupported during capability negotiation.
+## Conformance
 
-## Locked Host Boundary
-
-A host implements Jarvis. A host is not Jarvis.
-
-Hosts own:
-
-- UI
-- accounts and identity integration
-- model selection
-- tool execution
-- MCP hosting
-- sandbox choice
-- storage
-- queues
-- deployment
-- observability
-- billing
-- product-specific workflows
-
-Jarvis owns:
-
-- protocol vocabulary
-- object semantics
-- lifecycle states
-- event envelope
-- policy decision semantics
-- request/review/takeover semantics
-- contribution semantics
-- evidence export semantics
-- governed learning semantics
-- conformance expectations
-
-## Locked Conformance Expectations
-
-A v0-compatible host MUST prove:
+A v0-compatible host proves:
 
 - WorkSession is the source of truth.
 - HumanWorker and AgentWorker both exist.
 - Every meaningful JarvisEvent has an Actor.
 - Policy gates autonomous AgentWorker action.
 - Policy-denied or review-required action creates Request.
-- Request cannot resolve without Review or Takeover.
+- Request resolves through Review or Takeover.
 - Review decisions are explicit.
 - Takeover blocks stale autonomous continuation.
 - Contributions are attributable.
@@ -401,9 +391,9 @@ A v0-compatible host MUST prove:
 - MemoryProposal and SkillProposal do not silently become durable behavior.
 - Portable export contains no product-private infrastructure requirement.
 
-## Locked Portable Export
+## Portable Export
 
-A v0 portable export MUST contain:
+A v0 portable export contains:
 
 ```txt
 protocol_version
@@ -423,38 +413,20 @@ SkillProposals
 limitations
 ```
 
-The export MAY contain extension fields only when they are namespaced and do
-not change the meaning of the core protocol fields.
+Extension fields are namespaced. Extensions do not change the meaning of core
+protocol fields.
 
-## Open Before Schema Freeze
+## Schema Work Starts Here
 
-These questions remain open for the schema phase:
+The next work is:
 
-1. Version negotiation shape.
-2. Capability negotiation shape.
-3. Extension namespace format.
-4. Standard error codes.
-5. Required vs optional fields per object.
-6. JSON Schema package layout.
-7. Canonical example WorkSession export.
-8. Passing and failing conformance fixtures.
+1. version negotiation
+2. capability negotiation
+3. extension namespace format
+4. standard error codes
+5. required and optional fields per object
+6. JSON Schema package layout
+7. canonical WorkSession export example
+8. passing and failing conformance fixtures
 
-These are schema questions, not thesis questions.
-
-## Entry Gate For Schemas
-
-Schema drafting can begin when this document is accepted.
-
-Schema drafting MUST use:
-
-- this document for locked meaning
-- `11-core-protocol-objects.md` for object definitions
-- `13-protocol-readiness-review.md` for readiness gaps
-
-Schema drafting MUST NOT reopen:
-
-- whether Jarvis is a protocol
-- whether Jarvis owns runtime
-- whether any host product is the protocol
-- whether human and agent both learn
-- whether WorkSession is the source of truth
+The thesis is locked. The object model is locked. The lifecycle is locked.
