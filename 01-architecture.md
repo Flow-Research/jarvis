@@ -33,8 +33,8 @@ records and state transitions that make the work collaborative, governed,
 reviewable, attributable, and portable.
 
 Compatibility is the architecture goal. A HumanWorker, AgentWorker, product,
-host, or external system should be able to participate without adopting another
-system's execution stack or product model.
+host, or external system can participate without adopting another system's
+execution stack or product model.
 
 ## Core Protocol Contracts
 

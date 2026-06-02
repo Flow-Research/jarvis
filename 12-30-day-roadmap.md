@@ -2,9 +2,9 @@
 
 This roadmap turns Jarvis from design into a credible protocol proof.
 
-Jarvis is not an agent framework, runtime, agent harness, cloud stack, or
+Jarvis is not an agent framework, runtime, agent wrapper, cloud stack, or
 product UI. Jarvis is the human-agent collaboration and learning-loop
-protocol. The next 30 days must prove that existing agents and products can be
+protocol. The next 30 days prove that existing agents and products can be
 wrapped with Jarvis contracts without replacing their runtime.
 
 ## Thesis
@@ -23,13 +23,13 @@ Jarvis wins by defining the missing standard record for:
 - governed LearningRecords
 - MemoryProposal and SkillProposal loops
 
-The practical proof is simple: a human and an existing agent should complete
-real work through a WorkSession, produce evidence, record who did what, and
-leave behind learning that improves the next WorkSession.
+The practical proof is simple: a human and an existing agent complete real
+work through a WorkSession, produce evidence, record who did what, and leave
+behind learning that improves the next WorkSession.
 
 ## Current Protocol Landscape
 
-Jarvis should position itself beside existing standards:
+Jarvis sits beside existing standards:
 
 - MCP standardizes how LLM apps connect to external tools, resources, and
   prompts. Jarvis can record MCP tool use as protocol evidence, but Jarvis is
@@ -56,7 +56,7 @@ Protocol grounding:
 By the end of 30 days, we must be able to show:
 
 ```txt
-Existing agent or Garden POC
+Existing agent or first host POC
   -> wrapped by Jarvis protocol adapter
   -> HumanWorker starts WorkSession
   -> AgentWorker acts inside Policy
@@ -91,9 +91,9 @@ Done when:
 
 - every document uses the same core object names
 - no document describes Jarvis as a runtime, product, agent framework, or
-  personal agent
+  agent application
 - every core object has a reason to exist
-- we can explain Jarvis in one paragraph without mentioning any host product
+- Jarvis can be explained in one paragraph without mentioning any host product
   or downstream evaluation system
 
 ## Week 2: Schemas, Conformance, And Adapter Surface
@@ -128,15 +128,15 @@ Done when:
   evidence, or learning
 - adapters do not require the agent runtime to be rewritten
 
-## Week 3: Garden POC End-To-End Integration
+## Week 3: First Host POC End-To-End Integration
 
-Goal: use the existing Garden POC as the first host proof, without making
-Jarvis depend on Garden.
+Goal: use the existing host POC as the first proof without making Jarvis depend
+on that host.
 
 Deliverables:
 
-- map Garden POC concepts to Jarvis objects
-- create one Garden-backed WorkSession flow
+- map host POC concepts to Jarvis objects
+- create one host-backed WorkSession flow
 - show HumanWorker objective entry
 - show AgentWorker execution inside policy
 - show Request inbox when the agent needs permission or judgment
@@ -144,13 +144,13 @@ Deliverables:
 - record Contribution entries
 - produce EvidenceManifest export
 - produce LearningRecord and MemoryProposal after review
-- document what belongs to Garden and what belongs to Jarvis
+- document what belongs to the host and what belongs to Jarvis
 
 Done when:
 
-- Garden can demonstrate the Jarvis loop end to end
-- Jarvis protocol records can be exported from the Garden POC
-- the exported records do not contain Garden-private assumptions
+- the host demonstrates the Jarvis loop end to end
+- Jarvis protocol records can be exported from the host POC
+- the exported records do not contain host-private assumptions
 - the demo proves human and agent both improve, not only agent memory
 
 ## Week 4: Interoperability Demo And Public Story
@@ -159,7 +159,7 @@ Goal: prove Jarvis works with existing agents and is worth discussing publicly.
 
 Deliverables:
 
-- one Garden POC demo
+- one host POC demo
 - one CLI-agent wrapper demo
 - one external-agent or simulated-agent wrapper demo
 - public README tightened around protocol positioning
@@ -180,36 +180,36 @@ Done when:
 
 - at least two different host shapes can produce the same Jarvis protocol
   records
-- the Garden POC is one host, not the protocol itself
+- the host POC is one host, not the protocol itself
 - the team can share one URL and one README that explain the point clearly
 - the protocol can be discussed as a standard, not an internal app feature
 
 ## Daily Operating Rhythm
 
-Every day should produce one visible artifact:
+Every day produces one visible artifact:
 
 - spec page
 - schema
 - JSON example
 - conformance test/checklist
 - adapter note
-- Garden POC mapping
+- host POC mapping
 - demo screenshot
 - public docs update
 
 Daily review questions:
 
 1. Did we strengthen the protocol or drift into building a runtime?
-2. Can this work with an existing agent without rewriting the agent?
+2. Does this work with an existing agent without rewriting the agent?
 3. Did we capture human judgment, agent action, contribution, evidence, and
    learning?
-4. Can another host implement this without Garden?
+4. Can another host implement this without host-specific assumptions?
 5. Does this improve the next WorkSession?
 
 ## Non-Negotiables
 
 - Jarvis remains protocol-only.
-- Garden is only the first proof host.
+- The first POC is only a proof host.
 - Existing agents remain first-class.
 - HumanWorker and AgentWorker are both actors.
 - Learning belongs to the human, agent, and pair.
@@ -223,8 +223,8 @@ Daily review questions:
 1. Freeze the object model in `11-core-protocol-objects.md`.
 2. Create JSON examples for one complete WorkSession.
 3. Draft the adapter contract for wrapping an existing agent.
-4. Map Garden POC concepts to Jarvis objects.
-5. Decide the first two proof hosts: Garden POC plus one CLI/external-agent
+4. Map host POC concepts to Jarvis objects.
+5. Decide the first two proof hosts: one product host plus one CLI/external-agent
    wrapper.
 
 If these are clear, the rest of the 30 days becomes execution rather than

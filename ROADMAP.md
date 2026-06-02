@@ -9,6 +9,8 @@ tests, examples, and documentation. It does not create an execution stack.
 For the immediate execution plan, see
 [12-30-day-roadmap.md](./12-30-day-roadmap.md).
 
+For the schema entry gate, see [14-protocol-lock.md](./14-protocol-lock.md).
+
 ## Roadmap Contract
 
 Jarvis owns:
