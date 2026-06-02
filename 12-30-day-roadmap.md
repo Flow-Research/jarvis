@@ -56,7 +56,7 @@ Protocol grounding:
 By the end of 30 days, we must be able to show:
 
 ```txt
-Existing agent or first host POC
+Existing agent or Garden POC
   -> wrapped by Jarvis protocol adapter
   -> HumanWorker starts WorkSession
   -> AgentWorker acts inside Policy
@@ -128,15 +128,15 @@ Done when:
   evidence, or learning
 - adapters do not require the agent runtime to be rewritten
 
-## Week 3: First Host POC End-To-End Integration
+## Week 3: Garden POC End-To-End Integration
 
-Goal: use the existing host POC as the first proof without making Jarvis depend
-on that host.
+Goal: use Garden POC as the first product proof without making Jarvis depend on
+Garden. The POC proves the protocol before main Garden adopts it.
 
 Deliverables:
 
-- map host POC concepts to Jarvis objects
-- create one host-backed WorkSession flow
+- map Garden POC concepts to Jarvis objects
+- create one Garden-backed WorkSession flow
 - show HumanWorker objective entry
 - show AgentWorker execution inside policy
 - show Request inbox when the agent needs permission or judgment
@@ -144,13 +144,13 @@ Deliverables:
 - record Contribution entries
 - produce EvidenceManifest export
 - produce LearningRecord and MemoryProposal after review
-- document what belongs to the host and what belongs to Jarvis
+- document what belongs to Garden and what belongs to Jarvis
 
 Done when:
 
-- the host demonstrates the Jarvis loop end to end
-- Jarvis protocol records can be exported from the host POC
-- the exported records do not contain host-private assumptions
+- Garden POC demonstrates the Jarvis loop end to end
+- Jarvis protocol records can be exported from Garden POC
+- the exported records do not contain Garden-private assumptions
 - the demo proves human and agent both improve, not only agent memory
 
 ## Week 4: Interoperability Demo And Public Story
@@ -159,7 +159,7 @@ Goal: prove Jarvis works with existing agents and is worth discussing publicly.
 
 Deliverables:
 
-- one host POC demo
+- one Garden POC demo
 - one CLI-agent wrapper demo
 - one external-agent or simulated-agent wrapper demo
 - public README tightened around protocol positioning
@@ -180,7 +180,7 @@ Done when:
 
 - at least two different host shapes can produce the same Jarvis protocol
   records
-- the host POC is one host, not the protocol itself
+- Garden POC is one product proof, not the protocol itself
 - the team can share one URL and one README that explain the point clearly
 - the protocol can be discussed as a standard, not an internal app feature
 
@@ -193,7 +193,7 @@ Every day produces one visible artifact:
 - JSON example
 - conformance test/checklist
 - adapter note
-- host POC mapping
+- Garden POC mapping
 - demo screenshot
 - public docs update
 
@@ -203,13 +203,13 @@ Daily review questions:
 2. Does this work with an existing agent without rewriting the agent?
 3. Did we capture human judgment, agent action, contribution, evidence, and
    learning?
-4. Can another host implement this without host-specific assumptions?
+4. Can another product implement this without Garden-specific assumptions?
 5. Does this improve the next WorkSession?
 
 ## Non-Negotiables
 
 - Jarvis remains protocol-only.
-- The first POC is only a proof host.
+- Garden POC is only the first product proof.
 - Existing agents remain first-class.
 - HumanWorker and AgentWorker are both actors.
 - Learning belongs to the human, agent, and pair.
@@ -223,8 +223,8 @@ Daily review questions:
 1. Freeze the object model in `11-core-protocol-objects.md`.
 2. Create JSON examples for one complete WorkSession.
 3. Draft the adapter contract for wrapping an existing agent.
-4. Map host POC concepts to Jarvis objects.
-5. Decide the first two proof hosts: one product host plus one CLI/external-agent
+4. Map Garden POC concepts to Jarvis objects.
+5. Decide the first two proof paths: Garden POC plus one CLI/external-agent
    wrapper.
 
 If these are clear, the rest of the 30 days becomes execution rather than
