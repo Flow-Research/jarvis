@@ -1,4 +1,4 @@
-name: Deploy static simulation to GitHub Pages
+name: Deploy Jarvis demo to GitHub Pages
 
 on:
   push:
@@ -31,7 +31,7 @@ jobs:
       - name: Upload static site
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: demo
 
       - name: Deploy to GitHub Pages
         id: deployment

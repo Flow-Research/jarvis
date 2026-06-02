@@ -164,7 +164,7 @@ The agent is:
 ## Core Protocol Contracts
 
 Jarvis v0 defines these contracts. The canonical object shapes and invariants
-are in [11-core-protocol-objects.md](./11-core-protocol-objects.md).
+are in [docs/protocol/11-core-protocol-objects.md](./docs/protocol/11-core-protocol-objects.md).
 
 ```txt
 Worker
@@ -248,36 +248,13 @@ Jarvis does not own:
 
 If v0 proves this loop, Jarvis is real.
 
-## Document Map
+## Docs
 
-- [00-principles.md](./00-principles.md) - protocol principles, laws,
-  non-goals, and design constraints.
-- [01-architecture.md](./01-architecture.md) - system layers, protocol
-  primitives, and ownership boundaries.
-- [02-memory.md](./02-memory.md) - memory taxonomy, lifecycle, provenance,
-  retrieval, and write policy.
-- [03-autonomy-policy.md](./03-autonomy-policy.md) - autonomy levels,
-  capability grants, requests, inbox, and takeover.
-- [04-work-sessions.md](./04-work-sessions.md) - collaboration records,
-  events, reviews, evidence, and learning loops.
-- [05-skills-tools.md](./05-skills-tools.md) - skills, tools, MCP,
-  execution-policy semantics, and tool governance.
-- [06-integration-boundaries.md](./06-integration-boundaries.md) - product,
-  host, and external system boundaries.
-- [07-protocol-decisions.md](./07-protocol-decisions.md) - fixed protocol
-  decisions and explicit non-decisions.
-- [08-package-contracts.md](./08-package-contracts.md) - package graph,
-  exports, ownership, forbidden imports, and release tests.
-- [09-host-integration.md](./09-host-integration.md) - how products and hosts
-  implement Jarvis without inheriting infrastructure assumptions.
-- [10-protocol-mvp.md](./10-protocol-mvp.md) - the smallest protocol proof.
-- [11-core-protocol-objects.md](./11-core-protocol-objects.md) - canonical
-  object definitions, invariants, statuses, and portable export surface.
-- [12-30-day-roadmap.md](./12-30-day-roadmap.md) - focused 30-day execution
-  plan for protocol lock, schemas, Garden POC, and interoperability proof.
-- [13-protocol-readiness-review.md](./13-protocol-readiness-review.md) -
-  protocol-readiness check against proven protocol patterns.
-- [14-protocol-lock.md](./14-protocol-lock.md) - locked v0 thesis,
-  vocabulary, lifecycle, boundaries, conformance expectations, and schema gate.
-- [ROADMAP.md](./ROADMAP.md) - release roadmap, milestones, decision gates,
-  risks, and immediate next actions.
+- [docs/README.md](./docs/README.md) - docs index.
+- [docs/protocol/](./docs/protocol/) - protocol definition, architecture,
+  object model, policy, memory, evidence, integration boundaries, package
+  contracts, MVP, and protocol lock.
+- [docs/planning/](./docs/planning/) - roadmap, 30-day plan, and upload-ready
+  planning sheets.
+- [docs/reviews/](./docs/reviews/) - protocol readiness and acceptance review
+  criteria.
