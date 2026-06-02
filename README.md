@@ -1,6 +1,9 @@
-# Jarvis Human-Agent Collaboration And Learning-Loop Protocol
+# Jarvis
 
-Jarvis is the human-agent collaboration and learning-loop protocol.
+Human-agent collaboration and learning-loop protocol.
+
+Jarvis is the protocol for governed collaboration between human workers and
+agent workers.
 
 It defines how human workers and agent workers coordinate under shared goals
 and human-defined policy, so they can complete work together, review each
@@ -19,7 +22,7 @@ collaboration.
 
 Open the live simulation here:
 
-https://flow-research.github.io/jarvis_human_agent/
+https://flow-research.github.io/jarvis/
 
 The page is served directly by GitHub Pages from this repository.
 
