@@ -274,7 +274,7 @@ If v0 proves this loop, Jarvis is real.
 - [11-core-protocol-objects.md](./11-core-protocol-objects.md) - canonical
   object definitions, invariants, statuses, and portable export surface.
 - [12-30-day-roadmap.md](./12-30-day-roadmap.md) - focused 30-day execution
-  plan for protocol lock, schemas, first host POC, and interoperability proof.
+  plan for protocol lock, schemas, Garden POC, and interoperability proof.
 - [13-protocol-readiness-review.md](./13-protocol-readiness-review.md) -
   protocol-readiness check against proven protocol patterns.
 - [14-protocol-lock.md](./14-protocol-lock.md) - locked v0 thesis,
