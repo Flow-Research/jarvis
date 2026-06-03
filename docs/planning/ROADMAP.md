@@ -227,7 +227,7 @@ Done when:
 
 - policy-denied action creates Request
 - Request cannot resolve without Review
-- Review can approve, deny, narrow, correct, take over, or request revision
+- Review approves, denies, narrows, corrects, takes over, or requests revision
 - takeover rejects stale autonomous continuation
 
 ## Milestone 4: Contribution And Evidence
@@ -265,8 +265,8 @@ Output:
 
 Done when:
 
-- learning can be attributed to human, agent, or pair
-- HumanWorker and AgentWorker can both improve from the same WorkSession
+- learning is attributed to human, agent, or pair
+- HumanWorker and AgentWorker both improve from the same WorkSession
 - memory changes require proposal and review state
 - skill changes require proposal and review state
 - unreviewed learning cannot become durable protocol memory
@@ -282,7 +282,7 @@ Output:
 - export conformance tests
 - integration checklist
 
-Done when a host can prove:
+Done when a host proves:
 
 - WorkSession is the source of truth
 - Policy gates autonomous action
@@ -310,8 +310,8 @@ Output:
 
 Done when:
 
-- a team can understand Jarvis without knowing any specific product
-- a product can implement Jarvis without inheriting execution assumptions
+- a team understands Jarvis without knowing any specific product
+- a product implements Jarvis without inheriting execution assumptions
 - the public simulation matches the protocol definition
 
 ## v0.1 Acceptance
@@ -340,10 +340,10 @@ Output:
 
 Done when:
 
-- evaluation systems can evaluate a task using Jarvis evidence records
-- host products can show review, learning, and contribution history without
+- evaluation systems evaluate a task using Jarvis evidence records
+- host products show review, learning, and contribution history without
   changing protocol semantics
-- external products can export compatible EvidenceManifest records
+- external products export compatible EvidenceManifest records
 
 ## v0.3 Ecosystem Conformance
 
@@ -359,10 +359,10 @@ Output:
 
 Done when:
 
-- two independent host shapes can pass the same protocol conformance tests
+- two independent host shapes pass the same protocol conformance tests
 - protocol records remain portable across products
 - implementation-private fields stay outside Jarvis exports
-- compatible hosts can exchange WorkSession evidence without sharing
+- compatible hosts exchange WorkSession evidence without sharing
   infrastructure
 
 ## v1.0 Stable Protocol
@@ -380,7 +380,7 @@ Output:
 
 Done when:
 
-- v1.0 records can be read by future compatible implementations
+- future compatible implementations read v1.0 records
 - product implementations do not need to adopt any Jarvis-owned execution stack
 - Jarvis remains protocol-only
 
@@ -405,7 +405,7 @@ identity, operations, or enterprise controls.
 Risk: Jarvis becomes a task or evaluation system.
 
 Control: task systems own tasks, rubrics, evaluation, and settlement. Jarvis
-owns the collaboration record that can be evaluated.
+owns the collaboration record that evaluation systems evaluate.
 
 ### Weak Evidence
 

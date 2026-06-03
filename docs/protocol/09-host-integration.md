@@ -2,9 +2,9 @@
 
 Jarvis is implemented by a host.
 
-A host can be a product workspace, CLI app, chat product, desktop product,
-custom enterprise workspace, or another agent system. The host owns execution
-and infrastructure. Jarvis owns the protocol records the host must produce.
+A host is a product workspace, CLI app, chat product, desktop product, custom
+enterprise workspace, or another agent system. The host owns execution and
+infrastructure. Jarvis owns the protocol records the host must produce.
 
 ## Host Responsibilities
 
@@ -25,7 +25,7 @@ A Jarvis-compatible host must:
 
 ## Host Freedom
 
-A host can choose:
+A host owns these choices:
 
 - UI
 - auth
@@ -54,7 +54,7 @@ const human = createHumanWorker({
 
 const agent = createAgentWorker({
   role: "executor",
-  autonomy_level: "bounded_autonomy"
+  autonomy_level: "bounded_execute"
 });
 
 const work = startWorkSession({
@@ -111,7 +111,7 @@ where records are stored, or how the agent executes.
 
 ## Export Boundary
 
-A host may have private implementation fields. Those fields stay outside the
+A host has private implementation fields. Those fields stay outside the
 Jarvis export.
 
 A portable Jarvis export contains:
@@ -131,6 +131,6 @@ A portable Jarvis export contains:
 
 ## Compatibility
 
-A host is Jarvis-compatible when it passes the conformance suite and can export
+A host is Jarvis-compatible when it passes the conformance suite and exports
 portable protocol records without requiring another product to understand its
 private infrastructure.

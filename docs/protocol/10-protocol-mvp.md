@@ -125,19 +125,19 @@ The MVP conformance suite checks:
   Policy.
 - policy-denied action creates Request.
 - Request resolution requires Review.
-- approval can narrow scope.
+- approval narrows scope when the human restricts the request.
 - takeover creates a lock epoch.
 - stale autonomous events after takeover are rejected.
 - Contribution entries reference events or artifacts.
 - EvidenceManifest references policy decisions, requests, reviews,
   contributions, artifacts, and limitations.
 - MemoryProposal and SkillProposal require provenance and review state.
-- LearningRecord can describe human learning, agent learning, or pair learning.
+- LearningRecord describes human learning, agent learning, or pair learning.
 - exported protocol records do not require product-private infrastructure
   fields.
 
 ## Success Condition
 
-Jarvis v0 is successful when a product team can implement the protocol without
+Jarvis v0 is successful when a product team implements the protocol without
 adopting any Jarvis-owned execution stack, cloud stack, database, sandbox, or
 UI.

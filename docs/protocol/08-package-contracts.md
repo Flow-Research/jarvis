@@ -4,8 +4,7 @@ Jarvis v0 ships protocol packages only.
 
 Jarvis does not ship execution packages, cloud packages, local execution
 packages, database packages, sandbox packages, or product UI packages. Products
-can implement Jarvis on any infrastructure by depending on the protocol
-contracts.
+implement Jarvis on any infrastructure by depending on the protocol contracts.
 
 ## Package Graph
 
@@ -146,7 +145,7 @@ Release tests:
 
 - uncovered action dimensions deny execution.
 - conflicting grants deny and create a Request.
-- approval can narrow scope.
+- approval narrows scope when the human restricts the request.
 - stale action after takeover is rejected.
 
 ## `@jarvis/memory`

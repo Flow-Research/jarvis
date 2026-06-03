@@ -33,7 +33,7 @@ records and state transitions that make the work collaborative, governed,
 reviewable, attributable, and portable.
 
 Compatibility is the architecture goal. A HumanWorker, AgentWorker, product,
-host, or external system can participate without adopting another system's
+host, or external system participates without adopting another system's
 execution stack or product model.
 
 ## Core Protocol Contracts
@@ -127,10 +127,10 @@ Products and hosts own:
 
 ## External System Boundary
 
-External systems can start WorkSessions, consume EvidenceManifests, route
-Reviews, evaluate Contributions, or provide context and skills. Jarvis defines
-the protocol records exchanged with those systems. It does not define their
-product architecture.
+External systems start WorkSessions, consume EvidenceManifests, route Reviews,
+evaluate Contributions, or provide context and skills through Jarvis records.
+Jarvis defines the protocol records exchanged with those systems. It does not
+define their product architecture.
 
 ## Minimum Developer Entry Point
 

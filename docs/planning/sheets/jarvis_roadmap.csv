@@ -1,5 +1,5 @@
 Jarvis Roadmap
-Definition,"Jarvis is the human-agent collaboration and learning-loop protocol. It defines WorkSession, Policy, Request, Review, Takeover, Contribution, EvidenceManifest, LearningRecord, MemoryProposal, and SkillProposal so existing agents and host products can collaborate with humans without replacing their runtimes."
+Definition,"Jarvis is the human-agent collaboration and learning-loop protocol. It defines WorkSession, Policy, Request, Review, Takeover, Contribution, EvidenceManifest, LearningRecord, MemoryProposal, and SkillProposal so existing agents and host products collaborate with humans without replacing their runtimes."
 Near-term priority,"Near-term priority: prove one v0 protocol loop end to end: protocol lock, schemas, version and capability negotiation, adapter contract, Garden POC mapping, portable export, and conformance fixtures. Garden POC is the product proof before main Garden adopts the protocol. Keep scope narrow: protocol records first, Garden POC plus one real existing-agent adapter, evidence and learning captured during work."
 
 Week,Date range,Primary goal,Protocol lock + research,Schemas + conformance,Adapter + interoperability,Garden POC + demo,Done when
@@ -28,7 +28,7 @@ W1,Jun 8-12,Create the v0 machine-readable contract.,"- finalize required object
 - define limitations field for unsupported concepts","- create Garden POC mapping table
 - define Garden WorkSession flow
 - define Request inbox behavior
-- define Review and Takeover capture points","A developer can read the schemas and know exactly how to create a valid WorkSession, Request, Review, Contribution, EvidenceManifest, and LearningRecord."
+- define Review and Takeover capture points","A developer reads the schemas and knows exactly how to create a valid WorkSession, Request, Review, Contribution, EvidenceManifest, and LearningRecord."
 W2,Jun 15-19,Make conformance strong enough to prove compatibility.,"- write compatibility rules
 - define extension namespace rules
 - define version negotiation

@@ -4,7 +4,7 @@ This roadmap turns Jarvis from design into a credible protocol proof.
 
 Jarvis is not an agent framework, runtime, agent adapter package, cloud stack, or
 product UI. Jarvis is the human-agent collaboration and learning-loop
-protocol. The next 30 days prove that existing agents and products can be
+protocol. The next 30 days prove that existing agents and products are
 mapped into Jarvis protocol records without replacing their runtime.
 
 ## Thesis
@@ -32,11 +32,11 @@ behind learning that improves the next WorkSession.
 Jarvis sits beside existing standards:
 
 - MCP standardizes how LLM apps connect to external tools, resources, and
-  prompts. Jarvis can record MCP tool use as protocol evidence, but Jarvis is
+  prompts. Jarvis records MCP tool use as protocol evidence, but Jarvis is
   not MCP.
-- A2A standardizes agent-to-agent communication and delegation. Jarvis can
-  record A2A delegation inside a WorkSession, but Jarvis is not A2A.
-- AG-UI standardizes agent-to-frontend interaction. Jarvis can feed AG-UI
+- A2A standardizes agent-to-agent communication and delegation. Jarvis records
+  A2A delegation inside a WorkSession, but Jarvis is not A2A.
+- AG-UI standardizes agent-to-frontend interaction. Jarvis feeds AG-UI
   interfaces with WorkSession state, Requests, Reviews, and EvidenceManifest
   data, but Jarvis is not a frontend protocol.
 - Agent SDKs, coding agents, local agents, and hosted agent products provide
@@ -56,7 +56,7 @@ Protocol grounding:
 
 ## North Star For The 30 Days
 
-By the end of 30 days, we must be able to show:
+By the end of 30 days, we show:
 
 ```txt
 Garden POC plus one real existing-agent adapter
@@ -97,7 +97,7 @@ Done when:
 - no document describes Jarvis as a runtime, product, agent framework, or
   agent application
 - every core object has a reason to exist
-- Jarvis can be explained in one paragraph without mentioning any host product
+- Jarvis is explained in one paragraph without mentioning any host product
   or downstream evaluation system
 
 ## Week 2: Schemas, Conformance, And Adapter Surface
@@ -127,8 +127,8 @@ Adapter contract must answer:
 
 Done when:
 
-- a developer can implement a minimal Jarvis-compatible host from the schemas
-- conformance can reject a fake implementation that skips policy, review,
+- a developer implements a minimal Jarvis-compatible host from the schemas
+- conformance rejects a fake implementation that skips policy, review,
   evidence, or learning
 - adapters do not require the agent runtime to be rewritten
 
@@ -153,7 +153,7 @@ Deliverables:
 Done when:
 
 - Garden POC demonstrates the Jarvis loop end to end
-- Jarvis protocol records can be exported from Garden POC
+- Jarvis protocol records export from Garden POC
 - the exported records do not contain Garden-private assumptions
 - the demo proves human and agent both improve, not only agent memory
 
@@ -173,7 +173,7 @@ Deliverables:
 - GitHub Pages simulation updated to show the 30-day proof path
 - short public narrative: why Jarvis exists and what it does not replace
 
-Candidate adapters:
+First Adapter Targets:
 
 - Claude Code-style CLI adapter
 - Hermes/OpenClaw-style local agent adapter
@@ -182,11 +182,11 @@ Candidate adapters:
 
 Done when:
 
-- at least two different host or adapter shapes can produce the same Jarvis protocol
+- at least two different host or adapter shapes produce the same Jarvis protocol
   records
 - Garden POC is one product proof, not the protocol itself
-- the team can share one URL and one README that explain the point clearly
-- the protocol can be discussed as a standard, not an internal app feature
+- the team shares one URL and one README that explain the point clearly
+- the protocol is discussed as a standard, not an internal app feature
 
 ## Daily Operating Rhythm
 
@@ -201,13 +201,13 @@ Every day produces one visible artifact:
 - demo screenshot
 - public docs update
 
-Daily review questions:
+Daily checks:
 
 1. Did we strengthen the protocol or drift into building a runtime?
 2. Does this work with an existing agent without rewriting the agent?
 3. Did we capture human judgment, agent action, contribution, evidence, and
    learning?
-4. Can another product implement this without Garden-specific assumptions?
+4. Does another product implement this without Garden-specific assumptions?
 5. Does this improve the next WorkSession?
 
 ## Non-Negotiables
@@ -231,5 +231,5 @@ Daily review questions:
 5. Decide the first two proof paths: Garden POC plus one CLI/external-agent
    adapter.
 
-If these are clear, the rest of the 30 days becomes execution rather than
+Once these are clear, the rest of the 30 days becomes execution rather than
 debate.

@@ -131,7 +131,7 @@ authority than an observation. A boundary outranks a learned habit.
 observed
   captured but untrusted
 
-suggested
+pending_review
   proposed by a learning pass or protocol actor
 
 confirmed
@@ -147,7 +147,7 @@ expired
   no longer active
 ```
 
-Agent-discovered memory defaults to `suggested`, not `confirmed`.
+Agent-discovered memory defaults to `pending_review`, not `confirmed`.
 
 ## Provenance
 
@@ -264,7 +264,7 @@ hostile_suspected
 ```
 
 The context assembler must fence untrusted content in data-only blocks. The
-agent can reason over it as evidence, but it must not treat it as instruction.
+agent reasons over it as evidence, but it must not treat it as instruction.
 
 The learning pass must not convert instructions found inside tool output, files,
 web pages, or connector responses into memory or skills without human review.
@@ -362,7 +362,7 @@ submissions, and required revisions.
 A compatible system records that feedback through an OutcomeReport extension or
 an equivalent attributable external feedback record. The completed WorkSession
 and EvidenceManifest stay sealed. The new feedback links back to the original
-WorkSession and can produce a new LearningRecord, MemoryProposal, or
+WorkSession and produces a new LearningRecord, MemoryProposal, or
 SkillProposal.
 
 This closes the learning loop without rewriting history.

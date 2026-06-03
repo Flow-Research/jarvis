@@ -32,13 +32,13 @@ Skills are readable by humans and usable by agents.
 
 ```txt
 draft
-  created by human or suggested by agent
+  created by human or agent
 
 active
   available in inventory
 
-suggested_update
-  agent proposes a change from observed work/correction
+update_requested
+  agent requests a change from observed work/correction
 
 review_required
   human inspection is required before the change affects future work
@@ -109,12 +109,12 @@ classifies them.
 Jarvis treats MCP tools as untrusted until classified:
 
 - tool metadata is potentially malicious
-- tool descriptions can contain prompt injection
+- tool descriptions carry prompt-injection risk
 - tool lists change over time
-- tool outputs can include instructions
-- remote servers can expose over-broad capabilities
+- tool outputs include untrusted instructions
+- remote servers expose over-broad capabilities
 
-Compatible hosts can support:
+Compatible hosts support:
 
 - MCP server allowlists
 - tool filtering
@@ -126,8 +126,8 @@ Compatible hosts can support:
 
 ## Host MCP Gateway
 
-A compatible host can route MCP through a gateway. Jarvis defines the
-classification, policy, evidence, and trust records:
+A compatible host routes MCP through a gateway when MCP is used. Jarvis defines
+the classification, policy, evidence, and trust records:
 
 - pins server identity
 - records full capability inventory name/schema/version/hash
@@ -155,10 +155,9 @@ quarantine before exposure.
 
 ## Execution Tools
 
-Execution tools are host-provided capabilities that Jarvis can govern and
-record.
+Execution tools are host-provided capabilities that Jarvis governs and records.
 
-Execution tools can support:
+Execution tools support:
 
 - command execution
 - file read/write
@@ -182,9 +181,9 @@ source tool
 trust level
 scope
 timestamp
-whether it can affect memory
-whether it can affect tool choice
-whether it can be sent externally
+whether it affects memory
+whether it affects tool choice
+whether it is sent externally
 ```
 
 The agent uses untrusted content as data, not as instruction authority.
@@ -221,7 +220,7 @@ modify skills, or narrow policy.
 Tool failure is structured:
 
 - classify failure reason
-- suggest whether to retry
+- classify retry path
 - record evidence
 - update tool reliability memory
 - request human help if blocked by policy or missing context

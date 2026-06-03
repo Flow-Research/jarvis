@@ -6,9 +6,8 @@ Jarvis is the protocol for governed collaboration between human workers and
 agent workers.
 
 It defines how human workers and agent workers coordinate under shared goals
-and human-defined policy, so they can complete work together, review each
-other, record contributions, capture evidence, and both improve across
-WorkSessions.
+and human-defined policy, complete work together, review each other, record
+contributions, capture evidence, and both improve across WorkSessions.
 
 Jarvis stays focused on the collaboration and learning loop. Products, agents,
 execution environments, and external systems integrate with Jarvis by
@@ -44,8 +43,8 @@ The human gives direction, judgment, context, correction, approval, and
 accountability. The agent plans, executes, researches, drafts, uses tools,
 collects evidence, and proposes improvements.
 
-Jarvis defines the rules of that collaboration so any product, model, task
-system, execution environment, or external service can plug in.
+Jarvis defines the rules of that collaboration. Products, models, task systems,
+execution environments, and external services plug into those rules.
 
 ## Thesis
 
@@ -81,7 +80,7 @@ human judgment + agent execution + policy + review + evidence + shared learning
 compound across real work.
 
 The protocol makes this loop portable: different agents, products, hosts, and
-task systems can exchange the same WorkSession, Request, Review, Contribution,
+task systems exchange the same WorkSession, Request, Review, Contribution,
 EvidenceManifest, and LearningRecord concepts without sharing the same
 infrastructure.
 
@@ -131,7 +130,7 @@ Jarvis does not model `User + Assistant`.
 
 Jarvis models `HumanWorker + AgentWorker`.
 
-Both are workers. Both are actors. Both contribute to the WorkSession. Both can
+Both are workers. Both are actors. Both contribute to the WorkSession. Both
 learn from the loop.
 
 ### HumanWorker
@@ -195,7 +194,7 @@ SkillProposal
 6. Evidence is captured during work.
 7. Contributions are attributable.
 8. Human judgment remains central.
-9. Execution can be delegated; accountability remains attributable.
+9. Execution is delegable; accountability remains attributable.
 10. HumanWorker and AgentWorker both learn.
 11. Every completed WorkSession improves the next WorkSession.
 
@@ -246,7 +245,7 @@ Jarvis does not own:
 15. EvidenceManifest exports.
 ```
 
-If v0 proves this loop, Jarvis is real.
+When v0 proves this loop, Jarvis is real.
 
 ## Docs
 

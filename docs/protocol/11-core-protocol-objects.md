@@ -4,8 +4,8 @@ This document is the source of truth for Jarvis v0 core protocol objects.
 
 Jarvis defines the compatibility contracts for human-agent collaboration and
 the learning loop. A compatible product, host, CLI, agent system, or external
-service can use different infrastructure, but it must preserve these object
-meanings and state transitions.
+service uses any infrastructure, but it preserves these object meanings and
+state transitions.
 
 ## Normative Language
 
@@ -139,8 +139,8 @@ The HumanWorker supplies:
 Rules:
 
 - The HumanWorker is not modeled as a passive user.
-- The HumanWorker can approve, deny, narrow, correct, request revision, answer,
-  or take over.
+- The HumanWorker approves, denies, narrows, corrects, requests revision,
+  answers, or takes over.
 - Human corrections are learning signals.
 - Human accountability remains attributable even when execution is delegated.
 
@@ -180,8 +180,9 @@ Rules:
 - The AgentWorker creates a Request when it lacks permission, context, or
   judgment.
 - `autonomy_level` uses the standard values defined in
-  [03-autonomy-policy.md](./03-autonomy-policy.md): `observe`, `suggest`,
-  `execute_with_review`, `bounded_autonomy`, and `full_autonomy_in_scope`.
+  [03-autonomy-policy.md](./03-autonomy-policy.md): `observe_only`,
+  `propose_only`, `execute_with_review`, `bounded_execute`, and
+  `full_execute_in_scope`.
 - The AgentWorker participates in learning, but it cannot silently confirm
   durable memory or skill changes.
 
@@ -271,7 +272,7 @@ Rules:
   attribution.
 - AgentWorker action events SHOULD include payload reproducibility references:
   `model_ref`, `input_refs`, `prompt_ref`, `context_manifest_ref`, and related
-  evidence hashes when the host can provide them.
+  evidence hashes when the host provides them.
 - Event hashes make the protocol record inspectable and exportable.
 - Host-private execution details stay in payload references, not required
   protocol fields.
@@ -302,8 +303,9 @@ Rules:
 - Explicit deny beats allow.
 - Uncovered action dimensions deny execution.
 - `autonomy_level` uses the standard values defined in
-  [03-autonomy-policy.md](./03-autonomy-policy.md): `observe`, `suggest`,
-  `execute_with_review`, `bounded_autonomy`, and `full_autonomy_in_scope`.
+  [03-autonomy-policy.md](./03-autonomy-policy.md): `observe_only`,
+  `propose_only`, `execute_with_review`, `bounded_execute`, and
+  `full_execute_in_scope`.
 - Policy decisions are protocol events.
 - Denied action produces a Request with the reason, requested action, risk,
   safer alternatives, and required reviewer.
@@ -381,7 +383,7 @@ Rules:
 - Request is not a vague notification.
 - Request means the agent cannot continue safely on that branch.
 - Request resolution requires Review or Takeover.
-- Approval can be narrower than the requested action.
+- Approval is narrower than the requested action when the human restricts scope.
 
 ## Review
 
@@ -404,10 +406,10 @@ Review
 Rules:
 
 - Review is a protocol object, not only UI feedback.
-- Review can resolve a Request.
-- Review can create learning signals.
-- Review can narrow future authority.
-- Review can trigger Takeover.
+- Review resolves a Request.
+- Review creates learning signals.
+- Review narrows future authority.
+- Review triggers Takeover.
 
 ## Takeover
 
@@ -491,7 +493,7 @@ Rules:
 - Human, agent, service, tool, and shared contributions remain distinguishable.
 - Shared contribution does not erase the individual contributing actors.
 - Contribution is not compensation. It is the protocol record that downstream
-  systems can evaluate.
+  systems evaluate.
 
 ## EvidenceManifest
 
@@ -544,7 +546,8 @@ Rules:
 
 - Learning is not only agent memory.
 - Jarvis records human learning, agent learning, and pair learning.
-- A LearningRecord can point to MemoryProposal or SkillProposal.
+- A LearningRecord points to MemoryProposal or SkillProposal when learning
+  becomes a governed memory or skill change.
 - Learning does not become durable memory or active skill behavior without
   governed review.
 

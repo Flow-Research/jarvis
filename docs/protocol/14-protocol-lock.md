@@ -139,7 +139,7 @@ Jarvis does not model this:
 User -> Assistant -> Answer
 ```
 
-Chat can be an interface. The protocol is the collaboration record.
+Chat is an interface. The protocol is the collaboration record.
 
 ## Lifecycle
 
@@ -168,7 +168,7 @@ The v0 lifecycle is:
 20. portable export is produced
 ```
 
-Hosts can add internal steps. The external Jarvis lifecycle stays intact.
+Hosts add internal steps. The external Jarvis lifecycle stays intact.
 
 ## WorkSession
 
@@ -242,8 +242,8 @@ Rules:
 - Review identifies reviewer worker and reviewer actor.
 - Review targets a Request, action, contribution, artifact, memory proposal,
   skill proposal, evidence item, or final outcome.
-- Review can resolve a Request.
-- Review can create learning signals.
+- Review resolves a Request.
+- Review creates learning signals.
 
 ## Takeover
 
@@ -304,7 +304,7 @@ Rules:
 - Human, agent, service, tool, and shared contributions stay distinguishable.
 - Shared contribution does not erase individual actors.
 - Contribution is attribution, not payment or accounting.
-- Downstream systems can evaluate Contribution records.
+- Downstream systems evaluate Contribution records.
 
 ## Evidence
 
@@ -346,7 +346,8 @@ Rules:
 
 - Learning is not only agent memory.
 - Jarvis records human learning, agent learning, and pair learning.
-- LearningRecord can point to MemoryProposal or SkillProposal.
+- LearningRecord points to MemoryProposal or SkillProposal when learning becomes
+  a governed memory or skill change.
 - Durable memory and active skill behavior require governed review.
 
 ## Compatibility
@@ -419,7 +420,7 @@ protocol fields.
 
 ## Schema Work Starts Here
 
-The next work is:
+Schema work starts with:
 
 1. version negotiation
 2. capability negotiation

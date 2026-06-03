@@ -5,9 +5,8 @@ Jarvis is a compatibility protocol. It does not define how work runs.
 Products and hosts decide where and how execution happens. Jarvis defines the
 protocol records those systems produce and consume.
 
-The goal is that different humans, agents, products, hosts, and external
-systems can share the same collaboration records without sharing the same
-infrastructure.
+Jarvis lets different humans, agents, products, hosts, and external systems
+share the same collaboration records without sharing the same infrastructure.
 
 ## Jarvis Boundary
 
@@ -58,7 +57,7 @@ None of these choices belong to Jarvis.
 
 ## Evaluation Boundary
 
-Evaluation systems can consume Jarvis protocol outputs:
+Evaluation systems consume Jarvis protocol outputs:
 
 - WorkSession references
 - Contribution records
@@ -73,7 +72,7 @@ settlement. Jarvis owns the collaboration record that produced the work.
 
 ## Capability Boundary
 
-Capability-preparation systems can provide context, skills, checks, and project
+Capability-preparation systems provide context, skills, checks, and project
 setup for a host. They do not define the Jarvis protocol. They feed useful
 inputs into a Jarvis-compatible WorkSession.
 
@@ -95,7 +94,7 @@ coordination semantics.
 
 ## Post-Session Outcome Boundary
 
-External systems can report what happened after a WorkSession export. That
+External systems report what happened after a WorkSession export. That
 feedback closes the learning loop without rewriting the completed session.
 
 `OutcomeReport` is an optional extension record:
@@ -115,9 +114,9 @@ OutcomeReport
 
 Rules:
 
-- OutcomeReport can arrive after a WorkSession is completed.
+- OutcomeReport arrives after a WorkSession is completed.
 - OutcomeReport does not mutate the sealed WorkSession or EvidenceManifest.
-- OutcomeReport can create or reference a new LearningRecord.
+- OutcomeReport creates or references a new LearningRecord.
 - OutcomeReport must remain attributable to a reporter Actor or external
   reporter reference.
 - OutcomeReport is an extension. It does not change the v0 core object list.
@@ -139,7 +138,7 @@ propose MemoryProposal and SkillProposal records
 export protocol records without product-private internals
 ```
 
-The host can implement this with any infrastructure.
+The host implements this with any infrastructure.
 
 ## Forbidden Coupling
 
@@ -154,7 +153,7 @@ Jarvis protocol documents must not require:
 - a specific deployment platform
 - a specific product UI
 
-Examples and products may mention their implementation choices. The Jarvis
+Examples and product docs name their implementation choices. The Jarvis
 protocol itself does not.
 
 ## Conformance
@@ -166,7 +165,7 @@ A conforming implementation proves:
 - WorkSession is the source of truth.
 - Policy gates autonomous action.
 - blocked action creates Request.
-- Review can approve, deny, narrow, correct, or take over.
+- Review approves, denies, narrows, corrects, or takes over.
 - Takeover prevents stale autonomous mutation.
 - Contributions are attributable.
 - Evidence is captured during the work.
