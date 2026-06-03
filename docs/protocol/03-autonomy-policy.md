@@ -224,12 +224,12 @@ agent pauses or lowers autonomy
 human continues the work
 human edits artifacts or runs actions
 agent observes the correction
-Jarvis records the difference
+the WorkSession records the difference
 agent resumes with updated context after reconciliation
 ```
 
-Takeover is a learning event. Jarvis inspects what changed and proposes
-memory or skill updates.
+Takeover is a learning event. A compatible implementation compares what
+changed and produces LearningRecord, MemoryProposal, or SkillProposal records.
 
 Takeover also has locking semantics:
 
@@ -291,8 +291,9 @@ Wrappers:
 
 ## External Send Outbox
 
-Any action that sends, publishes, submits, deploys, spends, merges, or exposes
-data outside Jarvis uses a two-phase outbox:
+Any AgentWorker action that sends, publishes, submits, deploys, spends, merges,
+or exposes data outside the approved WorkSession or host boundary uses a
+two-phase outbox:
 
 ```txt
 draft
@@ -311,16 +312,16 @@ receipted
   immutable send receipt is appended to evidence
 ```
 
-The model never silently sends external effects through raw
-tools.
+The model never silently sends external effects through raw tools.
 
 No tool sends, publishes, submits, deploys, spends, merges, or exports outside
-Jarvis except through the outbox. Approval binds to payload hash, recipient,
-tool id, credential scope, and expiry. Any payload, recipient, credential, or
-tool change invalidates approval. Commit uses a one-time token and idempotency
-key.
+the approved boundary except through a host outbox represented by
+PolicyDecision, Review or authorization, outbox, and EvidenceManifest records.
+Approval binds to payload hash, recipient, tool id, credential scope, and
+expiry. Any payload, recipient, credential, or tool change invalidates
+approval. Commit uses a one-time token and idempotency key.
 
-Pre-approved send grants are templates. Before commit, Jarvis materializes a
+Pre-approved send grants are templates. Before commit, the host materializes a
 `SendAuthorization` bound to canonical payload hash, recipient, tool id,
 credential scope, data classification, expiry, and idempotency key. Jarvis
 requires explicit review for `public_publish`, `financial`, `destructive`, and
@@ -346,15 +347,17 @@ Rules:
 - egress restrictions tied to credential scope
 - explicit review for new credential/tool combinations
 
-Jarvis never places raw secrets or bearer tokens inside arbitrary
-command-readable state. If a token enters a sandbox, it is single-use,
-audience-bound, operation-specific, short-lived, no-readback, and paired with
-network restrictions. Jarvis assumes stdout and stderr can leak anything visible
-to the command. General env-var secret injection is not a Jarvis default.
+A compatible implementation never places raw secrets or bearer tokens inside
+arbitrary command-readable state. If a token enters a sandbox, it is
+single-use, audience-bound, operation-specific, short-lived, no-readback, and
+paired with network restrictions. The policy model treats stdout and stderr as
+possible leak paths for anything visible to the command. General env-var secret
+injection is not a Jarvis default.
 
 ## Execution Environment Policy
 
-When a host provides an execution environment, Jarvis policy defines the limits:
+When a host provides an execution environment, Jarvis policy records define the
+limits:
 
 - filesystem scope
 - network mode
@@ -428,7 +431,7 @@ observe/suggest or scratch-local work until audit integrity is restored.
 
 ## Default Policy Profiles
 
-Jarvis ships safe presets:
+Jarvis defines safe policy profile presets:
 
 ```txt
 observe
@@ -448,3 +451,10 @@ sandbox_autonomous
 ```
 
 Developers start with presets and tighten or extend them.
+
+## Policy Evolution
+
+Repeated successful reviews can inform policy changes. Policy changes remain
+explicit, attributable, and reviewable.
+
+Jarvis does not silently expand autonomy from derived performance signals.

@@ -14,9 +14,9 @@ Jarvis stays focused on the collaboration and learning loop. Products, agents,
 execution environments, and external systems integrate with Jarvis by
 implementing its protocol contracts.
 
-Jarvis is a compatibility layer for any HumanWorker, AgentWorker, product,
-host, or external system that needs to participate in governed human-agent
-collaboration.
+Jarvis is the compatibility protocol for any HumanWorker, AgentWorker,
+product, host, or external system that needs to participate in governed
+human-agent collaboration.
 
 ## Interactive Simulation
 
@@ -239,9 +239,9 @@ Jarvis does not own:
 8. AgentWorker creates Request.
 9. HumanWorker approves, denies, narrows, answers, or takes over.
 10. AgentWorker resumes.
-11. Jarvis records Contribution.
-12. Jarvis captures Evidence.
-13. Jarvis proposes Learning.
+11. Contribution is recorded.
+12. Evidence is captured.
+13. Learning is proposed.
 14. Human confirms or rejects Learning.
 15. EvidenceManifest exports.
 ```

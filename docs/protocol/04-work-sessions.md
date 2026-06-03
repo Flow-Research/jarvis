@@ -78,6 +78,10 @@ The event log supports observability, debugging, evidence, and learning.
 The event log is append-only. Host checkpoints may accelerate resume, but
 events are the source of truth.
 
+Derived metrics such as revision rounds, elapsed time, blocked-action count,
+and response latency can be computed from events and timestamps. Derived
+metrics do not replace source events and do not become required core fields.
+
 ## Contributions
 
 Contribution records make collaboration inspectable:
@@ -197,7 +201,8 @@ observed, produced, reviewed, and decided.
 
 ## Memory Snapshot Manifest
 
-When context is assembled for a run, Jarvis stores a context manifest:
+When context is assembled for a run, the WorkSession records a context
+manifest:
 
 ```txt
 memory ids
@@ -213,9 +218,28 @@ tool inventory hash
 This lets a WorkSession resume and lets humans inspect why the agent saw a
 particular context.
 
+## Reproducibility References
+
+AgentWorker action events record enough references to reconstruct what the
+agent acted on at that point in time:
+
+```txt
+model_ref
+input_refs
+prompt_ref
+context_manifest_ref
+policy_id
+evidence_hashes
+```
+
+These references stay inside event payloads and evidence records. Provider
+private runtime details stay outside portable exports unless an export profile
+explicitly includes them.
+
 ## Learning Pass
 
-After a WorkSession produces reviewable output, Jarvis runs a learning pass:
+After a WorkSession produces reviewable output, a compatible implementation can
+run a learning pass:
 
 ```txt
 1. inspect conversation, actions, reviews, artifacts, and outcome
@@ -226,7 +250,8 @@ After a WorkSession produces reviewable output, Jarvis runs a learning pass:
 6. mark reusable context
 ```
 
-The pass proposes. Policy decides what becomes durable.
+The pass produces LearningRecord, MemoryProposal, and SkillProposal records.
+Policy decides what becomes durable.
 
 ## WorkSession Resumption
 

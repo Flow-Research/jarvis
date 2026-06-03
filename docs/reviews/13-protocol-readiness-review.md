@@ -89,7 +89,7 @@ The review tightened:
 
 - duplicate core contract names in the README
 - duplicate `JarvisEvent` entry in the roadmap
-- stale agent-wrapper wording in policy docs
+- stale agent-adapter wording in policy docs
 - host integration pseudocode so actor ids and worker ids are not confused
 - WorkSession evidence section headings
 - roadmap wording that tied protocol explanation to named downstream systems

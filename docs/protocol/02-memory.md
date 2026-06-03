@@ -311,7 +311,7 @@ The human accepts or modifies this classification.
 
 ## Correction Learning Pipeline
 
-For each correction, Jarvis captures:
+For each correction, the correction pipeline captures:
 
 ```txt
 original agent action/output
@@ -352,6 +352,20 @@ superseded_by when behavior changes
 
 The agent does not accumulate confident self-created habits without outcome
 evidence.
+
+## External Outcome Feedback
+
+Some outcome evidence arrives after a WorkSession is completed and exported.
+Examples include accepted work, rejected work, reviewer feedback, disputed
+submissions, and required revisions.
+
+A compatible system records that feedback through an OutcomeReport extension or
+an equivalent attributable external feedback record. The completed WorkSession
+and EvidenceManifest stay sealed. The new feedback links back to the original
+WorkSession and can produce a new LearningRecord, MemoryProposal, or
+SkillProposal.
+
+This closes the learning loop without rewriting history.
 
 ## Memory Failure Modes
 
