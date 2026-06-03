@@ -1,6 +1,6 @@
 Jarvis Roadmap
 Definition,"Jarvis is the human-agent collaboration and learning-loop protocol. It defines WorkSession, Policy, Request, Review, Takeover, Contribution, EvidenceManifest, LearningRecord, MemoryProposal, and SkillProposal so existing agents and host products can collaborate with humans without replacing their runtimes."
-Near-term priority,"Near-term priority: prove one v0 protocol loop end to end: protocol lock, schemas, version and capability negotiation, adapter contract, Garden POC mapping, portable export, and conformance fixtures. Garden POC is the product proof before main Garden adopts the protocol. Keep scope narrow: protocol records first, Garden POC plus one CLI/existing-agent wrapper, evidence and learning captured during work."
+Near-term priority,"Near-term priority: prove one v0 protocol loop end to end: protocol lock, schemas, version and capability negotiation, adapter contract, Garden POC mapping, portable export, and conformance fixtures. Garden POC is the product proof before main Garden adopts the protocol. Keep scope narrow: protocol records first, Garden POC plus one real existing-agent adapter, evidence and learning captured during work."
 
 Week,Date range,Primary goal,Protocol lock + research,Schemas + conformance,Adapter + interoperability,Garden POC + demo,Done when
 Now,Jun 2-5,Turn Jarvis into an implementation-ready protocol lock.,"- freeze v0 protocol lock
@@ -13,9 +13,9 @@ Now,Jun 2-5,Turn Jarvis into an implementation-ready protocol lock.,"- freeze v0
 - define what an existing agent must expose
 - map agent steps to JarvisEvent
 - map blocked action to Request","- choose Garden POC as the first product proof
-- choose one CLI/external-agent wrapper
+- choose one real existing-agent adapter
 - define Garden-private fields that stay out of export
-- define demo success path","Protocol lock is the source for schema work, Garden POC and wrapper targets are named, and no new runtime/product assumptions enter Jarvis."
+- define demo success path","Protocol lock is the source for schema work, Garden POC and adapter targets are named, and no new runtime/product assumptions enter Jarvis."
 W1,Jun 8-12,Create the v0 machine-readable contract.,"- finalize required object meanings
 - lock WorkSession state transitions
 - lock Request, Review, Takeover states
@@ -23,7 +23,7 @@ W1,Jun 8-12,Create the v0 machine-readable contract.,"- finalize required object
 - create JarvisEvent envelope schema
 - create portable export schema
 - define protocol error codes","- draft adapter contract
-- define AgentWorker wrapper surface
+- define AgentWorker adapter surface
 - define tool/action to PolicyDecision mapping
 - define limitations field for unsupported concepts","- create Garden POC mapping table
 - define Garden WorkSession flow
@@ -35,27 +35,27 @@ W2,Jun 15-19,Make conformance strong enough to prove compatibility.,"- write com
 - define capability negotiation","- build golden-path fixtures
 - build failing fixtures
 - validate status transitions
-- validate export does not require Garden-private fields","- create CLI/existing-agent wrapper plan
+- validate export does not require Garden-private fields","- create CLI/existing-agent adapter plan
 - capture messages/actions as JarvisEvents
 - capture tool use as PolicyDecision and Evidence
 - capture human correction as Review","- run Garden POC mapping against schemas
 - generate sample WorkSession export
 - show evidence and learning records
 - document host-only assumptions separately","Conformance rejects missing policy, missing review, stale takeover continuation, unattributed contribution, weak evidence, and silent learning mutation."
-W3,Jun 22-26,Prove Jarvis with Garden POC and one existing-agent wrapper.,"- refine protocol from real fixture pain
+W3,Jun 22-26,Prove Jarvis with Garden POC and one existing-agent adapter.,"- refine protocol from real fixture pain
 - keep object names stable
 - document compatibility decisions
 - update protocol lock only for real contradictions","- run schemas against host export
-- run schemas against CLI/wrapper export
+- run schemas against CLI/adapter export
 - compare both exports for same core semantics
-- record gaps as conformance issues","- implement wrapper proof path
+- record gaps as conformance issues","- implement proof adapter path
 - HumanWorker objective -> AgentWorker action
 - blocked action -> Request
 - human response -> Review or Takeover","- demonstrate Garden POC flow
 - export EvidenceManifest
 - export LearningRecord
 - show human, agent, and pair learning
-- update simulation narrative if needed","Two different host shapes produce valid Jarvis records for the same collaboration loop without sharing runtime, UI, storage, or execution stack."
+- update simulation narrative if needed","Two different host or adapter shapes produce valid Jarvis records for the same collaboration loop without sharing runtime, UI, storage, or execution stack."
 W4,Jun 29-Jul 3,Freeze v0.1 alpha and prepare team/public review.,"- close protocol lock gaps
 - publish compatibility notes
 - summarize decisions and non-goals
@@ -63,19 +63,19 @@ W4,Jun 29-Jul 3,Freeze v0.1 alpha and prepare team/public review.,"- close proto
 - publish conformance checklist
 - publish valid/invalid examples
 - define migration policy draft","- write adapter guide
-- document CLI/existing-agent wrapper
+- document CLI/existing-agent adapter
 - document host implementation guide
 - identify next two adapter targets","- publish final demo URL
 - package Garden POC evidence
 - prepare team walkthrough
-- collect review notes into next-cycle issues","Jarvis has a v0.1 alpha package of protocol docs, schemas, examples, conformance fixtures, Garden POC proof, and one existing-agent wrapper proof."
+- collect review notes into next-cycle issues","Jarvis has a v0.1 alpha package of protocol docs, schemas, examples, conformance fixtures, Garden POC proof, and one existing-agent adapter proof."
 Later,After v0.1,Expand only from conformance and proof-host evidence.,"- harden object model from real adapters
 - add migration rules
 - add public implementation checklist
 - prepare v0.2 evidence and learning beta","- richer EvidenceManifest
 - stronger Contribution taxonomy
 - review-state workflows
-- memory and skill compatibility rules","- more agent wrappers
+- memory and skill compatibility rules","- more agent adapters
 - MCP/A2A/AG-UI integration notes
 - SDK-neutral adapter examples
 - compatibility badges","- additional product proofs

@@ -446,7 +446,7 @@ button {
   font-weight: 900;
 }
 
-.harness-map {
+.protocol-map {
   position: relative;
   min-height: 520px;
   overflow: hidden;
@@ -460,7 +460,7 @@ button {
   background-size: 48px 48px, 48px 48px, auto, auto;
 }
 
-.harness-map::before {
+.protocol-map::before {
   content: "";
   position: absolute;
   inset: 16px;
@@ -909,7 +909,7 @@ button {
     padding: 10px;
   }
 
-  .harness-map {
+  .protocol-map {
     min-height: 760px;
   }
 

@@ -179,6 +179,9 @@ Rules:
 - The AgentWorker acts inside Policy without asking for every small step.
 - The AgentWorker creates a Request when it lacks permission, context, or
   judgment.
+- `autonomy_level` uses the standard values defined in
+  [03-autonomy-policy.md](./03-autonomy-policy.md): `observe`, `suggest`,
+  `execute_with_review`, `bounded_autonomy`, and `full_autonomy_in_scope`.
 - The AgentWorker participates in learning, but it cannot silently confirm
   durable memory or skill changes.
 
@@ -222,6 +225,9 @@ Rules:
 
 - A WorkSession is not chat history.
 - A WorkSession records the collaboration, not the host execution stack.
+- `source_ref` points to the origin of the work, task, product flow, or
+  external system reference. It is opaque to Jarvis and never gives the
+  protocol ownership of that external system.
 - Events are append-only.
 - The event log is the protocol source of truth.
 - Private host fields stay outside portable Jarvis exports.
@@ -242,6 +248,9 @@ JarvisEvent
   payload
   previous_hash
   event_hash
+  canonicalization
+  actor_signature
+  signing_key_ref
 ```
 
 Rules:
@@ -249,6 +258,20 @@ Rules:
 - Every meaningful protocol transition creates a JarvisEvent.
 - Every JarvisEvent has an Actor.
 - Events are ordered inside a WorkSession.
+- `previous_hash` links to the prior event hash in the WorkSession event log.
+- `event_hash` is computed over canonical event serialization excluding
+  `event_hash`, `actor_signature`, and signature metadata fields.
+- `canonicalization` records the serialization and hash method used by the
+  export profile.
+- Export profiles SHOULD use deterministic JSON canonicalization such as
+  [RFC 8785 JCS](https://www.rfc-editor.org/rfc/rfc8785) unless the profile
+  declares another method.
+- `actor_signature` and `signing_key_ref` are optional. Signed export profiles
+  use them to prove authorship; unsigned profiles still require Actor
+  attribution.
+- AgentWorker action events SHOULD include payload reproducibility references:
+  `model_ref`, `input_refs`, `prompt_ref`, `context_manifest_ref`, and related
+  evidence hashes when the host can provide them.
 - Event hashes make the protocol record inspectable and exportable.
 - Host-private execution details stay in payload references, not required
   protocol fields.
@@ -278,6 +301,9 @@ Rules:
 - Policy denies by default.
 - Explicit deny beats allow.
 - Uncovered action dimensions deny execution.
+- `autonomy_level` uses the standard values defined in
+  [03-autonomy-policy.md](./03-autonomy-policy.md): `observe`, `suggest`,
+  `execute_with_review`, `bounded_autonomy`, and `full_autonomy_in_scope`.
 - Policy decisions are protocol events.
 - Denied action produces a Request with the reason, requested action, risk,
   safer alternatives, and required reviewer.

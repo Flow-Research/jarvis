@@ -72,7 +72,8 @@ WorkSession better.
 
 ```txt
 1. HumanWorker defines intent.
-2. Jarvis starts or resumes a WorkSession.
+2. A compatible host starts or resumes a WorkSession using Jarvis protocol
+   records.
 3. Policy defines the action boundary.
 4. AgentWorker receives context, memory, skills, and available capabilities.
 5. AgentWorker plans and executes inside policy.
@@ -80,9 +81,9 @@ WorkSession better.
 7. Missing permission, context, or judgment becomes a Request.
 8. HumanWorker reviews, approves, denies, narrows, corrects, or takes over.
 9. AgentWorker resumes when allowed.
-10. Jarvis records events, contributions, and evidence.
-11. Jarvis proposes memory, skill, and learning updates for the human, agent,
-    and pair.
+10. Events, contributions, and evidence are recorded as protocol records.
+11. Memory, skill, and learning updates are proposed for the human, agent, and
+    pair.
 12. HumanWorker confirms or rejects governed learning.
 13. EvidenceManifest exports.
 14. The HumanWorker, AgentWorker, and next WorkSession start with confirmed

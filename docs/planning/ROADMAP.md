@@ -34,6 +34,10 @@ Jarvis owns:
 - SkillProposal
 - protocol event envelope
 - protocol export format
+- adapter contract
+- adapter conformance expectations
+- version negotiation rules
+- capability negotiation rules
 - conformance tests
 - interoperability rules
 
@@ -113,8 +117,13 @@ MemoryProposal and SkillProposal remain governed
 - portable export profile
 - conformance tests for the golden path
 - interoperability checklist
-- one static interactive simulation
-- one host integration guide
+- adapter contract
+- Garden POC product-proof export
+- one real existing-agent adapter proof
+- valid and invalid conformance fixtures
+- version and capability negotiation
+- one protocol simulation that visualizes the proof path
+- host and adapter integration guide
 
 ### v0.1 Excludes
 
@@ -294,7 +303,7 @@ Output:
 - glossary
 - protocol diagrams
 - JSON examples
-- host integration guide
+- host and adapter integration guide
 - evaluation-system integration guide
 - host/product integration note
 - interactive simulation
@@ -417,4 +426,6 @@ Control: learning becomes MemoryProposal or SkillProposal until reviewed.
 3. Use `11-core-protocol-objects.md` as the source of truth for core terms.
 4. Draft JSON examples for each protocol contract.
 5. Define conformance tests for the golden path.
-6. Update the live simulation to show host/execution as outside Jarvis.
+6. Map Garden POC to Jarvis objects and export shape.
+7. Define one real existing-agent adapter proof.
+8. Update the live simulation to show host/execution as outside Jarvis.

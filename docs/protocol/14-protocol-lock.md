@@ -353,7 +353,8 @@ Rules:
 
 Existing agents and products are first-class.
 
-Jarvis wraps existing agents. It does not replace their runtime.
+Compatible hosts and adapters map existing agents into AgentWorker records.
+They do not replace the agent runtime.
 
 A compatible adapter maps:
 

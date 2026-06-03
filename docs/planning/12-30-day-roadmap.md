@@ -2,10 +2,10 @@
 
 This roadmap turns Jarvis from design into a credible protocol proof.
 
-Jarvis is not an agent framework, runtime, agent wrapper, cloud stack, or
+Jarvis is not an agent framework, runtime, agent adapter package, cloud stack, or
 product UI. Jarvis is the human-agent collaboration and learning-loop
 protocol. The next 30 days prove that existing agents and products can be
-wrapped with Jarvis contracts without replacing their runtime.
+mapped into Jarvis protocol records without replacing their runtime.
 
 ## Thesis
 
@@ -39,10 +39,10 @@ Jarvis sits beside existing standards:
 - AG-UI standardizes agent-to-frontend interaction. Jarvis can feed AG-UI
   interfaces with WorkSession state, Requests, Reviews, and EvidenceManifest
   data, but Jarvis is not a frontend protocol.
-- Agent SDKs and agent products such as OpenAI Agents SDK, Claude Code, Hermes,
-  and OpenClaw provide runtimes, tools, sessions, handoffs, tracing, or
-  execution environments. Jarvis wraps their work into collaboration records
-  instead of replacing them.
+- Agent SDKs, coding agents, local agents, and hosted agent products provide
+  runtimes, tools, sessions, handoffs, tracing, or execution environments.
+  Compatible adapters map their work into collaboration records instead of
+  replacing them.
 
 Protocol grounding:
 
@@ -50,14 +50,17 @@ Protocol grounding:
 - A2A: https://a2a-protocol.org/latest/
 - AG-UI: https://docs.ag-ui.com/
 - OpenAI Agents SDK: https://openai.github.io/openai-agents-python/
+- RFC 8785 JSON Canonicalization Scheme:
+  https://www.rfc-editor.org/rfc/rfc8785
+- W3C PROV provenance model: https://www.w3.org/TR/prov-overview/
 
 ## North Star For The 30 Days
 
 By the end of 30 days, we must be able to show:
 
 ```txt
-Existing agent or Garden POC
-  -> wrapped by Jarvis protocol adapter
+Garden POC plus one real existing-agent adapter
+  -> map HumanWorker + AgentWorker work into Jarvis protocol records
   -> HumanWorker starts WorkSession
   -> AgentWorker acts inside Policy
   -> blocked action creates Request
@@ -84,6 +87,7 @@ Deliverables:
 - define PolicyDecision semantics
 - define EvidenceManifest minimum export shape
 - define LearningRecord, MemoryProposal, and SkillProposal review states
+- define OutcomeReport as an optional post-session feedback extension
 - write a short protocol positioning note against MCP, A2A, AG-UI, and agent
   SDKs
 
@@ -98,7 +102,7 @@ Done when:
 
 ## Week 2: Schemas, Conformance, And Adapter Surface
 
-Goal: make Jarvis implementable by another product or agent wrapper.
+Goal: make Jarvis implementable by another product or agent adapter.
 
 Deliverables:
 
@@ -107,7 +111,7 @@ Deliverables:
 - portable export schema
 - golden-path conformance checklist
 - failure-mode conformance checklist
-- adapter contract for wrapping existing agents
+- adapter contract for mapping existing agents into Jarvis protocol records
 - first JSON example WorkSession
 
 Adapter contract must answer:
@@ -128,7 +132,7 @@ Done when:
   evidence, or learning
 - adapters do not require the agent runtime to be rewritten
 
-## Week 3: Garden POC End-To-End Integration
+## Week 3: Garden POC Product Proof
 
 Goal: use Garden POC as the first product proof without making Jarvis depend on
 Garden. The POC proves the protocol before main Garden adopts it.
@@ -160,8 +164,8 @@ Goal: prove Jarvis works with existing agents and is worth discussing publicly.
 Deliverables:
 
 - one Garden POC demo
-- one CLI-agent wrapper demo
-- one external-agent or simulated-agent wrapper demo
+- one CLI-agent adapter demo
+- one real external-agent or SDK-agent adapter demo
 - public README tightened around protocol positioning
 - protocol examples for WorkSession, Request, Review, EvidenceManifest, and
   LearningRecord
@@ -169,16 +173,16 @@ Deliverables:
 - GitHub Pages simulation updated to show the 30-day proof path
 - short public narrative: why Jarvis exists and what it does not replace
 
-Candidate wrappers:
+Candidate adapters:
 
-- Claude Code-style CLI wrapper
-- Hermes/OpenClaw-style local agent wrapper
-- OpenAI Agents SDK-style runtime wrapper
-- MCP tool-use wrapper
+- Claude Code-style CLI adapter
+- Hermes/OpenClaw-style local agent adapter
+- OpenAI Agents SDK-style runtime adapter
+- MCP tool-use adapter
 
 Done when:
 
-- at least two different host shapes can produce the same Jarvis protocol
+- at least two different host or adapter shapes can produce the same Jarvis protocol
   records
 - Garden POC is one product proof, not the protocol itself
 - the team can share one URL and one README that explain the point clearly
@@ -222,10 +226,10 @@ Daily review questions:
 
 1. Freeze the object model in `11-core-protocol-objects.md`.
 2. Create JSON examples for one complete WorkSession.
-3. Draft the adapter contract for wrapping an existing agent.
+3. Draft the adapter contract for mapping an existing agent.
 4. Map Garden POC concepts to Jarvis objects.
 5. Decide the first two proof paths: Garden POC plus one CLI/external-agent
-   wrapper.
+   adapter.
 
 If these are clear, the rest of the 30 days becomes execution rather than
 debate.

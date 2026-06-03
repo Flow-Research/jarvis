@@ -103,7 +103,9 @@ Forbidden imports:
 Release tests:
 
 - JSON serialization is stable.
+- canonical event serialization is stable.
 - event envelopes validate required ids and timestamps.
+- event hashes exclude `event_hash` and signature fields.
 - WorkSession status transitions reject invalid transitions.
 - Request resolution requires Review.
 - Takeover creates a lock epoch.
