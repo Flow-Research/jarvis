@@ -30,10 +30,10 @@ Planning docs and sheets track execution.
 - [sheets/jarvis_roadmap.csv](./planning/sheets/jarvis_roadmap.csv)
 - [sheets/jarvis_roadmap.xlsx](./planning/sheets/jarvis_roadmap.xlsx)
 
-## Reviews
+## Readiness
 
-Review docs keep protocol readiness and acceptance criteria separate from the
-protocol source files.
+Readiness docs lock schema entry criteria and acceptance criteria without
+changing the protocol source files.
 
 - [13-protocol-readiness-review.md](./reviews/13-protocol-readiness-review.md)
 - [acceptance-criteria.md](./reviews/acceptance-criteria.md)

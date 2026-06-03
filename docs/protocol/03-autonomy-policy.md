@@ -8,19 +8,19 @@ the AgentWorker needs something outside them, it creates a request.
 ## Autonomy Levels
 
 ```txt
-observe
+observe_only
   inspect and summarize only
 
-suggest
+propose_only
   propose plans/actions but do not execute
 
 execute_with_review
   run allowed actions, require review for outputs or external effects
 
-bounded_autonomy
+bounded_execute
   complete bounded work using granted tools and scope
 
-full_autonomy_in_scope
+full_execute_in_scope
   complete the objective independently within explicit limits
 ```
 
@@ -179,7 +179,7 @@ Canonical fields include:
 - files touched
 - hosts contacted
 - secrets or credentials requested
-- data that leaves or can leave the approved boundary
+- data that leaves or is able to leave the approved boundary
 - irreversible effects
 - requested grant scope and expiry
 - narrower alternatives
@@ -427,14 +427,15 @@ cannot support hash-linked audit records mark audit integrity as degraded.
 Degraded audit integrity automatically denies `credentialed`, `send_external`,
 `public_publish`, `financial`, `destructive`, `privilege_change`,
 `background_recurring`, and high-autonomy modes. Jarvis allows only
-observe/suggest or scratch-local work until audit integrity is restored.
+observe-only, propose-only, or scratch-local work until audit integrity is
+restored.
 
 ## Default Policy Profiles
 
 Jarvis defines safe policy profile presets:
 
 ```txt
-observe
+observe_only
   read-only summaries, no execution
 
 research_only
@@ -454,7 +455,7 @@ Developers start with presets and tighten or extend them.
 
 ## Policy Evolution
 
-Repeated successful reviews can inform policy changes. Policy changes remain
+Repeated successful reviews inform policy changes. Policy changes remain
 explicit, attributable, and reviewable.
 
 Jarvis does not silently expand autonomy from derived performance signals.

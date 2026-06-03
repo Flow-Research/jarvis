@@ -4,8 +4,8 @@
 
 Jarvis is the human-agent collaboration and learning-loop protocol. It defines
 how human workers and agent workers coordinate under shared goals and
-human-defined policy, so they can complete work together, review each other,
-record contributions, capture evidence, and both improve across WorkSessions.
+human-defined policy, complete work together, review each other, record
+contributions, capture evidence, and both improve across WorkSessions.
 
 ## One-Line Definition
 
@@ -21,9 +21,9 @@ Jarvis is how humans and agents work together.
 The human does not just prompt. The agent does not just answer. Both participate
 in the work.
 
-Jarvis is a compatibility protocol, not one user's workflow. Any product,
-host, human worker, agent worker, or external system can implement the
-contracts and participate in the same collaboration loop.
+Jarvis is a compatibility protocol, not one user's workflow. Products, hosts,
+human workers, agent workers, and external systems implement the contracts and
+participate in the same collaboration loop.
 
 ## Design From Collaboration, Not Chat
 
@@ -39,7 +39,7 @@ Jarvis does not model `User + Assistant`.
 
 Jarvis models `HumanWorker + AgentWorker`.
 
-Both are workers. Both are actors. Both contribute to the WorkSession. Both can
+Both are workers. Both are actors. Both contribute to the WorkSession. Both
 learn from the loop.
 
 The human is:
@@ -132,10 +132,10 @@ The agent does not need the human to approve every small step.
 
 The human defines policy:
 
-- what the agent can inspect
-- what the agent can execute
-- what the agent can change
-- what the agent can send externally
+- what the agent inspects
+- what the agent executes
+- what the agent changes
+- what the agent sends externally
 - when the agent must ask
 - when the human must review
 
@@ -145,14 +145,14 @@ Inside policy, the agent proceeds. Outside policy, it creates a Request.
 
 When the agent lacks permission, context, or judgment, it creates a Request.
 
-Requests are structured protocol objects, not vague interruptions. A human can
-approve, deny, narrow, correct, answer, or take over.
+Requests are structured protocol objects, not vague interruptions. A human
+approves, denies, narrows, corrects, answers, or takes over.
 
 ## Reviews Teach The System
 
 Human review is not only quality control. Human review is teaching material.
 
-Jarvis records reviews as protocol events that can become memory proposals,
+Jarvis records reviews as protocol events that become memory proposals,
 skill proposals, policy improvements, and better future behavior.
 
 ## Contributions Are Attributable
@@ -165,12 +165,12 @@ or "the human did it."
 
 ## Accountability Remains Attributable
 
-Execution can be delegated. Accountability cannot disappear.
+Execution is delegable. Accountability cannot disappear.
 
-The agent may execute, research, draft, automate, and collect evidence. The
-human remains an accountable actor for judgment, policy, review, and final
-tradeoffs. Jarvis records enough contribution and evidence for accountability
-to remain inspectable.
+The agent executes, researches, drafts, automates, and collects evidence inside
+policy. The human remains an accountable actor for judgment, policy, review,
+and final tradeoffs. Jarvis records enough contribution and evidence for
+accountability to remain inspectable.
 
 ## Evidence Is Captured During Work
 
@@ -235,7 +235,7 @@ collaboration and learning-loop protocol those systems implement.
 7. Evidence is captured during work.
 8. Contributions are attributable.
 9. Human judgment remains central.
-10. Execution may be delegated; accountability remains attributable.
+10. Execution is delegable; accountability remains attributable.
 11. HumanWorker and AgentWorker both learn.
 12. Every completed WorkSession improves the next WorkSession.
 

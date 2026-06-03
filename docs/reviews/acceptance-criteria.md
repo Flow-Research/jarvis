@@ -22,7 +22,7 @@ Jarvis architecture is accepted only when these criteria hold.
 - AgentWorker is an autonomous but policy-bounded contributor.
 - HumanWorker and AgentWorker are both actors in the protocol.
 - HumanWorker and AgentWorker both learn from completed WorkSessions.
-- HumanWorker can approve, deny, narrow, correct, request revision, or take
+- HumanWorker approves, denies, narrows, corrects, requests revision, or takes
   over.
 - Corrections become structured learning signals.
 
@@ -35,7 +35,7 @@ Jarvis architecture is accepted only when these criteria hold.
 
 ## Policy
 
-- Policy defines what the AgentWorker can do.
+- Policy defines what the AgentWorker does.
 - Action outside policy creates Request.
 - Request is reviewable and attributable.
 - Review decisions are explicit.
@@ -92,7 +92,7 @@ Expected result:
 
 ## Conformance Acceptance
 
-A product is Jarvis-compatible when it can prove:
+A product is Jarvis-compatible when it proves:
 
 - WorkSession is the source of truth.
 - Policy gates autonomous action.

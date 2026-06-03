@@ -27,7 +27,7 @@ const steps = [
     activeNodes: ["kernel", "agent"],
     activeBeams: ["beam-agent"],
     summary:
-      "Jarvis selects the context the AgentWorker can use: human memory, project memory, skill inventory, active policy, and tool grants.",
+      "Jarvis selects the context available to the AgentWorker: human memory, project memory, skill inventory, active policy, and tool grants.",
     events: [
       "MemorySelector chooses scoped human, shared, and project memory.",
       "SkillResolver loads research and project-inspection skills.",
@@ -151,7 +151,7 @@ const steps = [
       "State: proposed, not automatically confirmed."
     ],
     policy: ["Model cannot confirm its own learning.", "Memory write requires policy gate."],
-    evidence: ["review_added", "memory_suggested", "skill_suggested"]
+    evidence: ["review_added", "memory_proposed", "skill_proposed"]
   },
   {
     title: "Evidence Export",
@@ -183,7 +183,7 @@ const steps = [
     summary:
       "The next WorkSession starts smarter because the HumanWorker, AgentWorker, and their shared working loop improve from confirmed learning.",
     events: [
-      "HumanWorker confirms what the human learned, what the agent learned, and what the pair should carry forward.",
+      "HumanWorker confirms what the human learned, what the agent learned, and what the pair carries forward.",
       "Skill update is versioned.",
       "Next WorkSession inherits confirmed memory only."
     ],

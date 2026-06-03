@@ -66,20 +66,20 @@ request_resolved
 human_takeover_started
 human_takeover_finished
 review_added
-memory_suggested
+memory_proposed
 memory_confirmed
-skill_suggested
+skill_proposed
 skill_updated
 work_session_completed
 ```
 
 The event log supports observability, debugging, evidence, and learning.
 
-The event log is append-only. Host checkpoints may accelerate resume, but
+The event log is append-only. Host checkpoints accelerate resume, but
 events are the source of truth.
 
 Derived metrics such as revision rounds, elapsed time, blocked-action count,
-and response latency can be computed from events and timestamps. Derived
+and response latency are computed from events and timestamps. Derived
 metrics do not replace source events and do not become required core fields.
 
 ## Contributions
@@ -238,8 +238,8 @@ explicitly includes them.
 
 ## Learning Pass
 
-After a WorkSession produces reviewable output, a compatible implementation can
-run a learning pass:
+After a WorkSession produces reviewable output, a compatible implementation
+runs a learning pass:
 
 ```txt
 1. inspect conversation, actions, reviews, artifacts, and outcome

@@ -1,9 +1,9 @@
-# Protocol Readiness Review
+# Protocol Readiness Lock
 
-This review confirms Jarvis is ready to move from design into schemas,
-examples, conformance tests, and host proofs.
+Jarvis is ready to move from design into schemas, examples, conformance tests,
+and host proofs.
 
-## Review Baseline
+## Baseline
 
 Jarvis is the human-agent collaboration and learning-loop protocol. It defines
 how a HumanWorker and AgentWorker coordinate under shared goals and policy,
@@ -14,7 +14,7 @@ SkillProposals.
 Jarvis is not a runtime, agent framework, product workspace, model provider,
 task marketplace, or cloud stack.
 
-## Protocol Patterns Reviewed
+## Protocol Habits We Use
 
 Jarvis follows proven protocol habits from existing standards:
 
@@ -23,7 +23,8 @@ Jarvis follows proven protocol habits from existing standards:
 - Language Server Protocol uses initialization, capability negotiation, typed
   messages, and extension points.
 - OpenAPI gives implementers machine-readable contracts.
-- MCP standardizes tool/resource/prompt connectivity for LLM applications.
+- MCP standardizes tool, resource, and prompt connectivity for LLM
+  applications.
 - A2A standardizes agent-to-agent discovery, tasks, messages, and artifacts.
 - AG-UI standardizes agent-to-frontend event streams.
 
@@ -46,16 +47,16 @@ Jarvis uses these protocol disciplines:
 - versioned records
 - capability negotiation
 - typed events
-- request/response resolution rules
+- request and response resolution rules
 - portable export format
 - extension points
 - conformance tests
 - compatibility language
 - strict separation from implementation infrastructure
 
-## What Jarvis Must Not Borrow
+## Boundaries We Keep
 
-Jarvis must not become:
+Jarvis does not become:
 
 - MCP for tools
 - A2A for agent-to-agent communication
@@ -65,7 +66,7 @@ Jarvis must not become:
 - an agent SDK runtime
 - a product-specific workflow engine
 
-Jarvis can integrate with all of these. It owns the collaboration and learning
+Jarvis integrates with all of these. It owns the collaboration and learning
 record they do not define.
 
 ## Current Alignment
@@ -83,38 +84,36 @@ The repo is aligned on the main thesis:
 - MemoryProposal and SkillProposal prevent silent learning mutation.
 - products and hosts own execution, storage, UI, deployment, and model choice.
 
-## Corrections Made Before Implementation
+## Locked Before Implementation
 
-The review tightened:
+The docs now lock these points before schema work starts:
 
-- duplicate core contract names in the README
-- duplicate `JarvisEvent` entry in the roadmap
-- stale agent-adapter wording in policy docs
-- host integration pseudocode so actor ids and worker ids are not confused
-- WorkSession evidence section headings
-- roadmap wording that tied protocol explanation to named downstream systems
-- canonical object spec with protocol-style normative language
+- README uses one direct protocol definition.
+- roadmap uses one object vocabulary.
+- policy docs keep Jarvis out of runtime ownership.
+- host integration keeps actor ids and worker ids separate.
+- WorkSession evidence terms stay consistent.
+- roadmap wording stays independent from downstream products.
+- core object spec uses protocol-style normative language.
 
-## Remaining Gaps Before Schemas
+## Schema Entry Gaps
 
-These are the next protocol gaps to close:
+Schema work starts by closing these protocol gaps:
 
 1. Version negotiation: define `protocol_version`, supported versions, and
    compatibility behavior.
 2. Capability negotiation: define how a host declares supported Jarvis features.
-3. Extension model: define namespaced extension fields that do not break
+3. Extension model: define namespaced extension fields that preserve
    portability.
 4. Error model: define protocol error codes for invalid transitions, missing
    review, stale takeover epoch, invalid export, and unsupported capability.
 5. JSON examples: create one complete WorkSession export.
 6. Conformance fixtures: create passing and failing examples.
 
-## Readiness Judgment
-
-The design is ready to start Week 1 execution.
+## Readiness State
 
 The protocol thesis is stable. The boundaries are stable. The object set is
 stable enough to begin schemas and examples.
 
-The next work is the machine-readable contract, versioning, conformance tests,
+Week 1 starts with the machine-readable contract, versioning, conformance tests,
 and the first host proof mapping.
