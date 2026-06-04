@@ -28,6 +28,7 @@ Planning docs and sheets track execution.
 
 - [ROADMAP.md](./planning/ROADMAP.md)
 - [12-30-day-roadmap.md](./planning/12-30-day-roadmap.md)
+- [week-1/README.md](./planning/week-1/README.md)
 - [sheets/jarvis_roadmap.csv](./planning/sheets/jarvis_roadmap.csv)
 - [sheets/jarvis_roadmap.xlsx](./planning/sheets/jarvis_roadmap.xlsx)
 
