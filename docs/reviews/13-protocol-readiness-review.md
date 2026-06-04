@@ -1,7 +1,7 @@
 # Protocol Readiness Lock
 
-Jarvis is ready to move from design into schemas, examples, conformance tests,
-and host proofs.
+Jarvis is ready to move from design into OpenAPI 3.1 contract work, examples,
+and conformance tests.
 
 ## Baseline
 
@@ -24,8 +24,10 @@ Jarvis follows proven protocol habits from existing standards:
   messages, and extension points.
 - OpenAPI gives implementers machine-readable contracts.
 - MCP standardizes tool, resource, and prompt connectivity for LLM
-  applications.
+  applications through JSON-RPC message encoding.
 - A2A standardizes agent-to-agent discovery, tasks, messages, and artifacts.
+- A2A separates canonical model, abstract operations, and protocol bindings.
+- AGNTCY ACP specifies a REST-based remote-agent interface with OpenAPI.
 - AG-UI standardizes agent-to-frontend event streams.
 
 References:
@@ -36,6 +38,7 @@ References:
 - OpenAPI Specification: https://spec.openapis.org/oas/latest.html
 - MCP: https://modelcontextprotocol.io/specification/
 - A2A: https://a2a-protocol.org/latest/
+- AGNTCY ACP: https://github.com/agntcy/acp-spec
 - AG-UI: https://docs.ag-ui.com/
 
 ## Protocol Disciplines
@@ -53,6 +56,20 @@ Jarvis uses these protocol disciplines:
 - conformance tests
 - compatibility language
 - strict separation from implementation infrastructure
+
+## Communication Binding Decision
+
+Jarvis uses OpenAPI 3.1 as the primary machine-readable communication
+contract.
+
+Jarvis does not use JSON-RPC as its default host-facing binding. JSON-RPC fits
+tool sessions and bidirectional method calls. Jarvis needs a host-facing
+contract for WorkSessions, Requests, Reviews, Takeovers, Contributions,
+EvidenceManifest exports, LearningRecords, and OutcomeReports.
+
+Jarvis follows the A2A discipline: protocol semantics, operations, and
+bindings stay separate. Jarvis follows the ACP lesson: an agent-facing protocol
+benefits from a discoverable REST/OpenAPI contract.
 
 ## Boundaries We Keep
 
@@ -86,7 +103,7 @@ The repo is aligned on the main thesis:
 
 ## Locked Before Implementation
 
-The docs now lock these points before schema work starts:
+The docs now lock these points before OpenAPI contract work starts:
 
 - README uses one direct protocol definition.
 - roadmap uses one object vocabulary.
@@ -96,9 +113,9 @@ The docs now lock these points before schema work starts:
 - roadmap wording stays independent from downstream products.
 - core object spec uses protocol-style normative language.
 
-## Schema Entry Gaps
+## OpenAPI Entry Gaps
 
-Schema work starts by closing these protocol gaps:
+OpenAPI work starts by closing these protocol gaps:
 
 1. Version negotiation: define `protocol_version`, supported versions, and
    compatibility behavior.
@@ -107,13 +124,17 @@ Schema work starts by closing these protocol gaps:
    portability.
 4. Error model: define protocol error codes for invalid transitions, missing
    review, stale takeover epoch, invalid export, and unsupported capability.
-5. JSON examples: create one complete WorkSession export.
+5. OpenAPI examples: create one complete WorkSession export.
 6. Conformance fixtures: create passing and failing examples.
+7. Security model: define required headers, authentication boundary,
+   idempotency, actor authorization, event hash validation, and forbidden
+   export fields.
 
 ## Readiness State
 
 The protocol thesis is stable. The boundaries are stable. The object set is
-stable enough to begin schemas and examples.
+stable enough to begin OpenAPI and examples.
 
-Week 1 starts with the machine-readable contract, versioning, conformance tests,
-and the first host proof mapping.
+Week 1 starts with the machine-readable OpenAPI contract, versioning,
+zero-trust security model, and conformance entry rules. Product proof waits
+behind that work.

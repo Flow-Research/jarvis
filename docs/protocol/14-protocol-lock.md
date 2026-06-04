@@ -7,11 +7,11 @@ goals and human-defined policy. The protocol records the work, requests,
 reviews, takeovers, contributions, evidence, and learning that happen inside a
 WorkSession.
 
-This is the v0 lock. Schema work starts from here.
+This is the v0 lock. OpenAPI contract work starts from here.
 
 ## Locked Status
 
-`locked-for-v0-schema-draft`
+`locked-for-v0-openapi-draft`
 
 Locked now:
 
@@ -26,7 +26,7 @@ Locked now:
 
 Not locked yet:
 
-- exact JSON fields
+- exact OpenAPI field definitions
 - version negotiation
 - capability negotiation
 - extension format
@@ -117,7 +117,7 @@ MemoryProposal
 SkillProposal
 ```
 
-These names are stable for the v0 schema draft.
+These names are stable for the v0 OpenAPI draft.
 
 ## Relationship Model
 
@@ -418,16 +418,16 @@ limitations
 Extension fields are namespaced. Extensions do not change the meaning of core
 protocol fields.
 
-## Schema Work Starts Here
+## OpenAPI Contract Work Starts Here
 
-Schema work starts with:
+OpenAPI contract work starts with:
 
 1. version negotiation
 2. capability negotiation
 3. extension namespace format
 4. standard error codes
 5. required and optional fields per object
-6. JSON Schema package layout
+6. OpenAPI 3.1 component and path layout
 7. canonical WorkSession export example
 8. passing and failing conformance fixtures
 
