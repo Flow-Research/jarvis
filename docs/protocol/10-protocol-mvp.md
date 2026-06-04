@@ -2,15 +2,15 @@
 
 Jarvis v0 proves the protocol loop. It does not ship an execution stack.
 
-The MVP is a reference protocol package, schema set, conformance tests, and a
-minimal interactive demo showing how HumanWorker and AgentWorker collaborate
-inside a WorkSession.
+The MVP is a reference protocol package, OpenAPI 3.1 contract, conformance
+tests, examples, and a protocol simulation that visualizes how HumanWorker and
+AgentWorker collaborate inside a WorkSession.
 
 ## MVP Scope
 
 Jarvis v0 includes:
 
-- protocol schemas
+- OpenAPI 3.1 contract
 - event envelope
 - WorkSession lifecycle
 - Policy decision model

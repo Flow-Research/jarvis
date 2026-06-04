@@ -20,6 +20,7 @@ stable.
 - [10-protocol-mvp.md](./protocol/10-protocol-mvp.md)
 - [11-core-protocol-objects.md](./protocol/11-core-protocol-objects.md)
 - [14-protocol-lock.md](./protocol/14-protocol-lock.md)
+- [15-openapi-communication-binding.md](./protocol/15-openapi-communication-binding.md)
 
 ## Planning
 
@@ -32,8 +33,8 @@ Planning docs and sheets track execution.
 
 ## Readiness
 
-Readiness docs lock schema entry criteria and acceptance criteria without
-changing the protocol source files.
+Readiness docs lock OpenAPI entry criteria and acceptance criteria without
+changing protocol source files.
 
 - [13-protocol-readiness-review.md](./reviews/13-protocol-readiness-review.md)
 - [acceptance-criteria.md](./reviews/acceptance-criteria.md)

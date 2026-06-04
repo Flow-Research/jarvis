@@ -81,7 +81,7 @@ export protocol record
 
 Expected result:
 
-- all records validate against schema
+- all records validate against the OpenAPI 3.1 contract
 - WorkSession status transitions are valid
 - Request cannot resolve without Review
 - Review supports approve, deny, narrow, correct, takeover, and needs_revision

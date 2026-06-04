@@ -48,8 +48,9 @@ Protocol grounding:
 
 - MCP: https://modelcontextprotocol.io/specification/
 - A2A: https://a2a-protocol.org/latest/
+- AGNTCY ACP: https://github.com/agntcy/acp-spec
 - AG-UI: https://docs.ag-ui.com/
-- OpenAI Agents SDK: https://openai.github.io/openai-agents-python/
+- OpenAPI 3.1.1: https://spec.openapis.org/oas/v3.1.1.html
 - RFC 8785 JSON Canonicalization Scheme:
   https://www.rfc-editor.org/rfc/rfc8785
 - W3C PROV provenance model: https://www.w3.org/TR/prov-overview/
@@ -59,28 +60,28 @@ Protocol grounding:
 By the end of 30 days, we show:
 
 ```txt
-Garden POC plus one real existing-agent adapter
-  -> map HumanWorker + AgentWorker work into Jarvis protocol records
-  -> HumanWorker starts WorkSession
-  -> AgentWorker acts inside Policy
-  -> blocked action creates Request
-  -> HumanWorker reviews or takes over
-  -> Contribution ledger records who did what
-  -> EvidenceManifest exports portable proof
-  -> LearningRecord captures human, agent, and pair learning
-  -> next WorkSession starts with governed improvements
+Jarvis OpenAPI 3.1 contract
+  -> protocol objects
+  -> protocol operations
+  -> zero-trust security requirements
+  -> portable export
+  -> conformance fixtures
+  -> existing-agent adapter contract
+  -> product proof readiness
 ```
 
-The demo does not need a perfect platform. It needs a real end-to-end protocol
-proof.
+Product proof starts after the protocol semantics, OpenAPI contract, and
+conformance entry rules are stable.
 
 ## Week 1: Protocol Lock And Research Grounding
 
-Goal: freeze the core protocol vocabulary and remove ambiguity.
+Goal: freeze the core protocol vocabulary, communication strategy, and security
+boundary.
 
 Deliverables:
 
 - finalize `11-core-protocol-objects.md`
+- lock OpenAPI 3.1 as the machine-readable communication contract
 - define required fields for each core object
 - define WorkSession state transitions
 - define Request, Review, and Takeover lifecycle
@@ -88,8 +89,10 @@ Deliverables:
 - define EvidenceManifest minimum export shape
 - define LearningRecord, MemoryProposal, and SkillProposal review states
 - define OutcomeReport as an optional post-session feedback extension
-- write a short protocol positioning note against MCP, A2A, AG-UI, and agent
+- write the protocol positioning note against MCP, A2A, ACP, AG-UI, and agent
   SDKs
+- define zero-trust OpenAPI headers, security schemes, and forbidden export
+  fields
 
 Done when:
 
@@ -97,80 +100,84 @@ Done when:
 - no document describes Jarvis as a runtime, product, agent framework, or
   agent application
 - every core object has a reason to exist
+- OpenAPI 3.1 is the machine-readable communication contract
+- Garden POC is not part of this week's active work
 - Jarvis is explained in one paragraph without mentioning any host product
   or downstream evaluation system
 
-## Week 2: Schemas, Conformance, And Adapter Surface
+## Week 2: OpenAPI Contract And Conformance Entry
 
-Goal: make Jarvis implementable by another product or agent adapter.
+Goal: produce the first OpenAPI 3.1 contract shape and conformance entry rules.
 
 Deliverables:
 
-- JSON schemas for core protocol objects
-- event envelope schema
-- portable export schema
+- OpenAPI 3.1 document skeleton
+- `components.schemas` for core protocol objects
+- path layout for core protocol operations
+- event envelope component
+- portable export component
+- security schemes and required protocol headers
+- protocol error model
 - golden-path conformance checklist
 - failure-mode conformance checklist
-- adapter contract for mapping existing agents into Jarvis protocol records
-- first JSON example WorkSession
+- first OpenAPI examples for WorkSession, Request, Review, and export
 
-Adapter contract must answer:
+OpenAPI contract must answer:
 
-- how an existing agent becomes an `AgentWorker`
-- how a human becomes a `HumanWorker`
-- how agent actions become `JarvisEvent`
-- how tool calls become `PolicyDecision` and `EvidenceManifest` entries
-- how a blocked action becomes `Request`
-- how a human response becomes `Review` or `Takeover`
-- how corrections become `LearningRecord`, `MemoryProposal`, or
-  `SkillProposal`
+- how a host creates a WorkSession
+- how a host appends JarvisEvent records
+- how AgentWorker actions record PolicyDecision
+- how blocked action creates Request
+- how HumanWorker response records Review or Takeover
+- how Contribution and EvidenceManifest records are exported
+- how OutcomeReport feeds post-session learning
 
 Done when:
 
-- a developer implements a minimal Jarvis-compatible host from the schemas
+- a developer reads the OpenAPI contract and implements a minimal
+  Jarvis-compatible host
 - conformance rejects a fake implementation that skips policy, review,
   evidence, or learning
-- adapters do not require the agent runtime to be rewritten
+- Garden POC is still out of scope
 
-## Week 3: Garden POC Product Proof
+## Week 3: Adapter Contract And Conformance Fixtures
 
-Goal: use Garden POC as the first product proof without making Jarvis depend on
-Garden. The POC proves the protocol before main Garden adopts it.
+Goal: prove the OpenAPI contract against examples, fixtures, and one
+existing-agent adapter contract.
 
 Deliverables:
 
-- map Garden POC concepts to Jarvis objects
-- create one Garden-backed WorkSession flow
-- show HumanWorker objective entry
-- show AgentWorker execution inside policy
-- show Request inbox when the agent needs permission or judgment
-- show Review decision and optional Takeover
-- record Contribution entries
-- produce EvidenceManifest export
-- produce LearningRecord and MemoryProposal after review
-- document what belongs to Garden and what belongs to Jarvis
+- adapter contract for mapping existing agents into Jarvis protocol records
+- valid and invalid OpenAPI examples
+- golden-path fixture
+- stale takeover fixture
+- missing policy fixture
+- unresolved Request fixture
+- forbidden host-private export fixture
+- CLI/existing-agent adapter plan
 
 Done when:
 
-- Garden POC demonstrates the Jarvis loop end to end
-- Jarvis protocol records export from Garden POC
-- the exported records do not contain Garden-private assumptions
-- the demo proves human and agent both improve, not only agent memory
+- two host shapes produce equivalent Jarvis protocol records on paper
+- conformance fixtures catch unsafe or incomplete implementations
+- adapter work does not require rewriting the agent runtime
+- product proof waits behind the conformance gate
 
-## Week 4: Interoperability Demo And Public Story
+## Week 4: Product Proof Readiness And Public Story
 
-Goal: prove Jarvis works with existing agents and is worth discussing publicly.
+Goal: prepare the first product proof after the protocol contract and
+conformance gate are credible.
 
 Deliverables:
 
-- one Garden POC demo
-- one CLI-agent adapter demo
-- one real external-agent or SDK-agent adapter demo
+- Garden POC mapping plan
+- one CLI-agent adapter proof plan
+- one real external-agent or SDK-agent adapter proof plan
 - public README tightened around protocol positioning
 - protocol examples for WorkSession, Request, Review, EvidenceManifest, and
   LearningRecord
 - conformance checklist published
-- GitHub Pages simulation updated to show the 30-day proof path
+- GitHub Pages simulation updated to show the OpenAPI proof path
 - short public narrative: why Jarvis exists and what it does not replace
 
 First Adapter Targets:
@@ -182,9 +189,10 @@ First Adapter Targets:
 
 Done when:
 
-- at least two different host or adapter shapes produce the same Jarvis protocol
-  records
-- Garden POC is one product proof, not the protocol itself
+- at least two different host or adapter shapes have a credible implementation
+  plan against the same OpenAPI contract
+- Garden POC is prepared as the first product proof, not treated as the
+  protocol itself
 - the team shares one URL and one README that explain the point clearly
 - the protocol is discussed as a standard, not an internal app feature
 
@@ -193,12 +201,12 @@ Done when:
 Every day produces one visible artifact:
 
 - spec page
-- schema
-- JSON example
+- OpenAPI section
+- OpenAPI example
 - conformance test/checklist
 - adapter note
-- Garden POC mapping
-- demo screenshot
+- security note
+- protocol diagram or conformance output
 - public docs update
 
 Daily checks:
@@ -225,11 +233,10 @@ Daily checks:
 ## First 72 Hours
 
 1. Freeze the object model in `11-core-protocol-objects.md`.
-2. Create JSON examples for one complete WorkSession.
-3. Draft the adapter contract for mapping an existing agent.
-4. Map Garden POC concepts to Jarvis objects.
-5. Decide the first two proof paths: Garden POC plus one CLI/external-agent
-   adapter.
+2. Lock OpenAPI 3.1 as the communication contract.
+3. Define core operations and zero-trust headers.
+4. Define OpenAPI component layout.
+5. Define conformance entry rules.
 
 Once these are clear, the rest of the 30 days becomes execution rather than
 debate.

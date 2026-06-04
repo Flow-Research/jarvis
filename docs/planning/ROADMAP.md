@@ -3,13 +3,14 @@
 Jarvis is the open-source human-agent collaboration and learning-loop
 compatibility protocol.
 
-The roadmap turns the protocol into stable contracts, schemas, conformance
-tests, examples, and documentation. It does not create an execution stack.
+The roadmap turns the protocol into a stable OpenAPI 3.1 contract,
+conformance tests, examples, and documentation. It does not create an execution
+stack.
 
 For the immediate execution plan, see
 [12-30-day-roadmap.md](./12-30-day-roadmap.md).
 
-For the schema entry gate, see
+For the OpenAPI entry gate, see
 [14-protocol-lock.md](../protocol/14-protocol-lock.md).
 
 ## Roadmap Contract
@@ -34,6 +35,7 @@ Jarvis owns:
 - SkillProposal
 - protocol event envelope
 - protocol export format
+- OpenAPI 3.1 communication binding
 - adapter contract
 - adapter conformance expectations
 - version negotiation rules
@@ -65,7 +67,8 @@ Those are product and host responsibilities.
 
 ```txt
 v0.1 Protocol Alpha
-  stable vocabulary, schemas, event envelope, and golden-path conformance
+  stable vocabulary, OpenAPI 3.1 contract, event envelope, and golden-path
+  conformance
 
 v0.2 Evidence And Learning Beta
   stronger EvidenceManifest, Contribution, MemoryProposal, and SkillProposal
@@ -103,7 +106,7 @@ MemoryProposal and SkillProposal remain governed
 
 ### v0.1 Must-Have Slice
 
-- protocol schemas for all core contracts
+- OpenAPI 3.1 contract for all core contracts
 - event envelope
 - WorkSession status transitions
 - Policy decision model
@@ -118,7 +121,6 @@ MemoryProposal and SkillProposal remain governed
 - conformance tests for the golden path
 - interoperability checklist
 - adapter contract
-- Garden POC product-proof export
 - one real existing-agent adapter proof
 - valid and invalid conformance fixtures
 - version and capability negotiation
@@ -158,37 +160,30 @@ Done when:
 - no Jarvis document assigns execution, cloud, database, sandbox, or deployment
   ownership to Jarvis.
 
-## Milestone 1: Protocol Schemas
+## Milestone 1: OpenAPI Contract
 
 Owner: Protocol
 
 Output:
 
-- Worker
-- Actor
-- HumanWorker
-- AgentWorker
-- WorkSession
-- JarvisEvent
-- Policy
-- PolicyDecision
-- Request
-- Review
-- Takeover
-- Contribution
-- EvidenceManifest
-- LearningRecord
-- MemoryProposal
-- SkillProposal
+- OpenAPI 3.1 document
+- component schemas for Worker, Actor, HumanWorker, AgentWorker, WorkSession,
+  JarvisEvent, Policy, PolicyDecision, Request, Review, Takeover,
+  Contribution, EvidenceManifest, LearningRecord, MemoryProposal, and
+  SkillProposal
+- paths for core protocol operations
+- security schemes and required protocol headers
+- protocol error responses
+- examples for WorkSession, Request, Review, and export
 
 Done when:
 
-- every schema matches `11-core-protocol-objects.md`
-- schemas serialize to stable JSON
+- every component matches `11-core-protocol-objects.md`
+- OpenAPI describes the HTTP communication binding
 - required fields are explicit
 - status values are enumerated
 - references are typed
-- no schema requires implementation-private fields
+- no component or path requires implementation-private fields
 
 ## Milestone 2: WorkSession Lifecycle
 
@@ -302,7 +297,7 @@ Output:
 - protocol README
 - glossary
 - protocol diagrams
-- JSON examples
+- OpenAPI examples
 - host and adapter integration guide
 - evaluation-system integration guide
 - host/product integration note
@@ -318,7 +313,7 @@ Done when:
 
 v0.1 is accepted when:
 
-- protocol schemas are stable enough for implementation
+- OpenAPI contract is stable enough for implementation
 - conformance tests cover the golden path
 - no protocol contract names a cloud, database, sandbox, or deployment
   platform
@@ -371,7 +366,7 @@ Goal: freeze the protocol surface.
 
 Output:
 
-- stable protocol schemas
+- stable OpenAPI contract
 - stable event envelope
 - stable EvidenceManifest export format
 - stable conformance suite
@@ -424,8 +419,9 @@ Control: learning becomes MemoryProposal or SkillProposal until reviewed.
 1. Keep the repository protocol-only.
 2. Keep execution and cloud ownership outside the protocol.
 3. Use `11-core-protocol-objects.md` as the source of truth for core terms.
-4. Draft JSON examples for each protocol contract.
+4. Draft OpenAPI examples for each protocol contract.
 5. Define conformance tests for the golden path.
-6. Map Garden POC to Jarvis objects and export shape.
+6. Keep Garden POC mapping out of the current execution cycle until the
+   OpenAPI contract and conformance fixtures are stable.
 7. Define one real existing-agent adapter proof.
 8. Update the live simulation to show host/execution as outside Jarvis.
