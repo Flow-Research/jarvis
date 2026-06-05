@@ -106,7 +106,7 @@ Release tests:
 - event envelopes validate required ids and timestamps.
 - event hashes exclude `event_hash` and signature fields.
 - WorkSession status transitions reject invalid transitions.
-- Human resolution of Request requires Review or Takeover.
+- Human resolution of a Request requires Review or Takeover.
 - Takeover creates a lock epoch.
 
 ## `@jarvis/policy`
