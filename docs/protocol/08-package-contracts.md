@@ -106,7 +106,7 @@ Release tests:
 - event envelopes validate required ids and timestamps.
 - event hashes exclude `event_hash` and signature fields.
 - WorkSession status transitions reject invalid transitions.
-- Request resolution requires Review.
+- Human resolution of Request requires Review or Takeover.
 - Takeover creates a lock epoch.
 
 ## `@jarvis/policy`
@@ -268,7 +268,7 @@ Conformance tests check:
 
 - WorkSession lifecycle
 - policy-denied action to Request
-- Request to Review resolution
+- Request to Review or Takeover resolution
 - takeover and reconciliation
 - contribution attribution
 - evidence capture

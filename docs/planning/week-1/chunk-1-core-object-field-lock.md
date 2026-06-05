@@ -42,6 +42,7 @@ OutcomeReport
 - protocol reason for every required field group
 - stable id and reference rules
 - OutcomeReport extension field lock
+- Request blocking scope, safe fallback, and expiry fields
 - OpenAPI component mapping notes
 
 ## Non-Goals

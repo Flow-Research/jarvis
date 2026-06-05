@@ -124,13 +124,18 @@ The MVP conformance suite checks:
 - a WorkSession cannot start without HumanWorker, AgentWorker, objective, and
   Policy.
 - policy-denied action creates Request.
-- Request resolution requires Review.
+- Request blocks only its declared scope unless scope is whole WorkSession.
+- Human resolution of Request requires Review or Takeover.
 - approval narrows scope when the human restricts the request.
+- narrowed approval rejects execution outside the approved scope.
+- expired Request applies its safe fallback.
 - takeover creates a lock epoch.
 - stale autonomous events after takeover are rejected.
+- duplicate pending Requests are deduplicated or superseded.
 - Contribution entries reference events or artifacts.
 - EvidenceManifest references policy decisions, requests, reviews,
   contributions, artifacts, and limitations.
+- Request resolution can create governed learning proposals.
 - MemoryProposal and SkillProposal require provenance and review state.
 - LearningRecord describes human learning, agent learning, or pair learning.
 - exported protocol records do not require product-private infrastructure

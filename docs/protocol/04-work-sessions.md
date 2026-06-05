@@ -63,6 +63,7 @@ tool_executed
 artifact_created
 request_created
 request_resolved
+request_closed
 human_takeover_started
 human_takeover_finished
 review_added

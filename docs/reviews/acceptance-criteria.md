@@ -83,8 +83,9 @@ Expected result:
 
 - all records validate against the OpenAPI 3.1 contract
 - WorkSession status transitions are valid
-- Request cannot resolve without Review
+- Request cannot reach human-resolved state without Review or Takeover
 - Review supports approve, deny, narrow, correct, takeover, and needs_revision
+- Request blocks only its declared scope unless scope is whole WorkSession
 - Takeover creates lock state
 - Contribution references events or artifacts
 - EvidenceManifest references the WorkSession event chain
@@ -97,7 +98,8 @@ A product is Jarvis-compatible when it proves:
 - WorkSession is the source of truth.
 - Policy gates autonomous action.
 - blocked action creates Request.
-- Review resolves Request.
+- Review or Takeover resolves Request.
+- Request and non-blocking host communication remain separate.
 - Takeover prevents stale continuation.
 - Contributions are attributable.
 - EvidenceManifest is portable.

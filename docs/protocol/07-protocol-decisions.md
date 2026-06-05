@@ -12,7 +12,7 @@ This document records decisions that are fixed for the Jarvis protocol.
 - Every serious collaboration creates or resumes a WorkSession.
 - Policy governs autonomous agent action.
 - Action outside policy creates Request.
-- Human review resolves Request.
+- Human Review or Takeover resolves Request.
 - Human takeover is a protocol state, not a UI convention.
 - Contributions are attributable to human, agent, service, tool, or shared
   work.

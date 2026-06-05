@@ -432,29 +432,67 @@ Required fields:
 
 ```txt
 id
+protocol_version
 work_session_id
 requester_actor_id
 requester_worker_id
+target_human_worker_id
 policy_decision_id
 type
-reason
+blocking_scope
+reason_code
+reason_summary
 requested_action
+requested_outcome
 risk_class
+human_decision_needed
+options
+default_if_no_response
 status
 created_at
+expires_at
 ```
 
 Required field reason: Request records the point where AgentWorker work cannot
 continue safely without human permission, context, judgment, review, or
-takeover, and ties that blocked action to the PolicyDecision that triggered
-the Request.
+takeover. It ties the blocked scope to the PolicyDecision that triggered the
+Request and records the safe fallback when the HumanWorker does not respond.
 
 Optional fields:
 
 ```txt
 missing_permission_or_context
-options
-expires_at
+policy_refs
+data_sensitivity
+recommended_option
+safer_alternatives
+evidence_refs
+artifact_refs
+contribution_refs
+resolved_at
+resolved_by_review_id
+resolved_by_takeover_id
+closed_by_event_ref
+superseded_by_request_id
+duplicate_of_request_id
+```
+
+Conditionally required fields:
+
+```txt
+resolved_at
+  required when status is approved, denied, narrowed, answered, needs_revision,
+  takeover, expired, cancelled, or superseded
+
+resolved_by_review_id
+  required when status is approved, denied, narrowed, answered, or
+  needs_revision
+
+resolved_by_takeover_id
+  required when status is takeover
+
+closed_by_event_ref
+  required when status is expired, cancelled, or superseded
 ```
 
 Forbidden fields:
@@ -465,6 +503,14 @@ notification_provider_id
 credential
 raw_auth_token
 database_primary_key
+runtime_state
+provider_secret
+billing_field
+deployment_field
+product_ui_state
+hidden_policy_trace
+unbounded_approval
+implicit_authority_grant
 ```
 
 ### Review Field Lock
@@ -491,6 +537,33 @@ comments
 required_changes
 ```
 
+Conditionally required fields:
+
+```txt
+approval_scope
+  required when decision is approve or narrow
+  forbidden when decision is deny, correct, takeover, or needs_revision
+```
+
+Nested component:
+
+```txt
+ApprovalScope
+  request_id
+  review_id
+  policy_decision_id
+  request_revision
+  request_event_hash
+  normalized_action_hash
+  approved_action
+  allowed_scope
+  denied_scope
+  expires_at
+  max_uses
+  applies_to_work_session_id
+  applies_to_actor_id
+```
+
 Forbidden fields:
 
 ```txt
@@ -499,6 +572,8 @@ credential
 raw_auth_token
 database_primary_key
 product_ui_state
+unbounded_approval
+implicit_authority_grant
 ```
 
 ### Takeover Field Lock
@@ -1091,30 +1166,44 @@ Rules:
 ## Request
 
 `Request` is the structured way an AgentWorker asks the HumanWorker for
-permission, context, judgment, review, or takeover.
+permission, context, judgment, review, correction, or takeover before safely
+continuing a declared scope of work.
 
 ```txt
 Request
   id
+  protocol_version
   work_session_id
   requester_actor_id
   requester_worker_id
+  target_human_worker_id
   policy_decision_id
-  type: permission | context | decision | review | takeover
-  reason
+  type: permission | context | judgment | review | correction | takeover |
+    escalation
+  blocking_scope: action | branch | artifact | tool_call | external_send |
+    final_submission | work_session
+  reason_code
+  reason_summary
   requested_action
+  requested_outcome
   missing_permission_or_context
   risk_class
+  human_decision_needed
   options
+  recommended_option
+  safer_alternatives
+  default_if_no_response
   status
   created_at
   expires_at
+  resolved_at
 ```
 
 Statuses:
 
 ```txt
 pending
+acknowledged
 approved
 denied
 narrowed
@@ -1123,14 +1212,26 @@ takeover
 needs_revision
 expired
 cancelled
+superseded
 ```
 
 Rules:
 
-- Request is not a vague notification.
-- Request means the agent cannot continue safely on that branch.
-- Request resolution requires Review or Takeover.
+- Request is not chat.
+- Request is not a notification.
+- Request is not authority.
+- Request blocks only its declared scope.
+- Request means the agent cannot continue safely on that declared scope.
+- Human resolution of Request requires Review or Takeover.
+- Resolved Request status records `resolved_by_review_id` or
+  `resolved_by_takeover_id`.
+- Closed Request status records `closed_by_event_ref`.
 - Approval is narrower than the requested action when the human restricts scope.
+- Every Request includes options, risk, and default behavior when the human does
+  not respond.
+- Duplicate pending Requests are deduplicated or superseded.
+- Expired Requests apply `default_if_no_response`; expiry never grants new
+  authority.
 
 ## Review
 
@@ -1147,15 +1248,21 @@ Review
   decision: approve | deny | narrow | correct | takeover | needs_revision
   comments
   required_changes
+  approval_scope
   created_at
 ```
 
 Rules:
 
 - Review is a protocol object, not only UI feedback.
-- Review resolves a Request.
+- Review can resolve a Request.
+- Takeover can resolve a Request.
 - Review creates learning signals.
 - Review records authority changes when the decision changes scope.
+- Review with decision `approve` or `narrow` defines an ApprovalScope.
+- ApprovalScope binds the approved action to scope, expiry, WorkSession, and
+  Actor, and to the Request revision, Request event hash, PolicyDecision, and
+  normalized action hash.
 - Review creates Takeover only when the decision is `takeover`.
 
 ## Takeover

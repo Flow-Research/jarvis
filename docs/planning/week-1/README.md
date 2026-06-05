@@ -226,6 +226,9 @@ Outputs:
 
 - PolicyDecision semantics
 - Request lifecycle
+- Request blocking scope
+- Request and non-blocking communication boundary
+- anti-livelock Request rules
 - Review lifecycle
 - Takeover lifecycle
 - escalation rules
@@ -236,7 +239,9 @@ Outputs:
 Done when:
 
 - AgentWorker actions outside policy create Requests
+- Requests block only their declared scope
 - HumanWorker judgment records Reviews or Takeovers
+- approval is scoped and bounded
 - Takeover races are rejected
 - AgentWorker resumes only after allowed protocol state
 

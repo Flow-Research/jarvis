@@ -138,27 +138,36 @@ permission
 context
   agent needs missing information
 
-decision
+judgment
   agent needs human judgment
+
+correction
+  agent needs human correction because direction, evidence, or requirement
+  interpretation conflicts
 
 review
   agent completed work that requires inspection
 
 takeover
   agent determines the human must continue directly
+
+escalation
+  agent detects risk, ambiguity, policy conflict, or high-impact action
 ```
 
 ## Request Payload
 
-A request includes:
+A Request includes:
 
 ```txt
 reason
 proposed action
 risk class
+blocking scope
 requested scope
 expected result
 alternatives
+default if no response
 expiration
 work_session_id
 evidence/context
@@ -183,27 +192,30 @@ Canonical fields include:
 - irreversible effects
 - requested grant scope and expiry
 - narrower alternatives
+- default if no response
 
 The human response is one of:
 
 ```txt
 approve
 deny
-approve with narrower scope
-answer with context
-edit the plan
-take over
-resume/delegate back to agent
+narrow
+correct
+takeover
+needs_revision
 ```
 
 Approvals are one-use decisions bound to approver, request version, expiry,
-WorkSession, and canonical action hash. Request resolution uses compare-and-set
-from `pending` to `resolved`. Stale, replayed, or mismatched approvals are
-rejected.
+WorkSession, declared blocking scope, and canonical action hash. Request
+resolution uses compare-and-set from unresolved state to resolved state. Stale,
+replayed, or mismatched approvals are rejected.
 
 ## Inbox Semantics
 
-Inbox is the deferred control plane for autonomy.
+Hosts may surface Requests through an inbox.
+
+Jarvis owns Request state, Review resolution, Takeover transition, and the
+event record. Jarvis does not define an inbox product surface.
 
 An inbox item explains:
 
