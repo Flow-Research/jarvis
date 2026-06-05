@@ -45,7 +45,8 @@ workers inside a durable WorkSession.
 3. Every meaningful protocol event MUST be attributable to an Actor.
 4. The AgentWorker MUST act autonomously only inside Policy.
 5. Action outside Policy MUST create a Request.
-6. A Request MUST be resolved only by Review or Takeover.
+6. Human resolution of a Request MUST use Review or Takeover. Expiry,
+   cancellation, and supersession close a Request without granting authority.
 7. A Review MUST record human judgment over a protocol target.
 8. Takeover MUST create a lock epoch and block stale autonomous continuation.
 9. Contribution MUST record who did what.
@@ -1222,7 +1223,7 @@ Rules:
 - Request is not authority.
 - Request blocks only its declared scope.
 - Request means the agent cannot continue safely on that declared scope.
-- Human resolution of Request requires Review or Takeover.
+- Human resolution of a Request requires Review or Takeover.
 - Resolved Request status records `resolved_by_review_id` or
   `resolved_by_takeover_id`.
 - Closed Request status records `closed_by_event_ref`.

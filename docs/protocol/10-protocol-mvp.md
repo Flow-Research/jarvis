@@ -125,7 +125,7 @@ The MVP conformance suite checks:
   Policy.
 - policy-denied action creates Request.
 - Request blocks only its declared scope unless scope is whole WorkSession.
-- Human resolution of Request requires Review or Takeover.
+- Human resolution of a Request requires Review or Takeover.
 - approval narrows scope when the human restricts the request.
 - narrowed approval rejects execution outside the approved scope.
 - expired Request applies its safe fallback.
