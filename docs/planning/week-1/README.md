@@ -153,6 +153,8 @@ Done when:
 Purpose: define required fields and reason-to-exist for every core object and
 the OutcomeReport extension.
 
+Spec: [chunk-1-core-object-field-lock.md](./chunk-1-core-object-field-lock.md)
+
 Core objects:
 
 ```txt

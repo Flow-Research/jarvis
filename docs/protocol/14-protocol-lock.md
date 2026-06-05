@@ -18,6 +18,7 @@ Locked now:
 - thesis
 - boundary
 - vocabulary
+- core field classes
 - lifecycle
 - object relationships
 - core states
@@ -26,7 +27,7 @@ Locked now:
 
 Not locked yet:
 
-- exact OpenAPI field definitions
+- exact OpenAPI component syntax
 - version negotiation
 - capability negotiation
 - extension format
