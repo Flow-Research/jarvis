@@ -18,6 +18,7 @@ Locked now:
 - thesis
 - boundary
 - vocabulary
+- core field classes
 - lifecycle
 - object relationships
 - core states
@@ -26,7 +27,7 @@ Locked now:
 
 Not locked yet:
 
-- exact OpenAPI field definitions
+- exact OpenAPI component syntax
 - version negotiation
 - capability negotiation
 - extension format
@@ -197,13 +198,18 @@ Rules:
 
 ## Request
 
-Request is the structured way the AgentWorker asks for permission, context,
-judgment, review, or takeover.
+Request is structured, scoped deferral from AgentWorker to HumanWorker.
+
+Request is not chat. Request is not a notification. Request is not authority.
+Request blocks only its declared scope. Human resolution requires Review or
+Takeover. Expiry, cancellation, and supersession close a Request without
+granting authority.
 
 States:
 
 ```txt
 pending
+acknowledged
 approved
 denied
 narrowed
@@ -212,15 +218,22 @@ takeover
 needs_revision
 expired
 cancelled
+superseded
 ```
 
 Rules:
 
 - Request belongs to one WorkSession.
 - Request identifies requester worker and requester actor.
-- Request states reason, requested action or missing context, risk class,
-  status, and creation time.
-- Request resolves through Review or Takeover.
+- Request identifies target HumanWorker.
+- Request states type, blocking scope, reason, requested action or missing
+  context, risk class, options, default behavior when the human does not
+  respond, status, creation time, and expiry.
+- Human-resolved Request states require Review or Takeover.
+- Closed Request states require an append-only JarvisEvent reference.
+- Request blocks only its declared scope unless scope is whole WorkSession.
+- Expiry applies the safe fallback and never grants new authority.
+- Duplicate pending Requests are deduplicated or superseded.
 
 ## Review
 
@@ -242,7 +255,8 @@ Rules:
 - Review identifies reviewer worker and reviewer actor.
 - Review targets a Request, action, contribution, artifact, memory proposal,
   skill proposal, evidence item, or final outcome.
-- Review resolves a Request.
+- Review can resolve a Request.
+- Takeover can resolve a Request.
 - Review creates learning signals.
 
 ## Takeover
@@ -384,7 +398,9 @@ A v0-compatible host proves:
 - Every meaningful JarvisEvent has an Actor.
 - Policy gates autonomous AgentWorker action.
 - Policy-denied or review-required action creates Request.
-- Request resolves through Review or Takeover.
+- Human-resolved Request states are backed by Review or Takeover.
+- Expired, cancelled, and superseded states are backed by closure events and
+  never grant authority.
 - Review decisions are explicit.
 - Takeover blocks stale autonomous continuation.
 - Contributions are attributable.

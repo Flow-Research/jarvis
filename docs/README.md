@@ -19,6 +19,7 @@ stable.
 - [09-host-integration.md](./protocol/09-host-integration.md)
 - [10-protocol-mvp.md](./protocol/10-protocol-mvp.md)
 - [11-core-protocol-objects.md](./protocol/11-core-protocol-objects.md)
+- [12-request-protocol.md](./protocol/12-request-protocol.md)
 - [14-protocol-lock.md](./protocol/14-protocol-lock.md)
 - [15-openapi-communication-binding.md](./protocol/15-openapi-communication-binding.md)
 

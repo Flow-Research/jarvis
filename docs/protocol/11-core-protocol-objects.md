@@ -54,6 +54,817 @@ workers inside a durable WorkSession.
 12. Durable memory and skill changes MUST remain proposals until governed review
     accepts them.
 
+## Core Field Lock
+
+The v0 field lock defines the portable protocol fields that Week 2 OpenAPI
+components must encode.
+
+Field classes:
+
+```txt
+required
+optional
+extension
+forbidden
+```
+
+Required fields carry protocol meaning and must appear in compatible records.
+Optional fields add protocol-visible context without changing required
+semantics. Extension fields must be namespaced. Forbidden fields belong to
+hosts, products, identity systems, runtimes, databases, cloud platforms, billing
+systems, or private execution stacks.
+
+### Field Class Rules
+
+- Required fields MUST be portable across hosts.
+- Required fields MUST NOT depend on product-private infrastructure.
+- Optional fields MUST NOT change the meaning of required fields.
+- Extension fields MUST be namespaced.
+- Extension fields MUST NOT override core field names.
+- Portable exports MUST exclude forbidden fields.
+- Host-private ids MUST stay outside portable protocol fields. Portable records
+  use `source_ref`, `external_system_ref`, evidence refs, or artifact refs as
+  opaque references without exposing database ids, runtime ids, deployment ids,
+  credentials, billing internals, or product-private state.
+
+### Stable Reference Rules
+
+- `id` identifies the protocol record.
+- `worker_id` references a Worker.
+- `actor_id` references an Actor.
+- `work_session_id` references a WorkSession.
+- `policy_id` references a Policy.
+- `request_id` references a Request.
+- `review_refs`, `event_refs`, `evidence_refs`, `artifact_refs`, and
+  `source_event_refs` contain protocol references or opaque external refs.
+- `contributor_refs` contains one or more ContributorRef objects:
+  `{worker_id, actor_id, contribution_role}`.
+- `reporter_ref` identifies an external reporter or protocol reporter without
+  requiring Jarvis to own the external system.
+- `accepted_by_actor_id` references the Actor that accepted an extension report
+  into Jarvis records.
+- Opaque external refs MUST NOT require Jarvis to understand the external
+  system.
+- `extensions` is the only generic extension container.
+- Every key in `extensions` MUST be namespaced.
+- `extensions` MUST NOT contain credentials, secrets, database ids,
+  runtime state, deployment details, billing data, private scores, or product
+  UI state.
+
+### Worker Field Lock
+
+Required fields:
+
+```txt
+id
+type
+role
+authority_scope
+accountability_scope
+```
+
+Required field reason: Worker records identify who or what participates in
+protocol-visible work, what role the participant plays, what authority it has,
+and where accountability attaches.
+
+Optional fields:
+
+```txt
+display_name
+capabilities
+extensions
+```
+
+Forbidden fields:
+
+```txt
+password
+credential
+raw_auth_token
+billing_account
+provider_secret
+database_primary_key
+deployment_resource_id
+```
+
+### Actor Field Lock
+
+Required fields:
+
+```txt
+id
+worker_id
+type
+event_authority
+contribution_scope
+created_at
+```
+
+Required field reason: Actor records bind protocol events and contributions to
+an authorized acting identity without collapsing human, agent, service, and
+tool actions.
+
+Optional fields:
+
+```txt
+extensions
+valid_from
+valid_until
+```
+
+Forbidden fields:
+
+```txt
+credential
+raw_auth_token
+session_cookie
+private_key
+database_primary_key
+```
+
+### HumanWorker Field Lock
+
+Required fields:
+
+```txt
+worker_id
+actor_id
+role
+policy_authority
+review_authority
+```
+
+Required field reason: HumanWorker records identify the accountable human,
+their acting identity, and the authority used for policy, review, correction,
+and takeover decisions.
+
+Optional fields:
+
+```txt
+profile_ref
+domain_context_refs
+preferences
+boundaries
+known_patterns
+```
+
+Forbidden fields:
+
+```txt
+password
+credential
+raw_auth_token
+private_profile_data
+billing_account
+product_account_record
+```
+
+### AgentWorker Field Lock
+
+Required fields:
+
+```txt
+worker_id
+actor_id
+agent_ref
+role
+capability_refs
+autonomy_level
+operating_constraints
+```
+
+Required field reason: AgentWorker records identify the agent participant, its
+acting identity, available protocol-visible capabilities, autonomy level, and
+constraints that bound autonomous work.
+
+Optional fields:
+
+```txt
+tool_access_profile
+memory_access_profile
+extensions
+```
+
+Forbidden fields:
+
+```txt
+model_api_key
+provider_secret
+raw_prompt_store
+runtime_process_id
+container_id
+database_primary_key
+```
+
+### WorkSession Field Lock
+
+Required fields:
+
+```txt
+id
+protocol_version
+created_by_actor_id
+objective
+human_worker_id
+agent_worker_id
+policy_id
+status
+revision
+last_event_hash
+event_log_ref
+created_at
+updated_at
+```
+
+Required field reason: WorkSession records bind the human-agent pair, objective,
+policy, lifecycle state, protocol version, creating Actor, current revision,
+latest event hash, and event log that forms the source of truth.
+
+Optional fields:
+
+```txt
+source_ref
+context_manifest_ref
+contribution_ledger_ref
+evidence_manifest_ref
+learning_record_refs
+```
+
+Forbidden fields:
+
+```txt
+database_primary_key
+queue_message_id
+runtime_session_id
+cloud_resource_id
+ui_state
+credential
+raw_auth_token
+```
+
+### JarvisEvent Field Lock
+
+Required fields:
+
+```txt
+id
+sequence
+type
+work_session_id
+actor_id
+timestamp
+payload
+previous_hash
+event_hash
+canonicalization
+```
+
+Required field reason: JarvisEvent records make WorkSession state attributable,
+ordered, append-only, and export-verifiable.
+
+Payload rule: `payload` contains only protocol-defined event fields, portable
+refs, or opaque external refs. It MUST NOT contain credentials, secrets,
+database ids, runtime state, deployment details, billing data, private scores,
+or product UI state.
+
+Optional fields:
+
+```txt
+trace_context
+actor_signature
+signing_key_ref
+```
+
+Forbidden fields:
+
+```txt
+raw_auth_token
+credential
+private_key
+database_primary_key
+runtime_trace_secret
+provider_secret
+```
+
+### Policy Field Lock
+
+Required fields:
+
+```txt
+id
+owner_worker_id
+created_by_actor_id
+autonomy_level
+allowed_actions
+denied_actions
+review_required_actions
+risk_classes
+escalation_rules
+created_at
+```
+
+Required field reason: Policy records define the human-owned and attributable
+boundary that allows, denies, narrows, or escalates AgentWorker action.
+
+Optional fields:
+
+```txt
+tool_grants
+memory_grants
+external_send_rules
+extensions
+```
+
+Forbidden fields:
+
+```txt
+credential
+raw_auth_token
+provider_secret
+billing_rule
+cloud_policy_id
+database_primary_key
+```
+
+### PolicyDecision Field Lock
+
+Required fields:
+
+```txt
+id
+work_session_id
+actor_id
+policy_id
+requested_action
+normalized_action_hash
+risk_class
+result
+reason
+created_at
+```
+
+Required field reason: PolicyDecision records why an AgentWorker action was
+allowed, denied, narrowed, or sent for human review.
+
+Optional fields:
+
+```txt
+data_sensitivity
+selected_grant_refs
+denied_grant_refs
+request_id
+evidence_refs
+```
+
+Forbidden fields:
+
+```txt
+hidden_policy_trace
+credential
+provider_secret
+database_primary_key
+runtime_decision_object
+```
+
+### Request Field Lock
+
+Required fields:
+
+```txt
+id
+protocol_version
+work_session_id
+requester_actor_id
+requester_worker_id
+target_human_worker_id
+policy_decision_id
+type
+blocking_scope
+reason_code
+reason_summary
+requested_action
+requested_outcome
+risk_class
+human_decision_needed
+options
+default_if_no_response
+status
+created_at
+expires_at
+```
+
+Required field reason: Request records the point where AgentWorker work cannot
+continue safely without human permission, context, judgment, review, or
+takeover. It ties the blocked scope to the PolicyDecision that triggered the
+Request and records the safe fallback when the HumanWorker does not respond.
+
+Optional fields:
+
+```txt
+missing_permission_or_context
+policy_refs
+data_sensitivity
+recommended_option
+safer_alternatives
+evidence_refs
+artifact_refs
+contribution_refs
+resolved_at
+resolved_by_review_id
+resolved_by_takeover_id
+closed_by_event_ref
+superseded_by_request_id
+duplicate_of_request_id
+```
+
+Conditionally required fields:
+
+```txt
+resolved_at
+  required when status is approved, denied, narrowed, answered, needs_revision,
+  takeover, expired, cancelled, or superseded
+
+resolved_by_review_id
+  required when status is approved, denied, narrowed, answered, or
+  needs_revision
+
+resolved_by_takeover_id
+  required when status is takeover
+
+closed_by_event_ref
+  required when status is expired, cancelled, or superseded
+```
+
+Forbidden fields:
+
+```txt
+private_inbox_id
+notification_provider_id
+credential
+raw_auth_token
+database_primary_key
+runtime_state
+provider_secret
+billing_field
+deployment_field
+product_ui_state
+hidden_policy_trace
+unbounded_approval
+implicit_authority_grant
+```
+
+### Review Field Lock
+
+Required fields:
+
+```txt
+id
+work_session_id
+reviewer_actor_id
+reviewer_worker_id
+target_ref
+decision
+created_at
+```
+
+Required field reason: Review records human judgment over a protocol target and
+resolves or changes the course of work.
+
+Optional fields:
+
+```txt
+comments
+required_changes
+```
+
+Conditionally required fields:
+
+```txt
+approval_scope
+  required when decision is approve or narrow
+  forbidden when decision is deny, correct, takeover, or needs_revision
+```
+
+Nested component:
+
+```txt
+ApprovalScope
+  request_id
+  review_id
+  policy_decision_id
+  request_revision
+  request_event_hash
+  normalized_action_hash
+  approved_action
+  allowed_scope
+  denied_scope
+  expires_at
+  max_uses
+  applies_to_work_session_id
+  applies_to_actor_id
+```
+
+Forbidden fields:
+
+```txt
+private_comment_thread_id
+credential
+raw_auth_token
+database_primary_key
+product_ui_state
+unbounded_approval
+implicit_authority_grant
+```
+
+### Takeover Field Lock
+
+Required fields:
+
+```txt
+id
+work_session_id
+requested_by_actor_id
+controlling_actor_id
+reason
+lock_epoch
+state
+created_at
+```
+
+Required field reason: Takeover records direct human control, the lock epoch
+that blocks stale autonomous continuation, and the state needed for safe
+resumption.
+
+Optional fields:
+
+```txt
+resumed_by_actor_id
+reconciliation_notes
+resolved_at
+```
+
+Forbidden fields:
+
+```txt
+runtime_lock_id
+database_primary_key
+credential
+raw_auth_token
+ui_session_id
+```
+
+### Contribution Field Lock
+
+Required fields:
+
+```txt
+id
+work_session_id
+contributor_refs
+contributor_type
+contribution_type
+event_refs
+created_at
+```
+
+Required field reason: Contribution records who did what and keeps human,
+agent, service, tool, and shared work distinguishable. `contributor_refs`
+contains one or more `{worker_id, actor_id, contribution_role}` references so
+shared contribution preserves individual attribution.
+
+Optional fields:
+
+```txt
+artifact_refs
+review_refs
+evidence_refs
+confidence
+limitations
+```
+
+Forbidden fields:
+
+```txt
+payment_account
+compensation_rule
+private_score
+credential
+database_primary_key
+```
+
+### EvidenceManifest Field Lock
+
+Required fields:
+
+```txt
+id
+work_session_id
+generated_by_actor_id
+objective
+event_chain_root
+evidence_item_refs
+policy_decision_refs
+request_refs
+review_refs
+contribution_refs
+export_profile
+generated_at
+```
+
+Required field reason: EvidenceManifest records attributable portable proof of
+what was requested, reviewed, observed, produced, decided, attributed, and
+exported during the WorkSession.
+
+Optional fields:
+
+```txt
+artifact_refs
+limitation_refs
+redaction_refs
+```
+
+Forbidden fields:
+
+```txt
+credential
+raw_auth_token
+provider_secret
+database_primary_key
+cloud_storage_secret
+unredacted_secret_value
+```
+
+### LearningRecord Field Lock
+
+Required fields:
+
+```txt
+id
+work_session_id
+created_by_actor_id
+subject_type
+subject_ref
+lesson_type
+source_event_refs
+review_state
+scope
+created_at
+```
+
+Required field reason: LearningRecord records who created the learning record,
+what the human, agent, or pair learned, and ties that learning to source events
+and governed scope.
+
+Optional fields:
+
+```txt
+proposed_change
+memory_proposal_refs
+skill_proposal_refs
+```
+
+Forbidden fields:
+
+```txt
+silent_memory_write
+unreviewed_skill_activation
+credential
+raw_auth_token
+database_primary_key
+```
+
+### MemoryProposal Field Lock
+
+Required fields:
+
+```txt
+id
+work_session_id
+proposed_by_actor_id
+proposed_for: human | agent | pair | project | task
+memory_scope
+memory_type
+content
+provenance
+confidence
+review_required
+status
+created_at
+```
+
+Required field reason: MemoryProposal records a governed memory change for the
+human, agent, pair, project, or task with provenance, scope, confidence, and
+review state before durable memory changes.
+
+Optional fields:
+
+```txt
+source_event_refs
+review_refs
+expires_at
+```
+
+Forbidden fields:
+
+```txt
+silent_memory_write
+credential
+raw_auth_token
+private_embedding_store_id
+database_primary_key
+```
+
+### SkillProposal Field Lock
+
+Required fields:
+
+```txt
+id
+work_session_id
+proposed_by_actor_id
+proposed_for: human | agent | pair | project | task
+skill_scope
+skill_name
+trigger_conditions
+procedure
+review_checks
+failure_cases
+provenance
+status
+created_at
+```
+
+Required field reason: SkillProposal records a reusable way of working, the
+human, agent, pair, project, or task scope it improves, and the review checks
+required before the skill becomes active.
+
+Optional fields:
+
+```txt
+required_tools
+source_event_refs
+review_refs
+```
+
+Forbidden fields:
+
+```txt
+automatic_tool_grant
+unreviewed_skill_activation
+credential
+raw_auth_token
+database_primary_key
+```
+
+### OutcomeReport Extension Field Lock
+
+`OutcomeReport` is an extension object. It does not change the v0 core object
+list.
+
+Required fields:
+
+```txt
+id
+work_session_id
+source_ref
+reporter_ref
+accepted_by_actor_id
+outcome
+learning_record_refs
+received_at
+```
+
+Required field reason: OutcomeReport records attributable post-session feedback
+and links it to governed LearningRecords without mutating the sealed
+WorkSession or EvidenceManifest. `source_ref` identifies the completed
+WorkSession export, external task record, evaluation record, or other portable
+work reference whose outcome is being reported. `reporter_ref` identifies the
+external or protocol reporter.
+`accepted_by_actor_id` identifies the protocol Actor with review authority that
+accepted the report into Jarvis records.
+
+Optional fields:
+
+```txt
+external_system_ref
+reporter_actor_id
+reason
+reviewer_feedback_refs
+```
+
+Forbidden fields:
+
+```txt
+task_marketplace_score_rule
+payment_status
+settlement_account
+credential
+raw_auth_token
+database_primary_key
+sealed_work_session_mutation
+sealed_evidence_mutation
+```
+
 ## Worker
 
 `Worker` is the base participant contract.
@@ -67,7 +878,7 @@ Worker
   capabilities
   authority_scope
   accountability_scope
-  metadata
+  extensions
 ```
 
 Requirements:
@@ -91,6 +902,9 @@ Actor
   type: human | agent | service | tool
   event_authority
   contribution_scope
+  extensions
+  valid_from
+  valid_until
   created_at
 ```
 
@@ -159,6 +973,7 @@ AgentWorker
   memory_access_profile
   autonomy_level
   operating_constraints
+  extensions
 ```
 
 The AgentWorker supplies:
@@ -194,6 +1009,9 @@ Rules:
 WorkSession
   id
   protocol_version
+  created_by_actor_id
+  revision
+  last_event_hash
   objective
   source_ref
   human_worker_id
@@ -270,12 +1088,13 @@ Rules:
 - `actor_signature` and `signing_key_ref` are optional. Signed export profiles
   use them to prove authorship; unsigned profiles still require Actor
   attribution.
-- AgentWorker action events SHOULD include payload reproducibility references:
+- AgentWorker action events SHOULD include only portable reproducibility refs:
   `model_ref`, `input_refs`, `prompt_ref`, `context_manifest_ref`, and related
   evidence hashes when the host provides them.
+- Payload refs MUST NOT expose host-private execution details, runtime state,
+  database ids, credentials, deployment ids, billing data, private scores, or
+  product UI state.
 - Event hashes make the protocol record inspectable and exportable.
-- Host-private execution details stay in payload references, not required
-  protocol fields.
 
 ## Policy
 
@@ -285,6 +1104,7 @@ Rules:
 Policy
   id
   owner_worker_id
+  created_by_actor_id
   autonomy_level
   allowed_actions
   denied_actions
@@ -294,6 +1114,7 @@ Policy
   external_send_rules
   risk_classes
   escalation_rules
+  extensions
   created_at
 ```
 
@@ -345,29 +1166,44 @@ Rules:
 ## Request
 
 `Request` is the structured way an AgentWorker asks the HumanWorker for
-permission, context, judgment, review, or takeover.
+permission, context, judgment, review, correction, or takeover before safely
+continuing a declared scope of work.
 
 ```txt
 Request
   id
+  protocol_version
   work_session_id
   requester_actor_id
   requester_worker_id
-  type: permission | context | decision | review | takeover
-  reason
+  target_human_worker_id
+  policy_decision_id
+  type: permission | context | judgment | review | correction | takeover |
+    escalation
+  blocking_scope: action | branch | artifact | tool_call | external_send |
+    final_submission | work_session
+  reason_code
+  reason_summary
   requested_action
+  requested_outcome
   missing_permission_or_context
   risk_class
+  human_decision_needed
   options
+  recommended_option
+  safer_alternatives
+  default_if_no_response
   status
   created_at
   expires_at
+  resolved_at
 ```
 
 Statuses:
 
 ```txt
 pending
+acknowledged
 approved
 denied
 narrowed
@@ -376,14 +1212,26 @@ takeover
 needs_revision
 expired
 cancelled
+superseded
 ```
 
 Rules:
 
-- Request is not a vague notification.
-- Request means the agent cannot continue safely on that branch.
-- Request resolution requires Review or Takeover.
+- Request is not chat.
+- Request is not a notification.
+- Request is not authority.
+- Request blocks only its declared scope.
+- Request means the agent cannot continue safely on that declared scope.
+- Human resolution of Request requires Review or Takeover.
+- Resolved Request status records `resolved_by_review_id` or
+  `resolved_by_takeover_id`.
+- Closed Request status records `closed_by_event_ref`.
 - Approval is narrower than the requested action when the human restricts scope.
+- Every Request includes options, risk, and default behavior when the human does
+  not respond.
+- Duplicate pending Requests are deduplicated or superseded.
+- Expired Requests apply `default_if_no_response`; expiry never grants new
+  authority.
 
 ## Review
 
@@ -400,16 +1248,22 @@ Review
   decision: approve | deny | narrow | correct | takeover | needs_revision
   comments
   required_changes
+  approval_scope
   created_at
 ```
 
 Rules:
 
 - Review is a protocol object, not only UI feedback.
-- Review resolves a Request.
+- Review can resolve a Request.
+- Takeover can resolve a Request.
 - Review creates learning signals.
-- Review narrows future authority.
-- Review triggers Takeover.
+- Review records authority changes when the decision changes scope.
+- Review with decision `approve` or `narrow` defines an ApprovalScope.
+- ApprovalScope binds the approved action to scope, expiry, WorkSession, and
+  Actor, and to the Request revision, Request event hash, PolicyDecision, and
+  normalized action hash.
+- Review creates Takeover only when the decision is `takeover`.
 
 ## Takeover
 
@@ -457,8 +1311,7 @@ Rules:
 Contribution
   id
   work_session_id
-  contributor_worker_id
-  contributor_actor_id
+  contributor_refs
   contributor_type: human | agent | service | tool | shared
   contribution_type
   event_refs
@@ -503,6 +1356,7 @@ Rules:
 EvidenceManifest
   id
   work_session_id
+  generated_by_actor_id
   objective
   event_chain_root
   artifact_refs
@@ -532,6 +1386,7 @@ Rules:
 LearningRecord
   id
   work_session_id
+  created_by_actor_id
   subject_type: human | agent | pair
   subject_ref
   lesson_type
@@ -560,7 +1415,7 @@ MemoryProposal
   id
   work_session_id
   proposed_by_actor_id
-  proposed_for: human | agent | shared | project | task
+  proposed_for: human | agent | pair | project | task
   memory_scope
   memory_type
   content
@@ -588,6 +1443,8 @@ SkillProposal
   id
   work_session_id
   proposed_by_actor_id
+  proposed_for: human | agent | pair | project | task
+  skill_scope
   skill_name
   trigger_conditions
   procedure

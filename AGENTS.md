@@ -223,6 +223,7 @@ Before changing protocol direction, read:
 - [docs/protocol/14-protocol-lock.md](./docs/protocol/14-protocol-lock.md)
 - [docs/protocol/15-openapi-communication-binding.md](./docs/protocol/15-openapi-communication-binding.md)
 - [docs/protocol/11-core-protocol-objects.md](./docs/protocol/11-core-protocol-objects.md)
+- [docs/protocol/12-request-protocol.md](./docs/protocol/12-request-protocol.md)
 - [docs/planning/12-30-day-roadmap.md](./docs/planning/12-30-day-roadmap.md)
 
 ## Change Discipline

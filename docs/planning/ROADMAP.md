@@ -221,7 +221,8 @@ Output:
 Done when:
 
 - policy-denied action creates Request
-- Request cannot resolve without Review
+- Request cannot reach human-resolved state without Review or Takeover
+- Request blocks only its declared scope
 - Review approves, denies, narrows, corrects, takes over, or requests revision
 - takeover rejects stale autonomous continuation
 
@@ -282,7 +283,7 @@ Done when a host proves:
 - WorkSession is the source of truth
 - Policy gates autonomous action
 - blocked action creates Request
-- Review resolves Request
+- Review or Takeover resolves Request
 - Takeover prevents stale continuation
 - Contributions are attributable
 - EvidenceManifest is portable

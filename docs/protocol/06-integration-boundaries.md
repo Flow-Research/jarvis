@@ -104,21 +104,31 @@ OutcomeReport
   id
   work_session_id
   source_ref
+  reporter_ref
+  accepted_by_actor_id
+  outcome: accepted | rejected | needs_revision | disputed | partial
+  learning_record_refs
+  received_at
   external_system_ref
   reporter_actor_id
-  outcome: accepted | rejected | needs_revision | disputed | partial
   reason
   reviewer_feedback_refs
-  received_at
 ```
 
 Rules:
 
 - OutcomeReport arrives after a WorkSession is completed.
-- OutcomeReport does not mutate the sealed WorkSession or EvidenceManifest.
-- OutcomeReport creates or references a new LearningRecord.
-- OutcomeReport must remain attributable to a reporter Actor or external
-  reporter reference.
+- It does not mutate the sealed WorkSession or EvidenceManifest.
+- The report creates or references a new LearningRecord.
+- `source_ref` is required and identifies the completed WorkSession export,
+  external task record, evaluation record, or other portable work reference
+  whose outcome is being reported.
+- `reporter_ref` identifies the external or protocol reporter that supplied the
+  outcome.
+- `accepted_by_actor_id` records the protocol Actor with review authority that
+  accepted the report into Jarvis records.
+- `reporter_actor_id` is present only when the reporter is already represented
+  as a protocol Actor.
 - OutcomeReport is an extension. It does not change the v0 core object list.
 
 ## Host Contract

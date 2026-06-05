@@ -153,6 +153,8 @@ Done when:
 Purpose: define required fields and reason-to-exist for every core object and
 the OutcomeReport extension.
 
+Spec: [chunk-1-core-object-field-lock.md](./chunk-1-core-object-field-lock.md)
+
 Core objects:
 
 ```txt
@@ -224,6 +226,9 @@ Outputs:
 
 - PolicyDecision semantics
 - Request lifecycle
+- Request blocking scope
+- Request and non-blocking communication boundary
+- anti-livelock Request rules
 - Review lifecycle
 - Takeover lifecycle
 - escalation rules
@@ -234,7 +239,9 @@ Outputs:
 Done when:
 
 - AgentWorker actions outside policy create Requests
+- Requests block only their declared scope
 - HumanWorker judgment records Reviews or Takeovers
+- approval is scoped and bounded
 - Takeover races are rejected
 - AgentWorker resumes only after allowed protocol state
 

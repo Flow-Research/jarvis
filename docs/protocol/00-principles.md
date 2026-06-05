@@ -145,8 +145,9 @@ Inside policy, the agent proceeds. Outside policy, it creates a Request.
 
 When the agent lacks permission, context, or judgment, it creates a Request.
 
-Requests are structured protocol objects, not vague interruptions. A human
-approves, denies, narrows, corrects, answers, or takes over.
+Requests are structured, scoped deferrals, not vague interruptions, chat, or
+notifications. A Request blocks only its declared scope. A human approves,
+denies, narrows, corrects, answers, or takes over.
 
 ## Reviews Teach The System
 
