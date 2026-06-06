@@ -1038,6 +1038,7 @@ takeover
 reconciling
 completed
 failed
+cancelled
 closed
 ```
 
@@ -1045,11 +1046,20 @@ Rules:
 
 - A WorkSession is not chat history.
 - A WorkSession records the collaboration, not the host execution stack.
-- `source_ref` points to the origin of the work, task, product flow, or
+- `source_ref` points to the origin of the work, task, host work reference, or
   external system reference. It is opaque to Jarvis and never gives the
   protocol ownership of that external system.
 - Events are append-only.
 - The event log is the protocol source of truth.
+- Allowed WorkSession transitions are defined in
+  [04-work-sessions.md](./04-work-sessions.md).
+- Every accepted WorkSession mutation increments `revision` and updates
+  `last_event_hash`.
+- Stale expected revision or previous event hash rejects the mutation.
+- Final EvidenceManifest export is valid only from `completed`, `failed`,
+  `cancelled`, or `closed`.
+- `closed` is sealed and rejects further mutation except idempotent replay of
+  the same accepted request.
 - Private host fields stay outside portable Jarvis exports.
 
 ## JarvisEvent

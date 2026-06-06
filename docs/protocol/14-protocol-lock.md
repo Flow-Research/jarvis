@@ -185,6 +185,7 @@ takeover
 reconciling
 completed
 failed
+cancelled
 closed
 ```
 
@@ -192,8 +193,16 @@ Rules:
 
 - WorkSession starts with HumanWorker, AgentWorker, objective, and Policy.
 - WorkSession keeps an append-only JarvisEvent log.
+- WorkSession state changes follow the transition table in
+  [04-work-sessions.md](./04-work-sessions.md).
+- Every accepted mutation increments `revision` and updates `last_event_hash`.
+- Stale expected revision or previous event hash rejects the mutation.
 - WorkSession owns Requests, Reviews, Takeovers, Contributions,
   EvidenceManifest, and LearningRecords.
+- Final EvidenceManifest export is valid only from `completed`, `failed`,
+  `cancelled`, or `closed`.
+- `closed` rejects further mutation except idempotent replay of the same
+  accepted request.
 - WorkSession export stays free of product-private infrastructure fields.
 
 ## Request
@@ -396,6 +405,8 @@ A v0-compatible host proves:
 - WorkSession is the source of truth.
 - HumanWorker and AgentWorker both exist.
 - Every meaningful JarvisEvent has an Actor.
+- WorkSession invalid transitions are rejected.
+- WorkSession stale revision and previous hash mismatches are rejected.
 - Policy gates autonomous AgentWorker action.
 - Policy-denied or review-required action creates Request.
 - Human-resolved Request states are backed by Review or Takeover.

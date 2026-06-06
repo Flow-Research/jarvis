@@ -106,6 +106,10 @@ Release tests:
 - event envelopes validate required ids and timestamps.
 - event hashes exclude `event_hash` and signature fields.
 - WorkSession status transitions reject invalid transitions.
+- stale WorkSession revision rejects mutation.
+- stale previous event hash rejects mutation.
+- final EvidenceManifest export requires completed, failed, cancelled, or closed
+  WorkSession state.
 - Human resolution of a Request requires Review or Takeover.
 - Takeover creates a lock epoch.
 
