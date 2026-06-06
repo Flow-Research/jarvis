@@ -224,6 +224,8 @@ Done when:
 
 Purpose: lock the human judgment and control plane.
 
+Spec: [chunk-3-control-plane-lock.md](./chunk-3-control-plane-lock.md)
+
 Outputs:
 
 - PolicyDecision semantics

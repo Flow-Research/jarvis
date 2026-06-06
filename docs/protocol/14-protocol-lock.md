@@ -213,6 +213,33 @@ Rules:
   accepted request.
 - WorkSession export stays free of product-private infrastructure fields.
 
+## PolicyDecision
+
+PolicyDecision gates AgentWorker autonomy.
+
+Results:
+
+```txt
+allow
+deny
+narrow
+review_required
+```
+
+Rules:
+
+- Every meaningful AgentWorker action records PolicyDecision before acceptance
+  as protocol state.
+- Policy denies by default.
+- Explicit deny beats allow.
+- `allow` never creates authority outside selected grants.
+- `deny` creates or references Request.
+- `review_required` creates or references Request.
+- `narrow` creates or references Review or Request before narrowed execution.
+- PolicyDecision records `normalized_action_hash`.
+- Request, Review, ApprovalScope, Contribution, and EvidenceManifest records
+  reference PolicyDecision when they depend on the action.
+
 ## Request
 
 Request is structured, scoped deferral from AgentWorker to HumanWorker.
@@ -251,6 +278,10 @@ Rules:
 - Request blocks only its declared scope unless scope is whole WorkSession.
 - Expiry applies the safe fallback and never grants new authority.
 - Duplicate pending Requests are deduplicated or superseded.
+- Invalid Request transitions reject as `invalid_request_transition`.
+- Request livelock rejects as `request_livelock`.
+- Supersession preserves blocked action hash, PolicyDecision, blocking scope,
+  risk, and event references.
 
 ## Review
 
@@ -274,7 +305,11 @@ Rules:
   skill proposal, evidence item, or final outcome.
 - Review can resolve a Request.
 - Takeover can resolve a Request.
-- Review creates learning signals.
+- Review with decision `approve` or `narrow` defines ApprovalScope.
+- ApprovalScope binds action hash, approved scope, expiry, WorkSession, Actor,
+  Request revision, Request event hash, PolicyDecision, and max uses.
+- Review does not silently mutate Policy, memory, skill behavior, or durable
+  learning.
 
 ## Takeover
 
@@ -294,9 +329,12 @@ closed
 Rules:
 
 - Takeover creates or increments a lock epoch.
-- Agent actions from an old lock epoch are stale.
-- Resume requires reconciliation.
-- Takeover is a learning signal.
+- AgentWorker actions from an old lock epoch reject as `stale_takeover_epoch`.
+- Resume requires reconciliation refs.
+- Takeover may create or reference LearningRecord, MemoryProposal, or
+  SkillProposal records.
+- During locked and human_active states, AgentWorker autonomous continuation for
+  the affected scope is paused.
 
 ## Contribution
 
@@ -420,8 +458,13 @@ A v0-compatible host proves:
 - Human-resolved Request states are backed by Review or Takeover.
 - Expired, cancelled, and superseded states are backed by closure events and
   never grant authority.
+- Invalid Request transitions are rejected.
+- ApprovalScope rejects stale, mismatched, expired, or over-broad execution.
+- Repeated unchanged Requests reject as livelock or supersede without weakening
+  policy fields.
 - Review decisions are explicit.
 - Takeover blocks stale autonomous continuation.
+- Takeover resume requires reconciliation refs.
 - Contributions are attributable.
 - EvidenceManifest is captured during work and exportable.
 - Learning is governed.

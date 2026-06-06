@@ -295,7 +295,8 @@ cacheable.
 
 ## Corrections
 
-Human corrections are high-value learning signals. Jarvis classifies them:
+Human corrections may create or reference LearningRecord, MemoryProposal, or
+SkillProposal records. Jarvis classifies them:
 
 ```txt
 one-time fix

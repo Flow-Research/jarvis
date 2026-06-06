@@ -84,6 +84,43 @@ If grants conflict, the resolver denies the action and emits a request with the
 conflicting grants, requested action, narrowed safe alternative, and required
 approver. The resolver never guesses by model judgment.
 
+## PolicyDecision Results
+
+Every meaningful AgentWorker action records a PolicyDecision before the action
+is accepted as protocol state.
+
+PolicyDecision results are:
+
+```txt
+allow
+  Action is inside Policy and selected grants.
+
+deny
+  Action is outside Policy or explicitly denied. The blocked scope cannot
+  continue.
+
+narrow
+  Action may continue only inside a smaller approved scope.
+
+review_required
+  Action is covered only after HumanWorker Review or Takeover.
+```
+
+Rules:
+
+- Policy denies by default.
+- Explicit deny beats allow.
+- Uncovered action dimensions deny execution.
+- `allow` never creates authority beyond selected grants.
+- `deny` creates or references Request.
+- `review_required` creates or references Request.
+- `narrow` creates or references Review or Request before narrowed execution.
+- Every PolicyDecision records `normalized_action_hash`.
+- Request, Review, ApprovalScope, EvidenceManifest, and Contribution records
+  reference the PolicyDecision when they depend on that decision.
+- Missing PolicyDecision rejects AgentWorker action as
+  `missing_policy_decision`.
+
 ## Risk Classes
 
 ```txt
@@ -210,6 +247,10 @@ WorkSession, declared blocking scope, and canonical action hash. Request
 resolution uses compare-and-set from unresolved state to resolved state. Stale,
 replayed, or mismatched approvals are rejected.
 
+Approval does not mutate Policy. Approval creates bounded authority through
+ApprovalScope. Durable Policy changes require a separate governed policy change
+record.
+
 ## Inbox Semantics
 
 Hosts may surface Requests through an inbox.
@@ -240,34 +281,30 @@ the WorkSession records the difference
 agent resumes with updated context after reconciliation
 ```
 
-Takeover is a learning event. A compatible implementation compares what
-changed and produces LearningRecord, MemoryProposal, or SkillProposal records.
+Takeover may create or reference LearningRecord, MemoryProposal, or
+SkillProposal records.
 
-Takeover also has locking semantics:
+Takeover has protocol locking semantics:
 
-- acquire a WorkSession/workspace lock
-- pause background execution for the session
-- cancel or quarantine pending tool calls
-- freeze unresolved requests until the human resolves or discards them
-- record human edits as authoritative events
-- require reconciliation before agent autonomy resumes
+- record the affected WorkSession scope
+- increment the WorkSession lock epoch
+- reject stale AgentWorker continuation for the affected scope
+- record HumanWorker edits as protocol events or artifact refs
+- require reconciliation refs before AgentWorker autonomy resumes
 
-Every takeover creates a WorkSession lock epoch. Every tool call,
-host-issued action token, background job, memory write, skill update, and
-outbox token carries the current epoch and re-checks it at commit. Takeover
-increments the epoch, revokes outstanding tokens, and moves unknown in-flight
-effects into reconciliation.
+Every Takeover creates a WorkSession lock epoch. Compatible implementations
+MUST reject AgentWorker continuation from an older lock epoch as
+`stale_takeover_epoch`.
 
-Takeover state machine:
+Takeover follows the locked state machine in
+[12-request-protocol.md](./12-request-protocol.md).
 
-```txt
-takeover_requested -> locked -> human_active -> reconciliation_required -> resumed | closed
-```
+During `locked` and `human_active`, AgentWorker autonomous continuation for the
+affected scope is paused. Resume requires a reconciliation event.
 
-During `locked` and `human_active`, no agent tool calls, background jobs,
-outbox commits, memory writes, or skill updates execute. Pending actions are
-canceled if not started, quarantined if result is unknown, and receipted if
-completed. Resume requires a reconciliation event.
+Takeover states map to the protocol state machine in
+[12-request-protocol.md](./12-request-protocol.md). Resume requires
+reconciliation refs before AgentWorker autonomy continues.
 
 ## Policy Evaluation Points
 

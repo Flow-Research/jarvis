@@ -117,7 +117,13 @@ Release tests:
 - final EvidenceManifest export requires completed, failed, cancelled, or closed
   WorkSession state.
 - Human resolution of a Request requires Review or Takeover.
+- invalid Request transitions reject mutation.
+- ApprovalScope rejects stale, mismatched, expired, or over-broad execution.
+- repeated unchanged Requests reject as livelock or supersede without weakening
+  policy fields.
 - Takeover creates a lock epoch.
+- Takeover rejects stale AgentWorker continuation.
+- Takeover resume requires reconciliation refs.
 
 ## `@jarvis/policy`
 

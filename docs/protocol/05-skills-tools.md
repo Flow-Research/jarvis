@@ -225,4 +225,5 @@ Tool failure is structured:
 - update tool reliability memory
 - request human help if blocked by policy or missing context
 
-Failures are learning signals, not just errors.
+Failures may create or reference LearningRecord, MemoryProposal, or
+SkillProposal records.

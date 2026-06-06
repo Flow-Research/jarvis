@@ -94,6 +94,28 @@ escalation
   AgentWorker detects risk, policy conflict, ambiguity, or high-impact action.
 ```
 
+## PolicyDecision Binding
+
+Every Request is bound to a PolicyDecision.
+
+PolicyDecision records why the AgentWorker action was allowed, denied,
+narrowed, or review-required. Request records what HumanWorker input is needed
+before the blocked scope can continue.
+
+Compatible implementations MUST enforce:
+
+```txt
+PolicyDecision.result == deny creates or references Request.
+PolicyDecision.result == review_required creates or references Request.
+PolicyDecision.result == narrow creates or references Review or Request.
+PolicyDecision.result == allow does not create authority outside selected grants.
+Request.policy_decision_id references the denied, review-required, or narrowed
+decision that requires HumanWorker input.
+```
+
+`missing_policy_decision` rejects AgentWorker Request creation and AgentWorker
+mutation acceptance when the required PolicyDecision is absent.
+
 ## Blocking Scope
 
 Request blocks only its declared scope.
@@ -294,6 +316,21 @@ closed_by_event_ref
   required when status is expired, cancelled, or superseded
 ```
 
+Missing resolver refs reject with these errors:
+
+```txt
+missing_review_resolution
+  Request status is approved, denied, narrowed, answered, or needs_revision
+  without resolved_by_review_id.
+
+missing_takeover_resolution
+  Request status is takeover without resolved_by_takeover_id.
+
+missing_jarvis_event
+  Request status is expired, cancelled, or superseded without
+  closed_by_event_ref.
+```
+
 Allowed transitions:
 
 ```txt
@@ -309,6 +346,25 @@ acknowledged -> expired | cancelled | superseded
 Terminal states do not transition back to `pending` or `acknowledged`.
 Terminal states do not change status again. A later Request may reference a
 terminal Request, but it never mutates the original Request.
+
+Rejected transitions include:
+
+```txt
+approved -> pending
+approved -> acknowledged
+denied -> pending
+denied -> approved
+narrowed -> approved
+answered -> approved
+needs_revision -> approved
+takeover -> approved
+expired -> approved
+cancelled -> approved
+superseded -> approved
+```
+
+Any transition not listed as allowed is rejected as
+`invalid_request_transition`.
 
 ## Approval Scope
 
@@ -337,6 +393,113 @@ The AgentWorker resumes only inside the approved scope.
 
 Compatible implementations MUST reject execution outside the ApprovalScope.
 They MUST reject stale, replayed, mismatched, or expired approvals.
+
+ApprovalScope validation checks:
+
+```txt
+request_id matches the resolved Request
+review_id matches the resolving Review
+policy_decision_id matches the Request policy_decision_id
+request_revision matches the WorkSession revision at the Request state event
+request_event_hash matches the JarvisEvent event_hash for the Request state
+  event being resolved
+normalized_action_hash matches the approved action
+allowed_scope is no broader than the resolving Review
+allowed_scope is no broader than the requested action
+allowed_scope is no broader than the PolicyDecision selected grants
+allowed_scope is no broader than the declared blocking scope
+applies_to_work_session_id matches the WorkSession
+applies_to_actor_id matches the AgentWorker Actor
+expires_at has not passed
+max_uses is not exhausted
+```
+
+Rejections:
+
+```txt
+invalid_approval_scope
+approval_scope_expired
+approval_scope_mismatch
+```
+
+ApprovalScope never expands Policy. It grants only the bounded authority
+recorded by the Review.
+
+## Review Effects
+
+Review is append-only human judgment.
+
+Review decisions have these protocol effects:
+
+```txt
+approve
+  resolves the target Request and creates ApprovalScope.
+
+deny
+  resolves the target Request and keeps the blocked action denied.
+
+narrow
+  resolves the target Request and creates a smaller ApprovalScope.
+
+correct
+  records HumanWorker correction. When the Review targets a Request, the
+  Request resolves as needs_revision. When the Review targets a non-Request
+  protocol object, the target records the correction without changing Request
+  status.
+
+takeover
+  resolves the target Request by creating or referencing Takeover.
+
+needs_revision
+  resolves the target Request and requires AgentWorker revision before the
+  affected scope continues.
+```
+
+Review does not silently change durable memory, skill behavior, or Policy.
+Review may create LearningRecord, MemoryProposal, SkillProposal, or policy
+change proposal records. Those records remain governed.
+
+## Takeover Lifecycle
+
+Takeover is temporary direct HumanWorker control over a declared scope.
+
+Takeover states:
+
+```txt
+requested
+locked
+human_active
+reconciliation_required
+resumed
+closed
+```
+
+Allowed transitions:
+
+```txt
+requested -> locked
+requested -> closed
+
+locked -> human_active
+locked -> reconciliation_required
+locked -> closed
+
+human_active -> reconciliation_required
+human_active -> closed
+
+reconciliation_required -> resumed
+reconciliation_required -> closed
+
+resumed -> closed
+```
+
+Every Takeover increments the WorkSession lock epoch. AgentWorker protocol
+actions or autonomous continuation from an older lock epoch are rejected as
+`stale_takeover_epoch`.
+
+Resume from Takeover requires reconciliation refs. The refs connect human
+edits, affected artifacts, evidence, context updates, AgentWorker continuation,
+and governed learning proposals when learning is created.
 
 ## Event Chain
 
@@ -367,17 +530,57 @@ Compatible implementations MUST enforce these rules:
 1. Duplicate pending Requests are deduplicated or superseded without weakening
    `policy_decision_id`, `blocking_scope`, risk, requested action hash, or
    event references.
-2. Similar Requests are batched when safe.
-3. Low-risk uncertainty MUST NOT create a Request. Hosts may surface it as
+2. Similar Requests use this similarity key:
+   `target_human_worker_id`, `type`, `blocking_scope`, `risk_class`,
+   `policy_decision_id`, `normalized_action_hash`, and requested action hash.
+3. Similar Requests are batched only when batching preserves every blocked
+   action hash, PolicyDecision, risk class, blocking scope, and event ref.
+4. Low-risk uncertainty MUST NOT create a Request. Hosts may surface it as
    non-blocking communication, but Jarvis does not require a Notification object
    in v0.
-4. Every Request includes default_if_no_response.
-5. Every Request includes expires_at.
-6. AgentWorker may continue unrelated safe branches.
-7. Hosts enforce maximum pending Requests per WorkSession.
-8. Rejected Requests cannot be recreated unchanged immediately.
-9. Repeated failed Requests escalate to Review or Takeover.
+5. Every Request includes default_if_no_response.
+6. Every Request includes expires_at.
+7. AgentWorker may continue unrelated safe branches.
+8. Compatible implementations enforce request_limits for each WorkSession.
+9. Rejected Requests cannot be recreated unchanged immediately.
+10. Repeated failed Requests escalate to Review or Takeover.
+11. Superseded Requests preserve the blocked action hash, policy decision,
+    blocking scope, risk, and event references.
+12. Host UI notifications never convert into Requests without a PolicyDecision
+    and Request event.
 ```
+
+Each WorkSession resolves request_limits from Policy or protocol defaults:
+
+```txt
+max_pending_requests_per_work_session
+max_pending_requests_per_blocking_scope
+duplicate_request_window
+repeated_unchanged_request_limit
+similarity_key_fields
+```
+
+Protocol defaults:
+
+```txt
+max_pending_requests_per_work_session: 20
+max_pending_requests_per_blocking_scope: 1
+duplicate_request_window: WorkSession lifetime
+repeated_unchanged_request_limit: 1
+similarity_key_fields:
+  target_human_worker_id
+  type
+  blocking_scope
+  risk_class
+  policy_decision_id
+  normalized_action_hash
+  requested_action_hash
+```
+
+`request_livelock` rejects repeated Request creation that bypasses these rules.
+`duplicate_request_mismatch` rejects a deduplication or supersession attempt
+that changes the blocked action hash, PolicyDecision, blocking scope, risk, or
+event references.
 
 ## Learning Loop
 
@@ -429,4 +632,12 @@ A Jarvis-compatible implementation MUST pass these Request tests:
 10. Request resolution can create governed learning proposals.
 11. Non-blocking host communication does not block WorkSession state.
 12. Request blocks only its declared scope unless scope is work_session.
+13. Request status transitions reject `invalid_request_transition`.
+14. ApprovalScope rejects stale, mismatched, expired, or over-broad execution.
+15. Takeover rejects stale AgentWorker continuation from an older lock epoch.
+16. Takeover resume requires reconciliation refs.
+17. Repeated unchanged Requests reject as `request_livelock` or supersede a
+    prior Request without weakening policy fields.
+18. Host notifications do not become blocking Requests without Request event
+    and PolicyDecision.
 ```
