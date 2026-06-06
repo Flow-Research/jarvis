@@ -111,6 +111,7 @@ takeover
 reconciling
 completed
 failed
+cancelled
 closed
 ```
 
@@ -123,6 +124,18 @@ The MVP conformance suite checks:
 
 - a WorkSession cannot start without HumanWorker, AgentWorker, objective, and
   Policy.
+- invalid WorkSession transitions are rejected.
+- stale WorkSession revision is rejected.
+- stale previous event hash is rejected.
+- every transition out of `waiting_on_human` records blocker accounting.
+- WorkSession lifecycle rejection ids include `unknown_state`,
+  `missing_idempotency_key`, `duplicate_idempotency_key_mismatch`,
+  `missing_jarvis_event`, `missing_policy_decision`,
+  `missing_blocked_scope_resolution_refs`, `missing_reconciliation_refs`,
+  `mutation_after_closed`, `invalid_export_state`, and
+  `unauthorized_actor`.
+- final EvidenceManifest export is valid only from completed, failed,
+  cancelled, or closed WorkSession state.
 - policy-denied action creates Request.
 - Request blocks only its declared scope unless scope is whole WorkSession.
 - Human resolution of a Request requires Review or Takeover.

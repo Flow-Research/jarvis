@@ -202,6 +202,8 @@ Done when:
 
 Purpose: lock WorkSession states and transitions.
 
+Spec: [chunk-2-worksession-lifecycle-lock.md](./chunk-2-worksession-lifecycle-lock.md)
+
 Outputs:
 
 - WorkSession state list

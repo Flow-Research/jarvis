@@ -148,8 +148,15 @@ current WorkSession revision, and links to the previous event hash. Every
 AgentWorker action that affects a WorkSession also records a PolicyDecision
 before the action is accepted as protocol state.
 
+Jarvis defines `POST /work-sessions` as the genesis WorkSession mutation.
+Compatible implementations MUST use expected revision `0` and the protocol
+genesis hash as `Jarvis-Previous-Event-Hash`. They MUST require actor
+authority, idempotency, timestamp, and protocol version before accepting the
+creation event.
+
 Every export excludes product-private fields, credentials, secrets, raw runtime
-state, database ids that only the host understands, and deployment details.
+state, database ids that only the host understands, deployment details, billing
+data, private scores, and product UI state.
 
 ## Version And Capability Negotiation
 
@@ -174,14 +181,27 @@ Jarvis OpenAPI defines protocol errors for:
 
 ```txt
 invalid_transition
+unknown_state
+stale_work_session_revision
+missing_idempotency_key
 missing_actor
 missing_policy
+missing_policy_decision
+missing_objective
 policy_denied
 request_unresolved
 review_required
 stale_takeover_epoch
 invalid_event_hash
+invalid_previous_event_hash
+duplicate_idempotency_key_mismatch
+missing_jarvis_event
+missing_blocked_scope_resolution_refs
+missing_reconciliation_refs
+mutation_after_closed
+unauthorized_actor
 invalid_export
+invalid_export_state
 unsupported_capability
 forbidden_host_private_field
 ```

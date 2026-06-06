@@ -105,7 +105,17 @@ Release tests:
 - canonical event serialization is stable.
 - event envelopes validate required ids and timestamps.
 - event hashes exclude `event_hash` and signature fields.
+- mutating requests reject missing `Jarvis-Protocol-Version`.
+- mutating requests reject missing `Jarvis-Actor-Id`.
+- mutating requests reject missing `Jarvis-Idempotency-Key`.
+- mutating requests reject missing `Jarvis-Request-Timestamp`.
+- mutating requests reject missing `Jarvis-Expected-WorkSession-Revision`.
+- mutating requests reject missing `Jarvis-Previous-Event-Hash`.
 - WorkSession status transitions reject invalid transitions.
+- stale WorkSession revision rejects mutation.
+- stale previous event hash rejects mutation.
+- final EvidenceManifest export requires completed, failed, cancelled, or closed
+  WorkSession state.
 - Human resolution of a Request requires Review or Takeover.
 - Takeover creates a lock epoch.
 
