@@ -86,12 +86,16 @@ Expected result:
 - invalid WorkSession transitions are rejected
 - stale WorkSession revision is rejected
 - stale previous event hash is rejected
+- every accepted WorkSession state change records Actor, verifies authority,
+  checks current WorkSession revision, and links to previous event hash
+- every AgentWorker action that affects a WorkSession records a PolicyDecision
+  before the action is accepted as protocol state
 - every transition out of `waiting_on_human` records blocker accounting
 - WorkSession lifecycle rejection ids include `unknown_state`,
   `missing_idempotency_key`, `duplicate_idempotency_key_mismatch`,
-  `missing_jarvis_event`, `missing_blocked_scope_resolution_refs`,
-  `missing_reconciliation_refs`, `mutation_after_closed`,
-  `invalid_export_state`, and `unauthorized_actor`
+  `missing_jarvis_event`, `missing_policy_decision`,
+  `missing_blocked_scope_resolution_refs`, `missing_reconciliation_refs`,
+  `mutation_after_closed`, `invalid_export_state`, and `unauthorized_actor`
 - final EvidenceManifest export is valid only from completed, failed,
   cancelled, or closed WorkSession state
 - Request cannot reach human-resolved state without Review or Takeover

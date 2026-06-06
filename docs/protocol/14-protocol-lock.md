@@ -195,8 +195,16 @@ Rules:
 - WorkSession keeps an append-only JarvisEvent log.
 - WorkSession state changes follow the transition table in
   [04-work-sessions.md](./04-work-sessions.md).
+- Every mutating request that affects a WorkSession MUST include
+  `Jarvis-Protocol-Version`, `Jarvis-Actor-Id`, `Jarvis-Idempotency-Key`,
+  `Jarvis-Request-Timestamp`, `Jarvis-Expected-WorkSession-Revision`, and
+  `Jarvis-Previous-Event-Hash`.
+- Accepted mutations record the Actor from `Jarvis-Actor-Id`, verify authority,
+  enforce `Jarvis-Expected-WorkSession-Revision`, and enforce
+  `Jarvis-Previous-Event-Hash`.
 - Every accepted mutation increments `revision` and updates `last_event_hash`.
-- Stale expected revision or previous event hash rejects the mutation.
+- Missing headers, stale expected revision, or mismatched previous event hash
+  reject the mutation.
 - WorkSession owns Requests, Reviews, Takeovers, Contributions,
   EvidenceManifest, and LearningRecords.
 - Final EvidenceManifest export is valid only from `completed`, `failed`,

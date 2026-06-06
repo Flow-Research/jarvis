@@ -360,6 +360,7 @@ The protocol accepts a new mutation only when:
 Jarvis-Expected-WorkSession-Revision == WorkSession.revision
 Jarvis-Previous-Event-Hash == WorkSession.last_event_hash
 Actor has authority for the requested transition or event
+AgentWorker mutation has a PolicyDecision recorded and linked before acceptance
 Idempotency key is unused
 ```
 
@@ -387,6 +388,7 @@ Accepted mutation behavior:
 3. set WorkSession.last_event_hash to JarvisEvent.event_hash
 4. update WorkSession.updated_at
 5. update WorkSession.status when the event is a state transition
+6. link PolicyDecision when the accepted mutation is from AgentWorker
 ```
 
 Rejected mutation reasons:
@@ -394,6 +396,7 @@ Rejected mutation reasons:
 ```txt
 missing_actor
 missing_policy
+missing_policy_decision
 missing_objective
 unknown_state
 invalid_transition

@@ -1053,9 +1053,18 @@ Rules:
 - The event log is the protocol source of truth.
 - Allowed WorkSession transitions are defined in
   [04-work-sessions.md](./04-work-sessions.md).
+- Every mutating WorkSession operation MUST include
+  `Jarvis-Protocol-Version`, `Jarvis-Actor-Id`, `Jarvis-Idempotency-Key`,
+  `Jarvis-Request-Timestamp`, `Jarvis-Expected-WorkSession-Revision`, and
+  `Jarvis-Previous-Event-Hash`.
+- The operation MUST record the Actor from `Jarvis-Actor-Id` and verify
+  authority before applying changes.
+- `Jarvis-Expected-WorkSession-Revision` MUST match `WorkSession.revision`.
+- `Jarvis-Previous-Event-Hash` MUST match `WorkSession.last_event_hash`.
 - Every accepted WorkSession mutation increments `revision` and updates
   `last_event_hash`.
-- Stale expected revision or previous event hash rejects the mutation.
+- Missing headers, stale expected revision, or mismatched previous event hash
+  reject the mutation.
 - Final EvidenceManifest export is valid only from `completed`, `failed`,
   `cancelled`, or `closed`.
 - `closed` is sealed and rejects further mutation except idempotent replay of

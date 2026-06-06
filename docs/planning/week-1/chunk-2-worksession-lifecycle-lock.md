@@ -63,7 +63,7 @@ mutable states.
 
 ## Required Transition Rules
 
-Compatible implementations must enforce the transition table in
+Compatible implementations MUST enforce the transition table in
 [04-work-sessions.md](../../protocol/04-work-sessions.md).
 
 Every state change requires:
@@ -96,6 +96,7 @@ Compatible implementations reject:
 ```txt
 missing_actor
 missing_policy
+missing_policy_decision
 missing_objective
 unknown_state
 invalid_transition
