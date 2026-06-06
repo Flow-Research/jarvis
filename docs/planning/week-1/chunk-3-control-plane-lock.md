@@ -48,10 +48,14 @@ Chunk 3 does not:
 
 Policy governs AgentWorker autonomy.
 
-AgentWorker action inside Policy records a PolicyDecision and continues.
+Every AgentWorker action that affects a WorkSession MUST record a
+PolicyDecision before the action is accepted as protocol state. Only then may
+the AgentWorker action continue as protocol state.
 
-AgentWorker action outside Policy records a PolicyDecision and creates a
-Request.
+AgentWorker action outside Policy MUST record a PolicyDecision before the
+blocked action is accepted as protocol state. The denied, review-required, or
+narrowed decision creates or references Request or Review before the affected
+scope continues.
 
 HumanWorker judgment enters through Review or Takeover.
 
@@ -65,7 +69,7 @@ rejects stale AgentWorker continuation until reconciliation.
 Compatible implementations MUST enforce these invariants:
 
 ```txt
-Every meaningful AgentWorker action records PolicyDecision.
+Every meaningful AgentWorker action records PolicyDecision before acceptance as protocol state.
 Policy denies by default.
 Explicit deny beats allow.
 Denied or review-required PolicyDecision creates or references Request.
@@ -113,6 +117,22 @@ closed
 
 Review is append-only human judgment. Review does not need a mutable status
 machine. Its decision determines the protocol effect.
+
+Every mutating Request, Review, or Takeover operation MUST include:
+
+```txt
+Jarvis-Protocol-Version
+Jarvis-Actor-Id
+Jarvis-Idempotency-Key
+Jarvis-Request-Timestamp
+Jarvis-Expected-WorkSession-Revision
+Jarvis-Previous-Event-Hash
+```
+
+Every accepted control-plane state change records the Actor, verifies
+authority, validates `Jarvis-Expected-WorkSession-Revision` against the current
+WorkSession revision, and links to the previous event through
+`Jarvis-Previous-Event-Hash`.
 
 ## Required Rejection Reasons
 

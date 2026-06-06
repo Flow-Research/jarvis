@@ -373,6 +373,7 @@ Optional fields:
 tool_grants
 memory_grants
 external_send_rules
+request_limits
 extensions
 ```
 

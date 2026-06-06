@@ -257,6 +257,22 @@ cancelled
 superseded
 ```
 
+Every mutating Request, Review, or Takeover operation MUST include:
+
+```txt
+Jarvis-Protocol-Version
+Jarvis-Actor-Id
+Jarvis-Idempotency-Key
+Jarvis-Request-Timestamp
+Jarvis-Expected-WorkSession-Revision
+Jarvis-Previous-Event-Hash
+```
+
+Every accepted Request, Review, or Takeover state change records the Actor,
+verifies authority, validates `Jarvis-Expected-WorkSession-Revision` against
+the current WorkSession revision, and links to the previous event through
+`Jarvis-Previous-Event-Hash`.
+
 State meanings:
 
 ```txt
@@ -473,6 +489,10 @@ reconciliation_required
 resumed
 closed
 ```
+
+Every Takeover state transition is a mutating control-plane operation and MUST
+enforce the required mutation headers, Actor authority, WorkSession revision,
+previous event hash, and idempotency rules defined in this document.
 
 Allowed transitions:
 
