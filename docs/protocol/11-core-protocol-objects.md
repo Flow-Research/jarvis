@@ -373,6 +373,7 @@ Optional fields:
 tool_grants
 memory_grants
 external_send_rules
+request_limits
 extensions
 ```
 
@@ -602,6 +603,13 @@ Optional fields:
 resumed_by_actor_id
 reconciliation_notes
 resolved_at
+```
+
+Conditionally required fields:
+
+```txt
+reconciliation_refs
+  required before state becomes resumed
 ```
 
 Forbidden fields:
@@ -956,7 +964,8 @@ Rules:
 - The HumanWorker is not modeled as a passive user.
 - The HumanWorker approves, denies, narrows, corrects, requests revision,
   answers, or takes over.
-- Human corrections are learning signals.
+- Human corrections may create or reference LearningRecord, MemoryProposal, or
+  SkillProposal records.
 - Human accountability remains attributable even when execution is delegated.
 
 ## AgentWorker
@@ -1134,6 +1143,7 @@ Policy
   external_send_rules
   risk_classes
   escalation_rules
+  request_limits
   extensions
   created_at
 ```
@@ -1179,6 +1189,11 @@ Rules:
 
 - Every meaningful AgentWorker action has a PolicyDecision.
 - Denial and review-required decisions create or reference a Request.
+- Narrowed decisions create or reference Review or Request before narrowed
+  execution.
+- Allowed decisions never create authority outside selected grants.
+- `normalized_action_hash` binds Request, Review, ApprovalScope,
+  Contribution, and EvidenceManifest records that depend on the action.
 - PolicyDecision records the protocol reason, not a hidden implementation
   judgment.
 - PolicyDecision is included in EvidenceManifest.
@@ -1252,6 +1267,11 @@ Rules:
 - Duplicate pending Requests are deduplicated or superseded.
 - Expired Requests apply `default_if_no_response`; expiry never grants new
   authority.
+- Invalid Request transitions reject as `invalid_request_transition`.
+- Request livelock rejects as `request_livelock`.
+- Deduplication or supersession that changes blocked action hash,
+  PolicyDecision, blocking scope, risk, or event refs rejects as
+  `duplicate_request_mismatch`.
 
 ## Review
 
@@ -1277,13 +1297,16 @@ Rules:
 - Review is a protocol object, not only UI feedback.
 - Review can resolve a Request.
 - Takeover can resolve a Request.
-- Review creates learning signals.
 - Review records authority changes when the decision changes scope.
 - Review with decision `approve` or `narrow` defines an ApprovalScope.
 - ApprovalScope binds the approved action to scope, expiry, WorkSession, and
   Actor, and to the Request revision, Request event hash, PolicyDecision, and
   normalized action hash.
 - Review creates Takeover only when the decision is `takeover`.
+- Review does not silently mutate Policy, MemoryProposal, SkillProposal, or
+  durable learning.
+- Review may create LearningRecord, MemoryProposal, SkillProposal, or policy
+  change proposal records. Those records remain governed.
 
 ## Takeover
 
@@ -1300,6 +1323,7 @@ Takeover
   state
   resumed_by_actor_id
   reconciliation_notes
+  reconciliation_refs
   created_at
   resolved_at
 ```
@@ -1321,7 +1345,16 @@ Rules:
 - Takeover increments the lock epoch.
 - Agent actions from an old lock epoch are stale and rejected.
 - Resume requires reconciliation.
-- Takeover is a learning event.
+- Takeover may create or reference LearningRecord, MemoryProposal, or
+  SkillProposal records.
+- Allowed Takeover transitions are `requested -> locked`, `requested -> closed`,
+  `locked -> human_active`, `locked -> reconciliation_required`,
+  `locked -> closed`, `human_active -> reconciliation_required`,
+  `human_active -> closed`, `reconciliation_required -> resumed`,
+  `reconciliation_required -> closed`, and `resumed -> closed`.
+- Takeover resume requires reconciliation refs before AgentWorker autonomy
+  continues.
+- `reconciliation_refs` is required before Takeover reaches `resumed`.
 
 ## Contribution
 

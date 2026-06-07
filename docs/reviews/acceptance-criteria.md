@@ -24,7 +24,8 @@ Jarvis architecture is accepted only when these criteria hold.
 - HumanWorker and AgentWorker both learn from completed WorkSessions.
 - HumanWorker approves, denies, narrows, corrects, requests revision, or takes
   over.
-- Corrections become structured learning signals.
+- Corrections may create or reference LearningRecord, MemoryProposal, or
+  SkillProposal records.
 
 ## WorkSession
 
@@ -101,7 +102,18 @@ Expected result:
 - Request cannot reach human-resolved state without Review or Takeover
 - Review supports approve, deny, narrow, correct, takeover, and needs_revision
 - Request blocks only its declared scope unless scope is whole WorkSession
+- invalid Request transitions are rejected
+- ApprovalScope rejects stale, mismatched, expired, or over-broad execution
+- repeated unchanged Requests reject as livelock or supersede without weakening
+  policy fields
+- control-plane rejection ids include `invalid_request_transition`,
+  `missing_review_resolution`, `missing_takeover_resolution`,
+  `invalid_approval_scope`, `approval_scope_expired`,
+  `approval_scope_mismatch`, `stale_takeover_epoch`, `request_livelock`, and
+  `duplicate_request_mismatch`
 - Takeover creates lock state
+- Takeover rejects stale AgentWorker continuation
+- Takeover resume requires reconciliation refs
 - Contribution references events or artifacts
 - EvidenceManifest references the WorkSession event chain
 - exported records contain no product-private infrastructure requirement

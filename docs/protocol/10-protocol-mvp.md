@@ -137,14 +137,27 @@ The MVP conformance suite checks:
 - final EvidenceManifest export is valid only from completed, failed,
   cancelled, or closed WorkSession state.
 - policy-denied action creates Request.
+- review-required action creates Request.
 - Request blocks only its declared scope unless scope is whole WorkSession.
 - Human resolution of a Request requires Review or Takeover.
+- invalid Request transitions are rejected.
 - approval narrows scope when the human restricts the request.
 - narrowed approval rejects execution outside the approved scope.
+- stale, mismatched, expired, or over-broad ApprovalScope rejects execution.
 - expired Request applies its safe fallback.
 - takeover creates a lock epoch.
 - stale autonomous events after takeover are rejected.
+- takeover resume requires reconciliation refs.
 - duplicate pending Requests are deduplicated or superseded.
+- repeated unchanged Requests reject as livelock or supersede without weakening
+  policy fields.
+- control-plane rejection ids include `invalid_request_transition`,
+  `missing_review_resolution`, `missing_takeover_resolution`,
+  `invalid_approval_scope`, `approval_scope_expired`,
+  `approval_scope_mismatch`, `stale_takeover_epoch`, `request_livelock`, and
+  `duplicate_request_mismatch`.
+- host notifications do not become blocking Requests without Request event and
+  PolicyDecision.
 - Contribution entries reference events or artifacts.
 - EvidenceManifest references policy decisions, requests, reviews,
   contributions, artifacts, and limitations.
