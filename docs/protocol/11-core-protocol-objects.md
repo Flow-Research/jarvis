@@ -651,6 +651,13 @@ confidence
 limitations
 ```
 
+Conditionally required fields:
+
+```txt
+contributor_refs
+  MUST contain every individual contributor when contributor_type is shared
+```
+
 Forbidden fields:
 
 ```txt
@@ -675,6 +682,7 @@ evidence_item_refs
 policy_decision_refs
 request_refs
 review_refs
+takeover_refs
 contribution_refs
 export_profile
 generated_at
@@ -692,6 +700,23 @@ limitation_refs
 redaction_refs
 ```
 
+Nested component:
+
+```txt
+EvidenceItemRef
+  id
+  work_session_id
+  source_event_refs
+  captured_by_actor_id
+  evidence_type
+  artifact_ref
+  content_hash
+  trust_label
+  redaction_state
+  captured_at
+  limitation_refs
+```
+
 Forbidden fields:
 
 ```txt
@@ -701,6 +726,12 @@ provider_secret
 database_primary_key
 cloud_storage_secret
 unredacted_secret_value
+raw_runtime_state
+host_only_database_id
+deployment_detail
+billing_data
+private_score
+product_ui_state
 ```
 
 ### LearningRecord Field Lock
@@ -730,6 +761,20 @@ Optional fields:
 proposed_change
 memory_proposal_refs
 skill_proposal_refs
+outcome_report_refs
+```
+
+Source rule: `source_event_refs` is required for every LearningRecord.
+OutcomeReport-backed LearningRecords use the OutcomeReport acceptance
+JarvisEvent as `source_event_refs` and may also record `outcome_report_refs`.
+
+Review states:
+
+```txt
+proposed
+accepted
+rejected
+superseded
 ```
 
 Forbidden fields:
@@ -771,6 +816,25 @@ Optional fields:
 source_event_refs
 review_refs
 expires_at
+learning_record_refs
+```
+
+Conditionally required fields:
+
+```txt
+review_refs
+  required when status is accepted
+```
+
+Status values:
+
+```txt
+proposed
+pending_review
+accepted
+rejected
+superseded
+expired
 ```
 
 Forbidden fields:
@@ -813,6 +877,25 @@ Optional fields:
 required_tools
 source_event_refs
 review_refs
+learning_record_refs
+```
+
+Conditionally required fields:
+
+```txt
+review_refs
+  required when status is accepted
+```
+
+Status values:
+
+```txt
+proposed
+pending_review
+accepted
+rejected
+superseded
+archived
 ```
 
 Forbidden fields:
@@ -845,12 +928,14 @@ received_at
 
 Required field reason: OutcomeReport records attributable post-session feedback
 and links it to governed LearningRecords without mutating the sealed
-WorkSession or EvidenceManifest. `source_ref` identifies the completed
-WorkSession export, external task record, evaluation record, or other portable
-work reference whose outcome is being reported. `reporter_ref` identifies the
-external or protocol reporter.
+WorkSession or EvidenceManifest. `source_ref` identifies the completed, failed,
+cancelled, or closed WorkSession export, external task record, evaluation
+record, or other portable work reference whose outcome is being reported.
+`reporter_ref` identifies the external or protocol reporter.
 `accepted_by_actor_id` identifies the protocol Actor with review authority that
 accepted the report into Jarvis records.
+OutcomeReport does not define evaluation, payment, scoring, settlement, or
+marketplace logic.
 
 Optional fields:
 
@@ -1398,6 +1483,7 @@ Rules:
 
 - Human, agent, service, tool, and shared contributions remain distinguishable.
 - Shared contribution does not erase the individual contributing actors.
+- Shared contribution preserves every individual contributor ref.
 - Contribution is not compensation. It is the protocol record that downstream
   systems evaluate.
 
@@ -1417,6 +1503,7 @@ EvidenceManifest
   policy_decision_refs
   request_refs
   review_refs
+  takeover_refs
   contribution_refs
   limitation_refs
   export_profile
@@ -1430,6 +1517,11 @@ Rules:
 - Redacted exports are derived artifacts.
 - Redaction never replaces the raw WorkSession evidence record.
 - EvidenceManifest is portable across compatible products and hosts.
+- Final EvidenceManifest export is valid only from `completed`, `failed`,
+  `cancelled`, or `closed` WorkSession state.
+- EvidenceManifest excludes product-private fields, credentials, secrets, raw
+  runtime state, host-only database ids, deployment details, billing data,
+  private scores, and product UI state.
 
 ## LearningRecord
 
@@ -1454,6 +1546,7 @@ Rules:
 
 - Learning is not only agent memory.
 - Jarvis records human learning, agent learning, and pair learning.
+- `review_state` uses `proposed`, `accepted`, `rejected`, or `superseded`.
 - A LearningRecord points to MemoryProposal or SkillProposal when learning
   becomes a governed memory or skill change.
 - Learning does not become durable memory or active skill behavior without
@@ -1486,6 +1579,10 @@ Rules:
 - Tool-derived memory cannot confirm itself.
 - Durable preferences, boundaries, permissions, and broad facts require
   review.
+- Status uses `proposed`, `pending_review`, `accepted`, `rejected`,
+  `superseded`, or `expired`.
+- Accepted MemoryProposal creates durable memory only inside its declared
+  memory_scope.
 
 ## SkillProposal
 
@@ -1515,6 +1612,10 @@ Rules:
 - Skills encode repeated collaboration patterns.
 - Unreviewed skill changes do not become active.
 - Skill changes cannot expand tool access without separate policy review.
+- Status uses `proposed`, `pending_review`, `accepted`, `rejected`,
+  `superseded`, or `archived`.
+- Accepted SkillProposal creates active skill behavior only inside its declared
+  skill_scope.
 
 ## Portable Export
 

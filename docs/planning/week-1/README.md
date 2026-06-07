@@ -253,6 +253,8 @@ Done when:
 
 Purpose: lock attribution, proof, and shared learning.
 
+Spec: [chunk-4-evidence-learning-lock.md](./chunk-4-evidence-learning-lock.md)
+
 Outputs:
 
 - Contribution ledger minimum shape

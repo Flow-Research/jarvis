@@ -372,6 +372,7 @@ Rules:
 
 - Human, agent, service, tool, and shared contributions stay distinguishable.
 - Shared contribution does not erase individual actors.
+- Shared contribution preserves individual contributor refs.
 - Contribution is attribution, not payment or accounting.
 - Downstream systems evaluate Contribution records.
 
@@ -388,6 +389,7 @@ It references:
 - policy decisions
 - requests
 - reviews
+- takeovers
 - contributions
 - limitations
 - export profile
@@ -398,6 +400,11 @@ Rules:
 - Evidence is not reconstructed only at the end.
 - Redacted exports stay derived from the same event chain.
 - EvidenceManifest is portable across compatible products and hosts.
+- Final EvidenceManifest export is valid only from `completed`, `failed`,
+  `cancelled`, or `closed`.
+- EvidenceManifest excludes product-private fields, credentials, secrets, raw
+  runtime state, host-only database ids, deployment details, billing data,
+  private scores, and product UI state.
 
 ## Learning
 
@@ -415,9 +422,17 @@ Rules:
 
 - Learning is not only agent memory.
 - Jarvis records human learning, agent learning, and pair learning.
+- LearningRecord review states are `proposed`, `accepted`, `rejected`, and
+  `superseded`.
 - LearningRecord points to MemoryProposal or SkillProposal when learning becomes
   a governed memory or skill change.
 - Durable memory and active skill behavior require governed review.
+- MemoryProposal states are `proposed`, `pending_review`, `accepted`,
+  `rejected`, `superseded`, and `expired`.
+- SkillProposal states are `proposed`, `pending_review`, `accepted`,
+  `rejected`, `superseded`, and `archived`.
+- OutcomeReport is an optional extension that creates or references governed
+  LearningRecord without mutating sealed WorkSession or EvidenceManifest.
 
 ## Compatibility
 
@@ -469,6 +484,7 @@ A v0-compatible host proves:
 - EvidenceManifest is captured during work and exportable.
 - Learning is governed.
 - MemoryProposal and SkillProposal do not silently become durable behavior.
+- OutcomeReport does not mutate sealed WorkSession or EvidenceManifest.
 - Portable export contains no product-private infrastructure requirement.
 
 ## Portable Export

@@ -117,12 +117,15 @@ OutcomeReport
 
 Rules:
 
-- OutcomeReport arrives after a WorkSession is completed.
+- OutcomeReport arrives after a WorkSession is completed, failed, cancelled, or
+  closed.
 - It does not mutate the sealed WorkSession or EvidenceManifest.
 - The report creates or references a new LearningRecord.
-- `source_ref` is required and identifies the completed WorkSession export,
-  external task record, evaluation record, or other portable work reference
-  whose outcome is being reported.
+- OutcomeReport does not define evaluation, payment, scoring, settlement, or
+  marketplace logic.
+- `source_ref` is required and identifies the completed, failed, cancelled, or
+  closed WorkSession export, external task record, evaluation record, or other
+  portable work reference whose outcome is being reported.
 - `reporter_ref` identifies the external or protocol reporter that supplied the
   outcome.
 - `accepted_by_actor_id` records the protocol Actor with review authority that
