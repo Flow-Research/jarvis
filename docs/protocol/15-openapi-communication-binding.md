@@ -59,9 +59,9 @@ that property for adoption.
 Primary references:
 
 - OpenAPI 3.1.1: https://spec.openapis.org/oas/v3.1.1.html
-- MCP transports: https://modelcontextprotocol.io/specification/2025-06-18/basic/transports
-- A2A specification: https://github.com/a2aproject/A2A/blob/main/docs/specification.md
-- AGNTCY ACP specification: https://github.com/agntcy/acp-spec
+- MCP transports: https://modelcontextprotocol.io/specification/2025-11-25/basic/transports
+- A2A specification: https://a2a-protocol.org/latest/specification/
+- AGNTCY ACP specification: https://spec.acp.agntcy.org/
 
 ## OpenAPI Contract Shape
 

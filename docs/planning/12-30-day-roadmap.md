@@ -36,9 +36,9 @@ Jarvis sits beside existing standards:
   not MCP.
 - A2A standardizes agent-to-agent communication and delegation. Jarvis records
   A2A delegation inside a WorkSession, but Jarvis is not A2A.
-- AG-UI standardizes agent-to-frontend interaction. Jarvis feeds AG-UI
-  interfaces with WorkSession state, Requests, Reviews, and EvidenceManifest
-  data, but Jarvis is not a frontend protocol.
+- AG-UI standardizes agent-to-frontend interaction. Hosts may expose Jarvis
+  WorkSession records to AG-UI clients, but Jarvis does not define frontend
+  events, rendering, UI state, or UI transport.
 - Agent SDKs, coding agents, local agents, and hosted agent products provide
   runtimes, tools, sessions, handoffs, tracing, or execution environments.
   Compatible adapters map their work into collaboration records instead of
@@ -48,7 +48,7 @@ Protocol grounding:
 
 - MCP: https://modelcontextprotocol.io/specification/
 - A2A: https://a2a-protocol.org/latest/
-- AGNTCY ACP: https://github.com/agntcy/acp-spec
+- AGNTCY ACP: https://spec.acp.agntcy.org/
 - AG-UI: https://docs.ag-ui.com/
 - OpenAPI 3.1.1: https://spec.openapis.org/oas/v3.1.1.html
 - RFC 8785 JSON Canonicalization Scheme:

@@ -292,16 +292,20 @@ Outputs:
 Done when:
 
 - OpenAPI contract authors have exact inputs
-- every mutating operation requires `Jarvis-Protocol-Version`,
+- every WorkSession-scoped mutating operation requires `Jarvis-Protocol-Version`,
   `Jarvis-Actor-Id`, `Jarvis-Idempotency-Key`, `Jarvis-Request-Timestamp`,
   `Jarvis-Expected-WorkSession-Revision`, and
   `Jarvis-Previous-Event-Hash`
+- Worker registration, Actor registration, and OutcomeReport submission use
+  the non-WorkSession mutation header set
 - Worker and Actor reference registration does not become identity ownership
 - OpenAPI 3.1 remains the default host-facing binding
 
 ### Chunk 6: Positioning And Adoption Lock
 
 Purpose: lock why Jarvis exists beside existing agents and protocols.
+
+Spec: [chunk-6-positioning-adoption-lock.md](./chunk-6-positioning-adoption-lock.md)
 
 Outputs:
 
@@ -318,8 +322,9 @@ Done when:
 - Jarvis is clearly not another agent
 - Jarvis is clearly not another runtime
 - existing agents remain first-class
-- adoption argument centers on policy, review, attribution, evidence, and
-  shared learning
+- adoption argument centers on policy, Requests, Reviews, Takeovers,
+  Contributions, Evidence, LearningRecords, MemoryProposals, and
+  SkillProposals
 
 ## Chunk Review Record
 

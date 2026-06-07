@@ -38,7 +38,7 @@ References:
 - OpenAPI Specification: https://spec.openapis.org/oas/latest.html
 - MCP: https://modelcontextprotocol.io/specification/
 - A2A: https://a2a-protocol.org/latest/
-- AGNTCY ACP: https://github.com/agntcy/acp-spec
+- AGNTCY ACP: https://spec.acp.agntcy.org/
 - AG-UI: https://docs.ag-ui.com/
 
 ## Protocol Disciplines
@@ -113,28 +113,35 @@ The docs now lock these points before OpenAPI contract work starts:
 - roadmap wording stays independent from downstream products.
 - core object spec uses protocol-style normative language.
 
-## OpenAPI Entry Gaps
+## Week 1 Closeout State
 
-OpenAPI work starts by closing these protocol gaps:
+Week 1 has locked the OpenAPI entry decisions needed before contract drafting:
 
-1. Version negotiation: define `protocol_version`, supported versions, and
-   compatibility behavior.
-2. Capability negotiation: define how a host declares supported Jarvis features.
-3. Extension model: define namespaced extension fields that preserve
-   portability.
-4. Error model: define protocol error codes for invalid transitions, missing
-   review, stale takeover epoch, invalid export, and unsupported capability.
-5. OpenAPI examples: create one complete WorkSession export.
-6. Conformance fixtures: create passing and failing examples.
-7. Security model: define required headers, authentication boundary,
-   idempotency, actor authorization, event hash validation, and forbidden
-   export fields.
+1. Version negotiation uses `Jarvis-Protocol-Version`.
+2. Capability negotiation uses `Jarvis-Host-Capabilities` and
+   `Jarvis-Required-Capabilities`.
+3. Extensions are namespaced and cannot override core fields.
+4. Protocol errors use structured error ids and a required error envelope.
+5. WorkSession-scoped mutations require protocol version, Actor id,
+   idempotency key, timestamp, expected WorkSession revision, and previous
+   event hash.
+6. Worker registration, Actor registration, and OutcomeReport submission use
+   the non-WorkSession mutation header set.
+7. WorkSession-scoped and export reads require protocol version, caller
+   authentication, and Actor authority.
+8. Portable exports and error responses exclude forbidden host-private fields.
+9. Positioning is locked: Jarvis integrates with MCP, A2A, ACP, AG-UI, agent
+   SDKs, coding agents, personal agents, and product hosts without replacing
+   them.
+
+Week 2 starts from these locked decisions and drafts OpenAPI component syntax,
+path syntax, examples, and conformance fixtures.
 
 ## Readiness State
 
-The protocol thesis is stable. The boundaries are stable. The object set is
-stable enough to begin OpenAPI and examples.
+The protocol thesis is stable. The boundaries are stable. The object set,
+lifecycle, control plane, evidence model, learning model, OpenAPI security
+entry, and positioning boundary are stable enough to begin Week 2 OpenAPI
+drafting.
 
-Week 1 starts with the machine-readable OpenAPI contract, versioning,
-zero-trust security model, and conformance entry rules. Product proof waits
-behind that work.
+Product proof waits behind the OpenAPI contract and conformance entry rules.

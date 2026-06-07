@@ -20,8 +20,10 @@ stable.
 - [10-protocol-mvp.md](./protocol/10-protocol-mvp.md)
 - [11-core-protocol-objects.md](./protocol/11-core-protocol-objects.md)
 - [12-request-protocol.md](./protocol/12-request-protocol.md)
+- [13-contribution-evidence-learning.md](./protocol/13-contribution-evidence-learning.md)
 - [14-protocol-lock.md](./protocol/14-protocol-lock.md)
 - [15-openapi-communication-binding.md](./protocol/15-openapi-communication-binding.md)
+- [16-positioning-adoption-lock.md](./protocol/16-positioning-adoption-lock.md)
 
 ## Planning
 
