@@ -83,6 +83,10 @@ components.examples
 The `components.schemas` section defines the protocol objects. The `paths`
 section defines how hosts exchange those objects.
 
+OpenAPI authors MUST NOT add host implementation fields, auth-provider fields,
+database ids, runtime ids, billing fields, product UI state, or deployment
+details to core protocol schemas.
+
 ## Core Operations
 
 The first OpenAPI binding defines these operations:
@@ -108,6 +112,17 @@ POST /outcome-reports
 Worker and Actor operations register protocol references. They do not create
 accounts, authenticate users, issue credentials, or own identity storage.
 
+Worker and Actor registration rules:
+
+```txt
+Worker registration records protocol participant refs.
+Actor registration records protocol authority refs.
+Registration does not create host accounts.
+Registration does not authenticate callers.
+Registration does not issue credentials.
+Registration does not define identity storage.
+```
+
 The operations are protocol operations. They do not define how the host runs the
 agent, stores records, authenticates users, bills customers, renders UI, or
 deploys infrastructure.
@@ -132,7 +147,7 @@ portable export boundary
 forbidden host-private fields
 ```
 
-Every mutating operation requires:
+Every WorkSession-scoped mutating operation requires:
 
 ```txt
 Jarvis-Protocol-Version
@@ -143,10 +158,123 @@ Jarvis-Expected-WorkSession-Revision
 Jarvis-Previous-Event-Hash
 ```
 
-Every accepted state change records the Actor, verifies authority, checks the
-current WorkSession revision, and links to the previous event hash. Every
-AgentWorker action that affects a WorkSession also records a PolicyDecision
-before the action is accepted as protocol state.
+Required WorkSession-scoped mutating header semantics:
+
+```txt
+Jarvis-Protocol-Version
+  selects the Jarvis protocol version used by the request
+
+Jarvis-Actor-Id
+  identifies the protocol Actor whose authority is checked and recorded
+
+Jarvis-Idempotency-Key
+  protects mutation replay for the same Actor, operation, protocol version, and
+  canonical payload
+
+Jarvis-Request-Timestamp
+  rejects stale or replayed requests outside protocol timestamp tolerance
+
+Jarvis-Expected-WorkSession-Revision
+  protects WorkSession optimistic concurrency
+
+Jarvis-Previous-Event-Hash
+  links the accepted mutation to the current WorkSession event chain
+```
+
+Missing or invalid mutating headers reject the request before protocol state
+changes.
+
+Non-WorkSession protocol mutations MUST include:
+
+```txt
+Jarvis-Protocol-Version
+Jarvis-Actor-Id
+Jarvis-Idempotency-Key
+Jarvis-Request-Timestamp
+```
+
+Worker registration, Actor registration, and OutcomeReport submission are
+non-WorkSession protocol mutations. They MUST verify Actor authority,
+idempotency, protocol version, and timestamp before state changes. They MUST
+NOT require fake WorkSession revision or previous event hash values.
+
+Jarvis timestamp tolerance is five minutes in the past and sixty seconds in the
+future. Hosts MAY be stricter. Hosts MUST NOT be looser. Requests outside
+tolerance reject as `stale_request_timestamp`.
+
+Operation header matrix:
+
+```txt
+WorkSession-scoped mutation
+  requires HostAuth
+  requires Jarvis-Protocol-Version
+  requires Jarvis-Actor-Id
+  requires Jarvis-Idempotency-Key
+  requires Jarvis-Request-Timestamp
+  requires Jarvis-Expected-WorkSession-Revision
+  requires Jarvis-Previous-Event-Hash
+
+Genesis WorkSession mutation
+  requires HostAuth
+  requires Jarvis-Protocol-Version
+  requires Jarvis-Actor-Id
+  requires Jarvis-Idempotency-Key
+  requires Jarvis-Request-Timestamp
+  requires Jarvis-Expected-WorkSession-Revision set to 0
+  requires Jarvis-Previous-Event-Hash set to protocol genesis hash
+
+Worker or Actor registration
+  requires HostAuth
+  requires Jarvis-Protocol-Version
+  requires Jarvis-Actor-Id
+  requires Jarvis-Idempotency-Key
+  requires Jarvis-Request-Timestamp
+  does not require Jarvis-Expected-WorkSession-Revision
+  does not require Jarvis-Previous-Event-Hash
+
+OutcomeReport submission
+  requires HostAuth
+  requires Jarvis-Protocol-Version
+  requires Jarvis-Actor-Id
+  requires Jarvis-Idempotency-Key
+  requires Jarvis-Request-Timestamp
+  does not require Jarvis-Expected-WorkSession-Revision
+  does not require Jarvis-Previous-Event-Hash
+
+WorkSession-scoped or export read
+  requires HostAuth
+  requires Jarvis-Protocol-Version
+  requires Jarvis-Actor-Id
+  does not require Jarvis-Idempotency-Key
+  does not require Jarvis-Expected-WorkSession-Revision
+  does not require Jarvis-Previous-Event-Hash
+```
+
+Read operations that return WorkSession-scoped records or portable exports MUST
+include caller authentication and:
+
+```txt
+Jarvis-Protocol-Version
+Jarvis-Actor-Id
+```
+
+Compatible implementations MUST verify that `Jarvis-Actor-Id` has authority to
+read the requested protocol record.
+
+Read operations MAY include:
+
+```txt
+Jarvis-Required-Capabilities
+Jarvis-Extensions
+```
+
+Read operations MUST NOT require mutation-only idempotency, expected revision,
+or previous event hash headers.
+
+Every accepted WorkSession-scoped state change records the Actor, verifies
+authority, checks the current WorkSession revision, and links to the previous
+event hash. Every AgentWorker action that affects a WorkSession also records a
+PolicyDecision before the action is accepted as protocol state.
 
 Jarvis defines `POST /work-sessions` as the genesis WorkSession mutation.
 Compatible implementations MUST use expected revision `0` and the protocol
@@ -157,6 +285,59 @@ creation event.
 Every export excludes product-private fields, credentials, secrets, raw runtime
 state, database ids that only the host understands, deployment details, billing
 data, private scores, and product UI state.
+
+Forbidden export fields include:
+
+```txt
+product-private fields
+credentials
+secrets
+raw runtime state
+host-only database ids
+deployment details
+billing data
+private scores
+product UI state
+raw auth tokens
+provider secrets
+session cookies
+private keys
+```
+
+## Security Schemes
+
+Jarvis OpenAPI MUST define security schemes without owning identity.
+
+Required security entries:
+
+```txt
+HostAuth
+  records that the host authenticated the caller without prescribing credential
+  format, auth provider, token type, session store, or account system
+
+ActorHeader
+  binds the request to `Jarvis-Actor-Id`
+
+ProtocolVersionHeader
+  binds the request to `Jarvis-Protocol-Version`
+
+IdempotencyHeader
+  binds the request to `Jarvis-Idempotency-Key`
+
+RequestTimestampHeader
+  binds the request to `Jarvis-Request-Timestamp`
+
+RevisionHeader
+  binds the request to `Jarvis-Expected-WorkSession-Revision`
+
+PreviousHashHeader
+  binds the request to `Jarvis-Previous-Event-Hash`
+```
+
+Authentication proves caller identity to the host. Authorization verifies that
+`Jarvis-Actor-Id` has authority for the requested protocol operation. Jarvis
+records the Actor and authority check result. Jarvis does not own the host
+identity provider, auth backend, session store, or account system.
 
 ## Version And Capability Negotiation
 
@@ -172,8 +353,37 @@ Jarvis-Required-Capabilities
 Jarvis-Extensions
 ```
 
-Unsupported capability produces a protocol error. Extension fields are
-namespaced and never change the meaning of core fields.
+Version negotiation rules:
+
+```txt
+Unsupported Jarvis-Protocol-Version rejects the request.
+Compatible minor version may proceed only when required capabilities match.
+Protocol downgrade is rejected as unsupported_protocol_version.
+A caller may request an older supported version only by explicitly setting
+Jarvis-Protocol-Version to that version. Implementations MUST NOT silently
+downgrade a request.
+```
+
+Capability negotiation rules:
+
+```txt
+Jarvis-Host-Capabilities declares supported optional capabilities.
+Jarvis-Required-Capabilities declares capabilities required by the caller.
+Unsupported required capability rejects as unsupported_capability.
+Unknown optional capability is ignored unless it changes a core field meaning.
+```
+
+Extension rules:
+
+```txt
+Jarvis-Extensions declares extension namespaces.
+Extension fields MUST be namespaced.
+Extension fields MUST NOT override core field names.
+Extension fields MUST NOT change the meaning of core fields.
+Extension fields MUST NOT contain forbidden export fields.
+Invalid extension namespace rejects as invalid_extension_namespace.
+Extension core field override rejects as extension_core_field_override.
+```
 
 ## Error Model
 
@@ -182,9 +392,17 @@ Jarvis OpenAPI defines protocol errors for:
 ```txt
 invalid_transition
 unknown_state
+missing_protocol_version
+unsupported_protocol_version
+missing_request_timestamp
+stale_request_timestamp
+missing_expected_work_session_revision
+missing_previous_event_hash
 stale_work_session_revision
 missing_idempotency_key
 missing_actor
+invalid_extension_namespace
+extension_core_field_override
 missing_policy
 missing_policy_decision
 missing_objective
@@ -229,8 +447,29 @@ unsupported_capability
 forbidden_host_private_field
 ```
 
-Errors are structured. The error body names the protocol object, field, reason,
-and remediation path.
+Errors are structured.
+
+Every protocol error response MUST include:
+
+```txt
+error_id
+protocol_version
+object_type
+field
+reason
+remediation
+trace_id
+```
+
+When `Jarvis-Protocol-Version` is missing, `protocol_version` records the
+server-selected error contract version. When `Jarvis-Protocol-Version` is
+unsupported, `protocol_version` records the rejected version and remediation
+points to supported versions.
+
+Error responses MUST NOT include credentials, secrets, raw runtime state,
+host-only database ids, deployment details, billing data, private scores,
+product UI state, raw auth tokens, provider secrets, session cookies, or
+private keys.
 
 ## This Week's Work
 

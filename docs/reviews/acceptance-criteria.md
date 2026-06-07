@@ -142,6 +142,26 @@ Expected result:
   `outcome_report_without_learning_record`, and
   `forbidden_host_private_field`
 - exported records contain no product-private infrastructure requirement
+- OpenAPI security entry checks require HostAuth, ActorHeader,
+  ProtocolVersionHeader, IdempotencyHeader, RequestTimestampHeader,
+  RevisionHeader, and PreviousHashHeader
+- WorkSession-scoped and export read operations require
+  `Jarvis-Protocol-Version`, caller authentication, and `Jarvis-Actor-Id`, and
+  do not require mutation-only idempotency, expected revision, or previous event
+  hash headers
+- Worker and Actor registration does not create accounts, authenticate callers,
+  issue credentials, or own identity storage
+- unsupported required capabilities reject as `unsupported_capability`
+- invalid extension namespace rejects as `invalid_extension_namespace`
+- extension core field override rejects as `extension_core_field_override`
+- protocol error envelope includes error_id, protocol_version, object_type,
+  field, reason, remediation, and trace_id
+- OpenAPI security rejection ids include `missing_protocol_version`,
+  `unsupported_protocol_version`, `missing_actor`, `missing_idempotency_key`,
+  `missing_request_timestamp`, `stale_request_timestamp`,
+  `missing_expected_work_session_revision`, `missing_previous_event_hash`,
+  `invalid_extension_namespace`, and `extension_core_field_override`
+- protocol error responses exclude forbidden host-private fields
 
 ## Conformance Acceptance
 

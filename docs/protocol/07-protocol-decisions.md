@@ -33,6 +33,28 @@ This document records decisions that are fixed for the Jarvis protocol.
 - Review decisions are protocol-owned.
 - EvidenceManifest export shape is protocol-owned.
 - Conformance tests verify behavior, not infrastructure.
+- OpenAPI 3.1 is the primary host-facing communication binding.
+- Every WorkSession-scoped mutating operation requires
+  `Jarvis-Protocol-Version`,
+  `Jarvis-Actor-Id`, `Jarvis-Idempotency-Key`,
+  `Jarvis-Request-Timestamp`, `Jarvis-Expected-WorkSession-Revision`, and
+  `Jarvis-Previous-Event-Hash`.
+- Non-WorkSession protocol mutations require `Jarvis-Protocol-Version`,
+  `Jarvis-Actor-Id`, `Jarvis-Idempotency-Key`, and
+  `Jarvis-Request-Timestamp`.
+- Worker and Actor registration records protocol references. It does not create
+  accounts, authenticate callers, issue credentials, or own identity storage.
+- OutcomeReport submission does not mutate sealed WorkSession or
+  EvidenceManifest records.
+- Security schemes define protocol entry requirements without owning host auth.
+- Capability and extension negotiation are protocol-owned.
+- Extension fields must be namespaced and cannot override core fields.
+- Protocol downgrade is rejected. Implementations must not silently downgrade a
+  request.
+- Protocol errors use a structured error envelope.
+- WorkSession-scoped and export read operations require protocol version,
+  caller authentication, and Actor authority. They do not require mutation-only
+  idempotency, expected revision, or previous event hash headers.
 
 ## Explicit Non-Decisions
 
