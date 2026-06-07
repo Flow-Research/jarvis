@@ -159,11 +159,29 @@ The MVP conformance suite checks:
 - host notifications do not become blocking Requests without Request event and
   PolicyDecision.
 - Contribution entries reference events or artifacts.
+- shared Contribution preserves individual contributor refs.
 - EvidenceManifest references policy decisions, requests, reviews,
-  contributions, artifacts, and limitations.
+  takeovers, contributions, artifacts, evidence items, and limitations.
+- EvidenceManifest final export rejects mutable WorkSession states.
+- EvidenceManifest excludes forbidden export fields.
 - Request resolution can create governed learning proposals.
 - MemoryProposal and SkillProposal require provenance and review state.
+- MemoryProposal rejects model-derived or tool-derived self-confirmation.
+- SkillProposal rejects activation without review.
+- SkillProposal rejects tool access expansion without policy review.
 - LearningRecord describes human learning, agent learning, or pair learning.
+- OutcomeReport creates or references LearningRecord without mutating sealed
+  WorkSession or EvidenceManifest.
+- attribution/evidence/learning rejection ids include
+  `missing_contribution_actor`, `invalid_contributor_refs`,
+  `shared_contribution_without_individual_refs`, `evidence_after_the_fact`,
+  `missing_evidence_event_refs`, `invalid_evidence_export_state`,
+  `forbidden_export_field`, `silent_memory_mutation`,
+  `silent_skill_activation`, `model_self_confirmed_memory`,
+  `tool_self_confirmed_memory`,
+  `skill_expands_tool_access_without_policy_review`,
+  `sealed_work_session_mutation`, `sealed_evidence_mutation`, and
+  `outcome_report_without_learning_record`.
 - exported protocol records do not require product-private infrastructure
   fields.
 
