@@ -315,6 +315,10 @@ outcome_report_without_learning_record
 A compatible implementation proves:
 
 ```txt
+Mutating attribution, evidence, learning, proposal, export, and OutcomeReport
+operations require Jarvis-Protocol-Version, Jarvis-Actor-Id,
+Jarvis-Idempotency-Key, Jarvis-Request-Timestamp,
+Jarvis-Expected-WorkSession-Revision, and Jarvis-Previous-Event-Hash.
 Contribution preserves contributor refs.
 Shared Contribution preserves individual contributors.
 Evidence item refs link to source JarvisEvents.

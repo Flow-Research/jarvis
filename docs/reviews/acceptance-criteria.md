@@ -114,6 +114,11 @@ Expected result:
 - Takeover creates lock state
 - Takeover rejects stale AgentWorker continuation
 - Takeover resume requires reconciliation refs
+- mutating attribution, evidence, learning, proposal, export, and OutcomeReport
+  operations require `Jarvis-Protocol-Version`, `Jarvis-Actor-Id`,
+  `Jarvis-Idempotency-Key`, `Jarvis-Request-Timestamp`,
+  `Jarvis-Expected-WorkSession-Revision`, and
+  `Jarvis-Previous-Event-Hash`
 - Contribution references events or artifacts
 - shared Contribution preserves individual contributor refs
 - EvidenceManifest references the WorkSession event chain
@@ -133,8 +138,9 @@ Expected result:
   `silent_skill_activation`, `model_self_confirmed_memory`,
   `tool_self_confirmed_memory`,
   `skill_expands_tool_access_without_policy_review`,
-  `sealed_work_session_mutation`, `sealed_evidence_mutation`, and
-  `outcome_report_without_learning_record`
+  `sealed_work_session_mutation`, `sealed_evidence_mutation`,
+  `outcome_report_without_learning_record`, and
+  `forbidden_host_private_field`
 - exported records contain no product-private infrastructure requirement
 
 ## Conformance Acceptance
