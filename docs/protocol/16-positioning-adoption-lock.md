@@ -1,0 +1,163 @@
+# Positioning And Adoption Lock
+
+Jarvis is the human-agent collaboration and learning-loop protocol.
+
+Jarvis does not compete with agent runtimes, tool protocols, UI protocols,
+agent-to-agent protocols, coding agents, personal agents, or product hosts.
+Jarvis defines the protocol record that makes human-agent work reviewable,
+attributable, portable, and able to improve across WorkSessions.
+
+## One-Paragraph Definition
+
+Jarvis is the protocol for governed human-agent collaboration and shared
+learning. It defines how a HumanWorker and an AgentWorker coordinate inside a
+WorkSession under shared goals and human-defined Policy, create Requests when
+the AgentWorker is blocked, record Reviews and Takeovers from human judgment,
+preserve attributable Contributions, export portable EvidenceManifest records,
+and carry governed LearningRecords, MemoryProposals, and SkillProposals into
+future WorkSessions.
+
+## The Category
+
+Jarvis is not an agent protocol in the narrow sense.
+
+Jarvis is the human-agent collaboration protocol.
+
+The primitive is:
+
+```txt
+HumanWorker + AgentWorker + WorkSession + Policy + Evidence + Learning
+```
+
+The primitive is not:
+
+```txt
+User -> Assistant -> Answer
+```
+
+Jarvis exists because useful work requires more than agent execution. Useful
+work needs human judgment, policy, review, takeover, attribution, evidence, and
+learning that survives the current task.
+
+## Adjacent Protocols
+
+MCP standardizes how LLM applications connect to tools, prompts, resources, and
+context servers. MCP uses JSON-RPC messages over transports such as Streamable
+HTTP, where clients send JSON-RPC messages to an MCP endpoint and servers may
+use SSE for streaming. Jarvis records tool and resource use as WorkSession
+events, PolicyDecisions, Contributions, and Evidence when MCP is used. Jarvis
+does not define MCP transports, MCP tools, MCP resources, MCP prompts, or MCP
+server behavior.
+
+A2A standardizes communication and interoperability between independent agent
+systems. A2A separates data model, abstract operations, and protocol bindings,
+including JSON-RPC, gRPC, and HTTP+JSON/REST. Jarvis records agent delegation
+or agent-to-agent coordination as WorkSession events, Contributions, and
+Evidence when A2A is used. Jarvis does not define A2A discovery, tasks,
+messages, artifacts, agent cards, or A2A protocol bindings.
+
+AGNTCY ACP defines a standard remote-agent interface and publishes an OpenAPI
+contract. Jarvis uses the same discipline of a discoverable host-facing
+contract. Jarvis does not define remote-agent execution, thread execution,
+interrupt delivery, output retrieval, or ACP agent interfaces.
+
+AG-UI standardizes how AI agents connect to user-facing applications through an
+open, lightweight, event-based protocol. AG-UI focuses on agent state, UI
+intents, user interactions, frontend tools, streaming, and interactive
+frontends. A Jarvis-compatible host or adapter may expose WorkSession state,
+Requests, Reviews, Takeovers, Contributions, Evidence, and Learning to AG-UI
+clients. Jarvis does not define frontend events, rendering, UI state, or
+user-interface transport.
+
+## Agent And Product Positioning
+
+Agent SDKs provide execution primitives, model calls, tool calls, tracing,
+handoffs, and runtime behavior. Jarvis records the human-agent collaboration
+around that execution. Jarvis does not replace an SDK.
+
+Coding agents perform software work through terminals, editors, repositories,
+tools, sandboxes, and review loops. Jarvis records the WorkSession, Policy,
+Requests, Reviews, Takeovers, Contributions, Evidence, and Learning around that
+work. Jarvis does not replace the coding agent.
+
+Personal agents provide a product or assistant experience for a person. Jarvis
+defines the collaboration protocol that a personal agent may implement. Jarvis
+is not the personal agent product.
+
+Product hosts provide UI, auth, storage, execution, connectors, notifications,
+cost tracking, support, and deployment. Jarvis defines the records that product
+hosts exchange. Jarvis does not become the product host.
+
+## Non-Replacement Rule
+
+Compatible implementations MUST NOT require developers to abandon their
+existing agent, runtime, SDK, product UI, model provider, sandbox, database, or
+cloud.
+
+Compatible implementations map existing work into Jarvis records:
+
+```txt
+human operator -> HumanWorker + Actor
+existing agent process or product -> AgentWorker + Actor
+agent action -> PolicyDecision + JarvisEvent
+blocked action -> Request
+human judgment -> Review or Takeover
+work performed -> Contribution
+trace/artifact/source/output -> EvidenceManifest evidence_item_refs
+confirmed improvement -> LearningRecord
+memory update proposal -> MemoryProposal
+reusable process proposal -> SkillProposal
+```
+
+The adapter may be thin. The protocol record must be complete.
+
+## Adoption Argument
+
+Jarvis adoption centers on:
+
+```txt
+policy
+requests
+reviews and takeovers
+contribution attribution
+evidence
+governed learning
+memory and skill proposals
+```
+
+Jarvis is worth adopting when a team needs to answer:
+
+```txt
+What work happened?
+Who acted?
+What did policy allow?
+Where did the agent ask for help?
+What did the human review or take over?
+What evidence proves the work?
+What contribution belongs to the human, agent, pair, or service?
+What learning carries into the next WorkSession?
+What memory or skill change was proposed, reviewed, accepted, rejected, or
+carried forward?
+```
+
+Those questions are not answered by a tool protocol, UI protocol, agent SDK,
+coding agent, personal agent, or runtime alone.
+
+## Compatibility Rule
+
+Existing agents remain first-class.
+
+Jarvis-compatible hosts and adapters MUST preserve the existing agent's
+execution model while recording Jarvis protocol semantics around it. If an
+agent already plans, calls tools, writes code, researches, drafts, or executes
+tasks, Jarvis does not change that execution. Jarvis records the collaboration
+loop that makes the work governed, reviewable, attributable, evidence-backed,
+and able to improve.
+
+## Source References
+
+- MCP specification: https://modelcontextprotocol.io/specification/
+- A2A specification: https://a2a-protocol.org/latest/specification/
+- AGNTCY ACP specification: https://spec.acp.agntcy.org/
+- AG-UI documentation: https://docs.ag-ui.com/
+- OpenAPI 3.1.1: https://spec.openapis.org/oas/v3.1.1.html

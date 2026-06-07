@@ -24,14 +24,18 @@ Locked now:
 - core states
 - conformance expectations
 - portable export shape
-
-Not locked yet:
-
-- exact OpenAPI component syntax
 - version negotiation
 - capability negotiation
-- extension format
-- error codes
+- extension namespace rules
+- protocol error ids
+- OpenAPI security entry requirements
+- positioning and adoption boundary
+
+Week 2 drafts:
+
+- exact OpenAPI component syntax
+- exact OpenAPI path syntax
+- OpenAPI examples
 - conformance fixtures
 
 ## Definition
@@ -75,6 +79,8 @@ Jarvis owns:
 - contribution semantics
 - evidence export semantics
 - governed learning semantics
+- OpenAPI communication binding requirements
+- positioning against adjacent protocols and agent products
 - conformance expectations
 
 Jarvis does not own:
@@ -516,13 +522,17 @@ protocol fields.
 
 OpenAPI contract work starts with:
 
-1. version negotiation
-2. capability negotiation
-3. extension namespace format
-4. standard error codes
-5. required and optional fields per object
-6. OpenAPI 3.1 component and path layout
-7. canonical WorkSession export example
-8. passing and failing conformance fixtures
+1. OpenAPI 3.1 component syntax.
+2. OpenAPI 3.1 path syntax.
+3. security scheme encoding from
+   [15-openapi-communication-binding.md](./15-openapi-communication-binding.md).
+4. required and optional fields per object.
+5. canonical WorkSession export example.
+6. passing and failing conformance fixtures.
+7. examples for WorkSession, Request, Review, Takeover, Contribution,
+   EvidenceManifest, LearningRecord, MemoryProposal, SkillProposal, and
+   OutcomeReport.
 
-The thesis is locked. The object model is locked. The lifecycle is locked.
+The thesis is locked. The object model is locked. The lifecycle is locked. The
+control plane is locked. Evidence and learning are locked. OpenAPI security
+entry is locked. Positioning is locked.

@@ -78,19 +78,23 @@ inputs into a Jarvis-compatible WorkSession.
 
 ## Adjacent Protocol Boundary
 
-MCP, A2A, and AG-UI are external protocols.
+MCP, A2A, ACP, and AG-UI are external protocols.
 
 ```txt
-MCP     agent/app <-> tools, prompts, resources, and context servers
-A2A     agent     <-> agent communication and delegation
-AG-UI   frontend  <-> agent state, UI events, and user interaction
-Jarvis  human     <-> agent collaboration, policy, evidence, and learning
+MCP     agent/app     <-> tools, prompts, resources, and context servers
+A2A     agent         <-> agent communication and delegation
+ACP     remote agent  <-> standard remote-agent interface
+AG-UI   frontend      <-> agent state, UI events, and user interaction
+Jarvis  human+agent   <-> collaboration, policy, evidence, and learning
 ```
 
 Jarvis records policy, attribution, evidence, review, takeover, contribution,
 and learning around the use of external protocols. Jarvis does not define their
 transport, runtime, tool semantics, UI semantics, or agent-to-agent
 coordination semantics.
+
+The locked positioning rules are defined in
+[16-positioning-adoption-lock.md](./16-positioning-adoption-lock.md).
 
 ## Post-Session Outcome Boundary
 
