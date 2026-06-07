@@ -14,7 +14,7 @@ Chunk 5 locks:
 
 ```txt
 required mutating headers
-recommended read headers
+read-operation header requirements
 security scheme requirements
 Actor authority requirements
 Worker and Actor registration boundary

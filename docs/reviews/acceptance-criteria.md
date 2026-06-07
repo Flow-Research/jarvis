@@ -145,6 +145,9 @@ Expected result:
 - OpenAPI security entry checks require HostAuth, ActorHeader,
   ProtocolVersionHeader, IdempotencyHeader, RequestTimestampHeader,
   RevisionHeader, and PreviousHashHeader
+- Worker registration, Actor registration, and OutcomeReport submission do not
+  require `Jarvis-Expected-WorkSession-Revision` or
+  `Jarvis-Previous-Event-Hash`
 - WorkSession-scoped and export read operations require
   `Jarvis-Protocol-Version`, caller authentication, and `Jarvis-Actor-Id`, and
   do not require mutation-only idempotency, expected revision, or previous event
