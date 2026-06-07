@@ -155,7 +155,7 @@ schema-file packages are not the primary contract.
 
 Jarvis starts from zero trust.
 
-Every mutating operation requires:
+Every WorkSession-scoped mutating operation requires:
 
 ```txt
 Jarvis-Protocol-Version
@@ -166,8 +166,23 @@ Jarvis-Expected-WorkSession-Revision
 Jarvis-Previous-Event-Hash
 ```
 
-Every accepted state change records the Actor, verifies authority, checks the
-current WorkSession revision, and links to the previous event hash.
+Every non-WorkSession protocol mutation requires:
+
+```txt
+Jarvis-Protocol-Version
+Jarvis-Actor-Id
+Jarvis-Idempotency-Key
+Jarvis-Request-Timestamp
+```
+
+Worker registration, Actor registration, and OutcomeReport submission are
+non-WorkSession protocol mutations. They verify Actor authority, idempotency,
+protocol version, and timestamp. They do not require fake WorkSession revision
+or previous event hash values.
+
+Every accepted WorkSession-scoped state change records the Actor, verifies
+authority, checks the current WorkSession revision, and links to the previous
+event hash.
 
 Every AgentWorker action that affects a WorkSession records a PolicyDecision
 before the action is accepted as protocol state.

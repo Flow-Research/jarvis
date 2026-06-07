@@ -277,6 +277,8 @@ Done when:
 
 Purpose: lock the OpenAPI inputs required before Week 2 drafting.
 
+Spec: [chunk-5-openapi-security-entry-lock.md](./chunk-5-openapi-security-entry-lock.md)
+
 Outputs:
 
 - required headers

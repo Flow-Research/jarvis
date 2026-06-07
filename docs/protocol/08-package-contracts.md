@@ -105,12 +105,52 @@ Release tests:
 - canonical event serialization is stable.
 - event envelopes validate required ids and timestamps.
 - event hashes exclude `event_hash` and signature fields.
-- mutating requests reject missing `Jarvis-Protocol-Version`.
-- mutating requests reject missing `Jarvis-Actor-Id`.
-- mutating requests reject missing `Jarvis-Idempotency-Key`.
-- mutating requests reject missing `Jarvis-Request-Timestamp`.
-- mutating requests reject missing `Jarvis-Expected-WorkSession-Revision`.
-- mutating requests reject missing `Jarvis-Previous-Event-Hash`.
+- WorkSession-scoped mutating requests reject missing
+  `Jarvis-Protocol-Version` as `missing_protocol_version`.
+- WorkSession-scoped mutating requests reject missing `Jarvis-Actor-Id` as
+  `missing_actor`.
+- WorkSession-scoped mutating requests reject missing `Jarvis-Idempotency-Key`
+  as `missing_idempotency_key`.
+- mutating requests reject unsupported `Jarvis-Protocol-Version` as
+  `unsupported_protocol_version`.
+- WorkSession-scoped mutating requests reject missing
+  `Jarvis-Request-Timestamp` as
+  `missing_request_timestamp`.
+- mutating requests reject timestamps more than five minutes in the past or
+  sixty seconds in the future as `stale_request_timestamp`.
+- Hosts may use stricter timestamp tolerance and MUST NOT use looser tolerance.
+- WorkSession-scoped mutating requests reject missing
+  `Jarvis-Expected-WorkSession-Revision` as
+  `missing_expected_work_session_revision`.
+- WorkSession-scoped mutating requests reject missing
+  `Jarvis-Previous-Event-Hash` as
+  `missing_previous_event_hash`.
+- mutating requests reject replayed `Jarvis-Idempotency-Key` with different
+  canonical payload.
+- WorkSession-scoped mutating requests reject mismatched
+  `Jarvis-Expected-WorkSession-Revision`.
+- WorkSession-scoped mutating requests reject mismatched
+  `Jarvis-Previous-Event-Hash`.
+- non-WorkSession protocol mutations require `Jarvis-Protocol-Version`,
+  `Jarvis-Actor-Id`, `Jarvis-Idempotency-Key`, and
+  `Jarvis-Request-Timestamp`.
+- Worker registration, Actor registration, and OutcomeReport submission do not
+  require fake WorkSession revision or previous event hash values.
+- OpenAPI security schemes include HostAuth, ActorHeader,
+  ProtocolVersionHeader, IdempotencyHeader, RequestTimestampHeader,
+  RevisionHeader, and PreviousHashHeader.
+- WorkSession-scoped and export read operations require
+  `Jarvis-Protocol-Version`, caller authentication, and `Jarvis-Actor-Id`, and
+  do not require mutation-only idempotency, expected revision, or previous event
+  hash headers.
+- Worker and Actor registration never creates accounts, authenticates callers,
+  issues credentials, or owns identity storage.
+- unsupported required capabilities reject as `unsupported_capability`.
+- invalid extension namespace rejects as `invalid_extension_namespace`.
+- extension core field override rejects as `extension_core_field_override`.
+- protocol error envelope includes error_id, protocol_version, object_type,
+  field, reason, remediation, and trace_id.
+- protocol error responses exclude forbidden host-private fields.
 - WorkSession status transitions reject invalid transitions.
 - stale WorkSession revision rejects mutation.
 - stale previous event hash rejects mutation.
