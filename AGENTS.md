@@ -192,24 +192,28 @@ state, host-only database ids, and deployment details.
 
 ## Current Execution Focus
 
-The current focus is Week 1 protocol lock.
+Week 1 protocol lock is complete.
+
+The current focus is Week 2 OpenAPI contract and conformance entry.
 
 Work on:
 
-- core object meanings
-- required fields
-- lifecycle states
-- PolicyDecision semantics
-- Request, Review, and Takeover lifecycle
-- EvidenceManifest minimum export shape
-- LearningRecord, MemoryProposal, and SkillProposal review states
-- OutcomeReport semantics
-- protocol positioning against MCP, A2A, ACP, AG-UI, and agent SDKs
-- zero-trust OpenAPI headers, security schemes, and forbidden export fields
+- OpenAPI 3.1 document skeleton
+- `components.schemas` for core protocol objects
+- path layout for core protocol operations
+- event envelope component
+- portable export component
+- security schemes and required protocol headers
+- protocol error model
+- golden-path conformance checklist
+- failure-mode conformance checklist
+- first OpenAPI examples for WorkSession, Request, Review, and export
 
 Do not start Garden POC work in this phase.
 Do not build runtime features in this repo.
 Do not add product-specific assumptions to protocol records.
+Do not reopen Week 1 locked protocol decisions unless a concrete contradiction
+blocks OpenAPI drafting.
 
 ## Wording Rules
 
