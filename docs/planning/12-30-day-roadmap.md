@@ -75,6 +75,8 @@ conformance entry rules are stable.
 
 ## Week 1: Protocol Lock And Research Grounding
 
+Status: complete.
+
 Goal: freeze the core protocol vocabulary, communication strategy, and security
 boundary.
 
@@ -101,11 +103,13 @@ Done when:
   agent application
 - every core object has a reason to exist
 - OpenAPI 3.1 is the machine-readable communication contract
-- Garden POC is not part of this week's active work
+- Garden POC was not part of Week 1 active work
 - Jarvis is explained in one paragraph without mentioning any host product
   or downstream evaluation system
 
 ## Week 2: OpenAPI Contract And Conformance Entry
+
+Status: active.
 
 Goal: produce the first OpenAPI 3.1 contract shape and conformance entry rules.
 

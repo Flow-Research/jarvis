@@ -13,6 +13,16 @@ For the immediate execution plan, see
 For the OpenAPI entry gate, see
 [14-protocol-lock.md](../protocol/14-protocol-lock.md).
 
+## Current Status
+
+Week 1 protocol lock is complete.
+
+Current active work: Week 2 OpenAPI contract and conformance entry.
+
+Week 2 drafts the OpenAPI 3.1 component syntax, path syntax, security scheme
+encoding, protocol examples, and conformance entry rules from the locked Week 1
+protocol decisions.
+
 ## Roadmap Contract
 
 Jarvis owns:
@@ -144,6 +154,8 @@ MemoryProposal and SkillProposal remain governed
 
 ## Milestone 0: Protocol Lock
 
+Status: complete.
+
 Owner: Architecture
 
 Output:
@@ -161,6 +173,8 @@ Done when:
   ownership to Jarvis.
 
 ## Milestone 1: OpenAPI Contract
+
+Status: active.
 
 Owner: Protocol
 
