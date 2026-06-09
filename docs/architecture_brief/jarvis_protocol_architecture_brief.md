@@ -52,6 +52,25 @@ wait behind that protocol contract.
 | Governed learning | LearningRecords, MemoryProposals, and SkillProposals do not silently mutate durable state. |
 | Runtime agnostic | Existing agents, SDKs, products, tools, and hosts remain first-class. |
 
+### Research Grounding
+
+Co-Gym reinforces the Jarvis thesis: human-agent collaboration needs dual
+control, bidirectional communication, and non-turn-taking coordination. It also
+shows why v0.1 must be strict about Requests and situational awareness without
+turning every coordination idea into a core object.
+
+Jarvis uses that lesson this way:
+
+```txt
+v0.1 defines the spine.
+Future versions expand the coordination layer.
+```
+
+The v0.1 spine prevents wrong implementation of policy, Request, Review,
+Takeover, Contribution, Evidence, and Learning. Notification protocols,
+collaboration metrics, observation visibility, and richer coordination acts are
+future extensions.
+
 <div class="page-break"></div>
 
 ## C1: Protocol Ecosystem Context
@@ -218,6 +237,114 @@ Current v0.1 work encodes the locked protocol. It does not redesign the thesis,
 object model, lifecycle, control plane, evidence model, learning model,
 security entry, or positioning boundary.
 
+### v0.1 Spine
+
+v0.1 includes the minimum protocol objects required to prove the collaboration
+loop:
+
+```txt
+Worker
+Actor
+HumanWorker
+AgentWorker
+WorkSession
+JarvisEvent
+Policy
+PolicyDecision
+Request
+Review
+Takeover
+Contribution
+EvidenceManifest
+LearningRecord
+MemoryProposal
+SkillProposal
+OutcomeReport
+```
+
+v0.1 includes the core protocol operations:
+
+```txt
+create WorkSession
+append event
+record PolicyDecision
+create Request
+record Review
+start/reconcile Takeover
+record Contribution
+create LearningRecord
+export EvidenceManifest
+submit OutcomeReport
+```
+
+### Request Correctness
+
+Request is the v0.1 control-plane object that prevents fake collaboration.
+
+The Request schema must preserve:
+
+```txt
+type
+blocking_scope
+reason
+requested_action
+risk_class
+policy_decision_id
+options
+recommended_option
+default_if_no_response
+expires_at
+resolution_ref
+```
+
+Request conformance must prove:
+
+```txt
+Policy-denied action creates Request.
+AgentWorker cannot execute blocked action before resolution.
+Request cannot resolve without Review or Takeover.
+Narrowed approval prevents execution outside approved scope.
+Takeover rejects stale AgentWorker continuation.
+Expired Request follows safe fallback.
+Request appears in EvidenceManifest.
+```
+
+### OutcomeReport Hook
+
+OutcomeReport is the v0.1 external feedback ingress. It carries post-session
+outcome information into governed learning without turning Jarvis into
+Workstream, evaluation, payment, settlement, routing, or marketplace logic.
+
+Minimal example:
+
+```txt
+External task reviewer rejects submission
+  -> OutcomeReport submitted
+  -> LearningRecord created
+  -> MemoryProposal or SkillProposal proposed
+```
+
+### Protocol Error Entry
+
+The OpenAPI error model must include the protocol errors that protect the v0.1
+spine. These include:
+
+```txt
+missing_policy_decision
+request_unresolved
+missing_review_resolution
+missing_takeover_resolution
+invalid_approval_scope
+stale_takeover_epoch
+invalid_previous_event_hash
+duplicate_idempotency_key_mismatch
+unauthorized_actor
+missing_evidence_event_refs
+silent_memory_mutation
+silent_skill_activation
+outcome_report_without_learning_record
+```
+
 <div class="page-break"></div>
 
 ## Future Adapter And Ecosystem Direction
@@ -237,6 +364,30 @@ Jarvis.
 | External protocol bridges | Record MCP, A2A, ACP, and AG-UI participation as Jarvis evidence and contribution records. | Jarvis does not redefine those protocols. |
 | Evaluation feedback | Use OutcomeReport to carry post-session outcomes into governed LearningRecords. | Jarvis does not own task routing, scoring, payment, settlement, or marketplace logic. |
 | Public adoption package | Publish OpenAPI contract, examples, conformance checklist, and protocol architecture brief. | Adoption does not require a Jarvis-owned runtime. |
+
+### Deferred From v0.1
+
+The following ideas are important but stay outside the v0.1 core:
+
+```txt
+Notification object
+CoordinationAct object
+ProgressUpdate
+Observation visibility model
+CollaborationMetrics
+InitiativeBalance
+TeachingSignal
+HumanGrowthRecord
+SimulatedHumanWorker
+full existing-agent adapters
+full Workstream feedback loop
+real Garden product proof
+MCP/A2A/ACP/AG-UI bridges
+multi-agent reviewer protocol
+```
+
+These can become future extensions, examples, adapters, or conformance
+fixtures. They do not enter the v0.1 object spine.
 
 ## Scope Boundary
 
@@ -261,6 +412,15 @@ Jarvis does not own:
 
 Jarvis owns the protocol records that hosts, adapters, products, and existing
 agents implement.
+
+## References
+
+- Collaborative Gym: https://arxiv.org/abs/2412.15701
+- MCP specification: https://modelcontextprotocol.io/specification/
+- A2A specification: https://a2a-protocol.org/latest/specification/
+- AGNTCY ACP specification: https://spec.acp.agntcy.org/
+- AG-UI documentation: https://docs.ag-ui.com/
+- OpenAPI 3.1.1: https://spec.openapis.org/oas/v3.1.1.html
 
 ## Closing
 
