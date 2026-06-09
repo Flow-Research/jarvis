@@ -162,7 +162,7 @@ The agent is:
 
 ## Core Protocol Contracts
 
-Jarvis v0 defines these contracts. The canonical object shapes and invariants
+Jarvis v0.1 defines these contracts. The canonical object shapes and invariants
 are in [docs/protocol/11-core-protocol-objects.md](./docs/protocol/11-core-protocol-objects.md).
 
 ```txt
@@ -197,6 +197,8 @@ SkillProposal
 9. Execution is delegable; accountability remains attributable.
 10. HumanWorker and AgentWorker both learn.
 11. Every completed WorkSession improves the next WorkSession.
+12. Jarvis stays protocol-only; runtimes, products, agents, and external
+    protocols implement or integrate with it without becoming it.
 
 ## Boundaries
 
@@ -216,6 +218,12 @@ Jarvis owns:
 
 Jarvis does not own:
 
+- agent frameworks
+- personal agent products
+- agent runtimes
+- coding agents
+- tool protocols
+- frontend protocols
 - product UI
 - external task marketplaces
 - external identity systems
@@ -225,7 +233,7 @@ Jarvis does not own:
 - sandbox implementations or execution stacks
 - database implementations
 
-## What Jarvis v0 Must Prove
+## What Jarvis v0.1 Must Prove
 
 ```txt
 1. Create HumanWorker.
@@ -245,14 +253,15 @@ Jarvis does not own:
 15. EvidenceManifest exports.
 ```
 
-When v0 proves this loop, Jarvis is real.
+When v0.1 proves this loop, Jarvis is real.
 
 ## Docs
 
 - [docs/README.md](./docs/README.md) - docs index.
 - [docs/protocol/](./docs/protocol/) - protocol definition, architecture,
   object model, policy, memory, evidence, integration boundaries, package
-  contracts, MVP, protocol lock, OpenAPI binding, and positioning lock.
+  contracts, v0.1 protocol proof, protocol lock, OpenAPI binding, and
+  positioning lock.
 - [docs/architecture_brief/](./docs/architecture_brief/) - shareable protocol
   architecture brief and PDF.
 - [docs/planning/](./docs/planning/) - roadmap, 30-day plan, and upload-ready

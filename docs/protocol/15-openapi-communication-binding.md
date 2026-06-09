@@ -9,7 +9,7 @@ adapters, products, and external systems implement.
 
 ## Decision
 
-Jarvis v0 uses this structure:
+Jarvis v0.1 uses this structure:
 
 ```txt
 Layer 1: Protocol semantics
@@ -65,7 +65,7 @@ Primary references:
 
 ## OpenAPI Contract Shape
 
-The v0 OpenAPI document owns:
+The v0.1 OpenAPI document owns:
 
 ```txt
 info
@@ -476,7 +476,7 @@ private keys.
 This week locks the communication strategy:
 
 ```txt
-1. OpenAPI 3.1 is the v0 machine-readable contract.
+1. OpenAPI 3.1 is the v0.1 machine-readable contract.
 2. components.schemas contains protocol objects.
 3. paths contains protocol operations.
 4. securitySchemes and headers define zero-trust host requirements.

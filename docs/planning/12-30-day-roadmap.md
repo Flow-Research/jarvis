@@ -165,7 +165,7 @@ Done when:
 - two host shapes produce equivalent Jarvis protocol records on paper
 - conformance fixtures catch unsafe or incomplete implementations
 - adapter work does not require rewriting the agent runtime
-- product proof waits behind the conformance gate
+- product proof starts only after the conformance gate
 
 ## Week 4: Product Proof Readiness And Public Story
 

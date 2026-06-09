@@ -124,7 +124,7 @@ The next WorkSession carries confirmed learning forward.
 
 ## Protocol Shape
 
-Jarvis v0 has five layers:
+Jarvis v0.1 has five layers:
 
 ```txt
 Layer 1: Protocol semantics
@@ -188,13 +188,42 @@ Every AgentWorker action that affects a WorkSession records a PolicyDecision
 before the action is accepted as protocol state.
 
 Every export excludes product-private fields, credentials, secrets, raw runtime
-state, host-only database ids, and deployment details.
+state, host-only database ids, deployment details, billing data, private scores,
+product UI state, raw auth tokens, provider secrets, session cookies, and
+private keys.
+
+## Protocol Drift Guard
+
+Every contributor must hold the protocol boundary.
+
+Jarvis does not become an agent framework because existing agents need
+coordination.
+
+Jarvis does not become a runtime because compatible hosts need execution.
+
+Jarvis does not become a personal agent because personal agents can implement
+the protocol.
+
+Jarvis does not become Garden because Garden can be a host.
+
+Jarvis does not become Workstream because Workstream can consume evidence and
+submit OutcomeReports.
+
+Jarvis does not become MCP, A2A, ACP, or AG-UI because those protocols can be
+recorded around WorkSessions.
+
+When a proposed change adds execution, UI, auth, storage, billing, marketplace,
+model calls, sandbox behavior, product workflow, or task evaluation, move it
+outside Jarvis. Keep only the protocol record, lifecycle rule, security rule,
+error rule, or conformance rule that protects human-agent collaboration and
+shared learning.
 
 ## Current Execution Focus
 
-Week 1 protocol lock is complete.
+The active focus is the v0.1 first-30-days protocol contract.
 
-The current focus is Week 2 OpenAPI contract and conformance entry.
+Protocol lock is complete. Current work converts the locked protocol into the
+OpenAPI 3.1 contract and conformance entry.
 
 Work on:
 
@@ -212,8 +241,8 @@ Work on:
 Do not start Garden POC work in this phase.
 Do not build runtime features in this repo.
 Do not add product-specific assumptions to protocol records.
-Do not reopen Week 1 locked protocol decisions unless a concrete contradiction
-blocks OpenAPI drafting.
+Do not reopen locked protocol decisions unless a concrete contradiction blocks
+OpenAPI drafting.
 
 ## Wording Rules
 
@@ -243,6 +272,8 @@ Before changing protocol direction, read:
 - [docs/protocol/15-openapi-communication-binding.md](./docs/protocol/15-openapi-communication-binding.md)
 - [docs/protocol/11-core-protocol-objects.md](./docs/protocol/11-core-protocol-objects.md)
 - [docs/protocol/12-request-protocol.md](./docs/protocol/12-request-protocol.md)
+- [docs/protocol/13-contribution-evidence-learning.md](./docs/protocol/13-contribution-evidence-learning.md)
+- [docs/protocol/16-positioning-adoption-lock.md](./docs/protocol/16-positioning-adoption-lock.md)
 - [docs/planning/12-30-day-roadmap.md](./docs/planning/12-30-day-roadmap.md)
 
 ## Change Discipline

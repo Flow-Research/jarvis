@@ -1,14 +1,14 @@
-# Protocol MVP
+# Protocol v0.1
 
-Jarvis v0 proves the protocol loop. It does not ship an execution stack.
+Jarvis v0.1 proves the protocol loop. It does not ship an execution stack.
 
-The MVP is a reference protocol package, OpenAPI 3.1 contract, conformance
-tests, examples, and a protocol simulation that visualizes how HumanWorker and
-AgentWorker collaborate inside a WorkSession.
+v0.1 is the OpenAPI 3.1 contract, conformance checks, examples, and protocol
+records that define how HumanWorker and AgentWorker collaborate inside a
+WorkSession.
 
-## MVP Scope
+## v0.1 Scope
 
-Jarvis v0 includes:
+Jarvis v0.1 includes:
 
 - OpenAPI 3.1 contract
 - event envelope
@@ -25,7 +25,7 @@ Jarvis v0 includes:
 - conformance tests
 - export format
 
-Jarvis v0 excludes:
+Jarvis v0.1 excludes:
 
 - execution adapters
 - cloud integration
@@ -39,7 +39,7 @@ Jarvis v0 excludes:
 - authentication
 - billing
 
-Those are implementation concerns for products and hosts.
+Those are implementation concerns for hosts.
 
 ## Golden Path
 
@@ -120,7 +120,7 @@ stream, or execute the session.
 
 ## Conformance Tests
 
-The MVP conformance suite checks:
+The v0.1 conformance suite checks:
 
 - a WorkSession cannot start without HumanWorker, AgentWorker, objective, and
   Policy.
@@ -207,6 +207,7 @@ The MVP conformance suite checks:
 
 ## Success Condition
 
-Jarvis v0 is successful when a product team implements the protocol without
-adopting any Jarvis-owned execution stack, cloud stack, database, sandbox, or
-UI.
+Jarvis v0.1 succeeds when a compatible implementation runs a HumanWorker and
+AgentWorker through a WorkSession, proves policy-governed autonomy, captures
+human judgment, records contribution, exports evidence, and carries governed
+learning into the next WorkSession without adopting a runtime owned by Jarvis.

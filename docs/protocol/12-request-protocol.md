@@ -58,7 +58,7 @@ Takeover
   HumanWorker direct control over a declared work scope
 ```
 
-Notification is not a v0 core object. Hosts may surface progress messages,
+Notification is not a v0.1 core object. Hosts may surface progress messages,
 inbox items, or UI notifications, but those records do not block work unless a
 Request exists.
 
@@ -557,7 +557,7 @@ Compatible implementations MUST enforce these rules:
    action hash, PolicyDecision, risk class, blocking scope, and event ref.
 4. Low-risk uncertainty MUST NOT create a Request. Hosts may surface it as
    non-blocking communication, but Jarvis does not require a Notification object
-   in v0.
+   in v0.1.
 5. Every Request includes default_if_no_response.
 6. Every Request includes expires_at.
 7. AgentWorker may continue unrelated safe branches.

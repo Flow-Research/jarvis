@@ -1,6 +1,6 @@
 # Package Contracts
 
-Jarvis v0 ships protocol packages only.
+Jarvis v0.1 ships protocol packages only.
 
 Jarvis does not ship execution packages, cloud packages, local execution
 packages, database packages, sandbox packages, or product UI packages. Products

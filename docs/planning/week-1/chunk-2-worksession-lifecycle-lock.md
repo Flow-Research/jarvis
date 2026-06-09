@@ -153,7 +153,7 @@ Chunk 2 is complete when:
   lists the same WorkSession states
 - [14-protocol-lock.md](../../protocol/14-protocol-lock.md) states the same
   lifecycle rules
-- conformance and MVP docs mention invalid transition, stale revision, previous
+- conformance and v0.1 docs mention invalid transition, stale revision, previous
   hash, and export eligibility checks
 - local checks pass
 - Zero-Trust Security Reviewer plus at least three other reviewer lanes pass

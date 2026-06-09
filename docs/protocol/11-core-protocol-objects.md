@@ -1,6 +1,6 @@
 # Core Protocol Objects
 
-This document is the source of truth for Jarvis v0 core protocol objects.
+This document is the source of truth for Jarvis v0.1 core protocol objects.
 
 Jarvis defines the compatibility contracts for human-agent collaboration and
 the learning loop. A compatible product, host, CLI, agent system, or external
@@ -57,7 +57,7 @@ workers inside a durable WorkSession.
 
 ## Core Field Lock
 
-The v0 field lock defines the portable protocol fields that Week 2 OpenAPI
+The v0.1 field lock defines the portable protocol fields that Week 2 OpenAPI
 components must encode.
 
 Field classes:
@@ -910,7 +910,7 @@ database_primary_key
 
 ### OutcomeReport Extension Field Lock
 
-`OutcomeReport` is an extension object. It does not change the v0 core object
+`OutcomeReport` is an extension object. It does not change the v0.1 core object
 list.
 
 Required fields:

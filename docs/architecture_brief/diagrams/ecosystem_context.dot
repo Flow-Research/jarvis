@@ -16,10 +16,10 @@ digraph G {
   human -> jarvis [label="collaborates through"];
   agent -> jarvis [label="collaborates through"];
   host -> jarvis [label="implements"];
-  host -> mcp [label="may use"];
-  host -> a2a [label="may use"];
-  host -> acp [label="may use"];
-  host -> agui [label="may expose records to"];
+  host -> mcp [label="uses when integrated"];
+  host -> a2a [label="uses when integrated"];
+  host -> acp [label="uses when integrated"];
+  host -> agui [label="exposes records to when integrated"];
   host -> sdk [label="wraps / adapts"];
   jarvis -> host [label="protocol records"];
 }

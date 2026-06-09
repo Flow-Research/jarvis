@@ -7,11 +7,11 @@ goals and human-defined policy. The protocol records the work, requests,
 reviews, takeovers, contributions, evidence, and learning that happen inside a
 WorkSession.
 
-This is the v0 lock. OpenAPI contract work starts from here.
+This is the v0.1 lock. OpenAPI contract work starts from here.
 
 ## Locked Status
 
-`locked-for-v0-openapi-draft`
+`locked-for-v0.1-openapi-draft`
 
 Locked now:
 
@@ -103,7 +103,7 @@ A host implements Jarvis. A host is not Jarvis.
 
 ## Vocabulary
 
-The v0 vocabulary is:
+The v0.1 vocabulary is:
 
 ```txt
 Worker
@@ -124,7 +124,7 @@ MemoryProposal
 SkillProposal
 ```
 
-These names are stable for the v0 OpenAPI draft.
+These names are stable for the v0.1 OpenAPI draft.
 
 ## Relationship Model
 
@@ -150,7 +150,7 @@ Chat is an interface. The protocol is the collaboration record.
 
 ## Lifecycle
 
-The v0 lifecycle is:
+The v0.1 lifecycle is:
 
 ```txt
 1. create Worker records
@@ -467,7 +467,7 @@ object with explicit limitations or marks the capability unsupported.
 
 ## Conformance
 
-A v0-compatible host proves:
+A v0.1-compatible host proves:
 
 - WorkSession is the source of truth.
 - HumanWorker and AgentWorker both exist.
@@ -495,7 +495,7 @@ A v0-compatible host proves:
 
 ## Portable Export
 
-A v0 portable export contains:
+A v0.1 portable export contains:
 
 ```txt
 protocol_version

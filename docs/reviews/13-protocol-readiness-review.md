@@ -144,4 +144,5 @@ lifecycle, control plane, evidence model, learning model, OpenAPI security
 entry, and positioning boundary are stable enough to begin Week 2 OpenAPI
 drafting.
 
-Product proof waits behind the OpenAPI contract and conformance entry rules.
+Product proof starts only after the OpenAPI contract and conformance entry
+rules are stable.

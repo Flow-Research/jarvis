@@ -5,7 +5,7 @@ digraph G {
 
   mutation [label="WorkSession-scoped mutation", fillcolor="#eef2ff", color="#4f46e5"];
   headers [label="Required headers\nProtocol-Version · Actor-Id · Idempotency-Key\nRequest-Timestamp · Expected-Revision · Previous-Event-Hash", fillcolor="#fff7ed", color="#ea580c"];
-  auth [label="Authority check\nActor can perform operation", fillcolor="#eff6ff", color="#2563eb"];
+  auth [label="Authority check\nActor is authorized for operation", fillcolor="#eff6ff", color="#2563eb"];
   revision [label="Revision check\nExpected revision matches current", fillcolor="#f8fafc"];
   hash [label="Hash-chain check\nPrevious event hash matches", fillcolor="#f8fafc"];
   policy [label="PolicyDecision\nrequired for AgentWorker action", fillcolor="#fffbeb", color="#d97706"];

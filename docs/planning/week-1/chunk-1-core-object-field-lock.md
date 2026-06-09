@@ -127,7 +127,7 @@ Reviewers must verify:
 Chunk 1 is complete when:
 
 - `11-core-protocol-objects.md` contains the field lock
-- `OutcomeReport` is locked as an extension, not a v0 core object
+- `OutcomeReport` is locked as an extension, not a v0.1 core object
 - every core object has required, optional, and forbidden field classes
 - every required field group has a protocol reason
 - local checks pass
