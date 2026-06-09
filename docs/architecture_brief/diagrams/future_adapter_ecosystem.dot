@@ -10,7 +10,7 @@ digraph G {
   hosts [label="Compatible Hosts\nproduct workspace · local host · external product", fillcolor="#fff7ed", color="#ea580c"];
   protocols [label="External Protocol Bridges\nMCP · A2A · ACP · AG-UI", fillcolor="#ffffff"];
   outcome [label="OutcomeReport Feedback\npost-session outcome -> governed learning", fillcolor="#fffbeb", color="#d97706"];
-  product [label="Product Proof\nhost maps real work into Jarvis records", fillcolor="#ffffff"];
+  product [label="Garden POC Readiness\nhost maps real work into Jarvis records", fillcolor="#ffffff"];
   deferred [label="Deferred From v0.1\nNotification · CoordinationAct · ProgressUpdate\nObservation visibility · Metrics · Full bridges", fillcolor="#fef2f2", color="#dc2626"];
 
   jarvis -> openapi [label="encoded as"];

@@ -1,9 +1,9 @@
 Jarvis Roadmap
 Definition,"Jarvis is the human-agent collaboration and learning-loop protocol. It defines WorkSession, Policy, Request, Review, Takeover, Contribution, EvidenceManifest, LearningRecord, MemoryProposal, and SkillProposal so existing agents and host products collaborate with humans without replacing their runtimes."
-Near-term priority,"Near-term priority: make Jarvis OpenAPI-ready: protocol lock, OpenAPI 3.1 communication binding, version and capability negotiation, zero-trust security model, portable export, and conformance entry fixtures. Product proof starts only after the protocol contract. Keep scope narrow: protocol records first, OpenAPI contract second, conformance third, adapters fourth, product proof last."
+Near-term priority,"Near-term priority: make Jarvis OpenAPI-ready: protocol lock, OpenAPI 3.1 communication binding, version and capability negotiation, zero-trust security model, portable export, and conformance entry fixtures. Product proof starts only after the protocol contract and conformance entry rules are stable. Keep scope narrow: protocol records first, OpenAPI contract second, conformance third, adapters fourth, product proof last."
 
 Week,Date range,Primary goal,Protocol lock + research,OpenAPI + conformance,Adapter + interoperability,Product proof,Done when
-Now,Jun 2-5,Turn Jarvis into an implementation-ready protocol lock.,"- freeze v0 protocol lock
+Now,Jun 2-5,Turn Jarvis into an implementation-ready protocol lock.,"- freeze v0.1 protocol lock
 - align README, principles, architecture, roadmap
 - keep language direct and host-generic
 - confirm object names and lifecycle","- define OpenAPI entry gate

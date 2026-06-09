@@ -7,7 +7,7 @@ Jarvis architecture is accepted only when these criteria hold.
 - Jarvis is defined as the human-agent collaboration and learning-loop
   protocol.
 - [11-core-protocol-objects.md](../protocol/11-core-protocol-objects.md) is
-  the source of truth for v0 object definitions.
+  the source of truth for v0.1 object definitions.
 - Jarvis is a compatibility protocol for multiple humans, agents, products,
   hosts, and external systems.
 - Jarvis does not define execution stack, cloud, database, queue, sandbox,
@@ -114,11 +114,15 @@ Expected result:
 - Takeover creates lock state
 - Takeover rejects stale AgentWorker continuation
 - Takeover resume requires reconciliation refs
-- mutating attribution, evidence, learning, proposal, export, and OutcomeReport
-  operations require `Jarvis-Protocol-Version`, `Jarvis-Actor-Id`,
+- mutating WorkSession-scoped attribution, evidence, learning, proposal, and
+  export operations require `Jarvis-Protocol-Version`, `Jarvis-Actor-Id`,
   `Jarvis-Idempotency-Key`, `Jarvis-Request-Timestamp`,
   `Jarvis-Expected-WorkSession-Revision`, and
   `Jarvis-Previous-Event-Hash`
+- OutcomeReport submission uses the non-WorkSession mutation header set:
+  `Jarvis-Protocol-Version`, `Jarvis-Actor-Id`, `Jarvis-Idempotency-Key`, and
+  `Jarvis-Request-Timestamp`; it does not require
+  `Jarvis-Expected-WorkSession-Revision` or `Jarvis-Previous-Event-Hash`
 - Contribution references events or artifacts
 - shared Contribution preserves individual contributor refs
 - EvidenceManifest references the WorkSession event chain

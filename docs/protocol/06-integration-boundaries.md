@@ -136,7 +136,7 @@ Rules:
   accepted the report into Jarvis records.
 - `reporter_actor_id` is present only when the reporter is already represented
   as a protocol Actor.
-- OutcomeReport is an extension. It does not change the v0 core object list.
+- OutcomeReport is an extension. It does not change the v0.1 core object list.
 
 ## Host Contract
 

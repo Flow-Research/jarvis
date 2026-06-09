@@ -476,7 +476,7 @@ private keys.
 This week locks the communication strategy:
 
 ```txt
-1. OpenAPI 3.1 is the v0 machine-readable contract.
+1. OpenAPI 3.1 is the v0.1 machine-readable contract.
 2. components.schemas contains protocol objects.
 3. paths contains protocol operations.
 4. securitySchemes and headers define zero-trust host requirements.

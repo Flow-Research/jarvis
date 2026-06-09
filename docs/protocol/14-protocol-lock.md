@@ -150,7 +150,7 @@ Chat is an interface. The protocol is the collaboration record.
 
 ## Lifecycle
 
-The v0 lifecycle is:
+The v0.1 lifecycle is:
 
 ```txt
 1. create Worker records
@@ -467,7 +467,7 @@ object with explicit limitations or marks the capability unsupported.
 
 ## Conformance
 
-A v0-compatible host proves:
+A v0.1-compatible host proves:
 
 - WorkSession is the source of truth.
 - HumanWorker and AgentWorker both exist.
@@ -495,7 +495,7 @@ A v0-compatible host proves:
 
 ## Portable Export
 
-A v0 portable export contains:
+A v0.1 portable export contains:
 
 ```txt
 protocol_version

@@ -188,7 +188,9 @@ Every AgentWorker action that affects a WorkSession records a PolicyDecision
 before the action is accepted as protocol state.
 
 Every export excludes product-private fields, credentials, secrets, raw runtime
-state, host-only database ids, and deployment details.
+state, host-only database ids, deployment details, billing data, private scores,
+product UI state, raw auth tokens, provider secrets, session cookies, and
+private keys.
 
 ## Protocol Drift Guard
 
@@ -270,6 +272,8 @@ Before changing protocol direction, read:
 - [docs/protocol/15-openapi-communication-binding.md](./docs/protocol/15-openapi-communication-binding.md)
 - [docs/protocol/11-core-protocol-objects.md](./docs/protocol/11-core-protocol-objects.md)
 - [docs/protocol/12-request-protocol.md](./docs/protocol/12-request-protocol.md)
+- [docs/protocol/13-contribution-evidence-learning.md](./docs/protocol/13-contribution-evidence-learning.md)
+- [docs/protocol/16-positioning-adoption-lock.md](./docs/protocol/16-positioning-adoption-lock.md)
 - [docs/planning/12-30-day-roadmap.md](./docs/planning/12-30-day-roadmap.md)
 
 ## Change Discipline

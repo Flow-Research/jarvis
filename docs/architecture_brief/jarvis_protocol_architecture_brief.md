@@ -33,9 +33,9 @@ operations, boundaries, and conformance expectations. It does not describe a
 deployment architecture.
 
 <div class="callout">
-v0.1 proves the protocol contract, examples, conformance entry, and
-existing-agent adoption boundary. Product proof and deeper adapter work start
-after the protocol contract is locked.
+v0.1 locks the protocol contract, examples, conformance entry, and
+existing-agent adoption boundary. Garden POC and deeper adapter work start only
+after the OpenAPI contract and conformance gate are stable.
 </div>
 
 ## Architecture Principles
@@ -372,7 +372,7 @@ Jarvis.
 | --- | --- | --- |
 | Existing-agent adapters | Map CLI agents, coding agents, SDK agents, and personal agents into Jarvis records. | Adapters preserve the existing agent runtime. |
 | Host conformance | Provide golden-path and failure-mode fixtures that prove protocol behavior. | Conformance checks behavior, not infrastructure. |
-| Product proof | Map a real product workspace into Jarvis WorkSessions and EvidenceManifest exports. | The product remains the host; Jarvis remains the protocol. |
+| Garden POC readiness | Map Garden POC work into Jarvis WorkSessions and EvidenceManifest exports. | Garden remains the host; Jarvis remains the protocol. |
 | External protocol bridges | Record MCP, A2A, ACP, and AG-UI participation as Jarvis evidence and contribution records. | Jarvis does not redefine those protocols. |
 | Evaluation feedback | Use OutcomeReport to carry external outcomes into governed LearningRecords. | Jarvis does not own task routing, scoring, payment, settlement, or marketplace logic. |
 | Public adoption package | Publish OpenAPI contract, examples, conformance checklist, and protocol architecture brief. | Adoption does not require a runtime owned by Jarvis. |

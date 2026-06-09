@@ -299,7 +299,7 @@ Rules:
 - OutcomeReport creates or references governed LearningRecord.
 - OutcomeReport is not an evaluation system.
 - OutcomeReport is not payment, scoring, settlement, or marketplace logic.
-- OutcomeReport remains an extension and does not change the v0 core object
+- OutcomeReport remains an extension and does not change the v0.1 core object
   list.
 
 Rejections:
@@ -315,10 +315,14 @@ outcome_report_without_learning_record
 A compatible implementation proves:
 
 ```txt
-Mutating attribution, evidence, learning, proposal, export, and OutcomeReport
-operations require Jarvis-Protocol-Version, Jarvis-Actor-Id,
+Mutating WorkSession-scoped attribution, evidence, learning, proposal, and
+export operations require Jarvis-Protocol-Version, Jarvis-Actor-Id,
 Jarvis-Idempotency-Key, Jarvis-Request-Timestamp,
 Jarvis-Expected-WorkSession-Revision, and Jarvis-Previous-Event-Hash.
+OutcomeReport submission uses the non-WorkSession mutation header set:
+Jarvis-Protocol-Version, Jarvis-Actor-Id, Jarvis-Idempotency-Key, and
+Jarvis-Request-Timestamp. It MUST NOT require
+Jarvis-Expected-WorkSession-Revision or Jarvis-Previous-Event-Hash.
 Contribution preserves contributor refs.
 Shared Contribution preserves individual contributors.
 Evidence item refs link to source JarvisEvents.
