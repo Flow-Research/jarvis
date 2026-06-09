@@ -11,6 +11,7 @@ digraph G {
   protocols [label="External Protocol Bridges\nMCP · A2A · ACP · AG-UI", fillcolor="#ffffff"];
   outcome [label="OutcomeReport Feedback\npost-session outcome -> governed learning", fillcolor="#fffbeb", color="#d97706"];
   product [label="Product Proof\nhost maps real work into Jarvis records", fillcolor="#ffffff"];
+  deferred [label="Deferred From v0.1\nNotification · CoordinationAct · ProgressUpdate\nObservation visibility · Metrics · Full bridges", fillcolor="#fef2f2", color="#dc2626"];
 
   jarvis -> openapi [label="encoded as"];
   openapi -> conformance [label="verified by"];
@@ -21,4 +22,5 @@ digraph G {
   protocols -> jarvis [label="recorded around"];
   outcome -> jarvis [label="feeds learning"];
   product -> jarvis [label="uses"];
+  deferred -> jarvis [style=dashed, label="future extensions"];
 }

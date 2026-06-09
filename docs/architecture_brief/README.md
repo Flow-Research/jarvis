@@ -8,7 +8,7 @@ This folder contains the shareable Jarvis protocol architecture brief.
 - Diagram sources: [diagrams/](diagrams/)
 
 The brief packages the v0.1 first-30-days protocol architecture into a PDF the
-team can review while the OpenAPI contract, examples, conformance entry, and
+team reviews while the OpenAPI contract, examples, conformance entry, and
 adapter boundaries are developed.
 
 ## Render

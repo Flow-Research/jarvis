@@ -1,0 +1,24 @@
+digraph G {
+  graph [rankdir=LR, bgcolor="white", margin=0.12, nodesep=0.34, ranksep=0.52];
+  node [shape=box, style="rounded,filled", fontname="Inter", fontsize=10, color="#94a3b8", fillcolor="#f8fafc", fontcolor="#111827", margin="0.10,0.065"];
+  edge [fontname="Inter", fontsize=8.5, color="#475569", fontcolor="#475569", arrowsize=0.65];
+
+  denied [label="PolicyDecision\n deny / review_required / narrow", fillcolor="#fff7ed", color="#ea580c"];
+  request [label="Request\n type · blocking_scope · reason\n requested_action · risk_class\n options · default_if_no_response", fillcolor="#fef2f2", color="#dc2626", penwidth=2];
+  blocked [label="Blocked Scope\naction · branch · artifact · tool_call\nexternal_send · final_submission · work_session", fillcolor="#fffbeb", color="#d97706"];
+  review [label="Review\napprove · deny · narrow · correct\nneeds_revision", fillcolor="#eff6ff", color="#2563eb"];
+  takeover [label="Takeover\nhuman controls declared scope\nlock epoch protects continuation", fillcolor="#eff6ff", color="#2563eb"];
+  approval [label="ApprovalScope\nbounded authority only\nno broader than Request or Policy", fillcolor="#f0fdf4", color="#16a34a"];
+  fallback [label="Expiry / Safe Fallback\nno new authority\ncontinue safe branch or record limitation", fillcolor="#f8fafc", color="#64748b"];
+  evidence [label="EvidenceManifest\nRequest + Review + Takeover refs", fillcolor="#ecfeff", color="#0891b2"];
+
+  denied -> request [label="creates"];
+  request -> blocked [label="blocks only"];
+  request -> review [label="human resolves"];
+  request -> takeover [label="human takes over"];
+  review -> approval [label="approve / narrow"];
+  request -> fallback [label="expires"];
+  approval -> evidence [label="recorded in"];
+  takeover -> evidence [label="recorded in"];
+  fallback -> evidence [label="limitation recorded"];
+}

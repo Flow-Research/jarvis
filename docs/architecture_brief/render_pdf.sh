@@ -13,9 +13,12 @@ render_dot() {
 
 render_dot diagrams/ecosystem_context.dot images/ecosystem_context.png
 render_dot diagrams/protocol_layers.dot images/protocol_layers.png
+render_dot diagrams/v01_protocol_spine.dot images/v01_protocol_spine.png
 render_dot diagrams/worksession_control_flow.dot images/worksession_control_flow.png
+render_dot diagrams/request_correctness.dot images/request_correctness.png
 render_dot diagrams/zero_trust_gate.dot images/zero_trust_gate.png
 render_dot diagrams/evidence_learning_flow.dot images/evidence_learning_flow.png
+render_dot diagrams/outcome_report_hook.dot images/outcome_report_hook.png
 render_dot diagrams/future_adapter_ecosystem.dot images/future_adapter_ecosystem.png
 
 pandoc jarvis_protocol_architecture_brief.md \

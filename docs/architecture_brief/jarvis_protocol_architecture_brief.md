@@ -34,9 +34,9 @@ operations, boundaries, and conformance expectations. It does not describe a
 deployment architecture.
 
 <div class="callout">
-Current v0.1 work proves the protocol contract, examples, conformance entry,
-and existing-agent adoption boundary. Product proof and deeper adapter work
-wait behind that protocol contract.
+v0.1 proves the protocol contract, examples, conformance entry, and
+existing-agent adoption boundary. Product proof and deeper adapter work wait
+behind that protocol contract.
 </div>
 
 ## Architecture Principles
@@ -59,7 +59,7 @@ control, bidirectional communication, and non-turn-taking coordination. It also
 shows why v0.1 must be strict about Requests and situational awareness without
 turning every coordination idea into a core object.
 
-Jarvis uses that lesson this way:
+Jarvis applies that lesson directly:
 
 ```txt
 v0.1 defines the spine.
@@ -136,7 +136,8 @@ and learning connect inside one WorkSession.
 - Action outside Policy creates a scoped Request.
 - Request is not chat, notification, or authority.
 - Human resolution requires Review or Takeover.
-- Review can approve, deny, narrow, correct, take over, or require revision.
+- Review decisions are approve, deny, narrow, correct, takeover, and
+  needs_revision.
 - Takeover creates a lock epoch and rejects stale autonomous continuation.
 
 <div class="page-break"></div>
@@ -206,7 +207,7 @@ Jarvis integrates with adjacent protocols without replacing them.
 | MCP | Tools, prompts, resources, and context servers. | Tool/resource use as PolicyDecisions, JarvisEvents, Contributions, and Evidence. |
 | A2A | Agent-to-agent communication and delegation. | Delegation evidence, participating AgentWorker refs, Contributions, and outcomes. |
 | AGNTCY ACP | Remote-agent interface and OpenAPI-based agent access. | Collaboration record around remote-agent participation. |
-| AG-UI | Agent-to-frontend event interaction and UI state. | WorkSession records that a host may expose to a frontend. |
+| AG-UI | Agent-to-frontend event interaction and UI state. | WorkSession records that a host exposes to a frontend when frontend integration exists. |
 | Agent SDKs | Model calls, tool calls, tracing, handoffs, runtime behavior. | Policy, review, contribution, evidence, and learning around execution. |
 | Coding agents | Terminal/editor/repo execution workflows. | WorkSession evidence, human reviews, takeovers, and learning. |
 | Personal agents | Product or assistant experience for a person. | Protocol semantics for governed human-agent collaboration. |
@@ -222,7 +223,7 @@ semantics.
 
 ## v0.1 First 30 Days
 
-The first 30 days turn this architecture into a usable protocol contract.
+The first 30 days produce a usable protocol contract.
 
 | Area | v0.1 Work |
 | --- | --- |
@@ -233,14 +234,18 @@ The first 30 days turn this architecture into a usable protocol contract.
 | Examples | Provide first examples for WorkSession, Request, Review, and EvidenceManifest export. |
 | Conformance | Define golden-path and failure-mode checklists that reject fake implementations. |
 
-Current v0.1 work encodes the locked protocol. It does not redesign the thesis,
-object model, lifecycle, control plane, evidence model, learning model,
-security entry, or positioning boundary.
+v0.1 encodes the locked protocol. It does not redesign the thesis, object
+model, lifecycle, control plane, evidence model, learning model, security
+entry, or positioning boundary.
 
 ### v0.1 Spine
 
 v0.1 includes the minimum protocol objects required to prove the collaboration
 loop:
+
+<div class="diagram">
+  <img src="images/v01_protocol_spine.png" alt="Jarvis v0.1 protocol spine diagram" />
+</div>
 
 ```txt
 Worker
@@ -281,6 +286,10 @@ submit OutcomeReport
 
 Request is the v0.1 control-plane object that prevents fake collaboration.
 
+<div class="diagram">
+  <img src="images/request_correctness.png" alt="Jarvis Request correctness diagram" />
+</div>
+
 The Request schema must preserve:
 
 ```txt
@@ -314,6 +323,10 @@ Request appears in EvidenceManifest.
 OutcomeReport is the v0.1 external feedback ingress. It carries post-session
 outcome information into governed learning without turning Jarvis into
 Workstream, evaluation, payment, settlement, routing, or marketplace logic.
+
+<div class="diagram">
+  <img src="images/outcome_report_hook.png" alt="Jarvis OutcomeReport hook diagram" />
+</div>
 
 Minimal example:
 
@@ -386,8 +399,8 @@ MCP/A2A/ACP/AG-UI bridges
 multi-agent reviewer protocol
 ```
 
-These can become future extensions, examples, adapters, or conformance
-fixtures. They do not enter the v0.1 object spine.
+These remain future extensions, examples, adapters, or conformance fixtures.
+They do not enter the v0.1 object spine.
 
 ## Scope Boundary
 
@@ -424,7 +437,7 @@ agents implement.
 
 ## Closing
 
-Jarvis v0 succeeds when a compatible implementation can run a HumanWorker and
-AgentWorker through a WorkSession, prove policy-governed autonomy, capture
-human judgment, record contribution, export evidence, and carry governed
+Jarvis v0 succeeds when a compatible implementation runs a HumanWorker and
+AgentWorker through a WorkSession, proves policy-governed autonomy, captures
+human judgment, records contribution, exports evidence, and carries governed
 learning into the next WorkSession without adopting a Jarvis-owned runtime.
