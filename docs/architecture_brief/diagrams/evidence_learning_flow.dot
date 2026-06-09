@@ -1,0 +1,18 @@
+digraph G {
+  graph [rankdir=LR, bgcolor="white", margin=0.12, nodesep=0.36, ranksep=0.55];
+  node [shape=box, style="rounded,filled", fontname="Inter", fontsize=10, color="#94a3b8", fillcolor="#f8fafc", fontcolor="#111827", margin="0.11,0.07"];
+  edge [fontname="Inter", fontsize=8.5, color="#475569", fontcolor="#475569", arrowsize=0.65];
+
+  work [label="WorkSession events\nmessages · actions · tool results · artifacts", fillcolor="#eef2ff", color="#4f46e5"];
+  contribution [label="Contribution ledger\nhuman · agent · pair · service", fillcolor="#f0fdf4", color="#16a34a"];
+  evidence [label="EvidenceManifest\nevidence_item_refs · policy decisions · reviews · limitations", fillcolor="#fff7ed", color="#ea580c"];
+  review [label="Human review\naccept · deny · correct · takeover · needs_revision", fillcolor="#eff6ff", color="#2563eb"];
+  learning [label="LearningRecord\nhuman · agent · pair learning", fillcolor="#ecfeff", color="#0891b2"];
+  memory [label="MemoryProposal\ngoverned durable memory update", fillcolor="#f8fafc"];
+  skill [label="SkillProposal\ngoverned reusable process update", fillcolor="#f8fafc"];
+  next [label="Next WorkSession\nconfirmed learning carried forward", fillcolor="#f0fdf4", color="#16a34a"];
+
+  work -> contribution -> evidence -> review -> learning;
+  learning -> memory -> next;
+  learning -> skill -> next;
+}

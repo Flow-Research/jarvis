@@ -253,6 +253,8 @@ When v0 proves this loop, Jarvis is real.
 - [docs/protocol/](./docs/protocol/) - protocol definition, architecture,
   object model, policy, memory, evidence, integration boundaries, package
   contracts, MVP, protocol lock, OpenAPI binding, and positioning lock.
+- [docs/architecture_brief/](./docs/architecture_brief/) - shareable protocol
+  architecture brief and PDF.
 - [docs/planning/](./docs/planning/) - roadmap, 30-day plan, and upload-ready
   planning sheets.
 - [docs/reviews/](./docs/reviews/) - protocol readiness and acceptance review

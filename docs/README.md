@@ -35,6 +35,14 @@ Planning docs and sheets track execution.
 - [sheets/jarvis_roadmap.csv](./planning/sheets/jarvis_roadmap.csv)
 - [sheets/jarvis_roadmap.xlsx](./planning/sheets/jarvis_roadmap.xlsx)
 
+## Architecture Brief
+
+The architecture brief packages the protocol architecture into a shareable PDF.
+
+- [architecture_brief/README.md](./architecture_brief/README.md)
+- [architecture_brief/jarvis_protocol_architecture_brief.md](./architecture_brief/jarvis_protocol_architecture_brief.md)
+- [architecture_brief/jarvis_protocol_architecture_brief.pdf](./architecture_brief/jarvis_protocol_architecture_brief.pdf)
+
 ## Readiness
 
 Readiness docs lock OpenAPI entry criteria and acceptance criteria without
