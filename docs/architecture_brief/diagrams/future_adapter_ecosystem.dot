@@ -1,0 +1,24 @@
+digraph G {
+  graph [rankdir=LR, bgcolor="white", margin=0.12, nodesep=0.42, ranksep=0.6];
+  node [shape=box, style="rounded,filled", fontname="Inter", fontsize=10, color="#94a3b8", fillcolor="#f8fafc", fontcolor="#111827", margin="0.11,0.07"];
+  edge [fontname="Inter", fontsize=8.5, color="#475569", fontcolor="#475569", arrowsize=0.65];
+
+  jarvis [label="Jarvis Protocol\nWorkSession · Policy · Request · Review\nContribution · Evidence · Learning", fillcolor="#f0fdf4", color="#16a34a", penwidth=2];
+  openapi [label="OpenAPI Contract\nschemas · paths · security · errors · examples", fillcolor="#f5f3ff", color="#7c3aed"];
+  conformance [label="Conformance Entry\ngolden path · failure modes · export checks", fillcolor="#ecfeff", color="#0891b2"];
+  adapters [label="Existing-Agent Adapters\nCLI agents · coding agents · SDK agents · personal agents", fillcolor="#eef2ff", color="#4f46e5"];
+  hosts [label="Compatible Hosts\nproduct workspace · local host · external product", fillcolor="#fff7ed", color="#ea580c"];
+  protocols [label="External Protocol Bridges\nMCP · A2A · ACP · AG-UI", fillcolor="#ffffff"];
+  outcome [label="OutcomeReport Feedback\npost-session outcome -> governed learning", fillcolor="#fffbeb", color="#d97706"];
+  product [label="Product Proof\nhost maps real work into Jarvis records", fillcolor="#ffffff"];
+
+  jarvis -> openapi [label="encoded as"];
+  openapi -> conformance [label="verified by"];
+  conformance -> adapters [label="guides"];
+  conformance -> hosts [label="gates"];
+  adapters -> jarvis [label="produce records"];
+  hosts -> jarvis [label="implement"];
+  protocols -> jarvis [label="recorded around"];
+  outcome -> jarvis [label="feeds learning"];
+  product -> jarvis [label="uses"];
+}

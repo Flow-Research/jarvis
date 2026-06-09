@@ -1,0 +1,25 @@
+digraph G {
+  graph [rankdir=LR, bgcolor="white", margin=0.15, nodesep=0.55, ranksep=0.7];
+  node [shape=box, style="rounded,filled", fontname="Inter", fontsize=11, color="#94a3b8", fillcolor="#f8fafc", fontcolor="#111827", margin="0.12,0.08"];
+  edge [fontname="Inter", fontsize=9, color="#475569", fontcolor="#475569", arrowsize=0.7];
+
+  human [label="HumanWorker\njudgment · goals · review\naccountability", fillcolor="#eff6ff", color="#2563eb"];
+  agent [label="AgentWorker\nexecution · research · tool use\nevidence capture", fillcolor="#eef2ff", color="#4f46e5"];
+  jarvis [label="Jarvis Protocol\nWorkSession · Policy · Request · Review\nContribution · Evidence · Learning", fillcolor="#f0fdf4", color="#16a34a", penwidth=2];
+  host [label="Compatible Host / Adapter\nimplements Jarvis records\nowns runtime details", fillcolor="#fff7ed", color="#ea580c"];
+  mcp [label="MCP\ntools · prompts · resources", fillcolor="#ffffff"];
+  a2a [label="A2A\nagent-to-agent coordination", fillcolor="#ffffff"];
+  acp [label="ACP\nremote-agent interface", fillcolor="#ffffff"];
+  agui [label="AG-UI\nfrontend interaction", fillcolor="#ffffff"];
+  sdk [label="Agent SDKs / Coding Agents / Personal Agents\nexecution and product experience", fillcolor="#ffffff"];
+
+  human -> jarvis [label="collaborates through"];
+  agent -> jarvis [label="collaborates through"];
+  host -> jarvis [label="implements"];
+  host -> mcp [label="may use"];
+  host -> a2a [label="may use"];
+  host -> acp [label="may use"];
+  host -> agui [label="may expose records to"];
+  host -> sdk [label="wraps / adapts"];
+  jarvis -> host [label="protocol records"];
+}

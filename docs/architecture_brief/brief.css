@@ -1,0 +1,183 @@
+@page {
+  size: Letter;
+  margin: 0.62in;
+}
+
+@page landscape {
+  size: Letter landscape;
+  margin: 0.42in;
+}
+
+:root {
+  color: #111827;
+  font-family: Inter, Arial, sans-serif;
+  font-size: 10.4pt;
+  line-height: 1.42;
+}
+
+body {
+  margin: 0;
+}
+
+h1,
+h2,
+h3 {
+  color: #102a43;
+  line-height: 1.15;
+}
+
+h1 {
+  font-size: 27pt;
+  margin: 0 0 0.34in;
+}
+
+h2 {
+  border-bottom: 1px solid #cbd5e1;
+  font-size: 17pt;
+  margin: 0 0 0.18in;
+  padding-bottom: 0.08in;
+}
+
+h3 {
+  font-size: 12.5pt;
+  margin: 0.18in 0 0.06in;
+}
+
+p {
+  margin: 0 0 0.1in;
+}
+
+ul {
+  margin: 0.04in 0 0.15in 0.22in;
+  padding: 0;
+}
+
+li {
+  margin: 0.03in 0;
+}
+
+table {
+  border-collapse: collapse;
+  font-size: 9pt;
+  margin: 0.1in 0 0.18in;
+  width: 100%;
+}
+
+th,
+td {
+  border: 1px solid #cbd5e1;
+  padding: 0.07in;
+  vertical-align: top;
+}
+
+th {
+  background: #f1f5f9;
+  color: #102a43;
+}
+
+code {
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: 3px;
+  font-family: "SFMono-Regular", Consolas, monospace;
+  font-size: 8.8pt;
+  padding: 0.01in 0.03in;
+}
+
+pre {
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  font-size: 8.8pt;
+  margin: 0.1in 0 0.15in;
+  padding: 0.09in;
+  white-space: pre-wrap;
+}
+
+.subtitle {
+  color: #475569;
+  font-size: 14pt;
+  margin-bottom: 0.24in;
+}
+
+.meta {
+  color: #64748b;
+  font-size: 9.3pt;
+  margin-top: 0.2in;
+}
+
+.callout {
+  background: #f8fbff;
+  border-left: 4px solid #2563eb;
+  margin: 0.12in 0 0.18in;
+  padding: 0.1in 0.14in;
+}
+
+.boundary {
+  background: #fffbeb;
+  border-left: 4px solid #d97706;
+  margin: 0.12in 0 0.18in;
+  padding: 0.1in 0.14in;
+}
+
+.diagram {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  margin: 0.12in 0 0.18in;
+  padding: 0.08in;
+  text-align: center;
+}
+
+.diagram img {
+  display: block;
+  margin: 0 auto;
+  max-height: 7.1in;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+.wide img {
+  max-height: 5.95in;
+}
+
+.flow img {
+  max-height: 6.8in;
+}
+
+.landscape {
+  break-after: page;
+  break-before: page;
+  page: landscape;
+}
+
+.landscape h2 {
+  font-size: 16pt;
+  margin-bottom: 0.1in;
+}
+
+.landscape p {
+  font-size: 9.4pt;
+}
+
+.landscape .diagram img {
+  max-height: 5.8in;
+}
+
+.page-break {
+  break-after: page;
+}
+
+.cover {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  min-height: 8.1in;
+  justify-content: center;
+}
+
+.cover .line {
+  background: #2563eb;
+  height: 5px;
+  margin: 0.2in 0;
+  width: 1.35in;
+}
