@@ -167,7 +167,7 @@ Output:
 
 Done when:
 
-- README, Principles, Architecture, Package Contracts, Protocol MVP, and
+- README, Principles, Architecture, Package Contracts, Protocol v0.1, and
   Acceptance Criteria all agree.
 - no Jarvis document assigns execution, cloud, database, sandbox, or deployment
   ownership to Jarvis.

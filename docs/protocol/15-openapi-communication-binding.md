@@ -9,7 +9,7 @@ adapters, products, and external systems implement.
 
 ## Decision
 
-Jarvis v0 uses this structure:
+Jarvis v0.1 uses this structure:
 
 ```txt
 Layer 1: Protocol semantics
@@ -65,7 +65,7 @@ Primary references:
 
 ## OpenAPI Contract Shape
 
-The v0 OpenAPI document owns:
+The v0.1 OpenAPI document owns:
 
 ```txt
 info

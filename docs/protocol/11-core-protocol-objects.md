@@ -1,6 +1,6 @@
 # Core Protocol Objects
 
-This document is the source of truth for Jarvis v0 core protocol objects.
+This document is the source of truth for Jarvis v0.1 core protocol objects.
 
 Jarvis defines the compatibility contracts for human-agent collaboration and
 the learning loop. A compatible product, host, CLI, agent system, or external

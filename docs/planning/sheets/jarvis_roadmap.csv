@@ -1,6 +1,6 @@
 Jarvis Roadmap
 Definition,"Jarvis is the human-agent collaboration and learning-loop protocol. It defines WorkSession, Policy, Request, Review, Takeover, Contribution, EvidenceManifest, LearningRecord, MemoryProposal, and SkillProposal so existing agents and host products collaborate with humans without replacing their runtimes."
-Near-term priority,"Near-term priority: make Jarvis OpenAPI-ready: protocol lock, OpenAPI 3.1 communication binding, version and capability negotiation, zero-trust security model, portable export, and conformance entry fixtures. Product proof waits behind the protocol contract. Keep scope narrow: protocol records first, OpenAPI contract second, conformance third, adapters fourth, product proof last."
+Near-term priority,"Near-term priority: make Jarvis OpenAPI-ready: protocol lock, OpenAPI 3.1 communication binding, version and capability negotiation, zero-trust security model, portable export, and conformance entry fixtures. Product proof starts only after the protocol contract. Keep scope narrow: protocol records first, OpenAPI contract second, conformance third, adapters fourth, product proof last."
 
 Week,Date range,Primary goal,Protocol lock + research,OpenAPI + conformance,Adapter + interoperability,Product proof,Done when
 Now,Jun 2-5,Turn Jarvis into an implementation-ready protocol lock.,"- freeze v0 protocol lock
@@ -14,7 +14,7 @@ Now,Jun 2-5,Turn Jarvis into an implementation-ready protocol lock.,"- freeze v0
 - name adapter questions only
 - preserve runtime independence","- keep Garden POC out of active scope
 - define product-proof prerequisites only","Protocol lock is the source for OpenAPI work, OpenAPI 3.1 is the machine-readable communication contract, and no product proof enters this week."
-W1,Jun 8-12,Create the v0 OpenAPI communication contract.,"- finalize required object meanings
+W1,Jun 8-12,Create the v0.1 OpenAPI communication contract.,"- finalize required object meanings
 - lock WorkSession state transitions
 - lock Request, Review, Takeover states
 - lock Contribution and Evidence terms","- create OpenAPI 3.1 document skeleton

@@ -25,6 +25,25 @@ Jarvis is a compatibility protocol, not one user's workflow. Products, hosts,
 human workers, agent workers, and external systems implement the contracts and
 participate in the same collaboration loop.
 
+## Protocol Boundary Law
+
+Jarvis stays protocol-only.
+
+Jarvis does not become an agent framework, personal agent, coding agent,
+runtime, SDK, product workspace, task marketplace, auth system, sandbox,
+database, cloud stack, tool protocol, frontend protocol, or agent-to-agent
+protocol.
+
+Those systems implement Jarvis, integrate with Jarvis, or produce records that
+Jarvis can capture. They do not become Jarvis.
+
+Jarvis owns the collaboration record: WorkSession, PolicyDecision, Request,
+Review, Takeover, Contribution, EvidenceManifest, LearningRecord,
+MemoryProposal, SkillProposal, OutcomeReport, protocol errors, security
+requirements, extension rules, and conformance expectations.
+
+Everything else stays with the host.
+
 ## Design From Collaboration, Not Chat
 
 Chat is only one interface. Jarvis is the protocol underneath human-agent work.
