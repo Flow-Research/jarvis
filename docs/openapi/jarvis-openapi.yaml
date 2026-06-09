@@ -1,0 +1,94 @@
+openapi: 3.1.1
+jsonSchemaDialect: https://json-schema.org/draft/2020-12/schema
+info:
+  title: Jarvis Human-Agent Collaboration Protocol
+  summary: Human-agent collaboration and learning-loop protocol.
+  description: |
+    Jarvis defines the protocol records and operations for governed
+    collaboration between HumanWorkers and AgentWorkers.
+
+    Jarvis does not define runtime execution, product UI, authentication
+    provider, storage, model calls, sandbox behavior, cloud deployment, billing,
+    task routing, or marketplace logic.
+  version: 0.1.0
+servers:
+  - url: https://jarvis.example.invalid
+    description: OpenAPI placeholder only. Jarvis does not operate this server; compatible hosts publish their own URLs.
+security:
+  - HostAuth: []
+tags:
+  - name: Workers
+    description: Worker and Actor protocol reference operations.
+  - name: WorkSessions
+    description: WorkSession lifecycle and event operations.
+  - name: ControlPlane
+    description: PolicyDecision, Request, Review, and Takeover operations.
+  - name: Attribution
+    description: Contribution operations.
+  - name: Learning
+    description: LearningRecord, MemoryProposal, and SkillProposal operations.
+  - name: Evidence
+    description: EvidenceManifest export operations.
+  - name: Feedback
+    description: OutcomeReport operations.
+  - name: Conformance
+    description: Compatibility and conformance entry operations.
+paths: {}
+components:
+  schemas: {}
+  parameters: {}
+  headers: {}
+  requestBodies: {}
+  responses: {}
+  securitySchemes:
+    HostAuth:
+      type: http
+      scheme: bearer
+      description: Host-owned caller authentication. Jarvis requires caller authentication for protocol operations and does not issue credentials.
+  examples: {}
+x-jarvis-protocol:
+  version: v0.1
+  layer: OpenAPI 3.1 communication binding
+  source_of_truth:
+    - docs/protocol/14-protocol-lock.md
+    - docs/protocol/15-openapi-communication-binding.md
+    - docs/protocol/11-core-protocol-objects.md
+    - docs/protocol/12-request-protocol.md
+    - docs/protocol/13-contribution-evidence-learning.md
+    - docs/reviews/acceptance-criteria.md
+  owns:
+    - protocol objects
+    - protocol operations
+    - protocol headers
+    - protocol error envelope
+    - portable export boundary
+    - conformance entry
+  outside_jarvis:
+    - runtime execution
+    - product UI
+    - authentication provider
+    - authorization backend
+    - database
+    - queues
+    - cloud provider
+    - sandbox implementation
+    - model provider
+    - tool execution
+    - billing
+    - deployment
+    - task marketplace
+    - product workflow
+  chunk_lock:
+    id: week-2-chunk-1-openapi-skeleton
+    locks:
+      - OpenAPI 3.1.1 entry point
+      - v0.1 protocol metadata
+      - required top-level buckets
+      - tag taxonomy
+      - host-owned server boundary
+    excludes:
+      - component field schemas
+      - path operation bodies
+      - operation-specific security requirements
+      - examples
+      - conformance fixtures
