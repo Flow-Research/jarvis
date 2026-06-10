@@ -31,7 +31,7 @@ Chunk 2 does not:
 - define runtime execution
 - define host storage
 - define product workflow
-- define Garden POC behavior
+- define host implementation behavior
 - define queue behavior
 - define model calls
 - define billing, deployment, or monitoring

@@ -7,7 +7,7 @@ Takeover work together when AgentWorker action is allowed, denied,
 review-required, narrowed, or transferred to HumanWorker control.
 
 This chunk does not create product UI, inbox UI, runtime behavior, model calls,
-tool execution, queue behavior, Garden POC behavior, or host storage behavior.
+tool execution, queue behavior, host implementation behavior, or host storage behavior.
 
 ## Scope
 
@@ -40,8 +40,8 @@ Chunk 3 does not:
 - define runtime execution
 - define sandbox behavior
 - define model behavior
-- define Garden POC behavior
-- define Workstream behavior
+- define host implementation behavior
+- define external evaluation behavior
 - define payment, scoring, or evaluation behavior
 
 ## Control-Plane Thesis

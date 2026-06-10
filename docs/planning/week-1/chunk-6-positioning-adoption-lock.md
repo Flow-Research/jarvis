@@ -4,7 +4,7 @@ Chunk 6 closes Week 1 by locking why Jarvis exists beside existing agents,
 agent frameworks, agent protocols, and product hosts.
 
 This chunk does not create adapters, OpenAPI YAML, conformance fixtures,
-runtime code, product UI, or Garden POC behavior. It locks the adoption
+runtime code, product UI, or host implementation behavior. It locks the adoption
 argument that Week 2 OpenAPI drafting must preserve.
 
 ## Scope
@@ -34,7 +34,7 @@ Chunk 6 does not:
 - create conformance fixtures
 - define runtime execution
 - define product UI
-- define Garden POC behavior
+- define host implementation behavior
 - define task marketplace behavior
 - define auth provider behavior
 - replace MCP, A2A, ACP, AG-UI, agent SDKs, coding agents, or personal agents

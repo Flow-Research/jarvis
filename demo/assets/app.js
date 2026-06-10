@@ -50,7 +50,7 @@ const steps = [
     activeNodes: ["agent", "kernel", "host"],
     activeBeams: ["beam-agent", "beam-host"],
     summary:
-      "The AgentWorker works inside the allowed scope. Jarvis records the protocol facts while the host product handles execution, tools, storage, and interface.",
+      "The AgentWorker works inside the allowed scope. Jarvis records the protocol facts while the host handles execution, tools, storage, and interface.",
     events: [
       "AgentWorker proposes plan and starts project inspection.",
       "Policy allows read-only local file inspection.",

@@ -12,7 +12,7 @@ evidence-backed, portable human-agent work that improves across WorkSessions.
 Jarvis is not a product, runtime, backend service, SDK, tool protocol, frontend
 protocol, database, sandbox, or cloud stack.
 
-<p class="meta">Scope: v0.1 first 30 days, with future adapter and ecosystem context.</p>
+<p class="meta">Scope: v0.1 first 30 days, with future interoperability context.</p>
 
 </section>
 
@@ -34,8 +34,9 @@ deployment architecture.
 
 <div class="callout">
 v0.1 locks the protocol contract, examples, conformance entry, and
-existing-agent adoption boundary. Garden POC and deeper adapter work start only
-after the OpenAPI contract and conformance gate are stable.
+existing-agent adoption boundary. Host implementations and deeper adapter work
+stay outside the v0.1 core until the OpenAPI contract and conformance gate are
+stable.
 </div>
 
 ## Architecture Principles
@@ -78,7 +79,7 @@ The context view shows Jarvis as the protocol record between HumanWorkers,
 AgentWorkers, hosts, existing agents, and adjacent protocols.
 
 <div class="diagram">
-  <img src="images/ecosystem_context.png" alt="Jarvis protocol ecosystem context diagram" />
+  <img src="images/interoperability_context.png" alt="Jarvis protocol interoperability context diagram" />
 </div>
 
 ### What This Means
@@ -321,7 +322,7 @@ Request appears in EvidenceManifest.
 
 OutcomeReport is the v0.1 external feedback ingress. It carries post-session
 outcome information into governed learning without turning Jarvis into
-Workstream, evaluation, payment, settlement, routing, or marketplace logic.
+external evaluation, payment, settlement, routing, or marketplace logic.
 
 <div class="diagram">
   <img src="images/outcome_report_hook.png" alt="Jarvis OutcomeReport hook diagram" />
@@ -359,20 +360,20 @@ outcome_report_without_learning_record
 
 <div class="page-break"></div>
 
-## Future Adapter And Ecosystem Direction
+## Future Interoperability Direction
 
 Future work expands around the protocol without moving execution ownership into
 Jarvis.
 
 <div class="diagram">
-  <img src="images/future_adapter_ecosystem.png" alt="Jarvis future adapter and ecosystem direction diagram" />
+  <img src="images/future_interoperability.png" alt="Jarvis future interoperability direction diagram" />
 </div>
 
 | Future area | Direction | Boundary |
 | --- | --- | --- |
 | Existing-agent adapters | Map CLI agents, coding agents, SDK agents, and personal agents into Jarvis records. | Adapters preserve the existing agent runtime. |
 | Host conformance | Provide golden-path and failure-mode fixtures that prove protocol behavior. | Conformance checks behavior, not infrastructure. |
-| Garden POC readiness | Map Garden POC work into Jarvis WorkSessions and EvidenceManifest exports. | Garden remains the host; Jarvis remains the protocol. |
+| Compatibility guidance | Map implementation work into Jarvis WorkSessions and EvidenceManifest exports. | The host remains the host; Jarvis remains the protocol. |
 | External protocol bridges | Record MCP, A2A, ACP, and AG-UI participation as Jarvis evidence and contribution records. | Jarvis does not redefine those protocols. |
 | Evaluation feedback | Use OutcomeReport to carry external outcomes into governed LearningRecords. | Jarvis does not own task routing, scoring, payment, settlement, or marketplace logic. |
 | Public adoption package | Publish OpenAPI contract, examples, conformance checklist, and protocol architecture brief. | Adoption does not require a runtime owned by Jarvis. |
@@ -392,8 +393,8 @@ TeachingSignal
 HumanGrowthRecord
 SimulatedHumanWorker
 full existing-agent adapters
-full Workstream feedback loop
-real Garden product proof
+full external outcome feedback loop
+compatibility examples
 MCP/A2A/ACP/AG-UI bridges
 multi-agent reviewer protocol
 ```
@@ -418,9 +419,10 @@ Jarvis does not own:
 - deployment
 - billing
 - product-specific workflow
-- Garden POC
-- Workstream evaluation logic
-- Harnessy capability preparation
+- host execution
+- host UI
+- host storage
+- external evaluation logic
 
 Jarvis owns the protocol records that hosts, adapters, products, and existing
 agents implement.

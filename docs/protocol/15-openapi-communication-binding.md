@@ -471,9 +471,9 @@ host-only database ids, deployment details, billing data, private scores,
 product UI state, raw auth tokens, provider secrets, session cookies, or
 private keys.
 
-## This Week's Work
+## Contract Sequence
 
-This week locks the communication strategy:
+The OpenAPI contract is locked in this sequence:
 
 ```txt
 1. OpenAPI 3.1 is the v0.1 machine-readable contract.
@@ -481,6 +481,5 @@ This week locks the communication strategy:
 3. paths contains protocol operations.
 4. securitySchemes and headers define zero-trust host requirements.
 5. examples and conformance fixtures come after the OpenAPI shape is locked.
-6. Garden POC waits until protocol semantics, OpenAPI contract, and conformance
-   entry rules are stable.
+6. Host implementations stay outside the protocol contract.
 ```

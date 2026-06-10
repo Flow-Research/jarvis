@@ -3,7 +3,7 @@
 Week 2 turns the locked protocol into the first OpenAPI 3.1 contract shape and
 conformance entry.
 
-This week does not build Garden POC, runtime features, product UI, auth,
+This week does not build a host implementation, runtime features, product UI, auth,
 storage, model calls, adapters, or conformance fixtures beyond the active chunk.
 
 ## Chunks

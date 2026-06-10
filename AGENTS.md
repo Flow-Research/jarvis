@@ -27,9 +27,11 @@ Jarvis is not:
 - a database
 - an auth system
 - a product UI
-- Garden
-- Workstream
-- Harnessy
+- a host application
+- a task evaluation system
+- a scoring system
+- a payment system
+- a marketplace
 - MCP
 - A2A
 - AG-UI
@@ -204,10 +206,11 @@ Jarvis does not become a runtime because compatible hosts need execution.
 Jarvis does not become a personal agent because personal agents implement the
 protocol.
 
-Jarvis does not become Garden because Garden is a host.
+Jarvis does not become a host application because host applications implement the
+protocol.
 
-Jarvis does not become Workstream because Workstream consumes evidence and
-submit OutcomeReports.
+Jarvis does not become task evaluation, scoring, payment, routing, or
+marketplace infrastructure.
 
 Jarvis does not become MCP, A2A, ACP, or AG-UI because those protocols are
 recorded around WorkSessions.
@@ -238,7 +241,7 @@ Work on:
 - failure-mode conformance checklist
 - first OpenAPI examples for WorkSession, Request, Review, and export
 
-Do not start Garden POC work in this phase.
+Do not build host implementations in this repo.
 Do not build runtime features in this repo.
 Do not add product-specific assumptions to protocol records.
 Do not reopen locked protocol decisions unless a concrete contradiction blocks

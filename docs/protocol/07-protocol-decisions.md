@@ -70,4 +70,4 @@ Jarvis does not decide:
 - how a product displays inboxes or reviews
 - how a product bills or operates
 
-Those are host/product decisions.
+Hosts own those decisions.

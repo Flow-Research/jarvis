@@ -59,7 +59,7 @@ Jarvis does not own:
 - authentication
 - product internals
 - task/evaluation system internals
-- capability-preparation system internals
+- host/tool/environment implementation internals
 - model providers
 - tool execution
 - MCP hosting
@@ -71,7 +71,7 @@ Jarvis does not own:
 - local execution
 - operational monitoring
 
-Those are product and host responsibilities.
+Products and hosts own those responsibilities.
 
 ## Release Strategy
 
@@ -350,14 +350,14 @@ Output:
 
 Done when:
 
-- evaluation systems evaluate a task using Jarvis evidence records
-- host products show review, learning, and contribution history without
+- external reviewers and systems consume Jarvis EvidenceManifest records
+- implementations expose review, learning, and contribution history without
   changing protocol semantics
 - external products export compatible EvidenceManifest records
 
 ## v0.3 Ecosystem Conformance
 
-Goal: make Jarvis implementable outside the original host products.
+Goal: make Jarvis implementable across independent hosts.
 
 Output:
 
@@ -415,7 +415,7 @@ identity, operations, or enterprise controls.
 Risk: Jarvis becomes a task or evaluation system.
 
 Control: task systems own tasks, rubrics, evaluation, and settlement. Jarvis
-owns the collaboration record that evaluation systems evaluate.
+owns the collaboration record that external reviewers and systems evaluate.
 
 ### Weak Evidence
 
@@ -436,7 +436,7 @@ Control: learning becomes MemoryProposal or SkillProposal until reviewed.
 3. Use `11-core-protocol-objects.md` as the source of truth for core terms.
 4. Draft OpenAPI examples for each protocol contract.
 5. Define conformance tests for the golden path.
-6. Keep Garden POC mapping out of the current execution cycle until the
+6. Keep compatibility example mapping out of the current execution cycle until the
    OpenAPI contract and conformance fixtures are stable.
 7. Define one real existing-agent adapter proof.
 8. Update the live simulation to show host/execution as outside Jarvis.

@@ -32,7 +32,7 @@ This chunk does not define:
 - examples
 - conformance fixtures
 - runtime execution
-- Garden POC behavior
+- host implementation behavior
 
 ## Files
 

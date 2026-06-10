@@ -52,8 +52,8 @@ Chunk 1 does not:
 - write the OpenAPI document
 - define HTTP paths
 - build a runtime
-- build a product proof
-- start Garden POC work
+- build a compatible example
+- start host implementation work
 - implement adapters
 - create conformance fixtures
 - add product-private fields

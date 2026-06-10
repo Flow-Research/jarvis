@@ -1486,7 +1486,7 @@ Rules:
 - Human, agent, service, tool, and shared contributions remain distinguishable.
 - Shared contribution does not erase the individual contributing actors.
 - Shared contribution preserves every individual contributor ref.
-- Contribution is not compensation. It is the protocol record that downstream
+- Contribution is not compensation. It is the protocol record that external
   systems evaluate.
 
 ## EvidenceManifest

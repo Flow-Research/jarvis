@@ -67,11 +67,11 @@ Jarvis OpenAPI 3.1 contract
   -> portable export
   -> conformance fixtures
   -> existing-agent adapter contract
-  -> product proof readiness
+  -> compatible example readiness
 ```
 
-Product proof starts after the protocol semantics, OpenAPI contract, and
-conformance entry rules are stable.
+Compatible examples start after the protocol semantics, OpenAPI contract,
+and conformance entry rules are stable.
 
 ## Week 1: Protocol Lock And Research Grounding
 
@@ -103,9 +103,9 @@ Done when:
   agent application
 - every core object has a reason to exist
 - OpenAPI 3.1 is the machine-readable communication contract
-- Garden POC was not part of Week 1 active work
-- Jarvis is explained in one paragraph without mentioning any host product
-  or downstream evaluation system
+- host implementation work was not part of Week 1 active work
+- Jarvis is explained in one paragraph without mentioning any host application
+  or external evaluation
 
 ## Week 2: OpenAPI Contract And Conformance Entry
 
@@ -142,7 +142,7 @@ Done when:
   Jarvis-compatible host
 - conformance rejects a fake implementation that skips policy, review,
   evidence, or learning
-- Garden POC is still out of scope
+- host implementation work is still out of scope
 
 ## Week 3: Adapter Contract And Conformance Fixtures
 
@@ -165,16 +165,16 @@ Done when:
 - two host shapes produce equivalent Jarvis protocol records on paper
 - conformance fixtures catch unsafe or incomplete implementations
 - adapter work does not require rewriting the agent runtime
-- product proof starts only after the conformance gate
+- compatible examples start only after the conformance gate
 
-## Week 4: Product Proof Readiness And Public Story
+## Week 4: Compatible Examples And Public Story
 
-Goal: prepare the first product proof after the protocol contract and
+Goal: prepare compatible examples after the protocol contract and
 conformance gate are credible.
 
 Deliverables:
 
-- Garden POC mapping plan
+- compatible host mapping example
 - one CLI-agent adapter proof plan
 - one real external-agent or SDK-agent adapter proof plan
 - public README tightened around protocol positioning
@@ -195,7 +195,7 @@ Done when:
 
 - at least two different host or adapter shapes have a credible implementation
   plan against the same OpenAPI contract
-- Garden POC is prepared as the first product proof, not treated as the
+- a compatible host example maps real work into Jarvis records without becoming the
   protocol itself
 - the team shares one URL and one README that explain the point clearly
 - the protocol is discussed as a standard, not an internal app feature
@@ -219,13 +219,13 @@ Daily checks:
 2. Does this work with an existing agent without rewriting the agent?
 3. Did we capture human judgment, agent action, contribution, evidence, and
    learning?
-4. Does another product implement this without Garden-specific assumptions?
+4. Does another product implement this without host-application-specific assumptions?
 5. Does this improve the next WorkSession?
 
 ## Non-Negotiables
 
 - Jarvis remains protocol-only.
-- Garden POC is only the first product proof.
+- Compatible examples stay outside the protocol core.
 - Existing agents remain first-class.
 - HumanWorker and AgentWorker are both actors.
 - Learning belongs to the human, agent, and pair.

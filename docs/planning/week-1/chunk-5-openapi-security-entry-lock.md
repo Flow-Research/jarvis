@@ -40,7 +40,7 @@ Chunk 5 does not:
 - define product account creation
 - define host database schema
 - define runtime execution
-- define Garden POC behavior
+- define host implementation behavior
 - define client SDK code
 
 ## Required Mutating Headers

@@ -110,7 +110,7 @@ The docs now lock these points before OpenAPI contract work starts:
 - policy docs keep Jarvis out of runtime ownership.
 - host integration keeps actor ids and worker ids separate.
 - WorkSession evidence terms stay consistent.
-- roadmap wording stays independent from downstream products.
+- roadmap wording stays independent from external products.
 - core object spec uses protocol-style normative language.
 
 ## Week 1 Closeout State
@@ -144,5 +144,5 @@ lifecycle, control plane, evidence model, learning model, OpenAPI security
 entry, and positioning boundary are stable enough to begin Week 2 OpenAPI
 drafting.
 
-Product proof starts only after the OpenAPI contract and conformance entry
-rules are stable.
+Compatible examples start only after the OpenAPI contract and conformance
+entry rules are stable.

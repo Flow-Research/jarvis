@@ -9,10 +9,13 @@ import sys
 ROOT = Path(__file__).resolve().parents[1]
 FILES = [*ROOT.glob("*.md"), *ROOT.joinpath("docs").rglob("*.md")]
 NORMATIVE_TERMS = {"MUST", "MUST NOT", "SHOULD", "SHOULD NOT", "MAY"}
+NORMATIVE_TERM_PATTERN = re.compile(
+    r"`(?:MUST|MUST NOT|SHOULD|SHOULD NOT|MAY)`"
+)
 
 PATTERNS = [
     r"personal agent harness",
-    r"Garden POC active work",
+    r"host implementation active work",
     r"schema-first contract",
     r"demo-first plan",
     r"host owns Jarvis",
@@ -57,10 +60,9 @@ def main() -> int:
                 continue
             if path.name == "check_week1_wording.py":
                 continue
-            if any(f"`{term}`" in line for term in NORMATIVE_TERMS):
-                continue
+            line_to_check = NORMATIVE_TERM_PATTERN.sub("", line)
             for pattern in compiled:
-                if pattern.search(line):
+                if pattern.search(line_to_check):
                     failures.append((path.relative_to(ROOT), line_number, line))
                     break
 
