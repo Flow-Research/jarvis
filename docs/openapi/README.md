@@ -12,7 +12,7 @@ protocol, frontend protocol, or agent framework.
 
 - [jarvis-openapi.yaml](./jarvis-openapi.yaml) - v0.1 OpenAPI entry point.
 
-## Chunk 1 Lock
+## Chunk Locks
 
 Chunk 1 locks the OpenAPI document skeleton:
 
@@ -37,9 +37,19 @@ x-jarvis-protocol
 Chunk 1 defines the global HostAuth baseline. Later chunks define
 operation-specific Jarvis header requirements from the locked protocol docs.
 
-Chunk 1 does not define component field schemas, path operation bodies,
-operation-specific security requirements, examples, or conformance fixtures.
-Later chunks define those sections from the locked protocol docs.
+Chunk 2 defines shared schema primitives and the participant schemas:
+
+```txt
+Worker
+Actor
+HumanWorker
+AgentWorker
+```
+
+Chunk 2 does not define path operation bodies, operation-specific security
+requirements, WorkSession schema, control-plane schemas, evidence and learning
+schemas, examples, or conformance fixtures. Later chunks define those sections
+from the locked protocol docs.
 
 ## Boundary
 

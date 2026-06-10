@@ -8,9 +8,10 @@ storage, model calls, adapters, or conformance fixtures beyond the active chunk.
 
 ## Chunks
 
-1. [chunk-1-openapi-skeleton.md](./chunk-1-openapi-skeleton.md)  
-   Lock the OpenAPI entry point, required buckets, tag taxonomy, and skeleton
-   validation.
+1. [chunk-1-openapi-skeleton.md](./chunk-1-openapi-skeleton.md)
+   Lock the OpenAPI entry point, required buckets, tag taxonomy, and skeleton validation.
+2. [chunk-2-participant-schemas.md](./chunk-2-participant-schemas.md)
+   Lock shared schema primitives, Worker, Actor, HumanWorker, and AgentWorker.
 
 ## Week 2 Done State
 
