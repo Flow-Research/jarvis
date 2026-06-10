@@ -32,8 +32,16 @@ Planning docs and sheets track execution.
 - [ROADMAP.md](./planning/ROADMAP.md)
 - [12-30-day-roadmap.md](./planning/12-30-day-roadmap.md)
 - [week-1/README.md](./planning/week-1/README.md)
+- [week-2/README.md](./planning/week-2/README.md)
 - [sheets/jarvis_roadmap.csv](./planning/sheets/jarvis_roadmap.csv)
 - [sheets/jarvis_roadmap.xlsx](./planning/sheets/jarvis_roadmap.xlsx)
+
+## OpenAPI
+
+The OpenAPI directory contains the v0.1 machine-readable communication binding.
+
+- [openapi/README.md](./openapi/README.md)
+- [openapi/jarvis-openapi.yaml](./openapi/jarvis-openapi.yaml)
 
 ## Architecture Brief
 
