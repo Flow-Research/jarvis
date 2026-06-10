@@ -309,8 +309,10 @@ Rules:
 - Review identifies reviewer worker and reviewer actor.
 - Review targets a Request, action, contribution, artifact, memory proposal,
   skill proposal, evidence item, or final outcome.
-- Review can resolve a Request.
-- Takeover can resolve a Request.
+- Review resolves a Request when the human decision answers, approves, denies,
+  narrows, corrects, or requires revision for the blocked scope.
+- Takeover resolves a Request when the human assumes direct control of the
+  blocked scope.
 - Review with decision `approve` or `narrow` defines ApprovalScope.
 - ApprovalScope binds action hash, approved scope, expiry, WorkSession, Actor,
   Request revision, Request event hash, PolicyDecision, and max uses.

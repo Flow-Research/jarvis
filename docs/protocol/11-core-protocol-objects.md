@@ -982,7 +982,7 @@ Requirements:
 - A Worker MAY be represented by one or more Actors.
 - A service Worker MUST exist only for protocol-visible system behavior, not
   for hiding human or agent responsibility.
-- A tool Worker SHOULD exist only when tool activity needs first-class
+- A tool Worker exists only when tool activity needs first-class
   attribution.
 
 ## Actor
@@ -1196,13 +1196,13 @@ Rules:
   `event_hash`, `actor_signature`, and signature metadata fields.
 - `canonicalization` records the serialization and hash method used by the
   export profile.
-- Export profiles SHOULD use deterministic JSON canonicalization such as
+- Export profiles use deterministic JSON canonicalization such as
   [RFC 8785 JCS](https://www.rfc-editor.org/rfc/rfc8785) unless the profile
   declares another method.
 - `actor_signature` and `signing_key_ref` are optional. Signed export profiles
   use them to prove authorship; unsigned profiles still require Actor
   attribution.
-- AgentWorker action events SHOULD include only portable reproducibility refs:
+- AgentWorker action events include only portable reproducibility refs:
   `model_ref`, `input_refs`, `prompt_ref`, `context_manifest_ref`, and related
   evidence hashes when the host provides them.
 - Payload refs MUST NOT expose host-private execution details, runtime state,
@@ -1380,8 +1380,10 @@ Review
 Rules:
 
 - Review is a protocol object, not only UI feedback.
-- Review can resolve a Request.
-- Takeover can resolve a Request.
+- Review resolves a Request when the human decision answers, approves, denies,
+  narrows, corrects, or requires revision for the blocked scope.
+- Takeover resolves a Request when the human assumes direct control of the
+  blocked scope.
 - Review records authority changes when the decision changes scope.
 - Review with decision `approve` or `narrow` defines an ApprovalScope.
 - ApprovalScope binds the approved action to scope, expiry, WorkSession, and

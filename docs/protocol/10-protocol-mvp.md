@@ -39,7 +39,7 @@ Jarvis v0.1 excludes:
 - authentication
 - billing
 
-Hosts own implementation concerns.
+Hosts own storage, execution, auth, billing, deployment, and UI.
 
 ## Golden Path
 

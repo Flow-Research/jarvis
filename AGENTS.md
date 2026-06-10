@@ -201,15 +201,15 @@ coordination.
 
 Jarvis does not become a runtime because compatible hosts need execution.
 
-Jarvis does not become a personal agent because personal agents can implement
-the protocol.
+Jarvis does not become a personal agent because personal agents implement the
+protocol.
 
-Jarvis does not become Garden because Garden can be a host.
+Jarvis does not become Garden because Garden is a host.
 
-Jarvis does not become Workstream because Workstream can consume evidence and
+Jarvis does not become Workstream because Workstream consumes evidence and
 submit OutcomeReports.
 
-Jarvis does not become MCP, A2A, ACP, or AG-UI because those protocols can be
+Jarvis does not become MCP, A2A, ACP, or AG-UI because those protocols are
 recorded around WorkSessions.
 
 When a proposed change adds execution, UI, auth, storage, billing, marketplace,
@@ -258,7 +258,25 @@ Compatible implementations MUST...
 The protocol rejects...
 ```
 
-Avoid advisory wording that makes locked protocol decisions sound optional.
+Soft protocol wording is a defect.
+
+Do not write protocol rules with soft modal verbs, speculative phrases,
+advisory phrases, or generic implementation-concern phrasing. The wording
+guard in [scripts/check_week1_wording.py](./scripts/check_week1_wording.py)
+rejects the blocked terms.
+
+Use direct ownership and state language instead:
+
+```txt
+Hosts own storage, streaming, execution, auth, deployment, and UI.
+Jarvis records governed learning when protocol behavior changes future work.
+Review resolves a Request when human judgment resolves the blocked scope.
+Takeover resolves a Request when the human assumes direct control.
+The protocol rejects missing or invalid required state.
+```
+
+Every PR MUST run the wording guard before push. Every CodeRabbit wording
+comment MUST be checked and fixed when valid before the PR is treated as done.
 
 Do not write this repo as a third-party review of Jarvis. Write it as the
 source of truth for Jarvis.

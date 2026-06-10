@@ -8,6 +8,7 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 FILES = [*ROOT.glob("*.md"), *ROOT.joinpath("docs").rglob("*.md")]
+NORMATIVE_TERMS = {"MUST", "MUST NOT", "SHOULD", "SHOULD NOT", "MAY"}
 
 PATTERNS = [
     r"personal agent harness",
@@ -24,21 +25,40 @@ PATTERNS = [
     r"\bprobably\b",
     r"\bcould\b",
     r"\bshould\b",
+    r"\bcan\b",
+    r"\bwould\b",
+    r"\bmight\b",
+    r"\brecommend\b",
+    r"\brecommended\b",
+    r"\bconsider\b",
     r"\bsuggest\b",
     r"\badvice\b",
     r"\bcandidate\b",
+    r"implementation concerns",
+    r"those are implementation concerns",
     r"if accepted",
     r"if this is approved",
 ]
 
 
 def main() -> int:
-    compiled = [re.compile(pattern) for pattern in PATTERNS]
+    compiled = [re.compile(pattern, re.IGNORECASE) for pattern in PATTERNS]
     failures: list[tuple[Path, int, str]] = []
 
     for path in sorted(FILES):
         text = path.read_text(encoding="utf-8")
+        in_code_block = False
         for line_number, line in enumerate(text.splitlines(), start=1):
+            stripped = line.strip()
+            if stripped.startswith("```"):
+                in_code_block = not in_code_block
+                continue
+            if in_code_block:
+                continue
+            if path.name == "check_week1_wording.py":
+                continue
+            if any(f"`{term}`" in line for term in NORMATIVE_TERMS):
+                continue
             for pattern in compiled:
                 if pattern.search(line):
                     failures.append((path.relative_to(ROOT), line_number, line))

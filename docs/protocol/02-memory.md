@@ -207,7 +207,7 @@ Default v1 policy:
 | agent inference | preference/boundary | any | no | Requires human review. |
 | tool output | any | any | no | External/tool-derived memory never auto-confirms. |
 | web/file content | fact/source | task/project | no | Suggested with provenance and trust label. |
-| review outcome | correction/outcome | WorkSession/task | yes | Can be stored as WorkSession fact; promotion needs review. |
+| review outcome | correction/outcome | WorkSession/task | yes | Stored as WorkSession fact; promotion needs review. |
 | skill edit | procedure | procedural | no | Requires skill activation gate. |
 
 Auto-confirmable memory must be:

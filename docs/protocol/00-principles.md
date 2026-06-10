@@ -35,7 +35,7 @@ database, cloud stack, tool protocol, frontend protocol, or agent-to-agent
 protocol.
 
 Those systems implement Jarvis, integrate with Jarvis, or produce records that
-Jarvis can capture. They do not become Jarvis.
+Jarvis captures. They do not become Jarvis.
 
 Jarvis owns the collaboration record: WorkSession, PolicyDecision, Request,
 Review, Takeover, Contribution, EvidenceManifest, LearningRecord,

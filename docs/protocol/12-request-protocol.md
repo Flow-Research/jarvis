@@ -24,8 +24,9 @@ defines how Request behaves.
 Collaborative Gym shows why Request must be more precise than a message. It
 models human-agent collaboration as asynchronous, bidirectional interaction
 between human, agent, and task environment. Its results show that collaborative
-agents can outperform fully autonomous agents, while communication and
-situational-awareness failures remain major failure modes.
+agents outperform fully autonomous agents when collaboration quality holds,
+while communication and situational-awareness failures remain major failure
+modes.
 
 Jarvis turns that lesson into protocol law:
 
@@ -74,7 +75,7 @@ permission
   AgentWorker needs authority outside current Policy.
 
 context
-  AgentWorker lacks information only the HumanWorker can provide.
+  AgentWorker lacks information only the HumanWorker provides.
 
 judgment
   AgentWorker needs human taste, preference, priority, or decision.
@@ -100,7 +101,7 @@ Every Request is bound to a PolicyDecision.
 
 PolicyDecision records why the AgentWorker action was allowed, denied,
 narrowed, or review-required. Request records what HumanWorker input is needed
-before the blocked scope can continue.
+before the blocked scope continues.
 
 Compatible implementations MUST enforce:
 
@@ -159,7 +160,7 @@ The protocol rejects vague Requests.
 Invalid:
 
 ```txt
-Can I continue?
+Continue?
 ```
 
 Valid:
@@ -630,8 +631,9 @@ HumanWorker takes over.
   The pair records that this branch requires human control.
 ```
 
-Learning remains governed. Request resolution or closure can propose learning,
-but it cannot silently confirm durable memory, skill, or policy changes.
+Learning remains governed. Request resolution or closure records a learning
+proposal when the resolved branch changes future WorkSession behavior, but it
+cannot silently confirm durable memory, skill, or policy changes.
 
 ## Conformance Tests
 
@@ -642,14 +644,15 @@ A Jarvis-compatible implementation MUST pass these Request tests:
 2. AgentWorker cannot execute the blocked action before resolution.
 3. Human resolution requires Review or Takeover; expiry, cancellation, or
    supersession only closes the Request.
-4. Approval can be narrowed.
+4. Approval supports narrowed authority.
 5. Narrowed approval prevents execution outside the approved scope.
 6. Expired Request applies default_if_no_response.
 7. Takeover creates lock epoch and blocks stale AgentWorker continuation.
 8. Duplicate Requests are deduplicated or superseded.
 9. Request resolution or closure chain appears in EvidenceManifest, including
    Review, Takeover, or closure event refs as applicable.
-10. Request resolution can create governed learning proposals.
+10. Request resolution records governed learning proposals when the Review,
+    Takeover, or safe fallback changes future WorkSession behavior.
 11. Non-blocking host communication does not block WorkSession state.
 12. Request blocks only its declared scope unless scope is work_session.
 13. Request status transitions reject `invalid_request_transition`.

@@ -78,7 +78,7 @@ created
   revision, and initial event hash.
 
 active
-  HumanWorker and AgentWorker can continue work inside Policy.
+  HumanWorker and AgentWorker continue work inside Policy.
 
 waiting_on_human
   One or more declared scopes are blocked on HumanWorker Review, context,
