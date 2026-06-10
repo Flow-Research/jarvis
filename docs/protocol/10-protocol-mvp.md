@@ -115,8 +115,7 @@ cancelled
 closed
 ```
 
-Jarvis defines valid transitions. Implementing products decide how they store,
-stream, or execute the session.
+Jarvis defines valid transitions. Hosts own storage, streaming, and execution.
 
 ## Conformance Tests
 
@@ -164,7 +163,8 @@ The v0.1 conformance suite checks:
   takeovers, contributions, artifacts, evidence items, and limitations.
 - EvidenceManifest final export rejects mutable WorkSession states.
 - EvidenceManifest excludes forbidden export fields.
-- Request resolution can create governed learning proposals.
+- Request resolution records governed learning proposals when the Review,
+  Takeover, or safe fallback changes future WorkSession behavior.
 - MemoryProposal and SkillProposal require provenance and review state.
 - MemoryProposal rejects model-derived or tool-derived self-confirmation.
 - SkillProposal rejects activation without review.

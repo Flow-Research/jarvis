@@ -204,7 +204,20 @@ REQUIRED_TAGS = {
 EXPECTED_TITLE = "Jarvis Human-Agent Collaboration Protocol"
 EXPECTED_PLACEHOLDER_SERVER = "https://jarvis.example.invalid"
 EXPECTED_CHUNK_ID = "week-2-chunk-2-participant-schemas"
-FORBIDDEN_KEY_PATTERN_MARKER = "password|credential|token|secret"
+PORTABLE_VALUE_REF = {"$ref": "#/components/schemas/PortableValue"}
+FORBIDDEN_PORTABLE_KEY_PATTERN = (
+    "^(?!.*(password|credential|token|secret|private_key|session_cookie|"
+    "cookie|api_key|access_key|auth_header|oauth|database|billing|runtime|"
+    "container|deployment|model_api_key|raw_prompt|product_account|ui_state))"
+)
+NAMESPACED_EXTENSION_PATTERN = (
+    FORBIDDEN_PORTABLE_KEY_PATTERN
+    + "[a-z0-9][a-z0-9-]*(\\.[a-z0-9_-]+)+$"
+)
+PORTABLE_PROPERTY_PATTERN = (
+    FORBIDDEN_PORTABLE_KEY_PATTERN
+    + "[a-z0-9][a-z0-9._:-]*$"
+)
 
 
 def fail(message: str) -> int:
@@ -291,13 +304,13 @@ def main() -> int:
             return fail(f"{schema_name} must set additionalProperties: false")
 
     extensions_schema = schemas["NamespacedExtensions"]
-    if extensions_schema.get("additionalProperties") is True:
-        return fail("NamespacedExtensions must not allow arbitrary properties")
+    if extensions_schema.get("additionalProperties") != PORTABLE_VALUE_REF:
+        return fail("NamespacedExtensions additionalProperties must use PortableValue")
     extension_pattern = (
         extensions_schema.get("propertyNames", {}).get("pattern", "")
     )
-    if FORBIDDEN_KEY_PATTERN_MARKER not in extension_pattern:
-        return fail("NamespacedExtensions must reject forbidden property names")
+    if extension_pattern != NAMESPACED_EXTENSION_PATTERN:
+        return fail("NamespacedExtensions must use the canonical property pattern")
 
     portable_value = schemas["PortableValue"]
     object_branch = None
@@ -308,10 +321,10 @@ def main() -> int:
     if object_branch is None:
         return fail("PortableValue must include a bounded object branch")
     portable_key_pattern = object_branch.get("propertyNames", {}).get("pattern", "")
-    if FORBIDDEN_KEY_PATTERN_MARKER not in portable_key_pattern:
-        return fail("PortableValue object keys must reject forbidden property names")
-    if "[a-z0-9]" not in portable_key_pattern:
-        return fail("PortableValue object keys must use lowercase portable names")
+    if portable_key_pattern != PORTABLE_PROPERTY_PATTERN:
+        return fail("PortableValue object keys must use the canonical property pattern")
+    if object_branch.get("additionalProperties") != PORTABLE_VALUE_REF:
+        return fail("PortableValue object additionalProperties must use PortableValue")
 
     for schema_name, required_fields in REQUIRED_SCHEMA_FIELDS.items():
         schema = schemas[schema_name]
@@ -351,11 +364,11 @@ def main() -> int:
             )
 
     preferences = schemas["HumanWorker"]["properties"]["preferences"]
-    if preferences.get("additionalProperties") is True:
-        return fail("HumanWorker.preferences must not allow arbitrary properties")
+    if preferences.get("additionalProperties") != PORTABLE_VALUE_REF:
+        return fail("HumanWorker.preferences additionalProperties must use PortableValue")
     preference_pattern = preferences.get("propertyNames", {}).get("pattern", "")
-    if FORBIDDEN_KEY_PATTERN_MARKER not in preference_pattern:
-        return fail("HumanWorker.preferences must reject forbidden property names")
+    if preference_pattern != PORTABLE_PROPERTY_PATTERN:
+        return fail("HumanWorker.preferences must use the canonical property pattern")
 
     security_schemes = components["securitySchemes"]
     host_auth = security_schemes.get("HostAuth")
