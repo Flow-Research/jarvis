@@ -41,6 +41,155 @@ REQUIRED_PROTOCOL_METADATA = {
     "chunk_lock",
 }
 
+REQUIRED_SCHEMAS = {
+    "JarvisId",
+    "OpaqueRef",
+    "Timestamp",
+    "NamespacedExtensions",
+    "PortableValue",
+    "WorkerType",
+    "ActorType",
+    "ContributionRole",
+    "AutonomyLevel",
+    "AuthorityScope",
+    "AccountabilityScope",
+    "CapabilityRef",
+    "EventAuthority",
+    "ContributionScope",
+    "Worker",
+    "Actor",
+    "HumanWorker",
+    "AgentWorker",
+}
+
+REQUIRED_SCHEMA_FIELDS = {
+    "Worker": {
+        "id",
+        "type",
+        "role",
+        "authority_scope",
+        "accountability_scope",
+    },
+    "Actor": {
+        "id",
+        "worker_id",
+        "type",
+        "event_authority",
+        "contribution_scope",
+        "created_at",
+    },
+    "HumanWorker": {
+        "worker_id",
+        "actor_id",
+        "role",
+        "policy_authority",
+        "review_authority",
+    },
+    "AgentWorker": {
+        "worker_id",
+        "actor_id",
+        "agent_ref",
+        "role",
+        "capability_refs",
+        "autonomy_level",
+        "operating_constraints",
+    },
+}
+
+REQUIRED_ENUMS = {
+    "WorkerType": {
+        "human",
+        "agent",
+        "service",
+        "tool",
+    },
+    "ActorType": {
+        "human",
+        "agent",
+        "service",
+        "tool",
+    },
+    "ContributionRole": {
+        "human",
+        "agent",
+        "shared",
+        "service",
+        "tool",
+    },
+    "AutonomyLevel": {
+        "observe_only",
+        "propose_only",
+        "execute_with_review",
+        "bounded_execute",
+        "full_execute_in_scope",
+    },
+}
+
+REQUIRED_CLOSED_OBJECT_SCHEMAS = {
+    "AuthorityScope",
+    "AccountabilityScope",
+    "CapabilityRef",
+    "EventAuthority",
+    "ContributionScope",
+    "Worker",
+    "Actor",
+    "HumanWorker",
+    "AgentWorker",
+}
+
+REQUIRED_FORBIDDEN_METADATA = {
+    "Worker": {
+        "password",
+        "credential",
+        "raw_auth_token",
+        "billing_account",
+        "provider_secret",
+        "database_primary_key",
+        "deployment_resource_id",
+    },
+    "Actor": {
+        "credential",
+        "raw_auth_token",
+        "session_cookie",
+        "private_key",
+        "database_primary_key",
+    },
+    "HumanWorker": {
+        "password",
+        "credential",
+        "raw_auth_token",
+        "private_profile_data",
+        "billing_account",
+        "product_account_record",
+    },
+    "AgentWorker": {
+        "model_api_key",
+        "provider_secret",
+        "raw_prompt_store",
+        "runtime_process_id",
+        "container_id",
+        "database_primary_key",
+    },
+}
+
+FORBIDDEN_SCHEMA_PROPERTIES = {
+    "password",
+    "credential",
+    "raw_auth_token",
+    "billing_account",
+    "provider_secret",
+    "database_primary_key",
+    "deployment_resource_id",
+    "session_cookie",
+    "private_key",
+    "private_profile_data",
+    "product_account_record",
+    "model_api_key",
+    "raw_prompt_store",
+    "runtime_process_id",
+    "container_id",
+}
+
 REQUIRED_TAGS = {
     "Workers",
     "WorkSessions",
@@ -54,7 +203,8 @@ REQUIRED_TAGS = {
 
 EXPECTED_TITLE = "Jarvis Human-Agent Collaboration Protocol"
 EXPECTED_PLACEHOLDER_SERVER = "https://jarvis.example.invalid"
-EXPECTED_CHUNK_ID = "week-2-chunk-1-openapi-skeleton"
+EXPECTED_CHUNK_ID = "week-2-chunk-2-participant-schemas"
+FORBIDDEN_KEY_PATTERN_MARKER = "password|credential|token|secret"
 
 
 def fail(message: str) -> int:
@@ -114,6 +264,98 @@ def main() -> int:
     for bucket in REQUIRED_COMPONENTS:
         if not isinstance(components[bucket], dict):
             return fail(f"components.{bucket} must be an object")
+
+    schemas = components["schemas"]
+    missing_schemas = REQUIRED_SCHEMAS - set(schemas)
+    if missing_schemas:
+        return fail("missing schemas: " + ", ".join(sorted(missing_schemas)))
+
+    for schema_name, expected_values in REQUIRED_ENUMS.items():
+        schema = schemas[schema_name]
+        actual_values = set(schema.get("enum", []))
+        if actual_values != expected_values:
+            return fail(
+                f"{schema_name} enum mismatch. expected "
+                + ", ".join(sorted(expected_values))
+                + "; got "
+                + ", ".join(sorted(actual_values))
+            )
+
+    for schema_name in REQUIRED_CLOSED_OBJECT_SCHEMAS:
+        schema = schemas[schema_name]
+        if not isinstance(schema, dict):
+            return fail(f"components.schemas.{schema_name} must be an object")
+        if schema.get("type") != "object":
+            return fail(f"{schema_name} must be an object schema")
+        if schema.get("additionalProperties") is not False:
+            return fail(f"{schema_name} must set additionalProperties: false")
+
+    extensions_schema = schemas["NamespacedExtensions"]
+    if extensions_schema.get("additionalProperties") is True:
+        return fail("NamespacedExtensions must not allow arbitrary properties")
+    extension_pattern = (
+        extensions_schema.get("propertyNames", {}).get("pattern", "")
+    )
+    if FORBIDDEN_KEY_PATTERN_MARKER not in extension_pattern:
+        return fail("NamespacedExtensions must reject forbidden property names")
+
+    portable_value = schemas["PortableValue"]
+    object_branch = None
+    for branch in portable_value.get("anyOf", []):
+        if isinstance(branch, dict) and branch.get("type") == "object":
+            object_branch = branch
+            break
+    if object_branch is None:
+        return fail("PortableValue must include a bounded object branch")
+    portable_key_pattern = object_branch.get("propertyNames", {}).get("pattern", "")
+    if FORBIDDEN_KEY_PATTERN_MARKER not in portable_key_pattern:
+        return fail("PortableValue object keys must reject forbidden property names")
+    if "[a-z0-9]" not in portable_key_pattern:
+        return fail("PortableValue object keys must use lowercase portable names")
+
+    for schema_name, required_fields in REQUIRED_SCHEMA_FIELDS.items():
+        schema = schemas[schema_name]
+        declared_required = set(schema.get("required", []))
+        missing_fields = required_fields - declared_required
+        if missing_fields:
+            return fail(
+                f"{schema_name} missing required fields: "
+                + ", ".join(sorted(missing_fields))
+            )
+
+        properties = schema.get("properties")
+        if not isinstance(properties, dict):
+            return fail(f"{schema_name}.properties must be an object")
+        missing_properties = required_fields - set(properties)
+        if missing_properties:
+            return fail(
+                f"{schema_name} missing properties for required fields: "
+                + ", ".join(sorted(missing_properties))
+            )
+
+        forbidden_properties = FORBIDDEN_SCHEMA_PROPERTIES & set(properties)
+        if forbidden_properties:
+            return fail(
+                f"{schema_name} exposes forbidden properties: "
+                + ", ".join(sorted(forbidden_properties))
+            )
+
+        forbidden_metadata = set(schema.get("x-jarvis-forbidden-fields", []))
+        expected_metadata = REQUIRED_FORBIDDEN_METADATA[schema_name]
+        if forbidden_metadata != expected_metadata:
+            return fail(
+                f"{schema_name} x-jarvis-forbidden-fields mismatch. expected "
+                + ", ".join(sorted(expected_metadata))
+                + "; got "
+                + ", ".join(sorted(forbidden_metadata))
+            )
+
+    preferences = schemas["HumanWorker"]["properties"]["preferences"]
+    if preferences.get("additionalProperties") is True:
+        return fail("HumanWorker.preferences must not allow arbitrary properties")
+    preference_pattern = preferences.get("propertyNames", {}).get("pattern", "")
+    if FORBIDDEN_KEY_PATTERN_MARKER not in preference_pattern:
+        return fail("HumanWorker.preferences must reject forbidden property names")
 
     security_schemes = components["securitySchemes"]
     host_auth = security_schemes.get("HostAuth")

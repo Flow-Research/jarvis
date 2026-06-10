@@ -39,7 +39,7 @@ Jarvis v0.1 excludes:
 - authentication
 - billing
 
-Those are implementation concerns for hosts.
+Hosts own implementation concerns.
 
 ## Golden Path
 
