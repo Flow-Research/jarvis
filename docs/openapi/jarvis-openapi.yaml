@@ -106,6 +106,39 @@ components:
         - execute_with_review
         - bounded_execute
         - full_execute_in_scope
+    WorkSessionStatus:
+      type: string
+      enum:
+        - created
+        - active
+        - waiting_on_human
+        - takeover
+        - reconciling
+        - completed
+        - failed
+        - cancelled
+        - closed
+    PolicyDecisionResult:
+      type: string
+      enum:
+        - allow
+        - deny
+        - narrow
+        - review_required
+    RiskClass:
+      type: string
+      enum:
+        - low
+        - medium
+        - high
+        - critical
+    DataSensitivity:
+      type: string
+      enum:
+        - public
+        - private
+        - confidential
+        - restricted
     AuthorityScope:
       type: object
       additionalProperties: false
@@ -169,6 +202,180 @@ components:
           items:
             $ref: "#/components/schemas/ContributionRole"
           minItems: 1
+          uniqueItems: true
+    CanonicalizationProfile:
+      type: object
+      additionalProperties: false
+      required:
+        - serialization
+        - hash_method
+      properties:
+        serialization:
+          type: string
+          minLength: 1
+        hash_method:
+          type: string
+          minLength: 1
+        profile_ref:
+          $ref: "#/components/schemas/OpaqueRef"
+    ProtocolTraceContext:
+      type: object
+      additionalProperties: false
+      properties:
+        trace_id:
+          $ref: "#/components/schemas/OpaqueRef"
+        parent_event_id:
+          $ref: "#/components/schemas/JarvisId"
+        correlation_ref:
+          $ref: "#/components/schemas/OpaqueRef"
+    JarvisEventPayload:
+      type: object
+      additionalProperties: false
+      required:
+        - object_type
+        - action
+      properties:
+        object_type:
+          type: string
+          enum:
+            - worker
+            - actor
+            - human_worker
+            - agent_worker
+            - work_session
+            - jarvis_event
+            - policy
+            - policy_decision
+            - request
+            - review
+            - takeover
+            - contribution
+            - evidence_manifest
+            - learning_record
+            - memory_proposal
+            - skill_proposal
+            - outcome_report
+            - protocol_error
+            - conformance_result
+        object_id:
+          $ref: "#/components/schemas/JarvisId"
+        action:
+          type: string
+          minLength: 1
+        field_refs:
+          type: array
+          items:
+            $ref: "#/components/schemas/OpaqueRef"
+          uniqueItems: true
+        evidence_refs:
+          type: array
+          items:
+            $ref: "#/components/schemas/OpaqueRef"
+          uniqueItems: true
+        summary:
+          type: string
+          minLength: 1
+    PolicyConstraint:
+      type: object
+      additionalProperties: false
+      required:
+        - kind
+      properties:
+        kind:
+          type: string
+          minLength: 1
+        scope_ref:
+          $ref: "#/components/schemas/OpaqueRef"
+        value_ref:
+          $ref: "#/components/schemas/OpaqueRef"
+        max_count:
+          type: integer
+          minimum: 0
+        unit:
+          type: string
+          minLength: 1
+        reason:
+          type: string
+          minLength: 1
+    EscalationRule:
+      type: object
+      additionalProperties: false
+      required:
+        - trigger
+        - required_action
+      properties:
+        trigger:
+          type: string
+          minLength: 1
+        risk_class:
+          $ref: "#/components/schemas/RiskClass"
+        required_action:
+          type: string
+          enum:
+            - create_request
+            - require_review
+            - start_takeover
+            - deny_action
+        reviewer_ref:
+          $ref: "#/components/schemas/OpaqueRef"
+        reason:
+          type: string
+          minLength: 1
+    PolicyActionRule:
+      type: object
+      additionalProperties: false
+      required:
+        - action
+      properties:
+        action:
+          type: string
+          minLength: 1
+        scope_ref:
+          $ref: "#/components/schemas/OpaqueRef"
+        grant_refs:
+          type: array
+          items:
+            $ref: "#/components/schemas/OpaqueRef"
+          uniqueItems: true
+        constraints:
+          type: array
+          items:
+            $ref: "#/components/schemas/PolicyConstraint"
+    PolicyRequestLimits:
+      type: object
+      additionalProperties: false
+      properties:
+        max_pending_requests:
+          type: integer
+          minimum: 0
+        max_repeated_denials:
+          type: integer
+          minimum: 0
+        default_expiry_seconds:
+          type: integer
+          minimum: 1
+    PolicyActionRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - action
+      properties:
+        action:
+          type: string
+          minLength: 1
+        target_ref:
+          $ref: "#/components/schemas/OpaqueRef"
+        scope_ref:
+          $ref: "#/components/schemas/OpaqueRef"
+        input_refs:
+          type: array
+          items:
+            $ref: "#/components/schemas/OpaqueRef"
+          uniqueItems: true
+        parameter_refs:
+          type: array
+          items:
+            $ref: "#/components/schemas/OpaqueRef"
           uniqueItems: true
     Worker:
       type: object
@@ -344,6 +551,277 @@ components:
         - runtime_process_id
         - container_id
         - database_primary_key
+    WorkSession:
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - protocol_version
+        - created_by_actor_id
+        - objective
+        - human_worker_id
+        - agent_worker_id
+        - policy_id
+        - status
+        - revision
+        - last_event_hash
+        - event_log_ref
+        - created_at
+        - updated_at
+      properties:
+        id:
+          $ref: "#/components/schemas/JarvisId"
+        protocol_version:
+          type: string
+          const: v0.1
+        created_by_actor_id:
+          $ref: "#/components/schemas/JarvisId"
+        objective:
+          type: string
+          minLength: 1
+        human_worker_id:
+          $ref: "#/components/schemas/JarvisId"
+        agent_worker_id:
+          $ref: "#/components/schemas/JarvisId"
+        policy_id:
+          $ref: "#/components/schemas/JarvisId"
+        status:
+          $ref: "#/components/schemas/WorkSessionStatus"
+        revision:
+          type: integer
+          minimum: 0
+        last_event_hash:
+          type: string
+          minLength: 1
+        event_log_ref:
+          $ref: "#/components/schemas/OpaqueRef"
+        created_at:
+          $ref: "#/components/schemas/Timestamp"
+        updated_at:
+          $ref: "#/components/schemas/Timestamp"
+        source_ref:
+          $ref: "#/components/schemas/OpaqueRef"
+        context_manifest_ref:
+          $ref: "#/components/schemas/OpaqueRef"
+        contribution_ledger_ref:
+          $ref: "#/components/schemas/OpaqueRef"
+        evidence_manifest_ref:
+          $ref: "#/components/schemas/OpaqueRef"
+        learning_record_refs:
+          type: array
+          items:
+            $ref: "#/components/schemas/JarvisId"
+          uniqueItems: true
+      x-jarvis-forbidden-fields:
+        - database_primary_key
+        - queue_message_id
+        - runtime_session_id
+        - cloud_resource_id
+        - ui_state
+        - credential
+        - raw_auth_token
+    JarvisEvent:
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - sequence
+        - type
+        - work_session_id
+        - actor_id
+        - timestamp
+        - payload
+        - previous_hash
+        - event_hash
+        - canonicalization
+      properties:
+        id:
+          $ref: "#/components/schemas/JarvisId"
+        sequence:
+          type: integer
+          minimum: 0
+        type:
+          type: string
+          minLength: 1
+        work_session_id:
+          $ref: "#/components/schemas/JarvisId"
+        actor_id:
+          $ref: "#/components/schemas/JarvisId"
+        timestamp:
+          $ref: "#/components/schemas/Timestamp"
+        payload:
+          $ref: "#/components/schemas/JarvisEventPayload"
+        previous_hash:
+          type: string
+          minLength: 1
+        event_hash:
+          type: string
+          minLength: 1
+        canonicalization:
+          $ref: "#/components/schemas/CanonicalizationProfile"
+        trace_context:
+          $ref: "#/components/schemas/ProtocolTraceContext"
+        actor_signature:
+          type: string
+          minLength: 1
+        signing_key_ref:
+          $ref: "#/components/schemas/OpaqueRef"
+      x-jarvis-forbidden-fields:
+        - raw_auth_token
+        - credential
+        - private_key
+        - database_primary_key
+        - runtime_trace_secret
+        - provider_secret
+    Policy:
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - owner_worker_id
+        - created_by_actor_id
+        - autonomy_level
+        - allowed_actions
+        - denied_actions
+        - review_required_actions
+        - risk_classes
+        - escalation_rules
+        - created_at
+      properties:
+        id:
+          $ref: "#/components/schemas/JarvisId"
+        owner_worker_id:
+          $ref: "#/components/schemas/JarvisId"
+        created_by_actor_id:
+          $ref: "#/components/schemas/JarvisId"
+        autonomy_level:
+          $ref: "#/components/schemas/AutonomyLevel"
+        allowed_actions:
+          type: array
+          items:
+            $ref: "#/components/schemas/PolicyActionRule"
+        denied_actions:
+          type: array
+          items:
+            $ref: "#/components/schemas/PolicyActionRule"
+        review_required_actions:
+          type: array
+          items:
+            $ref: "#/components/schemas/PolicyActionRule"
+        risk_classes:
+          type: array
+          items:
+            $ref: "#/components/schemas/RiskClass"
+          minItems: 1
+          uniqueItems: true
+        escalation_rules:
+          type: array
+          items:
+            $ref: "#/components/schemas/EscalationRule"
+        created_at:
+          $ref: "#/components/schemas/Timestamp"
+        tool_grants:
+          type: array
+          items:
+            $ref: "#/components/schemas/OpaqueRef"
+          uniqueItems: true
+        memory_grants:
+          type: array
+          items:
+            $ref: "#/components/schemas/OpaqueRef"
+          uniqueItems: true
+        external_send_rules:
+          type: array
+          items:
+            $ref: "#/components/schemas/PolicyActionRule"
+        request_limits:
+          $ref: "#/components/schemas/PolicyRequestLimits"
+        extensions:
+          $ref: "#/components/schemas/NamespacedExtensions"
+      x-jarvis-forbidden-fields:
+        - credential
+        - raw_auth_token
+        - provider_secret
+        - billing_rule
+        - cloud_policy_id
+        - database_primary_key
+    PolicyDecision:
+      type: object
+      additionalProperties: false
+      allOf:
+        - if:
+            properties:
+              result:
+                const: deny
+          then:
+            required:
+              - request_id
+        - if:
+            properties:
+              result:
+                const: review_required
+          then:
+            required:
+              - request_id
+      required:
+        - id
+        - work_session_id
+        - actor_id
+        - policy_id
+        - requested_action
+        - normalized_action_hash
+        - risk_class
+        - result
+        - reason
+        - created_at
+      properties:
+        id:
+          $ref: "#/components/schemas/JarvisId"
+        work_session_id:
+          $ref: "#/components/schemas/JarvisId"
+        actor_id:
+          $ref: "#/components/schemas/JarvisId"
+        policy_id:
+          $ref: "#/components/schemas/JarvisId"
+        requested_action:
+          $ref: "#/components/schemas/PolicyActionRequest"
+        normalized_action_hash:
+          type: string
+          minLength: 1
+        risk_class:
+          $ref: "#/components/schemas/RiskClass"
+        result:
+          $ref: "#/components/schemas/PolicyDecisionResult"
+        reason:
+          type: string
+          minLength: 1
+        created_at:
+          $ref: "#/components/schemas/Timestamp"
+        data_sensitivity:
+          $ref: "#/components/schemas/DataSensitivity"
+        selected_grant_refs:
+          type: array
+          items:
+            $ref: "#/components/schemas/OpaqueRef"
+          uniqueItems: true
+        denied_grant_refs:
+          type: array
+          items:
+            $ref: "#/components/schemas/OpaqueRef"
+          uniqueItems: true
+        request_id:
+          $ref: "#/components/schemas/JarvisId"
+        evidence_refs:
+          type: array
+          items:
+            $ref: "#/components/schemas/OpaqueRef"
+          uniqueItems: true
+      x-jarvis-forbidden-fields:
+        - hidden_policy_trace
+        - credential
+        - provider_secret
+        - database_primary_key
+        - runtime_decision_object
   parameters: {}
   headers: {}
   requestBodies: {}
@@ -387,7 +865,7 @@ x-jarvis-protocol:
     - task marketplace
     - host workflow
   chunk_lock:
-    id: week-2-chunk-2-participant-schemas
+    id: week-2-chunk-3-worksession-policy-schemas
     locks:
       - OpenAPI 3.1.1 entry point
       - v0.1 protocol metadata
@@ -399,10 +877,13 @@ x-jarvis-protocol:
       - Actor schema
       - HumanWorker schema
       - AgentWorker schema
+      - WorkSession schema
+      - JarvisEvent schema
+      - Policy schema
+      - PolicyDecision schema
     excludes:
       - path operation bodies
       - operation-specific security requirements
-      - WorkSession schema
       - control-plane schemas
       - evidence and learning schemas
       - examples

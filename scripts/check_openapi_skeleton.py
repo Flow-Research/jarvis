@@ -51,15 +51,31 @@ REQUIRED_SCHEMAS = {
     "ActorType",
     "ContributionRole",
     "AutonomyLevel",
+    "WorkSessionStatus",
+    "PolicyDecisionResult",
+    "RiskClass",
+    "DataSensitivity",
     "AuthorityScope",
     "AccountabilityScope",
     "CapabilityRef",
     "EventAuthority",
     "ContributionScope",
+    "CanonicalizationProfile",
+    "ProtocolTraceContext",
+    "JarvisEventPayload",
+    "PolicyConstraint",
+    "EscalationRule",
+    "PolicyActionRule",
+    "PolicyRequestLimits",
+    "PolicyActionRequest",
     "Worker",
     "Actor",
     "HumanWorker",
     "AgentWorker",
+    "WorkSession",
+    "JarvisEvent",
+    "Policy",
+    "PolicyDecision",
 }
 
 REQUIRED_SCHEMA_FIELDS = {
@@ -94,6 +110,86 @@ REQUIRED_SCHEMA_FIELDS = {
         "autonomy_level",
         "operating_constraints",
     },
+    "WorkSession": {
+        "id",
+        "protocol_version",
+        "created_by_actor_id",
+        "objective",
+        "human_worker_id",
+        "agent_worker_id",
+        "policy_id",
+        "status",
+        "revision",
+        "last_event_hash",
+        "event_log_ref",
+        "created_at",
+        "updated_at",
+    },
+    "JarvisEvent": {
+        "id",
+        "sequence",
+        "type",
+        "work_session_id",
+        "actor_id",
+        "timestamp",
+        "payload",
+        "previous_hash",
+        "event_hash",
+        "canonicalization",
+    },
+    "Policy": {
+        "id",
+        "owner_worker_id",
+        "created_by_actor_id",
+        "autonomy_level",
+        "allowed_actions",
+        "denied_actions",
+        "review_required_actions",
+        "risk_classes",
+        "escalation_rules",
+        "created_at",
+    },
+    "PolicyDecision": {
+        "id",
+        "work_session_id",
+        "actor_id",
+        "policy_id",
+        "requested_action",
+        "normalized_action_hash",
+        "risk_class",
+        "result",
+        "reason",
+        "created_at",
+    },
+}
+
+OPTIONAL_SCHEMA_FIELDS = {
+    "WorkSession": {
+        "source_ref",
+        "context_manifest_ref",
+        "contribution_ledger_ref",
+        "evidence_manifest_ref",
+        "learning_record_refs",
+    },
+    "JarvisEvent": {
+        "trace_context",
+        "actor_signature",
+        "signing_key_ref",
+    },
+    "Policy": {
+        "tool_grants",
+        "memory_grants",
+        "external_send_rules",
+        "request_limits",
+        "extensions",
+    },
+    "PolicyDecision": {
+        "data_sensitivity",
+        "selected_grant_refs",
+        "denied_grant_refs",
+        "request_id",
+        "evidence_refs",
+    },
 }
 
 REQUIRED_ENUMS = {
@@ -123,6 +219,35 @@ REQUIRED_ENUMS = {
         "bounded_execute",
         "full_execute_in_scope",
     },
+    "WorkSessionStatus": {
+        "created",
+        "active",
+        "waiting_on_human",
+        "takeover",
+        "reconciling",
+        "completed",
+        "failed",
+        "cancelled",
+        "closed",
+    },
+    "PolicyDecisionResult": {
+        "allow",
+        "deny",
+        "narrow",
+        "review_required",
+    },
+    "RiskClass": {
+        "low",
+        "medium",
+        "high",
+        "critical",
+    },
+    "DataSensitivity": {
+        "public",
+        "private",
+        "confidential",
+        "restricted",
+    },
 }
 
 REQUIRED_CLOSED_OBJECT_SCHEMAS = {
@@ -131,10 +256,22 @@ REQUIRED_CLOSED_OBJECT_SCHEMAS = {
     "CapabilityRef",
     "EventAuthority",
     "ContributionScope",
+    "CanonicalizationProfile",
+    "ProtocolTraceContext",
+    "JarvisEventPayload",
+    "PolicyConstraint",
+    "EscalationRule",
+    "PolicyActionRule",
+    "PolicyRequestLimits",
+    "PolicyActionRequest",
     "Worker",
     "Actor",
     "HumanWorker",
     "AgentWorker",
+    "WorkSession",
+    "JarvisEvent",
+    "Policy",
+    "PolicyDecision",
 }
 
 REQUIRED_FORBIDDEN_METADATA = {
@@ -170,6 +307,38 @@ REQUIRED_FORBIDDEN_METADATA = {
         "container_id",
         "database_primary_key",
     },
+    "WorkSession": {
+        "database_primary_key",
+        "queue_message_id",
+        "runtime_session_id",
+        "cloud_resource_id",
+        "ui_state",
+        "credential",
+        "raw_auth_token",
+    },
+    "JarvisEvent": {
+        "raw_auth_token",
+        "credential",
+        "private_key",
+        "database_primary_key",
+        "runtime_trace_secret",
+        "provider_secret",
+    },
+    "Policy": {
+        "credential",
+        "raw_auth_token",
+        "provider_secret",
+        "billing_rule",
+        "cloud_policy_id",
+        "database_primary_key",
+    },
+    "PolicyDecision": {
+        "hidden_policy_trace",
+        "credential",
+        "provider_secret",
+        "database_primary_key",
+        "runtime_decision_object",
+    },
 }
 
 FORBIDDEN_SCHEMA_PROPERTIES = {
@@ -188,6 +357,14 @@ FORBIDDEN_SCHEMA_PROPERTIES = {
     "raw_prompt_store",
     "runtime_process_id",
     "container_id",
+    "queue_message_id",
+    "runtime_session_id",
+    "cloud_resource_id",
+    "runtime_trace_secret",
+    "billing_rule",
+    "cloud_policy_id",
+    "hidden_policy_trace",
+    "runtime_decision_object",
 }
 
 REQUIRED_TAGS = {
@@ -203,7 +380,23 @@ REQUIRED_TAGS = {
 
 EXPECTED_TITLE = "Jarvis Human-Agent Collaboration Protocol"
 EXPECTED_PLACEHOLDER_SERVER = "https://jarvis.example.invalid"
-EXPECTED_CHUNK_ID = "week-2-chunk-2-participant-schemas"
+EXPECTED_CHUNK_ID = "week-2-chunk-3-worksession-policy-schemas"
+REQUIRED_CHUNK_LOCKS = {
+    "OpenAPI 3.1.1 entry point",
+    "v0.1 protocol metadata",
+    "required top-level buckets",
+    "tag taxonomy",
+    "host-owned server boundary",
+    "shared schema primitives",
+    "Worker schema",
+    "Actor schema",
+    "HumanWorker schema",
+    "AgentWorker schema",
+    "WorkSession schema",
+    "JarvisEvent schema",
+    "Policy schema",
+    "PolicyDecision schema",
+}
 PORTABLE_VALUE_REF = {"$ref": "#/components/schemas/PortableValue"}
 FORBIDDEN_PORTABLE_KEY_PATTERN = (
     "^(?!.*(password|credential|token|secret|private_key|session_cookie|"
@@ -223,6 +416,52 @@ PORTABLE_PROPERTY_PATTERN = (
 def fail(message: str) -> int:
     print(f"openapi skeleton check failed: {message}")
     return 1
+
+
+def schema_requires_field_when_const(
+    schema: dict, property_name: str, const_value: str, required_field: str
+) -> bool:
+    for branch in schema.get("allOf", []):
+        if not isinstance(branch, dict):
+            continue
+        condition = branch.get("if", {})
+        consequence = branch.get("then", {})
+        if not isinstance(condition, dict) or not isinstance(consequence, dict):
+            continue
+        properties = condition.get("properties", {})
+        if not isinstance(properties, dict):
+            continue
+        target = properties.get(property_name, {})
+        if not isinstance(target, dict):
+            continue
+        required = consequence.get("required", [])
+        if target.get("const") == const_value and required_field in required:
+            return True
+    return False
+
+
+def iter_refs(value, path: str = "$"):
+    if isinstance(value, dict):
+        ref = value.get("$ref")
+        if isinstance(ref, str):
+            yield path, ref
+        for key, child in value.items():
+            yield from iter_refs(child, f"{path}.{key}")
+    elif isinstance(value, list):
+        for index, child in enumerate(value):
+            yield from iter_refs(child, f"{path}[{index}]")
+
+
+def local_ref_exists(document: dict, ref: str) -> bool:
+    if not ref.startswith("#/"):
+        return True
+    current = document
+    for raw_part in ref[2:].split("/"):
+        part = raw_part.replace("~1", "/").replace("~0", "~")
+        if not isinstance(current, dict) or part not in current:
+            return False
+        current = current[part]
+    return True
 
 
 def main() -> int:
@@ -265,6 +504,13 @@ def main() -> int:
         return fail("x-jarvis-protocol.chunk_lock must be an object")
     if chunk_lock.get("id") != EXPECTED_CHUNK_ID:
         return fail(f"x-jarvis-protocol.chunk_lock.id must be {EXPECTED_CHUNK_ID}")
+    declared_locks = set(chunk_lock.get("locks", []))
+    missing_locks = REQUIRED_CHUNK_LOCKS - declared_locks
+    if missing_locks:
+        return fail(
+            "x-jarvis-protocol.chunk_lock.locks missing: "
+            + ", ".join(sorted(missing_locks))
+        )
 
     components = data["components"]
     if not isinstance(components, dict):
@@ -362,6 +608,37 @@ def main() -> int:
                 + "; got "
                 + ", ".join(sorted(forbidden_metadata))
             )
+
+    for schema_name, optional_fields in OPTIONAL_SCHEMA_FIELDS.items():
+        properties = schemas[schema_name].get("properties", {})
+        missing_optional = optional_fields - set(properties)
+        if missing_optional:
+            return fail(
+                f"{schema_name} missing locked optional fields: "
+                + ", ".join(sorted(missing_optional))
+            )
+
+    policy_decision = schemas["PolicyDecision"]
+    for result_value in ("deny", "review_required"):
+        if not schema_requires_field_when_const(
+            policy_decision, "result", result_value, "request_id"
+        ):
+            return fail(
+                "PolicyDecision must require request_id when result is "
+                + result_value
+            )
+
+    event_payload_properties = schemas["JarvisEventPayload"].get("properties", {})
+    if "extensions" in event_payload_properties:
+        return fail("JarvisEventPayload must not expose extensions")
+
+    broken_refs = [
+        f"{path} -> {ref}"
+        for path, ref in iter_refs(data)
+        if not local_ref_exists(data, ref)
+    ]
+    if broken_refs:
+        return fail("unresolved local refs: " + "; ".join(broken_refs))
 
     preferences = schemas["HumanWorker"]["properties"]["preferences"]
     if preferences.get("additionalProperties") != PORTABLE_VALUE_REF:
