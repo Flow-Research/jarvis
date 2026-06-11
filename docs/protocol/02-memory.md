@@ -207,7 +207,7 @@ Default v1 policy:
 | agent inference | preference/boundary | any | no | Requires human review. |
 | tool output | any | any | no | External/tool-derived memory never auto-confirms. |
 | web/file content | fact/source | task/project | no | Suggested with provenance and trust label. |
-| review outcome | correction/outcome | WorkSession/task | yes | Can be stored as WorkSession fact; promotion needs review. |
+| review outcome | correction/outcome | WorkSession/task | yes | Stored as WorkSession fact; promotion needs review. |
 | skill edit | procedure | procedural | no | Requires skill activation gate. |
 
 Auto-confirmable memory must be:
@@ -290,13 +290,15 @@ skill inventory
 selected supporting memory
 ```
 
-Large skill bodies and files load on demand. Inventories and summaries are
-cacheable.
+Hosts own skill body, file, inventory, and summary handling. Jarvis records the
+selected memory, skill refs, provenance, and review state that affect a
+WorkSession.
 
 ## Corrections
 
-Human corrections may create or reference LearningRecord, MemoryProposal, or
-SkillProposal records. Jarvis classifies them:
+Human corrections create or reference LearningRecord, MemoryProposal, or
+SkillProposal records when they change future WorkSession behavior. Jarvis
+classifies them:
 
 ```txt
 one-time fix

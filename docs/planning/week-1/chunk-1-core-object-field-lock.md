@@ -52,11 +52,11 @@ Chunk 1 does not:
 - write the OpenAPI document
 - define HTTP paths
 - build a runtime
-- build a product proof
-- start Garden POC work
+- build a compatible example
+- start host implementation work
 - implement adapters
 - create conformance fixtures
-- add product-private fields
+- add host-private fields
 
 ## Field Rules
 
@@ -77,7 +77,7 @@ semantics.
 Extension fields must be namespaced and must not change the meaning of core
 fields.
 
-Forbidden fields belong to hosts, products, identity systems, runtimes,
+Forbidden fields belong to hosts, identity systems, runtimes,
 databases, cloud platforms, billing systems, or private execution stacks.
 
 ## OpenAPI Component Mapping Notes
@@ -115,8 +115,8 @@ Reviewers must verify:
 - WorkSession records expose revision and latest event hash values needed for
   Week 2 replay, stale-write, and previous-hash checks
 - optional fields do not create a path for credentials, secrets, raw auth
-  tokens, database internals, deployment details, runtime internals, or
-  product-private state
+  tokens, storage details, deployment details, runtime details, or
+  host-private state
 - event hash fields remain portable and verifiable
 - OutcomeReport records required `source_ref`, `reporter_ref`,
   `accepted_by_actor_id`, required `learning_record_refs`, and cannot mutate

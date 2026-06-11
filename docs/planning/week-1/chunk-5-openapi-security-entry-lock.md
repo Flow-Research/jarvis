@@ -37,10 +37,10 @@ Chunk 5 does not:
 - create OpenAPI YAML
 - define auth provider implementation
 - define identity storage
-- define product account creation
+- define host account creation
 - define host database schema
 - define runtime execution
-- define Garden POC behavior
+- define host implementation behavior
 - define client SDK code
 
 ## Required Mutating Headers
@@ -226,7 +226,7 @@ points to supported versions.
 
 The error response MUST NOT include credentials, secrets, raw runtime state,
 host-only database ids, deployment details, billing data, private scores, or
-product UI state, raw auth tokens, provider secrets, session cookies, or
+UI state, raw auth tokens, provider secrets, session cookies, or
 private keys.
 
 ## Forbidden Export Fields
@@ -234,7 +234,7 @@ private keys.
 Portable protocol export MUST exclude:
 
 ```txt
-product-private fields
+host-private fields
 credentials
 secrets
 raw runtime state
@@ -242,7 +242,7 @@ host-only database ids
 deployment details
 billing data
 private scores
-product UI state
+UI state
 raw auth tokens
 provider secrets
 session cookies

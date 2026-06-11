@@ -21,7 +21,7 @@ Jarvis is how humans and agents work together.
 The human does not just prompt. The agent does not just answer. Both participate
 in the work.
 
-Jarvis is a compatibility protocol, not one user's workflow. Products, hosts,
+Jarvis is a compatibility protocol, not one user's workflow. Hosts,
 human workers, agent workers, and external systems implement the contracts and
 participate in the same collaboration loop.
 
@@ -29,13 +29,12 @@ participate in the same collaboration loop.
 
 Jarvis stays protocol-only.
 
-Jarvis does not become an agent framework, personal agent, coding agent,
-runtime, SDK, product workspace, task marketplace, auth system, sandbox,
-database, cloud stack, tool protocol, frontend protocol, or agent-to-agent
-protocol.
+Jarvis does not become host implementation. Execution, UI, auth, storage,
+deployment, billing, model calls, tool execution, and isolation remain outside
+Jarvis.
 
 Those systems implement Jarvis, integrate with Jarvis, or produce records that
-Jarvis can capture. They do not become Jarvis.
+Jarvis captures. They do not become Jarvis.
 
 Jarvis owns the collaboration record: WorkSession, PolicyDecision, Request,
 Review, Takeover, Contribution, EvidenceManifest, LearningRecord,
@@ -96,7 +95,7 @@ Jarvis exists to formalize the loop where the human improves, the agent
 improves, the relationship improves, and completed WorkSessions improve the
 next WorkSession.
 
-The protocol makes the loop portable across agents, products, hosts, and task
+The protocol makes the loop portable across compatible hosts and external
 systems.
 
 ## Jarvis Is About The Shared Learning Loop
@@ -237,12 +236,12 @@ A SkillProposal captures:
 
 ## Infrastructure Is Outside Jarvis
 
-Jarvis protocol semantics do not require any cloud, model provider, sandbox,
-database, queue, deployment platform, or execution stack.
+Jarvis protocol semantics do not require any cloud, model provider, isolation
+mechanism, storage system, queue, deployment platform, or execution stack.
 
-Products decide how to run agents, where to store data, which sandbox to use,
-which model to call, and which infrastructure to deploy on. Jarvis defines the
-collaboration and learning-loop protocol those systems implement.
+Hosts decide how to run agents, where to store data, which isolation mechanism
+to use, which model to call, and which infrastructure to deploy on. Jarvis
+defines the collaboration and learning-loop protocol those systems implement.
 
 ## Protocol Laws
 
@@ -263,10 +262,10 @@ collaboration and learning-loop protocol those systems implement.
 
 Jarvis is not:
 
-- a product UI
+- a UI
 - a model provider
-- a sandbox implementation
-- a database implementation
+- an isolation implementation
+- a storage implementation
 - a workflow engine only
 - an external identity system
 - an external work ownership system

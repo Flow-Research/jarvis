@@ -15,7 +15,7 @@ const steps = [
       "WorkSession WS-1042 created as the protocol source of truth."
     ],
     memory: ["HumanWorker preference: direct protocol language.", "Shared rule: ask when permission or judgment is missing."],
-    policy: ["Policy profile attached: local_dev_safe.", "Default network posture: denied."],
+    policy: ["Policy profile attached: bounded local work.", "Network policy ref: denied."],
     evidence: ["work_session_started event", "initial trace context"]
   },
   {
@@ -27,10 +27,10 @@ const steps = [
     activeNodes: ["kernel", "agent"],
     activeBeams: ["beam-agent"],
     summary:
-      "Jarvis selects the context available to the AgentWorker: human memory, project memory, skill inventory, active policy, and tool grants.",
+      "ContextManifest records the context refs available to the AgentWorker: human memory, shared memory, skill refs, active policy, and tool grants.",
     events: [
-      "MemorySelector chooses scoped human, shared, and project memory.",
-      "SkillResolver loads research and project-inspection skills.",
+      "ContextManifest references scoped human, shared, and work memory.",
+      "Skill refs identify research and inspection procedures.",
       "ContextManifest stores retrieval reasons and hashes."
     ],
     memory: [
@@ -50,11 +50,11 @@ const steps = [
     activeNodes: ["agent", "kernel", "host"],
     activeBeams: ["beam-agent", "beam-host"],
     summary:
-      "The AgentWorker works inside the allowed scope. Jarvis records the protocol facts while the host product handles execution, tools, storage, and interface.",
+      "The AgentWorker works inside the allowed scope. Jarvis records the protocol facts while the host handles execution, tools, storage, and interface.",
     events: [
       "AgentWorker proposes plan and starts project inspection.",
       "Policy allows read-only local file inspection.",
-      "Host opens its workspace and execution environment."
+      "Host-owned execution ref is attached to the WorkSession."
     ],
     memory: ["Active memory remains scoped to this project.", "No new durable memory yet."],
     policy: [
@@ -72,10 +72,10 @@ const steps = [
     activeNodes: ["agent", "kernel", "request"],
     activeBeams: ["beam-agent", "beam-request"],
     summary:
-      "The AgentWorker asks for network access. Jarvis denies the action, converts the blocked intent into a structured Request, and pauses that branch of work.",
+      "The AgentWorker asks for network access. PolicyDecision denies the action, Request records the blocker, and the affected branch remains blocked.",
     events: [
       "AgentWorker requests network_fetch for example.com.",
-      "GrantResolver denies uncovered network dimension.",
+      "PolicyDecision denies uncovered network dimension.",
       "Request created with risk, host, expiry, action hash, and safe alternative."
     ],
     memory: ["Denied action does not mutate memory."],
@@ -96,17 +96,17 @@ const steps = [
     summary:
       "The HumanWorker does not micromanage the task. They approve a narrow capability and hand the work back to the AgentWorker.",
     events: [
-      "Inbox displays the exact blocked action and risk.",
+      "Request records the exact blocked action and risk.",
       "HumanWorker approves network_fetch:example.com for this WorkSession.",
-      "One-use approval token binds to request version and action hash."
+      "ApprovalScope binds to request version and action hash."
     ],
     memory: ["HumanWorker review pattern becomes a learning signal."],
     policy: [
       "Temporary grant created.",
       "Grant expires with WorkSession.",
-      "Replay of approval token fails."
+      "Stale ApprovalScope use is rejected."
     ],
-    evidence: ["review_added", "approval_token_issued", "request_resolved"]
+    evidence: ["review_added", "approval_scope_created", "request_resolved"]
   },
   {
     title: "Resume And Produce",
@@ -120,7 +120,7 @@ const steps = [
       "The AgentWorker resumes from the WorkSession event log, uses the approved scope, and produces a draft artifact with traceable evidence.",
     events: [
       "WorkSession resumes after request resolution.",
-      "Host executes the approved action and records the protocol event.",
+      "Host-owned execution produces the approved protocol event.",
       "AgentWorker writes a plan artifact into the workspace."
     ],
     memory: ["ContextManifest updates with approval event.", "Learning remains proposed until review."],
@@ -154,7 +154,7 @@ const steps = [
     evidence: ["review_added", "memory_proposed", "skill_proposed"]
   },
   {
-    title: "Evidence Export",
+    title: "EvidenceManifest",
     status: "completed",
     mission: "Manifest ready",
     gate: 96,
@@ -162,14 +162,14 @@ const steps = [
     activeNodes: ["kernel", "host"],
     activeBeams: ["beam-host"],
     summary:
-      "Jarvis exports a manifest showing what happened, what was approved, what context was used, what artifact was produced, and what limits remain.",
+      "EvidenceManifest records what happened, what was approved, what context was used, what artifact was produced, and what limits remain.",
     events: [
       "EvidenceManifest generated.",
       "Manifest includes event-chain root, item hashes, reviews, policy decisions, and artifacts.",
       "Redacted exports remain derived from raw immutable evidence."
     ],
     memory: ["Confirmed memory waits for HumanWorker decision."],
-    policy: ["Debug and export surfaces apply redaction.", "Outbox remains closed unless approved."],
+    policy: ["EvidenceManifest records redaction state.", "External effect remains blocked unless approved."],
     evidence: ["EvidenceManifest JSON", "artifact refs", "known limitations"]
   },
   {
@@ -190,7 +190,7 @@ const steps = [
     memory: [
       "Confirmed: direct protocol-contract wording.",
       "Confirmed: ask before external network access.",
-      "Skill v1: project-roadmap-review."
+      "Skill v1: protocol-review-checklist."
     ],
     policy: ["Learning is governed.", "Untrusted content remains fenced as data."],
     evidence: ["memory_confirmed", "skill_updated", "work_session_completed"]

@@ -9,10 +9,9 @@
 Jarvis defines protocol records for governed, reviewable, attributable,
 evidence-backed, portable human-agent work that improves across WorkSessions.
 
-Jarvis is not a product, runtime, backend service, SDK, tool protocol, frontend
-protocol, database, sandbox, or cloud stack.
+Jarvis is a protocol. Hosts own implementation.
 
-<p class="meta">Scope: v0.1 first 30 days, with future adapter and ecosystem context.</p>
+<p class="meta">Scope: v0.1 first 30 days, with future interoperability context.</p>
 
 </section>
 
@@ -34,8 +33,8 @@ deployment architecture.
 
 <div class="callout">
 v0.1 locks the protocol contract, examples, conformance entry, and
-existing-agent adoption boundary. Garden POC and deeper adapter work start only
-after the OpenAPI contract and conformance gate are stable.
+compatibility boundary. Host implementation work stays outside the v0.1 core
+until the OpenAPI contract and conformance gate are stable.
 </div>
 
 ## Architecture Principles
@@ -49,7 +48,7 @@ after the OpenAPI contract and conformance gate are stable.
 | Evidence during work | EvidenceManifest references work evidence captured during the WorkSession. |
 | Attributable contribution | Human, agent, pair, and service contributions remain distinguishable. |
 | Governed learning | LearningRecords, MemoryProposals, and SkillProposals do not silently mutate durable state. |
-| Runtime agnostic | Existing agents, SDKs, products, tools, and hosts remain supported. |
+| Runtime agnostic | Hosts keep their execution systems. Jarvis records collaboration. |
 
 ### Research Grounding
 
@@ -75,20 +74,20 @@ future extensions.
 ## C1: Protocol Ecosystem Context
 
 The context view shows Jarvis as the protocol record between HumanWorkers,
-AgentWorkers, hosts, existing agents, and adjacent protocols.
+AgentWorkers, hosts, and adjacent protocols.
 
 <div class="diagram">
-  <img src="images/ecosystem_context.png" alt="Jarvis protocol ecosystem context diagram" />
+  <img src="images/interoperability_context.png" alt="Jarvis protocol interoperability context diagram" />
 </div>
 
 ### What This Means
 
 - HumanWorkers and AgentWorkers collaborate through WorkSessions.
-- Hosts and adapters implement Jarvis records.
-- Existing agents remain supported; Jarvis records collaboration around them.
+- Hosts implement Jarvis records.
+- Host-owned execution remains outside Jarvis.
 - MCP, A2A, ACP, and AG-UI remain external protocols.
 - Jarvis does not own frontend rendering, agent runtime, remote-agent execution,
-  tool protocol semantics, database, auth provider, sandbox, or deployment.
+  tool protocol semantics, storage, auth provider, isolation, or deployment.
 
 <div class="page-break"></div>
 
@@ -109,7 +108,7 @@ OpenAPI communication binding. Host implementation stays outside Jarvis.
 | Protocol objects | WorkSession, Policy, Request, Review, Takeover, Contribution, EvidenceManifest, LearningRecord, MemoryProposal, SkillProposal, and related records. |
 | Protocol operations | Create WorkSession, append event, create Request, record Review, start Takeover, record Contribution, export EvidenceManifest, submit OutcomeReport. |
 | OpenAPI binding | HTTP paths, schemas, security schemes, errors, examples, and conformance entry. |
-| Host implementation | UI, auth provider, database, queue, runtime, sandbox, model provider, deployment, and product workflow. |
+| Host implementation | UI, auth provider, storage, queue, runtime, isolation mechanism, model provider, deployment, and host workflow. |
 
 <div class="page-break"></div>
 
@@ -207,13 +206,13 @@ Jarvis integrates with adjacent protocols without replacing them.
 | A2A | Agent-to-agent communication and delegation. | Delegation evidence, participating AgentWorker refs, Contributions, and outcomes. |
 | AGNTCY ACP | Remote agent interface and OpenAPI access. | Collaboration record around remote agent participation. |
 | AG-UI | Agent-to-frontend event interaction and UI state. | WorkSession records that a host exposes to a frontend when frontend integration exists. |
-| Agent SDKs | Model calls, tool calls, tracing, handoffs, runtime behavior. | Policy, review, contribution, evidence, and learning around execution. |
-| Coding agents | Terminal/editor/repo execution workflows. | WorkSession evidence, human reviews, takeovers, and learning. |
-| Personal agents | Product or assistant experience for a person. | Protocol semantics for governed HumanWorker and AgentWorker collaboration. |
+| Agent execution systems | Model calls, tool calls, tracing, handoffs, runtime behavior. | Policy, review, contribution, evidence, and learning around execution. |
+| Developer execution systems | Terminal, editor, repository, and command execution workflows. | WorkSession evidence, human reviews, takeovers, and learning. |
+| Host-owned interfaces | The user-facing or service-facing interface around work. | Protocol semantics for governed HumanWorker and AgentWorker collaboration. |
 
 <div class="boundary">
-Jarvis adoption fails if it requires a developer to abandon their existing
-agent, runtime, SDK, product UI, model provider, sandbox, database, or cloud.
+Jarvis adoption fails if it requires a developer to abandon existing execution
+systems, UI, model providers, isolation mechanisms, storage, or deployment.
 Jarvis adoption succeeds when different hosts produce the same protocol
 semantics.
 </div>
@@ -321,7 +320,7 @@ Request appears in EvidenceManifest.
 
 OutcomeReport is the v0.1 external feedback ingress. It carries post-session
 outcome information into governed learning without turning Jarvis into
-Workstream, evaluation, payment, settlement, routing, or marketplace logic.
+external evaluation, payment, settlement, routing, or marketplace logic.
 
 <div class="diagram">
   <img src="images/outcome_report_hook.png" alt="Jarvis OutcomeReport hook diagram" />
@@ -359,23 +358,23 @@ outcome_report_without_learning_record
 
 <div class="page-break"></div>
 
-## Future Adapter And Ecosystem Direction
+## Future Interoperability Direction
 
 Future work expands around the protocol without moving execution ownership into
 Jarvis.
 
 <div class="diagram">
-  <img src="images/future_adapter_ecosystem.png" alt="Jarvis future adapter and ecosystem direction diagram" />
+  <img src="images/future_interoperability.png" alt="Jarvis future interoperability direction diagram" />
 </div>
 
 | Future area | Direction | Boundary |
 | --- | --- | --- |
-| Existing-agent adapters | Map CLI agents, coding agents, SDK agents, and personal agents into Jarvis records. | Adapters preserve the existing agent runtime. |
+| Compatibility boundaries | Map command-line, local execution, hosted execution, and tool-use flows into Jarvis records. | Hosts preserve their own execution systems. |
 | Host conformance | Provide golden-path and failure-mode fixtures that prove protocol behavior. | Conformance checks behavior, not infrastructure. |
-| Garden POC readiness | Map Garden POC work into Jarvis WorkSessions and EvidenceManifest exports. | Garden remains the host; Jarvis remains the protocol. |
+| Compatibility guidance | Map host work into Jarvis WorkSessions and EvidenceManifest exports. | The host remains the host; Jarvis remains the protocol. |
 | External protocol bridges | Record MCP, A2A, ACP, and AG-UI participation as Jarvis evidence and contribution records. | Jarvis does not redefine those protocols. |
 | Evaluation feedback | Use OutcomeReport to carry external outcomes into governed LearningRecords. | Jarvis does not own task routing, scoring, payment, settlement, or marketplace logic. |
-| Public adoption package | Publish OpenAPI contract, examples, conformance checklist, and protocol architecture brief. | Adoption does not require a runtime owned by Jarvis. |
+| Public protocol package | Publish OpenAPI contract, examples, conformance checklist, and protocol architecture brief. | Adoption does not require a runtime owned by Jarvis. |
 
 ### Deferred From v0.1
 
@@ -391,9 +390,9 @@ InitiativeBalance
 TeachingSignal
 HumanGrowthRecord
 SimulatedHumanWorker
-full existing-agent adapters
-full Workstream feedback loop
-real Garden product proof
+full host adapters
+full external outcome feedback loop
+compatibility examples
 MCP/A2A/ACP/AG-UI bridges
 multi-agent reviewer protocol
 ```
@@ -405,25 +404,25 @@ They do not enter the v0.1 object spine.
 
 Jarvis does not own:
 
-- product UI
+- UI
 - authentication provider
 - authorization backend
-- database
+- storage
 - queues
 - model provider
 - tool execution
-- sandbox implementation
+- isolation mechanism
 - local execution
 - cloud provider
 - deployment
 - billing
-- product-specific workflow
-- Garden POC
-- Workstream evaluation logic
-- Harnessy capability preparation
+- host-specific workflow
+- host execution
+- host UI
+- host storage
+- external evaluation logic
 
-Jarvis owns the protocol records that hosts, adapters, products, and existing
-agents implement.
+Jarvis owns the protocol records that compatible hosts implement.
 
 ## References
 

@@ -35,11 +35,11 @@ Jarvis v0.1 excludes:
 - storage implementation
 - queues
 - deployment
-- product UI
+- UI
 - authentication
 - billing
 
-Hosts own implementation concerns.
+Hosts own storage, execution, auth, billing, deployment, and UI.
 
 ## Golden Path
 
@@ -182,7 +182,7 @@ The v0.1 conformance suite checks:
   `skill_expands_tool_access_without_policy_review`,
   `sealed_work_session_mutation`, `sealed_evidence_mutation`, and
   `outcome_report_without_learning_record`.
-- exported protocol records do not require product-private infrastructure
+- exported protocol records do not require host-private infrastructure
   fields.
 - OpenAPI security entry checks require HostAuth, ActorHeader,
   ProtocolVersionHeader, IdempotencyHeader, RequestTimestampHeader,

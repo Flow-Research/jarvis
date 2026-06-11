@@ -1,8 +1,8 @@
 Jarvis Roadmap
-Definition,"Jarvis is the human-agent collaboration and learning-loop protocol. It defines WorkSession, Policy, Request, Review, Takeover, Contribution, EvidenceManifest, LearningRecord, MemoryProposal, and SkillProposal so existing agents and host products collaborate with humans without replacing their runtimes."
-Near-term priority,"Near-term priority: make Jarvis OpenAPI-ready: protocol lock, OpenAPI 3.1 communication binding, version and capability negotiation, zero-trust security model, portable export, and conformance entry fixtures. Product proof starts only after the protocol contract and conformance entry rules are stable. Keep scope narrow: protocol records first, OpenAPI contract second, conformance third, adapters fourth, product proof last."
+Definition,"Jarvis is the human-agent collaboration and learning-loop protocol. It defines WorkSession, Policy, Request, Review, Takeover, Contribution, EvidenceManifest, LearningRecord, MemoryProposal, and SkillProposal so existing agents and host applications collaborate with humans without replacing their runtimes."
+Near-term priority,"Near-term priority: make Jarvis OpenAPI-ready: protocol lock, OpenAPI 3.1 communication binding, version and capability negotiation, zero-trust security model, portable export, and conformance entry fixtures. Compatible example starts only after the protocol contract and conformance entry rules are stable. Keep scope narrow: protocol records first, OpenAPI contract second, conformance third, adapters fourth, compatible example last."
 
-Week,Date range,Primary goal,Protocol lock + research,OpenAPI + conformance,Adapter + interoperability,Product proof,Done when
+Week,Date range,Primary goal,Protocol lock + research,OpenAPI + conformance,Adapter + interoperability,Compatible example,Done when
 Now,Jun 2-5,Turn Jarvis into an implementation-ready protocol lock.,"- freeze v0.1 protocol lock
 - align README, principles, architecture, roadmap
 - keep language direct and host-generic
@@ -12,8 +12,8 @@ Now,Jun 2-5,Turn Jarvis into an implementation-ready protocol lock.,"- freeze v0
 - prepare OpenAPI component and path layout
 - define zero-trust headers and security schemes","- defer adapter implementation
 - name adapter questions only
-- preserve runtime independence","- keep Garden POC out of active scope
-- define product-proof prerequisites only","Protocol lock is the source for OpenAPI work, OpenAPI 3.1 is the machine-readable communication contract, and no product proof enters this week."
+- preserve runtime independence","- keep host implementation work out of active scope
+- define compatible-example prerequisites only","Protocol lock is the source for OpenAPI work, OpenAPI 3.1 is the machine-readable communication contract, and no compatible example enters this week."
 W1,Jun 8-12,Create the v0.1 OpenAPI communication contract.,"- finalize required object meanings
 - lock WorkSession state transitions
 - lock Request, Review, Takeover states
@@ -24,19 +24,19 @@ W1,Jun 8-12,Create the v0.1 OpenAPI communication contract.,"- finalize required
 - define required security headers","- document adapter contract questions
 - define AgentWorker adapter surface
 - define tool/action to PolicyDecision mapping
-- define limitations field for unsupported concepts","- keep Garden POC out of active scope
-- define product-proof gate conditions only","A developer reads the OpenAPI contract and knows exactly how to create a valid WorkSession, Request, Review, Contribution, EvidenceManifest, and LearningRecord."
+- define limitations field for unsupported concepts","- keep host implementation work out of active scope
+- define compatible-example gate conditions only","A developer reads the OpenAPI contract and knows exactly how to create a valid WorkSession, Request, Review, Contribution, EvidenceManifest, and LearningRecord."
 W2,Jun 15-19,Make conformance strong enough to prove compatibility.,"- write compatibility rules
 - define extension namespace rules
 - define version negotiation
 - define capability negotiation","- build golden-path fixtures
 - build failing fixtures
 - validate status transitions
-- validate export does not require product-private fields","- create CLI/existing-agent adapter plan
+- validate export does not require host-private fields","- create CLI/existing-agent adapter plan
 - capture messages/actions as JarvisEvents
 - capture tool use as PolicyDecision and Evidence
-- capture human correction as Review","- keep product proof out of active scope
-- record product-proof prerequisites from conformance only
+- capture human correction as Review","- keep compatible example out of active scope
+- record compatible-example prerequisites from conformance only
 - generate protocol-only sample WorkSession export
 - document host-only assumptions separately","Conformance rejects missing policy, missing review, stale takeover continuation, unattributed contribution, weak evidence, and silent learning mutation."
 W3,Jun 22-26,Prove Jarvis with conformance fixtures and one adapter contract.,"- refine protocol from real fixture pain
@@ -48,10 +48,10 @@ W3,Jun 22-26,Prove Jarvis with conformance fixtures and one adapter contract.,"-
 - record gaps as conformance issues","- implement proof adapter path
 - HumanWorker objective -> AgentWorker action
 - blocked action -> Request
-- human response -> Review or Takeover","- prepare Garden POC as later product proof
-- define product-private fields that stay out of export
+- human response -> Review or Takeover","- prepare compatible examples after the conformance gate
+- define host-private fields that stay out of export
 - update simulation narrative if needed","Two different host or adapter shapes produce valid Jarvis records for the same collaboration loop without sharing runtime, UI, storage, or execution stack."
-W4,Jun 29-Jul 3,Freeze v0.1 alpha and prepare product-proof review.,"- close protocol lock gaps
+W4,Jun 29-Jul 3,Freeze v0.1 alpha and prepare compatible-example review.,"- close protocol lock gaps
 - publish compatibility notes
 - summarize decisions and non-goals
 - prepare v0.2 evidence/learning backlog","- freeze v0.1 OpenAPI contract
@@ -61,10 +61,10 @@ W4,Jun 29-Jul 3,Freeze v0.1 alpha and prepare product-proof review.,"- close pro
 - document CLI/existing-agent adapter
 - document host implementation guide
 - identify next two adapter targets","- publish protocol proof walkthrough URL
-- package product-proof readiness notes
+- package compatible-example readiness notes
 - prepare team walkthrough
-- collect review notes into next-cycle issues","Jarvis has a v0.1 alpha package of protocol docs, OpenAPI contract, examples, conformance fixtures, product-proof readiness, and one existing-agent adapter contract."
-Later,After v0.1,Expand only from conformance results and product-proof evidence.,"- harden object model from real adapters
+- collect review notes into next-cycle issues","Jarvis has a v0.1 alpha package of protocol docs, OpenAPI contract, examples, conformance fixtures, compatible-example readiness, and one existing-agent adapter contract."
+Later,After v0.1,Expand only from conformance results and compatible-example evidence.,"- harden object model from real adapters
 - add migration rules
 - add public implementation checklist
 - prepare v0.2 evidence and learning beta","- richer EvidenceManifest
@@ -73,7 +73,7 @@ Later,After v0.1,Expand only from conformance results and product-proof evidence
 - memory and skill compatibility rules","- more agent adapters
 - MCP/A2A/AG-UI integration notes
 - SDK-neutral adapter examples
-- compatibility badges","- additional product proofs
+- compatibility badges","- additional compatible examples
 - public proof refresh
 - team onboarding sheet
-- protocol review sessions","Expansion is justified by valid exports, conformance failures, adapter pain, and product-proof evidence, not by unproven feature expansion."
+- protocol review sessions","Expansion is justified by valid exports, conformance failures, adapter pain, and compatible-example evidence, not by unproven feature expansion."

@@ -2,8 +2,6 @@
 
 Jarvis is the human-agent collaboration and learning-loop protocol.
 
-Jarvis does not compete with agent runtimes, tool protocols, UI protocols,
-agent-to-agent protocols, coding agents, personal agents, or product hosts.
 Jarvis defines the protocol record that makes human-agent work reviewable,
 attributable, portable, and able to improve across WorkSessions.
 
@@ -43,8 +41,8 @@ learning that survives the current task.
 
 MCP standardizes how LLM applications connect to tools, prompts, resources, and
 context servers. MCP uses JSON-RPC messages over transports such as Streamable
-HTTP, where clients send JSON-RPC messages to an MCP endpoint and servers may
-use SSE for streaming. Jarvis records tool and resource use as WorkSession
+HTTP, where clients send JSON-RPC messages to an MCP endpoint and servers use
+SSE for streaming when that transport is active. Jarvis records tool and resource use as WorkSession
 events, PolicyDecisions, Contributions, and Evidence when MCP is used. Jarvis
 does not define MCP transports, MCP tools, MCP resources, MCP prompts, or MCP
 server behavior.
@@ -64,42 +62,29 @@ interrupt delivery, output retrieval, or ACP agent interfaces.
 AG-UI standardizes how AI agents connect to user-facing applications through an
 open, lightweight, event-based protocol. AG-UI focuses on agent state, UI
 intents, user interactions, frontend tools, streaming, and interactive
-frontends. A Jarvis-compatible host or adapter may expose WorkSession state,
+frontends. A Jarvis-compatible host exposes WorkSession state,
 Requests, Reviews, Takeovers, Contributions, Evidence, and Learning to AG-UI
 clients. Jarvis does not define frontend events, rendering, UI state, or
 user-interface transport.
 
-## Agent And Product Positioning
+## Host Boundary
 
-Agent SDKs provide execution primitives, model calls, tool calls, tracing,
-handoffs, and runtime behavior. Jarvis records the human-agent collaboration
-around that execution. Jarvis does not replace an SDK.
-
-Coding agents perform software work through terminals, editors, repositories,
-tools, sandboxes, and review loops. Jarvis records the WorkSession, Policy,
-Requests, Reviews, Takeovers, Contributions, Evidence, and Learning around that
-work. Jarvis does not replace the coding agent.
-
-Personal agents provide a product or assistant experience for a person. Jarvis
-defines the collaboration protocol that a personal agent may implement. Jarvis
-is not the personal agent product.
-
-Product hosts provide UI, auth, storage, execution, connectors, notifications,
-cost tracking, support, and deployment. Jarvis defines the records that product
-hosts exchange. Jarvis does not become the product host.
+Hosts provide UI, auth, storage, execution, connectors, notifications,
+monitoring, support, and deployment. Jarvis defines the records that hosts
+exchange. Jarvis does not become the host.
 
 ## Non-Replacement Rule
 
 Compatible implementations MUST NOT require developers to abandon their
-existing agent, runtime, SDK, product UI, model provider, sandbox, database, or
-cloud.
+existing execution systems, UI, model providers, isolation mechanisms, storage,
+or deployment.
 
 Compatible implementations map existing work into Jarvis records:
 
 ```txt
-human operator -> HumanWorker + Actor
-existing agent process or product -> AgentWorker + Actor
-agent action -> PolicyDecision + JarvisEvent
+human participant -> HumanWorker + Actor
+agent participant -> AgentWorker + Actor
+agent action affecting a WorkSession -> PolicyDecision + JarvisEvent
 blocked action -> Request
 human judgment -> Review or Takeover
 work performed -> Contribution
@@ -109,7 +94,7 @@ memory update proposal -> MemoryProposal
 reusable process proposal -> SkillProposal
 ```
 
-The adapter may be thin. The protocol record must be complete.
+Host mappings preserve host-owned execution. Protocol records remain complete.
 
 ## Adoption Argument
 
@@ -140,19 +125,14 @@ What memory or skill change was proposed, reviewed, accepted, rejected, or
 carried forward?
 ```
 
-Those questions are not answered by a tool protocol, UI protocol, agent SDK,
-coding agent, personal agent, or runtime alone.
+Those questions require the Jarvis collaboration record.
 
 ## Compatibility Rule
 
-Existing agents remain first-class.
-
-Jarvis-compatible hosts and adapters MUST preserve the existing agent's
-execution model while recording Jarvis protocol semantics around it. If an
-agent already plans, calls tools, writes code, researches, drafts, or executes
-tasks, Jarvis does not change that execution. Jarvis records the collaboration
-loop that makes the work governed, reviewable, attributable, evidence-backed,
-and able to improve.
+Compatible implementations preserve host-owned execution while recording
+Jarvis protocol semantics around it. Jarvis records the collaboration loop that
+makes the work governed, reviewable, attributable, evidence-backed, and able to
+improve.
 
 ## Source References
 

@@ -2,9 +2,9 @@
 
 Jarvis is implemented by a host.
 
-A host is a product workspace, CLI app, chat product, desktop product, custom
-enterprise workspace, or another agent system. The host owns execution and
-infrastructure. Jarvis owns the protocol records the host must produce.
+A host is any implementation that produces and consumes Jarvis protocol
+records. The host owns execution and infrastructure. Jarvis owns the protocol
+records the host must produce.
 
 ## Host Responsibilities
 
@@ -61,7 +61,7 @@ const work = startWorkSession({
   objective: "Inspect this project and propose the next implementation step",
   human_worker_id: human.worker_id,
   agent_worker_id: agent.worker_id,
-  policy_id: "local_dev_safe"
+  policy_id: "bounded_policy"
 });
 
 recordEvent(work.id, {
@@ -132,5 +132,5 @@ A portable Jarvis export contains:
 ## Compatibility
 
 A host is Jarvis-compatible when it passes the conformance suite and exports
-portable protocol records without requiring another product to understand its
+portable protocol records without requiring another host to understand its
 private infrastructure.

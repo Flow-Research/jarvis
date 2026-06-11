@@ -160,7 +160,7 @@ REQUIRED_FORBIDDEN_METADATA = {
         "raw_auth_token",
         "private_profile_data",
         "billing_account",
-        "product_account_record",
+        "host_account_record",
     },
     "AgentWorker": {
         "model_api_key",
@@ -183,7 +183,7 @@ FORBIDDEN_SCHEMA_PROPERTIES = {
     "session_cookie",
     "private_key",
     "private_profile_data",
-    "product_account_record",
+    "host_account_record",
     "model_api_key",
     "raw_prompt_store",
     "runtime_process_id",
@@ -208,7 +208,7 @@ PORTABLE_VALUE_REF = {"$ref": "#/components/schemas/PortableValue"}
 FORBIDDEN_PORTABLE_KEY_PATTERN = (
     "^(?!.*(password|credential|token|secret|private_key|session_cookie|"
     "cookie|api_key|access_key|auth_header|oauth|database|billing|runtime|"
-    "container|deployment|model_api_key|raw_prompt|product_account|ui_state))"
+    "container|deployment|model_api_key|raw_prompt|host_account|ui_state))"
 )
 NAMESPACED_EXTENSION_PATTERN = (
     FORBIDDEN_PORTABLE_KEY_PATTERN

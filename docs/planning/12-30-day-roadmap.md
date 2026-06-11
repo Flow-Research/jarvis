@@ -2,10 +2,9 @@
 
 This roadmap turns Jarvis from design into a credible protocol proof.
 
-Jarvis is not an agent framework, runtime, agent adapter package, cloud stack, or
-product UI. Jarvis is the human-agent collaboration and learning-loop
-protocol. The next 30 days prove that existing agents and products are
-mapped into Jarvis protocol records without replacing their runtime.
+Jarvis is the human-agent collaboration and learning-loop protocol. The next 30
+days prove that existing human-agent work maps into Jarvis protocol records
+without moving host implementation into Jarvis.
 
 ## Thesis
 
@@ -36,13 +35,12 @@ Jarvis sits beside existing standards:
   not MCP.
 - A2A standardizes agent-to-agent communication and delegation. Jarvis records
   A2A delegation inside a WorkSession, but Jarvis is not A2A.
-- AG-UI standardizes agent-to-frontend interaction. Hosts may expose Jarvis
+- AG-UI standardizes agent-to-frontend interaction. Hosts expose Jarvis
   WorkSession records to AG-UI clients, but Jarvis does not define frontend
   events, rendering, UI state, or UI transport.
-- Agent SDKs, coding agents, local agents, and hosted agent products provide
-  runtimes, tools, sessions, handoffs, tracing, or execution environments.
-  Compatible adapters map their work into collaboration records instead of
-  replacing them.
+- Existing execution systems provide runtimes, tools, sessions, handoffs, and
+  tracing. Compatible hosts map that work into
+  collaboration records instead of replacing those systems.
 
 Protocol grounding:
 
@@ -66,12 +64,12 @@ Jarvis OpenAPI 3.1 contract
   -> zero-trust security requirements
   -> portable export
   -> conformance fixtures
-  -> existing-agent adapter contract
-  -> product proof readiness
+  -> compatibility contract
+  -> compatible example readiness
 ```
 
-Product proof starts after the protocol semantics, OpenAPI contract, and
-conformance entry rules are stable.
+Compatible examples start after the protocol semantics, OpenAPI contract,
+and conformance entry rules are stable.
 
 ## Week 1: Protocol Lock And Research Grounding
 
@@ -99,13 +97,13 @@ Deliverables:
 Done when:
 
 - every document uses the same core object names
-- no document describes Jarvis as a runtime, product, agent framework, or
+- no document describes Jarvis as a runtime, host implementation, agent framework, or
   agent application
 - every core object has a reason to exist
 - OpenAPI 3.1 is the machine-readable communication contract
-- Garden POC was not part of Week 1 active work
-- Jarvis is explained in one paragraph without mentioning any host product
-  or downstream evaluation system
+- host implementation work was not part of Week 1 active work
+- Jarvis is explained in one paragraph without mentioning any host application
+  or external evaluation
 
 ## Week 2: OpenAPI Contract And Conformance Entry
 
@@ -142,7 +140,7 @@ Done when:
   Jarvis-compatible host
 - conformance rejects a fake implementation that skips policy, review,
   evidence, or learning
-- Garden POC is still out of scope
+- host implementation work is still out of scope
 
 ## Week 3: Adapter Contract And Conformance Fixtures
 
@@ -165,16 +163,16 @@ Done when:
 - two host shapes produce equivalent Jarvis protocol records on paper
 - conformance fixtures catch unsafe or incomplete implementations
 - adapter work does not require rewriting the agent runtime
-- product proof starts only after the conformance gate
+- compatible examples start only after the conformance gate
 
-## Week 4: Product Proof Readiness And Public Story
+## Week 4: Compatible Examples And Public Story
 
-Goal: prepare the first product proof after the protocol contract and
+Goal: prepare compatible examples after the protocol contract and
 conformance gate are credible.
 
 Deliverables:
 
-- Garden POC mapping plan
+- compatible host mapping example
 - one CLI-agent adapter proof plan
 - one real external-agent or SDK-agent adapter proof plan
 - public README tightened around protocol positioning
@@ -184,21 +182,21 @@ Deliverables:
 - GitHub Pages simulation updated to show the OpenAPI proof path
 - short public narrative: why Jarvis exists and what it does not replace
 
-First Adapter Targets:
+First Compatibility Targets:
 
-- Claude Code-style CLI adapter
-- Hermes/OpenClaw-style local agent adapter
-- OpenAI Agents SDK-style runtime adapter
-- MCP tool-use adapter
+- command-line host boundary
+- local execution host boundary
+- hosted execution host boundary
+- tool-use protocol boundary
 
 Done when:
 
-- at least two different host or adapter shapes have a credible implementation
+- at least two different compatible implementation shapes have a credible
   plan against the same OpenAPI contract
-- Garden POC is prepared as the first product proof, not treated as the
+- a compatible host example maps real work into Jarvis records without becoming the
   protocol itself
 - the team shares one URL and one README that explain the point clearly
-- the protocol is discussed as a standard, not an internal app feature
+- the protocol is discussed as a standard, not a host-specific app feature
 
 ## Daily Operating Rhythm
 
@@ -219,13 +217,13 @@ Daily checks:
 2. Does this work with an existing agent without rewriting the agent?
 3. Did we capture human judgment, agent action, contribution, evidence, and
    learning?
-4. Does another product implement this without Garden-specific assumptions?
+4. Does a compatible implementation use this without host-specific assumptions?
 5. Does this improve the next WorkSession?
 
 ## Non-Negotiables
 
 - Jarvis remains protocol-only.
-- Garden POC is only the first product proof.
+- Compatible examples stay outside the protocol core.
 - Existing agents remain first-class.
 - HumanWorker and AgentWorker are both actors.
 - Learning belongs to the human, agent, and pair.

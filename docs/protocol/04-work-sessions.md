@@ -3,7 +3,7 @@
 Jarvis centers serious work around a `WorkSession`.
 
 A WorkSession is the durable collaboration record for a focused unit of work.
-It is not tied to any product or external task system.
+It is not tied to any host or external task system.
 
 ## Why WorkSession Exists
 
@@ -78,7 +78,7 @@ created
   revision, and initial event hash.
 
 active
-  HumanWorker and AgentWorker can continue work inside Policy.
+  HumanWorker and AgentWorker continue work inside Policy.
 
 waiting_on_human
   One or more declared scopes are blocked on HumanWorker Review, context,
@@ -412,7 +412,7 @@ invalid_export_state
 unauthorized_actor
 ```
 
-Hosts may store checkpoints, projections, or indexes. Those records never
+Hosts store checkpoints, projections, or indexes outside Jarvis. Those records never
 replace the append-only JarvisEvent log.
 
 Derived metrics such as revision rounds, elapsed time, blocked-action count,
@@ -651,9 +651,9 @@ generated_by_actor_id
 limitations
 ```
 
-Final export MUST exclude product-private fields, credentials, secrets, raw
+Final export MUST exclude host-private fields, credentials, secrets, raw
 runtime state, host-only database ids, deployment details, billing data, private
-scores, and product UI state.
+scores, and UI state.
 
 ## WorkSession Resumption
 

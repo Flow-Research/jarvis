@@ -26,7 +26,7 @@ This chunk does not define:
 - examples
 - conformance fixtures
 - adapter behavior
-- Garden POC behavior
+- host implementation behavior
 - runtime execution
 
 ## Files

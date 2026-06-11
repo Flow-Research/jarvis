@@ -8,12 +8,11 @@ Jarvis architecture is accepted only when these criteria hold.
   protocol.
 - [11-core-protocol-objects.md](../protocol/11-core-protocol-objects.md) is
   the source of truth for v0.1 object definitions.
-- Jarvis is a compatibility protocol for multiple humans, agents, products,
-  hosts, and external systems.
+- Jarvis is a compatibility protocol for multiple humans, agents, hosts, and
+  external systems.
 - Jarvis does not define execution stack, cloud, database, queue, sandbox,
-  deployment, model provider, authentication, billing, or product UI.
-- external products and systems integrate with Jarvis through protocol
-  contracts.
+  deployment, model provider, authentication, billing, or UI.
+- external systems integrate with Jarvis through protocol contracts.
 
 ## Human-Agent Collaboration
 
@@ -24,8 +23,8 @@ Jarvis architecture is accepted only when these criteria hold.
 - HumanWorker and AgentWorker both learn from completed WorkSessions.
 - HumanWorker approves, denies, narrows, corrects, requests revision, or takes
   over.
-- Corrections may create or reference LearningRecord, MemoryProposal, or
-  SkillProposal records.
+- Corrections create or reference LearningRecord, MemoryProposal, or
+  SkillProposal records when they change future WorkSession behavior.
 
 ## WorkSession
 
@@ -56,7 +55,7 @@ Jarvis architecture is accepted only when these criteria hold.
 - Evidence is captured during work.
 - EvidenceManifest includes policy decisions, requests, reviews,
   contributions, artifacts, and limitations.
-- EvidenceManifest is portable across products.
+- EvidenceManifest is portable across compatible hosts.
 
 ## v0.1 Protocol Acceptance
 
@@ -145,7 +144,7 @@ Expected result:
   `sealed_work_session_mutation`, `sealed_evidence_mutation`,
   `outcome_report_without_learning_record`, and
   `forbidden_host_private_field`
-- exported records contain no product-private infrastructure requirement
+- exported records contain no host-private infrastructure requirement
 - OpenAPI security entry checks require HostAuth, ActorHeader,
   ProtocolVersionHeader, IdempotencyHeader, RequestTimestampHeader,
   RevisionHeader, and PreviousHashHeader
@@ -172,7 +171,7 @@ Expected result:
 
 ## Conformance Acceptance
 
-A product is Jarvis-compatible when it proves:
+A compatible implementation proves:
 
 - WorkSession is the source of truth.
 - Policy gates autonomous action.

@@ -7,8 +7,8 @@ info:
     Jarvis defines the protocol records and operations for governed
     collaboration between HumanWorkers and AgentWorkers.
 
-    Jarvis does not define runtime execution, product UI, authentication
-    provider, storage, model calls, sandbox behavior, cloud deployment, billing,
+    Jarvis does not define runtime execution, UI, authentication
+    provider, storage, model calls, isolation behavior, cloud deployment, billing,
     task routing, or marketplace logic.
   version: 0.1.0
 servers:
@@ -56,11 +56,11 @@ components:
       description: Namespaced extension fields. Extensions MUST NOT override core fields or contain forbidden host-private data.
       propertyNames:
         type: string
-        pattern: "^(?!.*(password|credential|token|secret|private_key|session_cookie|cookie|api_key|access_key|auth_header|oauth|database|billing|runtime|container|deployment|model_api_key|raw_prompt|product_account|ui_state))[a-z0-9][a-z0-9-]*(\\.[a-z0-9_-]+)+$"
+        pattern: "^(?!.*(password|credential|token|secret|private_key|session_cookie|cookie|api_key|access_key|auth_header|oauth|database|billing|runtime|container|deployment|model_api_key|raw_prompt|host_account|ui_state))[a-z0-9][a-z0-9-]*(\\.[a-z0-9_-]+)+$"
       additionalProperties:
         $ref: "#/components/schemas/PortableValue"
     PortableValue:
-      description: Portable JSON value. Protocol records MUST NOT use this field to carry credentials, host-private ids, raw runtime state, billing data, or product UI state.
+      description: Portable JSON value. Protocol records MUST NOT use this field to carry credentials, host-private ids, raw runtime state, billing data, or UI state.
       anyOf:
         - type: string
         - type: number
@@ -73,7 +73,7 @@ components:
         - type: object
           propertyNames:
             type: string
-            pattern: "^(?!.*(password|credential|token|secret|private_key|session_cookie|cookie|api_key|access_key|auth_header|oauth|database|billing|runtime|container|deployment|model_api_key|raw_prompt|product_account|ui_state))[a-z0-9][a-z0-9._:-]*$"
+            pattern: "^(?!.*(password|credential|token|secret|private_key|session_cookie|cookie|api_key|access_key|auth_header|oauth|database|billing|runtime|container|deployment|model_api_key|raw_prompt|host_account|ui_state))[a-z0-9][a-z0-9._:-]*$"
           additionalProperties:
             $ref: "#/components/schemas/PortableValue"
     WorkerType:
@@ -274,10 +274,10 @@ components:
           uniqueItems: true
         preferences:
           type: object
-          description: Portable human preference hints. Preferences MUST NOT contain private profile data, account state, credentials, billing data, or product UI state.
+          description: Portable human preference hints. Preferences MUST NOT contain private profile data, account state, credentials, billing data, or UI state.
           propertyNames:
             type: string
-            pattern: "^(?!.*(password|credential|token|secret|private_key|session_cookie|cookie|api_key|access_key|auth_header|oauth|database|billing|runtime|container|deployment|model_api_key|raw_prompt|product_account|ui_state))[a-z0-9][a-z0-9._:-]*$"
+            pattern: "^(?!.*(password|credential|token|secret|private_key|session_cookie|cookie|api_key|access_key|auth_header|oauth|database|billing|runtime|container|deployment|model_api_key|raw_prompt|host_account|ui_state))[a-z0-9][a-z0-9._:-]*$"
           additionalProperties:
             $ref: "#/components/schemas/PortableValue"
         boundaries:
@@ -296,7 +296,7 @@ components:
         - raw_auth_token
         - private_profile_data
         - billing_account
-        - product_account_record
+        - host_account_record
     AgentWorker:
       type: object
       additionalProperties: false
@@ -373,10 +373,10 @@ x-jarvis-protocol:
     - conformance entry
   outside_jarvis:
     - runtime execution
-    - product UI
+    - UI
     - authentication provider
     - authorization backend
-    - database
+    - storage
     - queues
     - cloud provider
     - sandbox implementation
@@ -385,7 +385,7 @@ x-jarvis-protocol:
     - billing
     - deployment
     - task marketplace
-    - product workflow
+    - host workflow
   chunk_lock:
     id: week-2-chunk-2-participant-schemas
     locks:

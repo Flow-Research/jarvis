@@ -2,7 +2,7 @@
 
 Week 1 locks the Jarvis protocol before OpenAPI contract drafting starts.
 
-This week does not build Garden POC, runtime features, adapters, product UI, or
+This week does not build a host implementation, runtime features, adapters, UI, or
 demo flows. This week locks the protocol meaning, lifecycle, zero-trust
 security boundary, and positioning needed for Week 2 OpenAPI work.
 
@@ -21,10 +21,10 @@ Week 1 is complete when:
   SkillProposal, and OutcomeReport semantics are locked
 - OpenAPI 3.1 remains the machine-readable communication contract
 - zero-trust headers, security schemes, and forbidden export fields are locked
-- Jarvis is explained without relying on Garden, Workstream, Harnessy, any
-  runtime, or any product proof
-- no document describes Jarvis as a runtime, product, agent framework, or
-  personal agent
+- Jarvis is explained without relying on a host application, external evaluation, any
+  runtime, or any compatible example
+- no document describes Jarvis as a runtime, host implementation, agent
+  framework, or agent application
 
 ## Chunk Gate
 
@@ -65,8 +65,8 @@ Chief Engineer Reviewer
   implementation readiness.
 
 Conformance And Interop Reviewer
-  Checks that existing agents, hosts, and external products map into Jarvis
-  without runtime rewrites or product-specific assumptions.
+  Checks that existing agents, hosts, and external systems map into Jarvis
+  without runtime rewrites or host-specific assumptions.
 
 Human Workflow Reviewer
   Checks that Requests, Reviews, Takeovers, Contributions, Evidence,
@@ -110,7 +110,7 @@ python3 scripts/check_week1_wording.py
 If those scripts do not exist in the branch, the chunk adds them before the PR.
 
 Week 1 chunks do not touch demo assets. Demo checks belong to a later
-product-proof or simulation update, not this protocol-lock gate.
+compatible-example or simulation update, not this protocol-lock gate.
 
 Chunks that touch roadmap sheets also run:
 
@@ -122,7 +122,7 @@ XLSX sanity check
 ## Stale Wording Scan
 
 The scan rejects wording that violates the boundaries in `AGENTS.md`, turns
-Jarvis into a host-owned implementation concern, makes product proof active
+Jarvis into a host-owned implementation concern, makes compatible example active
 before the conformance gate, or makes locked protocol decisions sound optional.
 
 ## Week 1 Chunks
@@ -314,7 +314,7 @@ Outputs:
 - positioning against ACP
 - positioning against AG-UI
 - positioning against agent SDKs
-- positioning against coding agents and personal agents
+- positioning against host-owned execution and interfaces
 - one-paragraph Jarvis explanation
 
 Done when:

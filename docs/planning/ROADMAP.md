@@ -55,11 +55,11 @@ Jarvis owns:
 
 Jarvis does not own:
 
-- product UI
+- UI
 - authentication
-- product internals
-- task/evaluation system internals
-- capability-preparation system internals
+- host implementation details
+- task/evaluation implementation details
+- host/tool/environment implementation details
 - model providers
 - tool execution
 - MCP hosting
@@ -71,7 +71,7 @@ Jarvis does not own:
 - local execution
 - operational monitoring
 
-Those are product and host responsibilities.
+Hosts own those responsibilities.
 
 ## Release Strategy
 
@@ -85,7 +85,7 @@ v0.2 Evidence And Learning Beta
   contracts
 
 v0.3 Ecosystem Conformance
-  host conformance suite, examples, and product integration guides
+  host conformance suite, examples, and host integration guides
 
 v1.0 Stable Protocol
   stable public protocol, compatibility rules, export format, and migration
@@ -96,8 +96,8 @@ v1.0 Stable Protocol
 
 Goal: prove the smallest complete human-agent collaboration loop.
 
-The alpha proves that the loop is portable, not tied to a single product,
-agent, host, or execution stack.
+The alpha proves that the loop is portable, not tied to a single host or
+execution stack.
 
 The protocol must express:
 
@@ -150,7 +150,7 @@ MemoryProposal and SkillProposal remain governed
 - auth
 - billing
 - task routing
-- product implementation
+- host implementation
 
 ## Milestone 0: Protocol Lock
 
@@ -315,13 +315,13 @@ Output:
 - OpenAPI examples
 - host and adapter integration guide
 - evaluation-system integration guide
-- host/product integration note
+- host integration note
 - interactive simulation
 
 Done when:
 
-- a team understands Jarvis without knowing any specific product
-- a product implements Jarvis without inheriting execution assumptions
+- a team understands Jarvis without knowing any specific host
+- a host implements Jarvis without inheriting execution assumptions
 - the public simulation matches the protocol definition
 
 ## v0.1 Acceptance
@@ -350,14 +350,14 @@ Output:
 
 Done when:
 
-- evaluation systems evaluate a task using Jarvis evidence records
-- host products show review, learning, and contribution history without
+- external reviewers and systems consume Jarvis EvidenceManifest records
+- implementations expose review, learning, and contribution history without
   changing protocol semantics
-- external products export compatible EvidenceManifest records
+- external systems export compatible EvidenceManifest records
 
 ## v0.3 Ecosystem Conformance
 
-Goal: make Jarvis implementable outside the original host products.
+Goal: make Jarvis implementable across independent hosts.
 
 Output:
 
@@ -370,8 +370,8 @@ Output:
 Done when:
 
 - two independent host shapes pass the same protocol conformance tests
-- protocol records remain portable across products
-- implementation-private fields stay outside Jarvis exports
+- protocol records remain portable across compatible hosts
+- implementation-private fields stay outside portable Jarvis records
 - compatible hosts exchange WorkSession evidence without sharing
   infrastructure
 
@@ -391,7 +391,7 @@ Output:
 Done when:
 
 - future compatible implementations read v1.0 records
-- product implementations do not need to adopt any Jarvis-owned execution stack
+- host implementations do not need to adopt any Jarvis-owned execution stack
 - Jarvis remains protocol-only
 
 ## Risk Register
@@ -400,14 +400,14 @@ Done when:
 
 Risk: Jarvis starts defining how agents run.
 
-Control: every execution, cloud, sandbox, database, queue, and deployment
-choice belongs to products and hosts.
+Control: every execution, cloud, isolation, storage, queue, and deployment
+choice belongs to hosts.
 
-### Product Creep
+### Host Implementation Creep
 
-Risk: Jarvis becomes a product workspace.
+Risk: Jarvis becomes a host workspace.
 
-Control: products implement Jarvis; Jarvis does not inherit product UI,
+Control: hosts implement Jarvis; Jarvis does not inherit UI,
 identity, operations, or enterprise controls.
 
 ### Task-System Creep
@@ -415,7 +415,7 @@ identity, operations, or enterprise controls.
 Risk: Jarvis becomes a task or evaluation system.
 
 Control: task systems own tasks, rubrics, evaluation, and settlement. Jarvis
-owns the collaboration record that evaluation systems evaluate.
+owns the collaboration record that external reviewers and systems evaluate.
 
 ### Weak Evidence
 
@@ -436,7 +436,7 @@ Control: learning becomes MemoryProposal or SkillProposal until reviewed.
 3. Use `11-core-protocol-objects.md` as the source of truth for core terms.
 4. Draft OpenAPI examples for each protocol contract.
 5. Define conformance tests for the golden path.
-6. Keep Garden POC mapping out of the current execution cycle until the
+6. Keep compatibility example mapping out of the current execution cycle until the
    OpenAPI contract and conformance fixtures are stable.
 7. Define one real existing-agent adapter proof.
 8. Update the live simulation to show host/execution as outside Jarvis.

@@ -6,15 +6,15 @@ This document locks how Contribution, EvidenceManifest, LearningRecord,
 MemoryProposal, SkillProposal, and OutcomeReport behave.
 
 Jarvis does not define payment, scoring, task evaluation, model training,
-product analytics, or storage implementation.
+host analytics, or storage implementation.
 
 ## Contribution
 
 Contribution records who did what inside a WorkSession.
 
 Contribution is not compensation. Contribution is not payment. Contribution is
-not score. Downstream systems may evaluate Contribution records, but Jarvis does
-not own that evaluation.
+not score. External systems evaluate Contribution records, but Jarvis does not
+own that evaluation.
 
 Every Contribution records:
 
@@ -107,10 +107,10 @@ captured_at
 limitation_refs
 ```
 
-Evidence item refs may point to host-held artifacts, source snapshots, command
+Evidence item refs point to host-held artifacts, source snapshots, command
 outputs, tool results, review records, request records, policy decisions, or
-export receipts. The refs are portable protocol pointers, not host-private
-database ids.
+export receipts when those evidence sources exist. The refs are portable
+protocol pointers, not host-private database ids.
 
 Rules:
 
@@ -119,7 +119,7 @@ Rules:
 - Evidence item refs MUST record capture time.
 - Evidence item refs MUST NOT expose credentials, secrets, raw runtime state,
   host-only database ids, deployment details, billing data, private scores, or
-  product UI state.
+  UI state.
 - Evidence captured after the fact MUST be marked as limitation or
   post-session feedback, not presented as during-work evidence.
 
@@ -170,9 +170,9 @@ Rules:
   cancelled, or closed WorkSession state.
 - Redacted exports are derived artifacts.
 - Redaction never replaces the source evidence record.
-- EvidenceManifest MUST exclude product-private fields, credentials, secrets,
+- EvidenceManifest MUST exclude host-private fields, credentials, secrets,
   raw runtime state, host-only database ids, deployment details, billing data,
-  private scores, and product UI state.
+  private scores, and UI state.
 
 Rejections:
 
@@ -210,8 +210,10 @@ Rules:
 - Jarvis records human learning, agent learning, and pair learning.
 - LearningRecord references source events. OutcomeReport-backed
   LearningRecords use the OutcomeReport acceptance JarvisEvent as
-  `source_event_refs` and may also record `outcome_report_refs`.
-- LearningRecord may reference MemoryProposal or SkillProposal.
+  `source_event_refs` and record `outcome_report_refs` when external feedback
+  exists.
+- LearningRecord references MemoryProposal or SkillProposal when learning
+  becomes governed memory or skill change.
 - LearningRecord does not create durable memory or active skill behavior by
   itself.
 

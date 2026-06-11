@@ -6,9 +6,9 @@ This chunk defines how Jarvis records who contributed, what evidence was
 captured, what the human-agent pair learned, and how memory or skill changes
 become governed proposals instead of silent durable behavior.
 
-This chunk does not define payment, scoring, task evaluation, Workstream
-behavior, model training, product analytics, storage implementation, or Garden
-POC behavior.
+This chunk does not define payment, scoring, task evaluation, external evaluation
+behavior, model training, host analytics, storage implementation, or host
+implementation behavior.
 
 ## Scope
 
@@ -36,12 +36,12 @@ Chunk 4 does not:
 - define compensation
 - define marketplace scoring
 - define reviewer payout
-- define Workstream evaluation
-- define product analytics
+- define external evaluation
+- define host analytics
 - define model fine-tuning
 - define vector database behavior
 - define storage tables
-- define Garden POC behavior
+- define host implementation behavior
 
 ## Attribution Thesis
 
@@ -52,8 +52,8 @@ distinguishable.
 
 Shared contribution never erases the individual contributing actors.
 
-Contribution is not payment. Contribution is the protocol record downstream
-systems may inspect.
+Contribution is not payment. Contribution is the protocol record external
+systems inspect.
 
 ## Evidence Thesis
 
@@ -88,7 +88,7 @@ Contribution with contributor_type shared preserves individual contributor refs.
 Contribution is not compensation, payment, score, or settlement.
 Evidence is captured during work and linked to JarvisEvents.
 EvidenceManifest exports only from completed, failed, cancelled, or closed WorkSession.
-EvidenceManifest excludes product-private fields and secrets.
+EvidenceManifest excludes host-private fields and secrets.
 Redaction creates derived export artifacts and never replaces source evidence.
 LearningRecord subject_type is human, agent, or pair.
 MemoryProposal and SkillProposal start as proposed or pending review states.
@@ -165,12 +165,12 @@ outcome_report_without_learning_record
 Reviewers must verify:
 
 - Contribution distinguishes human, agent, service, tool, and shared work
-- EvidenceManifest is portable proof, not product analytics
+- EvidenceManifest is portable proof, not host analytics
 - evidence is captured during work
 - learning records human, agent, and pair improvement
 - memory and skill proposals cannot silently mutate durable behavior
 - OutcomeReport remains an extension and does not become evaluation ownership
-- export boundaries exclude product-private and secret fields
+- export boundaries exclude host-private and secret fields
 
 ## Done Criteria
 

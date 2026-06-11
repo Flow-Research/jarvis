@@ -1,10 +1,10 @@
 # Chunk 6: Positioning And Adoption Lock
 
-Chunk 6 closes Week 1 by locking why Jarvis exists beside existing agents,
-agent frameworks, agent protocols, and product hosts.
+Chunk 6 closes Week 1 by locking why Jarvis exists as a human-agent
+collaboration and learning-loop protocol.
 
 This chunk does not create adapters, OpenAPI YAML, conformance fixtures,
-runtime code, product UI, or Garden POC behavior. It locks the adoption
+runtime code, UI, or host implementation behavior. It locks the adoption
 argument that Week 2 OpenAPI drafting must preserve.
 
 ## Scope
@@ -17,10 +17,7 @@ positioning against MCP
 positioning against A2A
 positioning against AGNTCY ACP
 positioning against AG-UI
-positioning against agent SDKs
-positioning against coding agents
-positioning against personal agents
-existing-agent adoption rule
+host boundary rule
 non-replacement rule
 Week 1 closeout state
 ```
@@ -33,11 +30,11 @@ Chunk 6 does not:
 - create OpenAPI YAML
 - create conformance fixtures
 - define runtime execution
-- define product UI
-- define Garden POC behavior
+- define UI
+- define host implementation behavior
 - define task marketplace behavior
 - define auth provider behavior
-- replace MCP, A2A, ACP, AG-UI, agent SDKs, coding agents, or personal agents
+- replace MCP, A2A, ACP, AG-UI, host execution, UI, storage, or deployment
 
 ## Locked Position
 
@@ -79,39 +76,30 @@ does not define remote-agent run execution, thread execution, output retrieval,
 or ACP agent interfaces.
 
 AG-UI standardizes how agents connect to user-facing applications through
-event-based frontend interaction. Hosts may expose Jarvis WorkSession state,
+event-based frontend interaction. Hosts expose Jarvis WorkSession state,
 Requests, Reviews, Takeovers, Contributions, and Evidence to AG-UI clients.
 Jarvis does not define frontend events, frontend rendering, user interface
 state, or UI transport.
 
-## Agent Product Positioning
+## Host Boundary
 
-Agent SDKs provide execution primitives, model calls, tool calls, tracing,
-handoffs, and runtime behavior. Jarvis records the human-agent collaboration
-around that execution. Jarvis does not replace an SDK.
-
-Coding agents perform software work through terminals, editors, repositories,
-tools, sandboxes, and review loops. Jarvis records the WorkSession, Policy,
-Requests, Reviews, Takeovers, Contributions, Evidence, and Learning around that
-work. Jarvis does not replace the coding agent.
-
-Personal agents provide a product or assistant experience for a person. Jarvis
-defines the collaboration protocol that a personal agent may implement. Jarvis
-is not the personal agent product.
+Hosts provide UI, auth, storage, execution, connectors, notifications,
+monitoring, support, and deployment. Jarvis defines the records that hosts
+exchange. Jarvis does not become the host.
 
 ## Adoption Rule
 
 Existing agents remain first-class.
 
-A compatible host or adapter maps existing agent work into Jarvis records
-without rewriting the agent runtime. The adapter records who acted, what Policy
+A compatible host maps existing human-agent work into Jarvis records without
+rewriting host-owned execution. The mapping records who acted, what Policy
 allowed, what was blocked, what the human reviewed, what evidence was captured,
 what contribution was made, and what learning was accepted.
 
-Adoption fails if the implementation requires a developer to abandon their
-agent, runtime, product UI, model provider, sandbox, database, or cloud.
+Adoption fails if the implementation requires a developer to abandon host-owned
+execution, UI, model providers, isolation mechanisms, storage, or deployment.
 
-Adoption succeeds when different agents and products produce the same
+Adoption succeeds when different compatible implementations produce the same
 WorkSession, Request, Review, Takeover, Contribution, EvidenceManifest,
 LearningRecord, MemoryProposal, and SkillProposal semantics.
 
@@ -124,9 +112,6 @@ MCP answers: how does an agent use tools and resources?
 A2A answers: how do agents communicate and delegate?
 ACP answers: how does a remote agent expose a standard interface?
 AG-UI answers: how does an agent interact with a frontend?
-Agent SDKs answer: how does an agent execute?
-Coding agents answer: how does an agent work inside a codebase?
-Personal agents answer: how does a person experience an assistant?
 Jarvis answers: how do a human and an agent collaborate, produce evidence,
 record contribution, and learn together across WorkSessions?
 ```
