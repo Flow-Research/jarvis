@@ -6,7 +6,7 @@ This document records decisions that are fixed for the Jarvis protocol.
 
 - Jarvis is a protocol, not an execution stack.
 - Jarvis does not define cloud providers, local execution, databases, queues,
-  sandboxes, deployment, or product UI.
+  sandboxes, deployment, or UI.
 - HumanWorker and AgentWorker are first-class participants.
 - WorkSession is the source of truth.
 - Every serious collaboration creates or resumes a WorkSession.
@@ -64,10 +64,10 @@ Jarvis does not decide:
 - how an agent process runs
 - which model is called
 - which tool system is used
-- which sandbox is used
+- which isolation mechanism is used
 - which cloud is used
-- how a product authenticates users
-- how a product displays inboxes or reviews
-- how a product bills or operates
+- how a host authenticates users
+- how a host displays inboxes or reviews
+- how a host bills or operates
 
 Hosts own those decisions.

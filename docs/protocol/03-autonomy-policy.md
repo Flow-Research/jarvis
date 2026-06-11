@@ -100,7 +100,7 @@ deny
   continue.
 
 narrow
-  Action may continue only inside a smaller approved scope.
+  Action continues only inside a smaller approved scope.
 
 review_required
   Action is covered only after HumanWorker Review or Takeover.
@@ -251,14 +251,14 @@ Approval does not mutate Policy. Approval creates bounded authority through
 ApprovalScope. Durable Policy changes require a separate governed policy change
 record.
 
-## Inbox Semantics
+## Request Surface Boundary
 
-Hosts may surface Requests through an inbox.
+Hosts surface Requests through any host-owned interface.
 
 Jarvis owns Request state, Review resolution, Takeover transition, and the
-event record. Jarvis does not define an inbox product surface.
+event record. Jarvis does not define a host inbox surface.
 
-An inbox item explains:
+Request records carry the protocol fields hosts need to represent a blocker:
 
 - why the agent paused
 - what policy blocked it
@@ -281,8 +281,8 @@ the WorkSession records the difference
 agent resumes with updated context after reconciliation
 ```
 
-Takeover may create or reference LearningRecord, MemoryProposal, or
-SkillProposal records.
+Takeover creates or references LearningRecord, MemoryProposal, or SkillProposal
+records when the takeover changes future WorkSession behavior.
 
 Takeover has protocol locking semantics:
 
@@ -306,133 +306,117 @@ Takeover states map to the protocol state machine in
 [12-request-protocol.md](./12-request-protocol.md). Resume requires
 reconciliation refs before AgentWorker autonomy continues.
 
-## Policy Evaluation Points
+## Policy Decision Points
 
-Policy runs:
+Jarvis records PolicyDecision before an AgentWorker action is accepted as
+protocol state for:
 
-- before tool exposure
-- before tool execution
-- before command execution
-- before filesystem writes
-- before network access
-- before external sends
-- before memory writes
-- before skill updates
-- before final or irreversible actions
+- capability visibility
+- tool action
+- command action
+- resource mutation
+- network action
+- external effect
+- memory write
+- skill update
+- final or irreversible action
 
-Policy also runs after execution to classify evidence, risk, and learning
-signals.
+Jarvis records evidence, risk, and learning classifications as protocol state.
 
-## Policy-Wrapped Tools
+## Tool Policy Records
 
-The agent receives policy-wrapped tools, not raw dangerous tools.
+Hosts own tool wrapping and tool execution. Jarvis records policy state for
+tool use that affects a WorkSession.
 
-Wrappers:
+Jarvis records:
 
-- filter arguments
-- restrict hosts/paths/scopes
-- redact secrets
-- require approval when needed
-- emit requests
-- record evidence
-- inspect outputs for untrusted content
-- produce audit events
+- tool ref
+- requested action
+- requested scope
+- data sensitivity
+- risk class
+- PolicyDecision
+- Request when blocked
+- Review when required
+- evidence refs
+- output trust label
 
-## External Send Outbox
+## External Effect Records
 
 Any AgentWorker action that sends, publishes, submits, deploys, spends, merges,
-or exposes data outside the approved WorkSession or host boundary uses a
-two-phase outbox:
+or exposes data outside the approved WorkSession or host boundary requires
+protocol-visible authorization before the action is accepted as protocol state.
 
-```txt
-draft
-  agent prepares exact payload, recipient, command, diff, or artifact
+Jarvis records:
 
-classified
-  policy classifies risk, data sensitivity, credentials, and irreversible effects
+- external effect type
+- payload or artifact ref
+- recipient ref when applicable
+- tool ref when applicable
+- data sensitivity
+- risk class
+- PolicyDecision
+- approval scope when approved
+- Review when human judgment is required
+- evidence receipt refs
 
-reviewed
-  human approval or materialized send authorization is attached
+The action remains blocked until the required PolicyDecision, Request, Review,
+or Takeover state permits it. Jarvis does not define outbox architecture,
+commit tokens, send tokens, delivery mechanisms, or host execution mechanics.
 
-committed
-  host receives a one-time send token and performs the action
+## Credential Exposure Records
 
-receipted
-  immutable send receipt is appended to evidence
-```
+Hosts own secret handling. Jarvis records credential exposure decisions as
+protocol state when credentials affect a WorkSession.
 
-The model never silently sends external effects through raw tools.
+Jarvis credential-related records include:
 
-No tool sends, publishes, submits, deploys, spends, merges, or exports outside
-the approved boundary except through a host outbox represented by
-PolicyDecision, Review or authorization, outbox, and EvidenceManifest records.
-Approval binds to payload hash, recipient, tool id, credential scope, and
-expiry. Any payload, recipient, credential, or tool change invalidates
-approval. Commit uses a one-time token and idempotency key.
+- credential source ref
+- requested capability
+- requested credential scope
+- Actor requesting use
+- PolicyDecision
+- Review when required
+- approval scope
+- expiry
+- evidence refs
+- redaction state
 
-Pre-approved send grants are templates. Before commit, the host materializes a
-`SendAuthorization` bound to canonical payload hash, recipient, tool id,
-credential scope, data classification, expiry, and idempotency key. Jarvis
-requires explicit review for `public_publish`, `financial`, `destructive`, and
-`privilege_change` unless the template enumerates the exact safe action class.
+Compatible implementations MUST NOT expose raw credentials in Jarvis protocol
+records.
 
-## Credential Broker
+Jarvis does not define secret-handling architecture, token format, process
+environment behavior, log redaction implementation, or network enforcement.
 
-Credentials are brokered, not exposed.
+## Execution Context Records
 
-Rules:
+Hosts own execution systems and isolation. Jarvis records the execution
+context refs and policy refs that affect a WorkSession:
 
-- no raw secret reveal to the model
-- raw credentials are never injected into model-visible or command-readable
-  environments
-- no long-lived secret injection by default
-- non-extractable broker handles or broker-executed operations
-- tool-bound scoped tokens only when extraction risk is eliminated by host
-  controls
-- short expiry
-- redaction in logs and debug views
-- no env dump
-- per-use audit
-- egress restrictions tied to credential scope
-- explicit review for new credential/tool combinations
+- execution context ref
+- resource scope ref
+- network policy ref
+- command policy ref
+- dependency policy ref
+- credential exposure policy ref
+- artifact export policy ref
 
-A compatible implementation never places raw secrets or bearer tokens inside
-arbitrary command-readable state. If a token enters a sandbox, it is
-single-use, audience-bound, operation-specific, short-lived, no-readback, and
-paired with network restrictions. The policy model treats stdout and stderr as
-possible leak paths for anything visible to the command. General env-var secret
-injection is not a Jarvis default.
+If the AgentWorker needs a blocked host, secret, package, or external action,
+it creates a Request.
 
-## Execution Environment Policy
+Jarvis records:
 
-When a host provides an execution environment, Jarvis policy records define the
-limits:
+- execution context ref
+- resource scope ref
+- network policy ref
+- command policy ref
+- dependency policy ref
+- credential exposure policy ref
+- artifact export policy ref
+- PolicyDecision
+- evidence refs
 
-- filesystem scope
-- network mode
-- selected allowed hosts
-- private network deny list
-- command timeout
-- package install policy
-- credential exposure policy
-- artifact export policy
-
-If the agent needs a blocked host, secret, package, or external action, it asks.
-
-Default sandbox posture:
-
-- execution environment lifecycle is ephemeral per WorkSession unless a
-  workspace persistence grant exists
-- no host filesystem access
-- workspace-scoped mounts
-- source files read-only unless write grant exists
-- writes go to working directories unless explicitly granted
-- network starts denied
-- private IP and metadata hosts denied
-- DNS/host allowlists are grant-scoped and expire
-- package installs quarantined and recorded
-- artifact export goes through outbox/export review unless pre-granted
-- risky execution tears down automatically after evidence capture
+Jarvis does not define host execution or isolation mechanics.
 
 ## Failure Modes
 
@@ -479,28 +463,29 @@ Degraded audit integrity automatically denies `credentialed`, `send_external`,
 observe-only, propose-only, or scratch-local work until audit integrity is
 restored.
 
-## Default Policy Profiles
+## Policy Profile Records
 
-Jarvis defines safe policy profile presets:
+Jarvis records policy profile refs. Hosts own policy profile implementation.
 
 ```txt
 observe_only
-  read-only summaries, no execution
+  observation-only protocol records
 
 research_only
-  public fetches through approved tools, no private data export
+  research actions require declared policy refs
 
-local_dev_safe
-  read project, write scratch/work dirs, run approved commands, no external send
+bounded_local_work
+  local work actions require declared policy refs
 
 workspace_write
-  modify workspace files with review for broad/destructive changes
+  workspace mutation actions require declared policy refs
 
-sandbox_autonomous
-  run commands and write artifacts inside a bounded execution environment
+host_execution_bounded
+  host-owned execution actions require declared policy refs
 ```
 
-Developers start with presets and tighten or extend them.
+Compatible implementations start with explicit policy refs and tighten or
+extend them through governed policy changes.
 
 ## Policy Evolution
 

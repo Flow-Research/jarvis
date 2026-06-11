@@ -2,10 +2,9 @@
 
 This roadmap turns Jarvis from design into a credible protocol proof.
 
-Jarvis is not an agent framework, runtime, agent adapter package, cloud stack, or
-product UI. Jarvis is the human-agent collaboration and learning-loop
-protocol. The next 30 days prove that existing agents and products are
-mapped into Jarvis protocol records without replacing their runtime.
+Jarvis is the human-agent collaboration and learning-loop protocol. The next 30
+days prove that existing human-agent work maps into Jarvis protocol records
+without moving host implementation into Jarvis.
 
 ## Thesis
 
@@ -36,13 +35,12 @@ Jarvis sits beside existing standards:
   not MCP.
 - A2A standardizes agent-to-agent communication and delegation. Jarvis records
   A2A delegation inside a WorkSession, but Jarvis is not A2A.
-- AG-UI standardizes agent-to-frontend interaction. Hosts may expose Jarvis
+- AG-UI standardizes agent-to-frontend interaction. Hosts expose Jarvis
   WorkSession records to AG-UI clients, but Jarvis does not define frontend
   events, rendering, UI state, or UI transport.
-- Agent SDKs, coding agents, local agents, and hosted agent products provide
-  runtimes, tools, sessions, handoffs, tracing, or execution environments.
-  Compatible adapters map their work into collaboration records instead of
-  replacing them.
+- Existing execution systems provide runtimes, tools, sessions, handoffs, and
+  tracing. Compatible hosts map that work into
+  collaboration records instead of replacing those systems.
 
 Protocol grounding:
 
@@ -66,7 +64,7 @@ Jarvis OpenAPI 3.1 contract
   -> zero-trust security requirements
   -> portable export
   -> conformance fixtures
-  -> existing-agent adapter contract
+  -> compatibility contract
   -> compatible example readiness
 ```
 
@@ -99,7 +97,7 @@ Deliverables:
 Done when:
 
 - every document uses the same core object names
-- no document describes Jarvis as a runtime, product, agent framework, or
+- no document describes Jarvis as a runtime, host implementation, agent framework, or
   agent application
 - every core object has a reason to exist
 - OpenAPI 3.1 is the machine-readable communication contract
@@ -184,21 +182,21 @@ Deliverables:
 - GitHub Pages simulation updated to show the OpenAPI proof path
 - short public narrative: why Jarvis exists and what it does not replace
 
-First Adapter Targets:
+First Compatibility Targets:
 
-- Claude Code-style CLI adapter
-- Hermes/OpenClaw-style local agent adapter
-- OpenAI Agents SDK-style runtime adapter
-- MCP tool-use adapter
+- command-line host boundary
+- local execution host boundary
+- hosted execution host boundary
+- tool-use protocol boundary
 
 Done when:
 
-- at least two different host or adapter shapes have a credible implementation
+- at least two different compatible implementation shapes have a credible
   plan against the same OpenAPI contract
 - a compatible host example maps real work into Jarvis records without becoming the
   protocol itself
 - the team shares one URL and one README that explain the point clearly
-- the protocol is discussed as a standard, not an internal app feature
+- the protocol is discussed as a standard, not a host-specific app feature
 
 ## Daily Operating Rhythm
 
@@ -219,7 +217,7 @@ Daily checks:
 2. Does this work with an existing agent without rewriting the agent?
 3. Did we capture human judgment, agent action, contribution, evidence, and
    learning?
-4. Does another product implement this without host-application-specific assumptions?
+4. Does a compatible implementation use this without host-specific assumptions?
 5. Does this improve the next WorkSession?
 
 ## Non-Negotiables

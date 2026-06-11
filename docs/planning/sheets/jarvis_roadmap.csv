@@ -32,7 +32,7 @@ W2,Jun 15-19,Make conformance strong enough to prove compatibility.,"- write com
 - define capability negotiation","- build golden-path fixtures
 - build failing fixtures
 - validate status transitions
-- validate export does not require product-private fields","- create CLI/existing-agent adapter plan
+- validate export does not require host-private fields","- create CLI/existing-agent adapter plan
 - capture messages/actions as JarvisEvents
 - capture tool use as PolicyDecision and Evidence
 - capture human correction as Review","- keep compatible example out of active scope
@@ -49,7 +49,7 @@ W3,Jun 22-26,Prove Jarvis with conformance fixtures and one adapter contract.,"-
 - HumanWorker objective -> AgentWorker action
 - blocked action -> Request
 - human response -> Review or Takeover","- prepare compatible examples after the conformance gate
-- define product-private fields that stay out of export
+- define host-private fields that stay out of export
 - update simulation narrative if needed","Two different host or adapter shapes produce valid Jarvis records for the same collaboration loop without sharing runtime, UI, storage, or execution stack."
 W4,Jun 29-Jul 3,Freeze v0.1 alpha and prepare compatible-example review.,"- close protocol lock gaps
 - publish compatibility notes

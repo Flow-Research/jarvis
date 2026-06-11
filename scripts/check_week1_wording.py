@@ -14,7 +14,7 @@ NORMATIVE_TERM_PATTERN = re.compile(
 )
 
 PATTERNS = [
-    r"personal agent harness",
+    r"personal\s+agent\s+harness",
     r"host implementation active work",
     r"schema-first contract",
     r"demo-first plan",
@@ -23,7 +23,7 @@ PATTERNS = [
     r"Jarvis owns runtime",
     r"Jarvis owns database",
     r"Jarvis owns cloud",
-    r"Jarvis owns product UI",
+    r"Jarvis owns UI",
     r"\bmaybe\b",
     r"\bprobably\b",
     r"\bcould\b",
@@ -42,10 +42,14 @@ PATTERNS = [
     r"if accepted",
     r"if this is approved",
 ]
+LOWERCASE_PATTERNS = [
+    r"\bmay\b",
+]
 
 
 def main() -> int:
     compiled = [re.compile(pattern, re.IGNORECASE) for pattern in PATTERNS]
+    lowercase_compiled = [re.compile(pattern) for pattern in LOWERCASE_PATTERNS]
     failures: list[tuple[Path, int, str]] = []
 
     for path in sorted(FILES):
@@ -61,7 +65,7 @@ def main() -> int:
             if path.name == "check_week1_wording.py":
                 continue
             line_to_check = NORMATIVE_TERM_PATTERN.sub("", line)
-            for pattern in compiled:
+            for pattern in [*compiled, *lowercase_compiled]:
                 if pattern.search(line_to_check):
                     failures.append((path.relative_to(ROOT), line_number, line))
                     break

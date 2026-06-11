@@ -7,7 +7,7 @@ digraph G {
   l2 [label="Layer 2: Protocol Objects\nWorkSession · Policy · Request · Review · Takeover\nContribution · EvidenceManifest · LearningRecord", fillcolor="#f0fdf4", color="#16a34a"];
   l3 [label="Layer 3: Protocol Operations\ncreate WorkSession · append event · create Request · record Review\nstart/reconcile Takeover · export EvidenceManifest · submit OutcomeReport", fillcolor="#fff7ed", color="#ea580c"];
   l4 [label="Layer 4: OpenAPI 3.1 Binding\npaths · components.schemas · securitySchemes · errors · examples", fillcolor="#f5f3ff", color="#7c3aed"];
-  outside [label="Outside Jarvis: Host Implementation\nUI · auth provider · database · queue · runtime · sandbox · model provider · deployment", fillcolor="#f8fafc", color="#64748b"];
+  outside [label="Outside Jarvis: Host Implementation\nUI · auth provider · storage · queue · runtime · isolation · model provider · deployment", fillcolor="#f8fafc", color="#64748b"];
 
   l1 -> l2 -> l3 -> l4 -> outside;
 }

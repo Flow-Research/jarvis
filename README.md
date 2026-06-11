@@ -9,13 +9,11 @@ It defines how human workers and agent workers coordinate under shared goals
 and human-defined policy, complete work together, review each other, record
 contributions, capture evidence, and both improve across WorkSessions.
 
-Jarvis stays focused on the collaboration and learning loop. Products, agents,
-execution environments, and external systems integrate with Jarvis by
-implementing its protocol contracts.
+Jarvis stays focused on the collaboration and learning loop. Hosts and
+external systems integrate with Jarvis by implementing its protocol contracts.
 
-Jarvis is the compatibility protocol for any HumanWorker, AgentWorker,
-product, host, or external system that needs to participate in governed
-human-agent collaboration.
+Jarvis is the compatibility protocol for any HumanWorker, AgentWorker, host, or
+external system that needs to participate in governed human-agent collaboration.
 
 ## Interactive Simulation
 
@@ -43,8 +41,8 @@ The human gives direction, judgment, context, correction, approval, and
 accountability. The agent plans, executes, researches, drafts, uses tools,
 collects evidence, and proposes improvements.
 
-Jarvis defines the rules of that collaboration. Products, models, task systems,
-execution environments, and external services plug into those rules.
+Jarvis defines the rules of that collaboration. Hosts and external systems
+implement those rules.
 
 ## Thesis
 
@@ -79,8 +77,8 @@ human judgment + agent execution + policy + review + evidence + shared learning
 
 compound across real work.
 
-The protocol makes this loop portable: different agents, products, hosts, and
-task systems exchange the same WorkSession, Request, Review, Contribution,
+The protocol makes this loop portable: different compatible implementations
+exchange the same WorkSession, Request, Review, Contribution,
 EvidenceManifest, and LearningRecord concepts without sharing the same
 infrastructure.
 
@@ -197,8 +195,8 @@ SkillProposal
 9. Execution is delegable; accountability remains attributable.
 10. HumanWorker and AgentWorker both learn.
 11. Every completed WorkSession improves the next WorkSession.
-12. Jarvis stays protocol-only; runtimes, products, agents, and external
-    protocols implement or integrate with it without becoming it.
+12. Jarvis stays protocol-only; hosts and external systems implement or
+    integrate with it without becoming it.
 
 ## Boundaries
 
@@ -216,22 +214,20 @@ Jarvis owns:
 - skill proposal semantics
 - integration boundary contracts
 
-Jarvis does not own:
+Jarvis does not own host implementation:
 
-- agent frameworks
-- personal agent products
-- agent runtimes
-- coding agents
-- tool protocols
-- frontend protocols
-- product UI
-- external task marketplaces
-- external identity systems
-- enterprise workspace controls
+- UI
+- authentication
+- authorization
+- storage
+- execution
 - model providers
-- cloud providers or deployment choices
-- sandbox implementations or execution stacks
-- database implementations
+- tool execution
+- isolation mechanisms
+- deployment
+- billing
+- monitoring
+- host-specific workflow
 
 ## What Jarvis v0.1 Must Prove
 

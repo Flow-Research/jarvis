@@ -11,7 +11,7 @@ produce reviewable Requests and Reviews, record Contributions, export
 EvidenceManifest records, and govern LearningRecords, MemoryProposals, and
 SkillProposals.
 
-Jarvis is not a runtime, agent framework, product workspace, model provider,
+Jarvis is not a runtime, agent framework, host workspace, model provider,
 task marketplace, or cloud stack.
 
 ## Protocol Habits We Use
@@ -81,7 +81,7 @@ Jarvis does not become:
 - OpenAPI for generic HTTP APIs
 - OAuth for identity and authorization
 - an agent SDK runtime
-- a product-specific workflow engine
+- a host-specific workflow engine
 
 Jarvis integrates with all of these. It owns the collaboration and learning
 record they do not define.
@@ -99,7 +99,7 @@ The repo is aligned on the main thesis:
 - EvidenceManifest provides portable proof.
 - LearningRecord captures human, agent, and pair learning.
 - MemoryProposal and SkillProposal prevent silent learning mutation.
-- products and hosts own execution, storage, UI, deployment, and model choice.
+- hosts own execution, storage, UI, deployment, and model choice.
 
 ## Locked Before Implementation
 
@@ -110,7 +110,7 @@ The docs now lock these points before OpenAPI contract work starts:
 - policy docs keep Jarvis out of runtime ownership.
 - host integration keeps actor ids and worker ids separate.
 - WorkSession evidence terms stay consistent.
-- roadmap wording stays independent from external products.
+- roadmap wording stays independent from external systems.
 - core object spec uses protocol-style normative language.
 
 ## Week 1 Closeout State
@@ -130,9 +130,8 @@ Week 1 has locked the OpenAPI entry decisions needed before contract drafting:
 7. WorkSession-scoped and export reads require protocol version, caller
    authentication, and Actor authority.
 8. Portable exports and error responses exclude forbidden host-private fields.
-9. Positioning is locked: Jarvis integrates with MCP, A2A, ACP, AG-UI, agent
-   SDKs, coding agents, personal agents, and product hosts without replacing
-   them.
+9. Positioning is locked: Jarvis records collaboration around host-owned
+   execution and external protocol participation without replacing them.
 
 Week 2 starts from these locked decisions and drafts OpenAPI component syntax,
 path syntax, examples, and conformance fixtures.

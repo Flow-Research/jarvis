@@ -15,30 +15,16 @@ working in this repository.
 
 ## Non-Negotiable Boundary
 
-Jarvis is not:
+Jarvis is a protocol.
 
-- a personal agent
-- a chatbot
-- an agent SDK
-- an agent runtime
-- a coding agent
-- a cloud stack
-- a sandbox
-- a database
-- an auth system
-- a product UI
-- a host application
-- a task evaluation system
-- a scoring system
-- a payment system
-- a marketplace
-- MCP
-- A2A
-- AG-UI
-- OpenAPI for generic HTTP APIs
+Jarvis defines portable contracts for governed collaboration between
+HumanWorkers and AgentWorkers.
 
-Jarvis integrates with products, runtimes, agents, tools, and protocols. Jarvis
-does not replace them.
+Jarvis does not own host implementation.
+
+Hosts implement Jarvis. Hosts own execution, storage, identity, UI, deployment,
+runtime behavior, model calls, tool execution, billing, monitoring, and
+host-specific workflow.
 
 ## What Jarvis Owns
 
@@ -72,25 +58,23 @@ Jarvis owns the protocol contracts for:
 
 ## What Hosts Own
 
-Hosts own implementation details.
+Hosts own implementation details:
 
-That includes:
-
-- product UI
+- UI
 - identity provider
 - authentication
 - authorization backend
-- database
+- storage
 - queues
 - cloud provider
 - local execution
-- sandbox implementation
+- isolation mechanism
 - model provider
 - tool execution
 - billing
 - deployment
 - monitoring
-- product-specific workflow
+- host-specific workflow
 
 A host implements Jarvis. A host is not Jarvis.
 
@@ -105,9 +89,8 @@ work, take over, record contribution, produce evidence, or learn together?
 
 If yes, the change belongs in Jarvis.
 
-If the change defines execution, UI, auth, storage, billing, cloud,
-marketplace, runtime, model calls, or product workflow, it belongs outside
-Jarvis.
+If the change defines host execution, UI, auth, storage, billing, cloud,
+runtime, model calls, or host workflow, it belongs outside Jarvis.
 
 ## Core Thesis
 
@@ -117,7 +100,7 @@ Not the human alone.
 Not the agent alone.
 Not the model.
 Not the runtime.
-Not the product.
+Not the host.
 
 The HumanWorker improves.
 The AgentWorker improves.
@@ -146,8 +129,7 @@ Layer 4: OpenAPI 3.1 communication binding
   component schemas, security schemes, errors, examples
 
 Outside Jarvis: Host implementation
-  product workspace, CLI adapter, local host, external agent product,
-  enterprise host
+  UI, auth, storage, execution, deployment, model calls, and tool execution
 ```
 
 OpenAPI 3.1 is the primary machine-readable communication contract. Separate
@@ -189,37 +171,21 @@ event hash.
 Every AgentWorker action that affects a WorkSession records a PolicyDecision
 before the action is accepted as protocol state.
 
-Every export excludes product-private fields, credentials, secrets, raw runtime
+Every export excludes host-private fields, credentials, secrets, raw runtime
 state, host-only database ids, deployment details, billing data, private scores,
-product UI state, raw auth tokens, provider secrets, session cookies, and
-private keys.
+UI state, raw auth tokens, provider secrets, session cookies, and private keys.
 
 ## Protocol Drift Guard
 
 Every contributor must hold the protocol boundary.
 
-Jarvis does not become an agent framework because existing agents need
-coordination.
+Jarvis records the collaboration contract. Hosts provide the implementation.
 
-Jarvis does not become a runtime because compatible hosts need execution.
-
-Jarvis does not become a personal agent because personal agents implement the
-protocol.
-
-Jarvis does not become a host application because host applications implement the
-protocol.
-
-Jarvis does not become task evaluation, scoring, payment, routing, or
-marketplace infrastructure.
-
-Jarvis does not become MCP, A2A, ACP, or AG-UI because those protocols are
-recorded around WorkSessions.
-
-When a proposed change adds execution, UI, auth, storage, billing, marketplace,
-model calls, sandbox behavior, product workflow, or task evaluation, move it
-outside Jarvis. Keep only the protocol record, lifecycle rule, security rule,
-error rule, or conformance rule that protects human-agent collaboration and
-shared learning.
+When a proposed change adds host execution, UI, auth, storage, billing, model
+calls, isolation behavior, host workflow, scoring, or payment mechanics,
+move it outside Jarvis. Keep only the protocol record, lifecycle rule, security
+rule, error rule, or conformance rule that protects human-agent collaboration
+and shared learning.
 
 ## Current Execution Focus
 
@@ -243,7 +209,7 @@ Work on:
 
 Do not build host implementations in this repo.
 Do not build runtime features in this repo.
-Do not add product-specific assumptions to protocol records.
+Do not add host-specific assumptions to protocol records.
 Do not reopen locked protocol decisions unless a concrete contradiction blocks
 OpenAPI drafting.
 
@@ -310,8 +276,8 @@ Do not add host-private fields to portable protocol records.
 
 Do not weaken the boundary between Jarvis and host implementation.
 
-Do not describe Jarvis as a personal agent, harness, runtime, product, or
-framework.
+Do not describe Jarvis as a harness, runtime, framework, or host
+implementation.
 
 Jarvis is the protocol for governed human-agent collaboration and shared
 learning.

@@ -5,7 +5,7 @@ for Jarvis v0.1.
 
 Jarvis is the human-agent collaboration and learning-loop protocol. OpenAPI
 defines how compatible hosts exchange Jarvis protocol records. OpenAPI does not
-make Jarvis a runtime, product, auth system, database, cloud stack, tool
+make Jarvis a runtime, host implementation, auth system, storage system, cloud stack, tool
 protocol, frontend protocol, or agent framework.
 
 ## Files

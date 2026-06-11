@@ -30,7 +30,7 @@ Chunk 2 does not:
 
 - define runtime execution
 - define host storage
-- define product workflow
+- define host workflow
 - define host implementation behavior
 - define queue behavior
 - define model calls
@@ -126,9 +126,9 @@ closed
 Export from `active`, `waiting_on_human`, `takeover`, or `reconciling` is an
 interim host snapshot, not a final Jarvis EvidenceManifest export.
 
-Export never includes product-private fields, credentials, secrets, raw runtime
+Export never includes host-private fields, credentials, secrets, raw runtime
 state, host-only database ids, deployment details, billing data, private scores,
-or product UI state.
+or UI state.
 
 ## Reviewer Focus
 
@@ -141,7 +141,7 @@ Reviewers must verify:
 - `closed` is sealed
 - terminal outcome states do not grant new authority
 - export is only valid from permitted states
-- the lifecycle supports human-agent collaboration without becoming product UI
+- the lifecycle supports human-agent collaboration without becoming UI
 
 ## Done Criteria
 

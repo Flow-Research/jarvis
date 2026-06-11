@@ -6,12 +6,12 @@ digraph G {
   human [label="HumanWorker\njudgment · goals · review\naccountability", fillcolor="#eff6ff", color="#2563eb"];
   agent [label="AgentWorker\nexecution · research · tool use\nevidence capture", fillcolor="#eef2ff", color="#4f46e5"];
   jarvis [label="Jarvis Protocol\nWorkSession · Policy · Request · Review\nContribution · Evidence · Learning", fillcolor="#f0fdf4", color="#16a34a", penwidth=2];
-  host [label="Compatible Host / Adapter\nimplements Jarvis records\nowns runtime details", fillcolor="#fff7ed", color="#ea580c"];
+  host [label="Compatible Host\nimplements Jarvis records\nowns runtime details", fillcolor="#fff7ed", color="#ea580c"];
   mcp [label="MCP\ntools · prompts · resources", fillcolor="#ffffff"];
   a2a [label="A2A\nagent-to-agent coordination", fillcolor="#ffffff"];
   acp [label="ACP\nremote-agent interface", fillcolor="#ffffff"];
   agui [label="AG-UI\nfrontend interaction", fillcolor="#ffffff"];
-  sdk [label="Agent SDKs / Coding Agents / Personal Agents\nexecution and product experience", fillcolor="#ffffff"];
+  execution [label="Host-Owned Execution\nmodels · tools · runtime behavior", fillcolor="#ffffff"];
 
   human -> jarvis [label="collaborates through"];
   agent -> jarvis [label="collaborates through"];
@@ -20,6 +20,6 @@ digraph G {
   host -> a2a [label="uses when integrated"];
   host -> acp [label="uses when integrated"];
   host -> agui [label="exposes records to when integrated"];
-  host -> sdk [label="wraps / adapts"];
+  host -> execution [label="owns"];
   jarvis -> host [label="protocol records"];
 }

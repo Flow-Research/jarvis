@@ -6,11 +6,11 @@ digraph G {
   jarvis [label="Jarvis Protocol\nWorkSession · Policy · Request · Review\nContribution · Evidence · Learning", fillcolor="#f0fdf4", color="#16a34a", penwidth=2];
   openapi [label="OpenAPI Contract\nschemas · paths · security · errors · examples", fillcolor="#f5f3ff", color="#7c3aed"];
   conformance [label="Conformance Entry\ngolden path · failure modes · export checks", fillcolor="#ecfeff", color="#0891b2"];
-  adapters [label="Existing-Agent Adapters\nCLI agents · coding agents · SDK agents · personal agents", fillcolor="#eef2ff", color="#4f46e5"];
-  hosts [label="Compatible Hosts\nproduct workspace · local host · external product", fillcolor="#fff7ed", color="#ea580c"];
-  protocols [label="External Protocol Bridges\nMCP · A2A · ACP · AG-UI", fillcolor="#ffffff"];
+  adapters [label="Compatibility Boundaries\ncommand line · local execution · hosted execution · tool use", fillcolor="#eef2ff", color="#4f46e5"];
+  hosts [label="Compatible Implementations\nUI · storage · execution · deployment", fillcolor="#fff7ed", color="#ea580c"];
+  protocols [label="External Protocol Participation\nevents · actions · messages · tool results", fillcolor="#ffffff"];
   outcome [label="OutcomeReport Feedback\npost-session outcome -> governed learning", fillcolor="#fffbeb", color="#d97706"];
-  product [label="Compatibility Guidance\nimplementations map work into Jarvis records", fillcolor="#ffffff"];
+  guidance [label="Compatibility Guidance\nhosts produce Jarvis records", fillcolor="#ffffff"];
   deferred [label="Deferred From v0.1\nNotification · CoordinationAct · ProgressUpdate\nObservation visibility · Metrics · Full bridges", fillcolor="#fef2f2", color="#dc2626"];
 
   jarvis -> openapi [label="encoded as"];
@@ -21,6 +21,6 @@ digraph G {
   hosts -> jarvis [label="implement"];
   protocols -> jarvis [label="recorded around"];
   outcome -> jarvis [label="feeds learning"];
-  product -> jarvis [label="uses"];
+  guidance -> jarvis [label="uses"];
   deferred -> jarvis [style=dashed, label="future extensions"];
 }

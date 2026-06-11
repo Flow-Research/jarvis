@@ -4,8 +4,8 @@ Jarvis uses OpenAPI 3.1 as the primary machine-readable communication
 contract.
 
 Jarvis is a protocol. A protocol needs shared objects, shared operations, and a
-shared communication binding. OpenAPI gives Jarvis the HTTP contract that hosts,
-adapters, products, and external systems implement.
+shared communication binding. OpenAPI gives Jarvis the HTTP contract that hosts
+and external systems implement.
 
 ## Decision
 
@@ -29,8 +29,7 @@ Layer 4: OpenAPI 3.1 communication binding
   component schemas, security schemes, errors, examples
 
 Outside Jarvis: Host implementation
-  product workspace, CLI adapter, local host, external agent product,
-  enterprise host
+  UI, auth, storage, execution, deployment, model calls, and tool execution
 ```
 
 OpenAPI 3.1 is the contract. Separate schema-file packages are not the primary
@@ -84,7 +83,7 @@ The `components.schemas` section defines the protocol objects. The `paths`
 section defines how hosts exchange those objects.
 
 OpenAPI authors MUST NOT add host implementation fields, auth-provider fields,
-database ids, runtime ids, billing fields, product UI state, or deployment
+database ids, runtime ids, billing fields, UI state, or deployment
 details to core protocol schemas.
 
 ## Core Operations
@@ -282,14 +281,14 @@ genesis hash as `Jarvis-Previous-Event-Hash`. They MUST require actor
 authority, idempotency, timestamp, and protocol version before accepting the
 creation event.
 
-Every export excludes product-private fields, credentials, secrets, raw runtime
+Every export excludes host-private fields, credentials, secrets, raw runtime
 state, database ids that only the host understands, deployment details, billing
-data, private scores, and product UI state.
+data, private scores, and UI state.
 
 Forbidden export fields include:
 
 ```txt
-product-private fields
+host-private fields
 credentials
 secrets
 raw runtime state
@@ -297,7 +296,7 @@ host-only database ids
 deployment details
 billing data
 private scores
-product UI state
+UI state
 raw auth tokens
 provider secrets
 session cookies
@@ -357,9 +356,9 @@ Version negotiation rules:
 
 ```txt
 Unsupported Jarvis-Protocol-Version rejects the request.
-Compatible minor version may proceed only when required capabilities match.
+Compatible minor version proceeds only when required capabilities match.
 Protocol downgrade is rejected as unsupported_protocol_version.
-A caller may request an older supported version only by explicitly setting
+A caller requests an older supported version only by explicitly setting
 Jarvis-Protocol-Version to that version. Implementations MUST NOT silently
 downgrade a request.
 ```
@@ -468,7 +467,7 @@ points to supported versions.
 
 Error responses MUST NOT include credentials, secrets, raw runtime state,
 host-only database ids, deployment details, billing data, private scores,
-product UI state, raw auth tokens, provider secrets, session cookies, or
+UI state, raw auth tokens, provider secrets, session cookies, or
 private keys.
 
 ## Contract Sequence

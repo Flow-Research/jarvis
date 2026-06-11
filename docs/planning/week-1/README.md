@@ -2,7 +2,7 @@
 
 Week 1 locks the Jarvis protocol before OpenAPI contract drafting starts.
 
-This week does not build a host implementation, runtime features, adapters, product UI, or
+This week does not build a host implementation, runtime features, adapters, UI, or
 demo flows. This week locks the protocol meaning, lifecycle, zero-trust
 security boundary, and positioning needed for Week 2 OpenAPI work.
 
@@ -23,8 +23,8 @@ Week 1 is complete when:
 - zero-trust headers, security schemes, and forbidden export fields are locked
 - Jarvis is explained without relying on a host application, external evaluation, any
   runtime, or any compatible example
-- no document describes Jarvis as a runtime, product, agent framework, or
-  personal agent
+- no document describes Jarvis as a runtime, host implementation, agent
+  framework, or agent application
 
 ## Chunk Gate
 
@@ -65,8 +65,8 @@ Chief Engineer Reviewer
   implementation readiness.
 
 Conformance And Interop Reviewer
-  Checks that existing agents, hosts, and external products map into Jarvis
-  without runtime rewrites or product-specific assumptions.
+  Checks that existing agents, hosts, and external systems map into Jarvis
+  without runtime rewrites or host-specific assumptions.
 
 Human Workflow Reviewer
   Checks that Requests, Reviews, Takeovers, Contributions, Evidence,
@@ -314,7 +314,7 @@ Outputs:
 - positioning against ACP
 - positioning against AG-UI
 - positioning against agent SDKs
-- positioning against coding agents and personal agents
+- positioning against host-owned execution and interfaces
 - one-paragraph Jarvis explanation
 
 Done when:

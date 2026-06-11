@@ -55,11 +55,11 @@ Jarvis owns:
 
 Jarvis does not own:
 
-- product UI
+- UI
 - authentication
-- product internals
-- task/evaluation system internals
-- host/tool/environment implementation internals
+- host implementation details
+- task/evaluation implementation details
+- host/tool/environment implementation details
 - model providers
 - tool execution
 - MCP hosting
@@ -71,7 +71,7 @@ Jarvis does not own:
 - local execution
 - operational monitoring
 
-Products and hosts own those responsibilities.
+Hosts own those responsibilities.
 
 ## Release Strategy
 
@@ -85,7 +85,7 @@ v0.2 Evidence And Learning Beta
   contracts
 
 v0.3 Ecosystem Conformance
-  host conformance suite, examples, and product integration guides
+  host conformance suite, examples, and host integration guides
 
 v1.0 Stable Protocol
   stable public protocol, compatibility rules, export format, and migration
@@ -96,8 +96,8 @@ v1.0 Stable Protocol
 
 Goal: prove the smallest complete human-agent collaboration loop.
 
-The alpha proves that the loop is portable, not tied to a single product,
-agent, host, or execution stack.
+The alpha proves that the loop is portable, not tied to a single host or
+execution stack.
 
 The protocol must express:
 
@@ -150,7 +150,7 @@ MemoryProposal and SkillProposal remain governed
 - auth
 - billing
 - task routing
-- product implementation
+- host implementation
 
 ## Milestone 0: Protocol Lock
 
@@ -315,13 +315,13 @@ Output:
 - OpenAPI examples
 - host and adapter integration guide
 - evaluation-system integration guide
-- host/product integration note
+- host integration note
 - interactive simulation
 
 Done when:
 
-- a team understands Jarvis without knowing any specific product
-- a product implements Jarvis without inheriting execution assumptions
+- a team understands Jarvis without knowing any specific host
+- a host implements Jarvis without inheriting execution assumptions
 - the public simulation matches the protocol definition
 
 ## v0.1 Acceptance
@@ -353,7 +353,7 @@ Done when:
 - external reviewers and systems consume Jarvis EvidenceManifest records
 - implementations expose review, learning, and contribution history without
   changing protocol semantics
-- external products export compatible EvidenceManifest records
+- external systems export compatible EvidenceManifest records
 
 ## v0.3 Ecosystem Conformance
 
@@ -370,8 +370,8 @@ Output:
 Done when:
 
 - two independent host shapes pass the same protocol conformance tests
-- protocol records remain portable across products
-- implementation-private fields stay outside Jarvis exports
+- protocol records remain portable across compatible hosts
+- implementation-private fields stay outside portable Jarvis records
 - compatible hosts exchange WorkSession evidence without sharing
   infrastructure
 
@@ -391,7 +391,7 @@ Output:
 Done when:
 
 - future compatible implementations read v1.0 records
-- product implementations do not need to adopt any Jarvis-owned execution stack
+- host implementations do not need to adopt any Jarvis-owned execution stack
 - Jarvis remains protocol-only
 
 ## Risk Register
@@ -400,14 +400,14 @@ Done when:
 
 Risk: Jarvis starts defining how agents run.
 
-Control: every execution, cloud, sandbox, database, queue, and deployment
-choice belongs to products and hosts.
+Control: every execution, cloud, isolation, storage, queue, and deployment
+choice belongs to hosts.
 
-### Product Creep
+### Host Implementation Creep
 
-Risk: Jarvis becomes a product workspace.
+Risk: Jarvis becomes a host workspace.
 
-Control: products implement Jarvis; Jarvis does not inherit product UI,
+Control: hosts implement Jarvis; Jarvis does not inherit UI,
 identity, operations, or enterprise controls.
 
 ### Task-System Creep

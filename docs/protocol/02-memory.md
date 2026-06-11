@@ -290,13 +290,15 @@ skill inventory
 selected supporting memory
 ```
 
-Large skill bodies and files load on demand. Inventories and summaries are
-cacheable.
+Hosts own skill body, file, inventory, and summary handling. Jarvis records the
+selected memory, skill refs, provenance, and review state that affect a
+WorkSession.
 
 ## Corrections
 
-Human corrections may create or reference LearningRecord, MemoryProposal, or
-SkillProposal records. Jarvis classifies them:
+Human corrections create or reference LearningRecord, MemoryProposal, or
+SkillProposal records when they change future WorkSession behavior. Jarvis
+classifies them:
 
 ```txt
 one-time fix

@@ -2,10 +2,10 @@
 
 Jarvis is a compatibility protocol. It does not define how work runs.
 
-Products and hosts decide where and how execution happens. Jarvis defines the
-protocol records those systems produce and consume.
+Hosts decide where and how execution happens. Jarvis defines the protocol
+records those systems produce and consume.
 
-Jarvis lets different humans, agents, products, hosts, and external systems
+Jarvis lets different humans, agents, hosts, and external systems
 share the same collaboration records without sharing the same infrastructure.
 
 ## Jarvis Boundary
@@ -40,10 +40,10 @@ A host implementing Jarvis owns:
 
 - user interface
 - account and identity integration
-- execution environment
+- execution context
 - model/provider selection
 - tool system
-- sandbox selection
+- isolation selection
 - storage
 - queues and scheduling
 - deployment
@@ -152,7 +152,7 @@ record Takeover and reconciliation
 record Contribution entries
 capture EvidenceManifest entries during work
 propose MemoryProposal and SkillProposal records
-export protocol records without product-private internals
+export protocol records without host-private implementation details
 ```
 
 The host implements this with any infrastructure.
@@ -163,15 +163,15 @@ Jarvis protocol documents must not require:
 
 - a specific cloud provider
 - a local execution stack
-- a specific database
+- a specific storage system
 - a specific queue
-- a specific sandbox
+- a specific isolation mechanism
 - a specific model provider
 - a specific deployment platform
-- a specific product UI
+- a specific UI
 
-Examples and product docs name their implementation choices. The Jarvis
-protocol itself does not.
+Host documentation names implementation choices. The Jarvis protocol itself
+does not.
 
 ## Conformance
 
@@ -187,4 +187,4 @@ A conforming implementation proves:
 - Contributions are attributable.
 - Evidence is captured during the work.
 - Learning is proposed and governed.
-- exported records are portable across products.
+- exported records are portable across compatible hosts.

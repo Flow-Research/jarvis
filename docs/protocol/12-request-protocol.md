@@ -59,9 +59,9 @@ Takeover
   HumanWorker direct control over a declared work scope
 ```
 
-Notification is not a v0.1 core object. Hosts may surface progress messages,
-inbox items, or UI notifications, but those records do not block work unless a
-Request exists.
+Notification is not a v0.1 core object. Hosts surface progress messages, inbox
+items, or UI notifications outside the v0.1 core protocol. Those records do not
+block work unless a Request exists.
 
 Compatible implementations MUST NOT treat ordinary chat, progress updates, or
 status notifications as Requests.
@@ -136,7 +136,7 @@ Most Requests block one action, branch, artifact, tool call, external send, or
 final submission. `work_session` is reserved for cases where safe continuation
 of the whole WorkSession is impossible.
 
-AgentWorker may continue unrelated safe branches when Policy allows them.
+AgentWorker continues unrelated safe branches when Policy allows them.
 
 Compatible implementations MUST enforce the declared blocking scope. They MUST
 NOT freeze the whole WorkSession unless `blocking_scope` is `work_session` or a
@@ -210,15 +210,15 @@ expires_at
 flagged the action.
 
 `default_if_no_response` defines the safe fallback. The fallback never grants
-new authority. It may continue an unrelated safe branch, continue with limited
-evidence, cancel the blocked branch, or keep the blocked scope stopped.
+new authority. It continues an unrelated safe branch, continues with limited
+evidence, cancels the blocked branch, or keeps the blocked scope stopped.
 
 `expires_at` prevents stale unresolved Requests from becoming hidden workflow
 debt.
 
 ## Optional Fields
 
-Request may also record:
+Request records these optional fields when present:
 
 ```txt
 policy_refs
@@ -361,8 +361,9 @@ acknowledged -> expired | cancelled | superseded
 ```
 
 Terminal states do not transition back to `pending` or `acknowledged`.
-Terminal states do not change status again. A later Request may reference a
-terminal Request, but it never mutates the original Request.
+Terminal states do not change status again. A later Request references a
+terminal Request only through a new protocol record. It never mutates the
+original Request.
 
 Rejected transitions include:
 
@@ -473,8 +474,9 @@ needs_revision
 ```
 
 Review does not silently change durable memory, skill behavior, or Policy.
-Review may create LearningRecord, MemoryProposal, SkillProposal, or policy
-change proposal records. Those records remain governed.
+Review creates LearningRecord, MemoryProposal, SkillProposal, or policy change
+proposal records when it changes future WorkSession behavior. Those records
+remain governed.
 
 ## Takeover Lifecycle
 
@@ -556,12 +558,12 @@ Compatible implementations MUST enforce these rules:
    `policy_decision_id`, `normalized_action_hash`, and requested action hash.
 3. Similar Requests are batched only when batching preserves every blocked
    action hash, PolicyDecision, risk class, blocking scope, and event ref.
-4. Low-risk uncertainty MUST NOT create a Request. Hosts may surface it as
+4. Low-risk uncertainty MUST NOT create a Request. Hosts surface it as
    non-blocking communication, but Jarvis does not require a Notification object
    in v0.1.
 5. Every Request includes default_if_no_response.
 6. Every Request includes expires_at.
-7. AgentWorker may continue unrelated safe branches.
+7. AgentWorker continues unrelated safe branches.
 8. Compatible implementations enforce request_limits for each WorkSession.
 9. Rejected Requests cannot be recreated unchanged immediately.
 10. Repeated failed Requests escalate to Review or Takeover.
@@ -607,7 +609,8 @@ event references.
 
 Every resolved or closed Request is teaching material.
 
-Request resolution or closure may create or reference:
+Request resolution or closure creates or references these records when it
+changes future WorkSession behavior:
 
 ```txt
 LearningRecord
@@ -622,10 +625,10 @@ HumanWorker denies network access.
   Future work prefers local evidence before external access.
 
 HumanWorker narrows approval.
-  Policy may gain a more precise grant pattern.
+  PolicyProposal records a more precise grant pattern.
 
 HumanWorker corrects final submission.
-  SkillProposal may capture the corrected review process.
+  SkillProposal records the corrected review process.
 
 HumanWorker takes over.
   The pair records that this branch requires human control.

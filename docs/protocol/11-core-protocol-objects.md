@@ -3,9 +3,8 @@
 This document is the source of truth for Jarvis v0.1 core protocol objects.
 
 Jarvis defines the compatibility contracts for human-agent collaboration and
-the learning loop. A compatible product, host, CLI, agent system, or external
-service uses any infrastructure, but it preserves these object meanings and
-state transitions.
+the learning loop. A compatible host or external system uses any
+infrastructure, but it preserves these object meanings and state transitions.
 
 ## Normative Language
 
@@ -72,13 +71,13 @@ forbidden
 Required fields carry protocol meaning and must appear in compatible records.
 Optional fields add protocol-visible context without changing required
 semantics. Extension fields must be namespaced. Forbidden fields belong to
-hosts, products, identity systems, runtimes, databases, cloud platforms, billing
+hosts, identity systems, runtimes, storage systems, cloud platforms, billing
 systems, or private execution stacks.
 
 ### Field Class Rules
 
 - Required fields MUST be portable across hosts.
-- Required fields MUST NOT depend on product-private infrastructure.
+- Required fields MUST NOT depend on host-private infrastructure.
 - Optional fields MUST NOT change the meaning of required fields.
 - Extension fields MUST be namespaced.
 - Extension fields MUST NOT override core field names.
@@ -86,7 +85,7 @@ systems, or private execution stacks.
 - Host-private ids MUST stay outside portable protocol fields. Portable records
   use `source_ref`, `external_system_ref`, evidence refs, or artifact refs as
   opaque references without exposing database ids, runtime ids, deployment ids,
-  credentials, billing internals, or product-private state.
+  credentials, billing details, or host-private state.
 
 ### Stable Reference Rules
 
@@ -109,8 +108,7 @@ systems, or private execution stacks.
 - `extensions` is the only generic extension container.
 - Every key in `extensions` MUST be namespaced.
 - `extensions` MUST NOT contain credentials, secrets, database ids,
-  runtime state, deployment details, billing data, private scores, or product
-  UI state.
+  runtime state, deployment details, billing data, private scores, or UI state.
 
 ### Worker Field Lock
 
@@ -217,7 +215,7 @@ credential
 raw_auth_token
 private_profile_data
 billing_account
-product_account_record
+host_account_record
 ```
 
 ### AgentWorker Field Lock
@@ -326,7 +324,7 @@ ordered, append-only, and export-verifiable.
 Payload rule: `payload` contains only protocol-defined event fields, portable
 refs, or opaque external refs. It MUST NOT contain credentials, secrets,
 database ids, runtime state, deployment details, billing data, private scores,
-or product UI state.
+or UI state.
 
 Optional fields:
 
@@ -509,7 +507,7 @@ runtime_state
 provider_secret
 billing_field
 deployment_field
-product_ui_state
+ui_state
 hidden_policy_trace
 unbounded_approval
 implicit_authority_grant
@@ -573,7 +571,7 @@ private_comment_thread_id
 credential
 raw_auth_token
 database_primary_key
-product_ui_state
+ui_state
 unbounded_approval
 implicit_authority_grant
 ```
@@ -731,7 +729,7 @@ host_only_database_id
 deployment_detail
 billing_data
 private_score
-product_ui_state
+ui_state
 ```
 
 ### LearningRecord Field Lock
@@ -766,7 +764,8 @@ outcome_report_refs
 
 Source rule: `source_event_refs` is required for every LearningRecord.
 OutcomeReport-backed LearningRecords use the OutcomeReport acceptance
-JarvisEvent as `source_event_refs` and may also record `outcome_report_refs`.
+JarvisEvent as `source_event_refs` and record `outcome_report_refs` when
+external feedback exists.
 
 Review states:
 
@@ -1049,8 +1048,8 @@ Rules:
 - The HumanWorker is not modeled as a passive user.
 - The HumanWorker approves, denies, narrows, corrects, requests revision,
   answers, or takes over.
-- Human corrections may create or reference LearningRecord, MemoryProposal, or
-  SkillProposal records.
+- Human corrections create or reference LearningRecord, MemoryProposal, or
+  SkillProposal records when they change future WorkSession behavior.
 - Human accountability remains attributable even when execution is delegated.
 
 ## AgentWorker
@@ -1163,7 +1162,7 @@ Rules:
   `cancelled`, or `closed`.
 - `closed` is sealed and rejects further mutation except idempotent replay of
   the same accepted request.
-- Private host fields stay outside portable Jarvis exports.
+- Private host fields stay outside portable Jarvis records.
 
 ## JarvisEvent
 
@@ -1207,7 +1206,7 @@ Rules:
   evidence hashes when the host provides them.
 - Payload refs MUST NOT expose host-private execution details, runtime state,
   database ids, credentials, deployment ids, billing data, private scores, or
-  product UI state.
+  UI state.
 - Event hashes make the protocol record inspectable and exportable.
 
 ## Policy
@@ -1392,8 +1391,9 @@ Rules:
 - Review creates Takeover only when the decision is `takeover`.
 - Review does not silently mutate Policy, MemoryProposal, SkillProposal, or
   durable learning.
-- Review may create LearningRecord, MemoryProposal, SkillProposal, or policy
-  change proposal records. Those records remain governed.
+- Review creates LearningRecord, MemoryProposal, SkillProposal, or policy
+  change proposal records when it changes future WorkSession behavior. Those
+  records remain governed.
 
 ## Takeover
 
@@ -1432,8 +1432,8 @@ Rules:
 - Takeover increments the lock epoch.
 - Agent actions from an old lock epoch are stale and rejected.
 - Resume requires reconciliation.
-- Takeover may create or reference LearningRecord, MemoryProposal, or
-  SkillProposal records.
+- Takeover creates or references LearningRecord, MemoryProposal, or
+  SkillProposal records when it changes future WorkSession behavior.
 - Allowed Takeover transitions are `requested -> locked`, `requested -> closed`,
   `locked -> human_active`, `locked -> reconciliation_required`,
   `locked -> closed`, `human_active -> reconciliation_required`,
@@ -1518,12 +1518,12 @@ Rules:
 - Evidence is not reconstructed from memory after the fact.
 - Redacted exports are derived artifacts.
 - Redaction never replaces the raw WorkSession evidence record.
-- EvidenceManifest is portable across compatible products and hosts.
+- EvidenceManifest is portable across compatible hosts.
 - Final EvidenceManifest export is valid only from `completed`, `failed`,
   `cancelled`, or `closed` WorkSession state.
-- EvidenceManifest excludes product-private fields, credentials, secrets, raw
+- EvidenceManifest excludes host-private fields, credentials, secrets, raw
   runtime state, host-only database ids, deployment details, billing data,
-  private scores, and product UI state.
+  private scores, and UI state.
 
 ## LearningRecord
 
@@ -1641,6 +1641,6 @@ SkillProposals
 limitations
 ```
 
-The export must not require a receiving system to understand product-private
+The export must not require a receiving system to understand host-private
 database ids, cloud resources, execution objects, UI state, credentials, or
 deployment details.

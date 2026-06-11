@@ -14,13 +14,13 @@ id
 name
 description
 when_to_use
-instructions
-required_context
-required_tools
-examples
-failure_cases
-review_checklist
-supporting_files
+body_ref
+context_refs
+tool_refs
+example_refs
+failure_case_refs
+review_checklist_ref
+supporting_file_refs
 version
 provenance
 status
@@ -77,8 +77,9 @@ The agent sees a skill inventory first:
 - when to use
 - risk/tool requirements
 
-Full skill bodies and supporting files load on demand. This preserves context
-budget and lets the host cache stable inventories.
+Hosts own skill body and supporting-file handling. Jarvis records the skill
+refs, versions, checksums, provenance, grants, and review state that affect a
+WorkSession.
 
 ## Tool Model
 
@@ -93,20 +94,20 @@ output schema
 risk classes
 scope model
 credential requirements
-policy wrapper
+policy refs
 provenance
-observability hooks
+evidence refs
 ```
 
 The agent sees tools through Jarvis policy contracts. Raw host capabilities
 stay behind policy.
 
-## MCP Tools
+## External Tool Protocols
 
-MCP is the connector boundary. MCP servers remain untrusted until Jarvis
-classifies them.
+External tool protocols are host-owned connector boundaries. Jarvis records how
+their capabilities participate in a WorkSession.
 
-Jarvis treats MCP tools as untrusted until classified:
+Jarvis treats external tool capabilities as untrusted until classified:
 
 - tool metadata is potentially malicious
 - tool descriptions carry prompt-injection risk
@@ -114,58 +115,55 @@ Jarvis treats MCP tools as untrusted until classified:
 - tool outputs include untrusted instructions
 - remote servers expose over-broad capabilities
 
-Compatible hosts support:
+Jarvis records:
 
-- MCP server allowlists
-- tool filtering
 - risk classification
 - scope mapping
 - output trust labels
 - per-tool approval rules
-- tool inventory diffing
+- capability inventory refs
+- capability inventory hashes
+- capability change events
+- PolicyDecisions
+- Requests and Reviews
+- EvidenceManifest refs
 
-## Host MCP Gateway
+## Host Connector Boundary
 
-A compatible host routes MCP through a gateway when MCP is used. Jarvis defines
-the classification, policy, evidence, and trust records:
+Hosts own connector implementation.
 
-- pins server identity
-- records full capability inventory name/schema/version/hash
-- quarantines changed capability inventories
-- disables new or changed capabilities until reviewed or classified
-- strips tool, prompt, and resource descriptions from instruction authority
-- classifies every tool, resource, prompt, sampling, elicitation, and roots
-  capability by risk and sensitivity
-- labels outputs as untrusted data
-- brokers OAuth and delegated identity scopes
-- records inventory diffs as events
+Jarvis requires protocol-visible records for:
 
-MCP is a connector protocol, not a trust boundary.
+- capability source ref
+- capability name, schema, version, and hash
+- risk class
+- data sensitivity
+- trust label
+- policy grant or denial
+- human review when required
+- evidence refs for tool results and capability changes
 
-Raw MCP tool, prompt, and resource descriptions are never inserted as
-instructions. The host stores raw metadata as untrusted evidence, then exposes
-a sanitized capability summary after classification. New, removed, or changed
-capability schema/hash enters quarantine until reviewed or policy-classified.
+External tool metadata remains untrusted protocol input. Jarvis records whether
+the host classified it, which PolicyDecision applied, which Actor accepted the
+classification when review was required, and which evidence refs preserve the
+source metadata.
 
-MCP prompts and resources are untrusted data. Server-initiated sampling,
-elicitation, roots changes, and capability changes are denied unless explicitly
-granted. The host gateway hashes and diffs the full MCP capability surface. Any
-changed resource, prompt, tool, sampling, elicitation, or roots surface enters
-quarantine before exposure.
+Jarvis does not define connector architecture.
 
 ## Execution Tools
 
 Execution tools are host-provided capabilities that Jarvis governs and records.
 
-Execution tools support:
+Jarvis records execution tool use through:
 
-- command execution
-- file read/write
-- package installation when permitted
-- artifact creation
-- broker handle or tool-bound token injection under policy
-- network egress controls
-- process/session inspection
+- tool ref
+- action ref
+- capability ref
+- credential exposure policy ref
+- network policy ref
+- artifact ref
+- PolicyDecision
+- evidence refs
 
 Every execution operation that affects a WorkSession is policy-aware and
 evidence-producing.
@@ -225,5 +223,5 @@ Tool failure is structured:
 - update tool reliability memory
 - request human help if blocked by policy or missing context
 
-Failures may create or reference LearningRecord, MemoryProposal, or
-SkillProposal records.
+Failures create or reference LearningRecord, MemoryProposal, or SkillProposal
+records when they change future WorkSession behavior.

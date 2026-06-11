@@ -56,11 +56,11 @@ Chunk 2 is complete when:
   distinguishable
 - `HumanWorker` and `AgentWorker` reference their Worker and Actor records
 - no schema includes credentials, secrets, database ids, runtime ids, billing
-  fields, or product UI state as protocol properties
+  fields, or UI state as protocol properties
 - local validation passes
 
 ## Boundary
 
 Participant schemas identify protocol workers and actors. They do not create
 accounts, authenticate callers, issue credentials, choose model providers, run
-agents, or define product UI.
+agents, or define UI.

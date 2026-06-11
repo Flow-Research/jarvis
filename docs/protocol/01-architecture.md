@@ -13,8 +13,8 @@ WorkSession is the durable record of that loop.
 ## Layer Model
 
 ```txt
-Products and hosts
-  product workspaces, task systems, CLI apps, chat apps, custom products
+Compatible hosts
+  UI, auth, storage, execution, deployment, model calls, tool execution
 
 Jarvis protocol
   actors, workers, WorkSessions, policies, requests, reviews, takeover,
@@ -22,19 +22,19 @@ Jarvis protocol
   skill proposals
 
 External implementation choices
-  models, tools, MCP servers, sandboxes, storage, queues, clouds,
-  local machines, deployment platforms, product interfaces
+  models, tools, external protocol servers, isolation, storage, queues,
+  clouds, local machines, deployment platforms, interfaces
 ```
 
 Only the middle layer is Jarvis.
 
-Products and hosts decide how to execute work. Jarvis defines the protocol
-records and state transitions that make the work collaborative, governed,
-reviewable, attributable, and portable.
+Hosts decide how to execute work. Jarvis defines the protocol records and state
+transitions that make the work collaborative, governed, reviewable,
+attributable, and portable.
 
-Compatibility is the architecture goal. A HumanWorker, AgentWorker, product,
-host, or external system participates without adopting another system's
-execution stack or product model.
+Compatibility is the architecture goal. A HumanWorker, AgentWorker, host, or
+external system participates without adopting another system's execution stack
+or host model.
 
 ## Core Protocol Contracts
 
@@ -110,14 +110,14 @@ Jarvis owns:
 - context manifest semantics
 - portable export semantics
 
-Products and hosts own:
+Hosts own:
 
 - user interface
 - authentication and accounts
-- execution environment
+- execution context
 - model/provider selection
 - tool execution
-- sandboxing
+- isolation
 - storage
 - queues and scheduling
 - deployment
@@ -130,7 +130,7 @@ Products and hosts own:
 External systems start WorkSessions, consume EvidenceManifests, route Reviews,
 evaluate Contributions, or provide context and skills through Jarvis records.
 Jarvis defines the protocol records exchanged with those systems. It does not
-define their product architecture.
+define their host architecture.
 
 ## Minimum Developer Entry Point
 

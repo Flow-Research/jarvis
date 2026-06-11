@@ -59,7 +59,7 @@ Not the human alone.
 Not the agent alone.
 Not a chatbot.
 Not a runtime.
-Not a product workspace.
+Not a host workspace.
 
 The HumanWorker improves.
 The AgentWorker improves.
@@ -80,7 +80,7 @@ Jarvis owns:
 - evidence export semantics
 - governed learning semantics
 - OpenAPI communication binding requirements
-- positioning against adjacent protocols and agent products
+- positioning against adjacent protocols and host-owned execution
 - conformance expectations
 
 Jarvis does not own:
@@ -91,12 +91,12 @@ Jarvis does not own:
 - sandbox implementation
 - database implementation
 - queue implementation
-- product UI
+- UI
 - authentication
 - billing
 - task marketplace
 - payment or settlement
-- organization workspace internals
+- organization workspace implementation details
 - local execution stack
 
 A host implements Jarvis. A host is not Jarvis.
@@ -175,7 +175,7 @@ The v0.1 lifecycle is:
 20. portable export is produced
 ```
 
-Hosts add internal steps. The external Jarvis lifecycle stays intact.
+Hosts add implementation steps. The external Jarvis lifecycle stays intact.
 
 ## WorkSession
 
@@ -217,7 +217,7 @@ Rules:
   `cancelled`, or `closed`.
 - `closed` rejects further mutation except idempotent replay of the same
   accepted request.
-- WorkSession export stays free of product-private infrastructure fields.
+- WorkSession export stays free of host-private infrastructure fields.
 
 ## PolicyDecision
 
@@ -339,8 +339,8 @@ Rules:
 - Takeover creates or increments a lock epoch.
 - AgentWorker actions from an old lock epoch reject as `stale_takeover_epoch`.
 - Resume requires reconciliation refs.
-- Takeover may create or reference LearningRecord, MemoryProposal, or
-  SkillProposal records.
+- Takeover creates or references LearningRecord, MemoryProposal, or
+  SkillProposal records when it changes future WorkSession behavior.
 - During locked and human_active states, AgentWorker autonomous continuation for
   the affected scope is paused.
 
@@ -407,12 +407,12 @@ Rules:
 - Evidence is captured during work.
 - Evidence is not reconstructed only at the end.
 - Redacted exports stay derived from the same event chain.
-- EvidenceManifest is portable across compatible products and hosts.
+- EvidenceManifest is portable across compatible hosts.
 - Final EvidenceManifest export is valid only from `completed`, `failed`,
   `cancelled`, or `closed`.
-- EvidenceManifest excludes product-private fields, credentials, secrets, raw
+- EvidenceManifest excludes host-private fields, credentials, secrets, raw
   runtime state, host-only database ids, deployment details, billing data,
-  private scores, and product UI state.
+  private scores, and UI state.
 
 ## Learning
 
@@ -444,17 +444,17 @@ Rules:
 
 ## Compatibility
 
-Existing agents and products are first-class.
+Compatible implementations preserve host-owned execution.
 
-Compatible hosts and adapters map existing agents into AgentWorker records.
-They do not replace the agent runtime.
+Compatible hosts map human-agent work into Jarvis records. They do not replace
+host execution.
 
 A compatible adapter maps:
 
 ```txt
-human identity or operator       -> HumanWorker + Actor
-agent process or agent product   -> AgentWorker + Actor
-agent step                       -> JarvisEvent
+human participant                -> HumanWorker + Actor
+agent participant                -> AgentWorker + Actor
+agent action affecting session   -> PolicyDecision + JarvisEvent
 tool/action authorization        -> PolicyDecision
 blocked action                   -> Request
 human approval/correction        -> Review
@@ -493,7 +493,7 @@ A v0.1-compatible host proves:
 - Learning is governed.
 - MemoryProposal and SkillProposal do not silently become durable behavior.
 - OutcomeReport does not mutate sealed WorkSession or EvidenceManifest.
-- Portable export contains no product-private infrastructure requirement.
+- Portable export contains no host-private infrastructure requirement.
 
 ## Portable Export
 
