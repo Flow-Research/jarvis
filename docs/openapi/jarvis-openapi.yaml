@@ -884,7 +884,9 @@ x-jarvis-protocol:
     excludes:
       - path operation bodies
       - operation-specific security requirements
-      - control-plane schemas
+      - Request schema
+      - Review schema
+      - Takeover schema
       - evidence and learning schemas
       - examples
       - conformance fixtures

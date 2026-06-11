@@ -511,6 +511,9 @@ def main() -> int:
             "x-jarvis-protocol.chunk_lock.locks missing: "
             + ", ".join(sorted(missing_locks))
         )
+    declared_excludes = set(chunk_lock.get("excludes", []))
+    if "control-plane schemas" in declared_excludes:
+        return fail("chunk_lock.excludes must name out-of-scope schemas directly")
 
     components = data["components"]
     if not isinstance(components, dict):
