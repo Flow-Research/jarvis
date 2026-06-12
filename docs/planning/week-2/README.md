@@ -16,6 +16,9 @@ storage, model calls, adapters, or conformance fixtures beyond the active chunk.
    Lock WorkSession, JarvisEvent, Policy, and PolicyDecision schemas.
 4. [chunk-4-control-plane-schemas.md](./chunk-4-control-plane-schemas.md)
    Lock Request, Review, ApprovalScope, and Takeover schemas.
+5. [chunk-5-evidence-learning-schemas.md](./chunk-5-evidence-learning-schemas.md)
+   Lock Contribution, EvidenceManifest, LearningRecord, MemoryProposal,
+   SkillProposal, and OutcomeReport schemas.
 
 ## Week 2 Done State
 

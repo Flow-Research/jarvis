@@ -60,6 +60,13 @@ REQUIRED_SCHEMAS = {
     "BlockingScope",
     "ReviewDecision",
     "TakeoverState",
+    "ContributorType",
+    "ContributionType",
+    "LearningSubjectType",
+    "LearningReviewState",
+    "ProposalTargetType",
+    "MemoryProposalStatus",
+    "SkillProposalStatus",
     "AuthorityScope",
     "AccountabilityScope",
     "CapabilityRef",
@@ -78,6 +85,9 @@ REQUIRED_SCHEMAS = {
     "ApprovalBoundary",
     "TakeoverScope",
     "ApprovalScope",
+    "ContributorRef",
+    "ExportProfile",
+    "EvidenceItemRef",
     "Worker",
     "Actor",
     "HumanWorker",
@@ -89,6 +99,12 @@ REQUIRED_SCHEMAS = {
     "Request",
     "Review",
     "Takeover",
+    "Contribution",
+    "EvidenceManifest",
+    "LearningRecord",
+    "MemoryProposal",
+    "SkillProposal",
+    "OutcomeReport",
 }
 
 REQUIRED_SCHEMA_FIELDS = {
@@ -235,6 +251,102 @@ REQUIRED_SCHEMA_FIELDS = {
         "state",
         "created_at",
     },
+    "ContributorRef": {
+        "worker_id",
+        "actor_id",
+        "contribution_role",
+    },
+    "ExportProfile": {
+        "profile",
+    },
+    "EvidenceItemRef": {
+        "id",
+        "work_session_id",
+        "source_event_refs",
+        "captured_by_actor_id",
+        "evidence_type",
+        "artifact_ref",
+        "content_hash",
+        "trust_label",
+        "redaction_state",
+        "captured_at",
+        "limitation_refs",
+    },
+    "Contribution": {
+        "id",
+        "work_session_id",
+        "contributor_refs",
+        "contributor_type",
+        "contribution_type",
+        "event_refs",
+        "created_at",
+    },
+    "EvidenceManifest": {
+        "id",
+        "work_session_id",
+        "generated_by_actor_id",
+        "objective",
+        "event_chain_root",
+        "evidence_item_refs",
+        "policy_decision_refs",
+        "request_refs",
+        "review_refs",
+        "takeover_refs",
+        "contribution_refs",
+        "export_profile",
+        "generated_at",
+    },
+    "LearningRecord": {
+        "id",
+        "work_session_id",
+        "created_by_actor_id",
+        "subject_type",
+        "subject_ref",
+        "lesson_type",
+        "source_event_refs",
+        "review_state",
+        "scope",
+        "created_at",
+    },
+    "MemoryProposal": {
+        "id",
+        "work_session_id",
+        "proposed_by_actor_id",
+        "proposed_for",
+        "memory_scope",
+        "memory_type",
+        "content",
+        "provenance",
+        "confidence",
+        "review_required",
+        "status",
+        "created_at",
+    },
+    "SkillProposal": {
+        "id",
+        "work_session_id",
+        "proposed_by_actor_id",
+        "proposed_for",
+        "skill_scope",
+        "skill_name",
+        "trigger_conditions",
+        "procedure",
+        "review_checks",
+        "failure_cases",
+        "provenance",
+        "status",
+        "created_at",
+    },
+    "OutcomeReport": {
+        "id",
+        "work_session_id",
+        "source_ref",
+        "reporter_ref",
+        "accepted_by_actor_id",
+        "outcome",
+        "learning_record_refs",
+        "received_at",
+    },
 }
 
 OPTIONAL_SCHEMA_FIELDS = {
@@ -296,6 +408,46 @@ OPTIONAL_SCHEMA_FIELDS = {
         "reconciliation_notes",
         "reconciliation_refs",
         "resolved_at",
+    },
+    "ExportProfile": {
+        "version",
+        "redaction_profile_ref",
+    },
+    "Contribution": {
+        "artifact_refs",
+        "review_refs",
+        "evidence_refs",
+        "confidence",
+        "limitations",
+    },
+    "EvidenceManifest": {
+        "artifact_refs",
+        "limitation_refs",
+        "redaction_refs",
+    },
+    "LearningRecord": {
+        "proposed_change",
+        "memory_proposal_refs",
+        "skill_proposal_refs",
+        "outcome_report_refs",
+    },
+    "MemoryProposal": {
+        "source_event_refs",
+        "review_refs",
+        "expires_at",
+        "learning_record_refs",
+    },
+    "SkillProposal": {
+        "required_tools",
+        "source_event_refs",
+        "review_refs",
+        "learning_record_refs",
+    },
+    "OutcomeReport": {
+        "external_system_ref",
+        "reporter_actor_id",
+        "reason",
+        "reviewer_feedback_refs",
     },
 }
 
@@ -402,6 +554,62 @@ REQUIRED_ENUMS = {
         "resumed",
         "closed",
     },
+    "ContributorType": {
+        "human",
+        "agent",
+        "service",
+        "tool",
+        "shared",
+    },
+    "ContributionType": {
+        "intent",
+        "instruction",
+        "plan",
+        "research",
+        "execution",
+        "artifact",
+        "review",
+        "correction",
+        "decision",
+        "evidence_capture",
+        "memory_proposal",
+        "skill_proposal",
+        "submission",
+    },
+    "LearningSubjectType": {
+        "human",
+        "agent",
+        "pair",
+    },
+    "LearningReviewState": {
+        "proposed",
+        "accepted",
+        "rejected",
+        "superseded",
+    },
+    "ProposalTargetType": {
+        "human",
+        "agent",
+        "pair",
+        "project",
+        "task",
+    },
+    "MemoryProposalStatus": {
+        "proposed",
+        "pending_review",
+        "accepted",
+        "rejected",
+        "superseded",
+        "expired",
+    },
+    "SkillProposalStatus": {
+        "proposed",
+        "pending_review",
+        "accepted",
+        "rejected",
+        "superseded",
+        "archived",
+    },
 }
 
 REQUIRED_CLOSED_OBJECT_SCHEMAS = {
@@ -423,6 +631,9 @@ REQUIRED_CLOSED_OBJECT_SCHEMAS = {
     "ApprovalBoundary",
     "TakeoverScope",
     "ApprovalScope",
+    "ContributorRef",
+    "ExportProfile",
+    "EvidenceItemRef",
     "Worker",
     "Actor",
     "HumanWorker",
@@ -434,6 +645,12 @@ REQUIRED_CLOSED_OBJECT_SCHEMAS = {
     "Request",
     "Review",
     "Takeover",
+    "Contribution",
+    "EvidenceManifest",
+    "LearningRecord",
+    "MemoryProposal",
+    "SkillProposal",
+    "OutcomeReport",
 }
 
 REQUIRED_FORBIDDEN_METADATA = {
@@ -546,6 +763,128 @@ REQUIRED_FORBIDDEN_METADATA = {
         "raw_auth_token",
         "ui_session_id",
     },
+    "ContributorRef": {
+        "payment_account",
+        "compensation_rule",
+        "private_score",
+        "credential",
+        "database_primary_key",
+    },
+    "ExportProfile": {
+        "credential",
+        "raw_auth_token",
+        "provider_secret",
+        "database_primary_key",
+        "cloud_storage_secret",
+        "unredacted_secret_value",
+        "raw_runtime_state",
+        "host_only_database_id",
+        "deployment_detail",
+        "billing_data",
+        "private_score",
+        "ui_state",
+    },
+    "EvidenceItemRef": {
+        "credential",
+        "raw_auth_token",
+        "provider_secret",
+        "database_primary_key",
+        "cloud_storage_secret",
+        "unredacted_secret_value",
+        "raw_runtime_state",
+        "host_only_database_id",
+        "deployment_detail",
+        "billing_data",
+        "private_score",
+        "ui_state",
+    },
+    "Contribution": {
+        "payment_account",
+        "compensation_rule",
+        "private_score",
+        "credential",
+        "database_primary_key",
+    },
+    "EvidenceManifest": {
+        "credential",
+        "raw_auth_token",
+        "provider_secret",
+        "database_primary_key",
+        "cloud_storage_secret",
+        "unredacted_secret_value",
+        "raw_runtime_state",
+        "host_only_database_id",
+        "deployment_detail",
+        "billing_data",
+        "private_score",
+        "ui_state",
+    },
+    "LearningRecord": {
+        "silent_memory_write",
+        "unreviewed_skill_activation",
+        "credential",
+        "raw_auth_token",
+        "database_primary_key",
+    },
+    "MemoryProposal": {
+        "silent_memory_write",
+        "credential",
+        "raw_auth_token",
+        "private_embedding_store_id",
+        "database_primary_key",
+    },
+    "SkillProposal": {
+        "automatic_tool_grant",
+        "unreviewed_skill_activation",
+        "credential",
+        "raw_auth_token",
+        "database_primary_key",
+    },
+    "OutcomeReport": {
+        "task_marketplace_score_rule",
+        "payment_status",
+        "settlement_account",
+        "credential",
+        "raw_auth_token",
+        "database_primary_key",
+        "sealed_work_session_mutation",
+        "sealed_evidence_mutation",
+    },
+}
+
+REQUIRED_SCHEMA_INVARIANTS = {
+    "EvidenceManifest": {
+        "final_export_requires_terminal_work_session_state",
+        "sealed_evidence_manifest_rejects_mutation",
+        "redaction_never_replaces_source_evidence",
+    },
+    "MemoryProposal": {
+        "accepted_memory_requires_review_refs",
+        "model_derived_memory_cannot_self_confirm",
+        "tool_derived_memory_cannot_self_confirm",
+    },
+    "SkillProposal": {
+        "accepted_skill_requires_review_refs",
+        "skill_tool_access_expansion_requires_policy_review",
+        "unreviewed_skill_change_cannot_activate",
+    },
+    "OutcomeReport": {
+        "outcome_report_requires_terminal_source",
+        "outcome_report_does_not_mutate_sealed_work_session",
+        "outcome_report_does_not_mutate_sealed_evidence_manifest",
+        "outcome_report_requires_learning_record_refs",
+    },
+}
+
+REQUIRED_IDENTITY_UNIQUE_ARRAYS = {
+    ("Contribution", "contributor_refs"): {
+        "unique_by": ["worker_id", "actor_id"],
+        "duplicate_rejection_id": "duplicate_contributor_ref",
+    },
+    ("EvidenceManifest", "evidence_item_refs"): {
+        "unique_by": ["id"],
+        "duplicate_rejection_id": "duplicate_evidence_item_ref",
+    },
 }
 
 FORBIDDEN_SCHEMA_PROPERTIES = {
@@ -582,6 +921,24 @@ FORBIDDEN_SCHEMA_PROPERTIES = {
     "private_comment_thread_id",
     "runtime_lock_id",
     "ui_session_id",
+    "payment_account",
+    "compensation_rule",
+    "private_score",
+    "cloud_storage_secret",
+    "unredacted_secret_value",
+    "raw_runtime_state",
+    "host_only_database_id",
+    "deployment_detail",
+    "billing_data",
+    "silent_memory_write",
+    "unreviewed_skill_activation",
+    "private_embedding_store_id",
+    "automatic_tool_grant",
+    "task_marketplace_score_rule",
+    "payment_status",
+    "settlement_account",
+    "sealed_work_session_mutation",
+    "sealed_evidence_mutation",
 }
 
 REQUIRED_TAGS = {
@@ -597,7 +954,7 @@ REQUIRED_TAGS = {
 
 EXPECTED_TITLE = "Jarvis Human-Agent Collaboration Protocol"
 EXPECTED_PLACEHOLDER_SERVER = "https://jarvis.example.invalid"
-EXPECTED_CHUNK_ID = "week-2-chunk-4-control-plane-schemas"
+EXPECTED_CHUNK_ID = "week-2-chunk-5-evidence-learning-schemas"
 REQUIRED_CHUNK_LOCKS = {
     "OpenAPI 3.1.1 entry point",
     "v0.1 protocol metadata",
@@ -617,6 +974,13 @@ REQUIRED_CHUNK_LOCKS = {
     "Review schema",
     "ApprovalScope schema",
     "Takeover schema",
+    "Contribution schema",
+    "EvidenceItemRef schema",
+    "EvidenceManifest schema",
+    "LearningRecord schema",
+    "MemoryProposal schema",
+    "SkillProposal schema",
+    "OutcomeReport schema",
 }
 PORTABLE_VALUE_REF = {"$ref": "#/components/schemas/PortableValue"}
 FORBIDDEN_PORTABLE_KEY_PATTERN = (
@@ -747,6 +1111,31 @@ def schema_forbids_fields_when_enum(
             negative_schema_forbids_field(negative_schema, forbidden_field)
             for forbidden_field in forbidden_fields
         ):
+            return True
+    return False
+
+
+def schema_requires_min_items_when_const(
+    schema: dict, property_name: str, const_value: str, array_field: str, min_items: int
+) -> bool:
+    for branch in schema.get("allOf", []):
+        if not isinstance(branch, dict):
+            continue
+        condition = branch.get("if", {})
+        consequence = branch.get("then", {})
+        if not isinstance(condition, dict) or not isinstance(consequence, dict):
+            continue
+        properties = condition.get("properties", {})
+        if not isinstance(properties, dict):
+            continue
+        target = properties.get(property_name, {})
+        if not isinstance(target, dict) or target.get("const") != const_value:
+            continue
+        consequence_properties = consequence.get("properties", {})
+        if not isinstance(consequence_properties, dict):
+            continue
+        array_schema = consequence_properties.get(array_field, {})
+        if isinstance(array_schema, dict) and array_schema.get("minItems") == min_items:
             return True
     return False
 
@@ -923,6 +1312,32 @@ def main() -> int:
                 + ", ".join(sorted(forbidden_metadata))
             )
 
+    for schema_name, expected_invariants in REQUIRED_SCHEMA_INVARIANTS.items():
+        actual_invariants = set(schemas[schema_name].get("x-jarvis-invariants", []))
+        if actual_invariants != expected_invariants:
+            return fail(
+                f"{schema_name} x-jarvis-invariants mismatch. expected "
+                + ", ".join(sorted(expected_invariants))
+                + "; got "
+                + ", ".join(sorted(actual_invariants))
+            )
+
+    for (schema_name, property_name), expected in REQUIRED_IDENTITY_UNIQUE_ARRAYS.items():
+        property_schema = schemas[schema_name]["properties"][property_name]
+        if property_schema.get("x-jarvis-unique-by") != expected["unique_by"]:
+            return fail(
+                f"{schema_name}.{property_name} must declare identity uniqueness by "
+                + ", ".join(expected["unique_by"])
+            )
+        if (
+            property_schema.get("x-jarvis-duplicate-rejection-id")
+            != expected["duplicate_rejection_id"]
+        ):
+            return fail(
+                f"{schema_name}.{property_name} must declare duplicate rejection id "
+                + expected["duplicate_rejection_id"]
+            )
+
     for schema_name, optional_fields in OPTIONAL_SCHEMA_FIELDS.items():
         properties = schemas[schema_name].get("properties", {})
         missing_optional = optional_fields - set(properties)
@@ -1049,6 +1464,55 @@ def main() -> int:
         takeover, "state", active_takeover_states, active_takeover_forbidden_fields
     ):
         return fail("Takeover must forbid resume refs before reconciliation states")
+
+    contribution = schemas["Contribution"]
+    if contribution["properties"]["contributor_refs"].get("minItems") != 1:
+        return fail("Contribution.contributor_refs must require at least one item")
+    if contribution["properties"]["contributor_refs"].get("uniqueItems") is not True:
+        return fail("Contribution.contributor_refs must be unique")
+    if contribution["properties"]["event_refs"].get("minItems") != 1:
+        return fail("Contribution.event_refs must require at least one event")
+    if not schema_requires_min_items_when_const(
+        contribution, "contributor_type", "shared", "contributor_refs", 2
+    ):
+        return fail("Contribution must require multiple refs for shared contribution")
+
+    evidence_item_ref = schemas["EvidenceItemRef"]
+    source_event_refs = evidence_item_ref["properties"]["source_event_refs"]
+    if source_event_refs.get("minItems") != 1:
+        return fail("EvidenceItemRef.source_event_refs must require at least one event")
+
+    evidence_manifest = schemas["EvidenceManifest"]
+    if evidence_manifest["properties"]["evidence_item_refs"].get("minItems") != 1:
+        return fail("EvidenceManifest.evidence_item_refs must require at least one item")
+    if evidence_manifest["properties"]["contribution_refs"].get("minItems") != 1:
+        return fail("EvidenceManifest.contribution_refs must require at least one item")
+
+    learning_record = schemas["LearningRecord"]
+    if learning_record["properties"]["source_event_refs"].get("minItems") != 1:
+        return fail("LearningRecord.source_event_refs must require at least one event")
+
+    memory_proposal = schemas["MemoryProposal"]
+    if not schema_requires_field_when_const(
+        memory_proposal, "status", "accepted", "review_refs"
+    ):
+        return fail("MemoryProposal must require review_refs when accepted")
+    if memory_proposal["properties"]["review_refs"].get("minItems") != 1:
+        return fail("MemoryProposal.review_refs must require at least one item")
+    if memory_proposal["properties"]["review_required"].get("const") is not True:
+        return fail("MemoryProposal.review_required must be true")
+
+    skill_proposal = schemas["SkillProposal"]
+    if not schema_requires_field_when_const(
+        skill_proposal, "status", "accepted", "review_refs"
+    ):
+        return fail("SkillProposal must require review_refs when accepted")
+    if skill_proposal["properties"]["review_refs"].get("minItems") != 1:
+        return fail("SkillProposal.review_refs must require at least one item")
+
+    outcome_report = schemas["OutcomeReport"]
+    if outcome_report["properties"]["learning_record_refs"].get("minItems") != 1:
+        return fail("OutcomeReport.learning_record_refs must require at least one item")
 
     event_payload_properties = schemas["JarvisEventPayload"].get("properties", {})
     if "extensions" in event_payload_properties:

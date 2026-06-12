@@ -77,6 +77,24 @@ Takeover
 Chunk 4 does not define Contribution, EvidenceManifest, learning schemas, path
 operation bodies, examples, or conformance fixtures.
 
+Chunk 5 defines the attribution, evidence, learning, proposal, and feedback
+schemas:
+
+```txt
+Contribution
+ContributorRef
+EvidenceItemRef
+EvidenceManifest
+ExportProfile
+LearningRecord
+MemoryProposal
+SkillProposal
+OutcomeReport
+```
+
+Chunk 5 does not define path operation bodies, operation-specific security
+requirements, examples, or conformance fixtures.
+
 ## Boundary
 
 Compatible hosts publish their own server URLs, identity providers, credential
