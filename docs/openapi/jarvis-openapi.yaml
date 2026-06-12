@@ -191,6 +191,69 @@ components:
         - reconciliation_required
         - resumed
         - closed
+    ContributorType:
+      type: string
+      enum:
+        - human
+        - agent
+        - service
+        - tool
+        - shared
+    ContributionType:
+      type: string
+      enum:
+        - intent
+        - instruction
+        - plan
+        - research
+        - execution
+        - artifact
+        - review
+        - correction
+        - decision
+        - evidence_capture
+        - memory_proposal
+        - skill_proposal
+        - submission
+    LearningSubjectType:
+      type: string
+      enum:
+        - human
+        - agent
+        - pair
+    LearningReviewState:
+      type: string
+      enum:
+        - proposed
+        - accepted
+        - rejected
+        - superseded
+    ProposalTargetType:
+      type: string
+      enum:
+        - human
+        - agent
+        - pair
+        - project
+        - task
+    MemoryProposalStatus:
+      type: string
+      enum:
+        - proposed
+        - pending_review
+        - accepted
+        - rejected
+        - superseded
+        - expired
+    SkillProposalStatus:
+      type: string
+      enum:
+        - proposed
+        - pending_review
+        - accepted
+        - rejected
+        - superseded
+        - archived
     AuthorityScope:
       type: object
       additionalProperties: false
@@ -565,6 +628,115 @@ components:
         - credential
         - raw_auth_token
         - database_primary_key
+    ContributorRef:
+      type: object
+      additionalProperties: false
+      required:
+        - worker_id
+        - actor_id
+        - contribution_role
+      properties:
+        worker_id:
+          $ref: "#/components/schemas/JarvisId"
+        actor_id:
+          $ref: "#/components/schemas/JarvisId"
+        contribution_role:
+          $ref: "#/components/schemas/ContributionRole"
+      x-jarvis-forbidden-fields:
+        - payment_account
+        - compensation_rule
+        - private_score
+        - credential
+        - database_primary_key
+    ExportProfile:
+      type: object
+      additionalProperties: false
+      required:
+        - profile
+      properties:
+        profile:
+          type: string
+          minLength: 1
+        version:
+          type: string
+          minLength: 1
+        redaction_profile_ref:
+          $ref: "#/components/schemas/OpaqueRef"
+      x-jarvis-forbidden-fields:
+        - credential
+        - raw_auth_token
+        - provider_secret
+        - database_primary_key
+        - cloud_storage_secret
+        - unredacted_secret_value
+        - raw_runtime_state
+        - host_only_database_id
+        - deployment_detail
+        - billing_data
+        - private_score
+        - ui_state
+    EvidenceItemRef:
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - work_session_id
+        - source_event_refs
+        - captured_by_actor_id
+        - evidence_type
+        - artifact_ref
+        - content_hash
+        - trust_label
+        - redaction_state
+        - captured_at
+        - limitation_refs
+      properties:
+        id:
+          $ref: "#/components/schemas/JarvisId"
+        work_session_id:
+          $ref: "#/components/schemas/JarvisId"
+        source_event_refs:
+          type: array
+          items:
+            $ref: "#/components/schemas/JarvisId"
+          minItems: 1
+          uniqueItems: true
+        captured_by_actor_id:
+          $ref: "#/components/schemas/JarvisId"
+        evidence_type:
+          type: string
+          minLength: 1
+        artifact_ref:
+          $ref: "#/components/schemas/OpaqueRef"
+        content_hash:
+          type: string
+          minLength: 1
+        trust_label:
+          type: string
+          minLength: 1
+        redaction_state:
+          type: string
+          minLength: 1
+        captured_at:
+          $ref: "#/components/schemas/Timestamp"
+        limitation_refs:
+          type: array
+          items:
+            $ref: "#/components/schemas/OpaqueRef"
+          uniqueItems: true
+      x-jarvis-forbidden-fields:
+        - credential
+        - raw_auth_token
+        - provider_secret
+        - database_primary_key
+        - cloud_storage_secret
+        - unredacted_secret_value
+        - raw_runtime_state
+        - host_only_database_id
+        - deployment_detail
+        - billing_data
+        - private_score
+        - ui_state
     Worker:
       type: object
       additionalProperties: false
@@ -1369,6 +1541,488 @@ components:
         - credential
         - raw_auth_token
         - ui_session_id
+    Contribution:
+      type: object
+      additionalProperties: false
+      allOf:
+        - if:
+            properties:
+              contributor_type:
+                const: shared
+          then:
+            properties:
+              contributor_refs:
+                minItems: 2
+      required:
+        - id
+        - work_session_id
+        - contributor_refs
+        - contributor_type
+        - contribution_type
+        - event_refs
+        - created_at
+      properties:
+        id:
+          $ref: "#/components/schemas/JarvisId"
+        work_session_id:
+          $ref: "#/components/schemas/JarvisId"
+        contributor_refs:
+          type: array
+          items:
+            $ref: "#/components/schemas/ContributorRef"
+          minItems: 1
+          uniqueItems: true
+        contributor_type:
+          $ref: "#/components/schemas/ContributorType"
+        contribution_type:
+          $ref: "#/components/schemas/ContributionType"
+        event_refs:
+          type: array
+          items:
+            $ref: "#/components/schemas/JarvisId"
+          minItems: 1
+          uniqueItems: true
+        created_at:
+          $ref: "#/components/schemas/Timestamp"
+        artifact_refs:
+          type: array
+          items:
+            $ref: "#/components/schemas/OpaqueRef"
+          uniqueItems: true
+        review_refs:
+          type: array
+          items:
+            $ref: "#/components/schemas/JarvisId"
+          uniqueItems: true
+        evidence_refs:
+          type: array
+          items:
+            $ref: "#/components/schemas/JarvisId"
+          uniqueItems: true
+        confidence:
+          type: number
+          minimum: 0
+          maximum: 1
+        limitations:
+          type: array
+          items:
+            $ref: "#/components/schemas/OpaqueRef"
+          uniqueItems: true
+      x-jarvis-forbidden-fields:
+        - payment_account
+        - compensation_rule
+        - private_score
+        - credential
+        - database_primary_key
+    EvidenceManifest:
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - work_session_id
+        - generated_by_actor_id
+        - objective
+        - event_chain_root
+        - evidence_item_refs
+        - policy_decision_refs
+        - request_refs
+        - review_refs
+        - takeover_refs
+        - contribution_refs
+        - export_profile
+        - generated_at
+      properties:
+        id:
+          $ref: "#/components/schemas/JarvisId"
+        work_session_id:
+          $ref: "#/components/schemas/JarvisId"
+        generated_by_actor_id:
+          $ref: "#/components/schemas/JarvisId"
+        objective:
+          type: string
+          minLength: 1
+        event_chain_root:
+          type: string
+          minLength: 1
+        evidence_item_refs:
+          type: array
+          items:
+            $ref: "#/components/schemas/EvidenceItemRef"
+          minItems: 1
+        policy_decision_refs:
+          type: array
+          items:
+            $ref: "#/components/schemas/JarvisId"
+          uniqueItems: true
+        request_refs:
+          type: array
+          items:
+            $ref: "#/components/schemas/JarvisId"
+          uniqueItems: true
+        review_refs:
+          type: array
+          items:
+            $ref: "#/components/schemas/JarvisId"
+          uniqueItems: true
+        takeover_refs:
+          type: array
+          items:
+            $ref: "#/components/schemas/JarvisId"
+          uniqueItems: true
+        contribution_refs:
+          type: array
+          items:
+            $ref: "#/components/schemas/JarvisId"
+          minItems: 1
+          uniqueItems: true
+        export_profile:
+          $ref: "#/components/schemas/ExportProfile"
+        generated_at:
+          $ref: "#/components/schemas/Timestamp"
+        artifact_refs:
+          type: array
+          items:
+            $ref: "#/components/schemas/OpaqueRef"
+          uniqueItems: true
+        limitation_refs:
+          type: array
+          items:
+            $ref: "#/components/schemas/OpaqueRef"
+          uniqueItems: true
+        redaction_refs:
+          type: array
+          items:
+            $ref: "#/components/schemas/OpaqueRef"
+          uniqueItems: true
+      x-jarvis-forbidden-fields:
+        - credential
+        - raw_auth_token
+        - provider_secret
+        - database_primary_key
+        - cloud_storage_secret
+        - unredacted_secret_value
+        - raw_runtime_state
+        - host_only_database_id
+        - deployment_detail
+        - billing_data
+        - private_score
+        - ui_state
+      x-jarvis-invariants:
+        - final_export_requires_terminal_work_session_state
+        - sealed_evidence_manifest_rejects_mutation
+        - redaction_never_replaces_source_evidence
+    LearningRecord:
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - work_session_id
+        - created_by_actor_id
+        - subject_type
+        - subject_ref
+        - lesson_type
+        - source_event_refs
+        - review_state
+        - scope
+        - created_at
+      properties:
+        id:
+          $ref: "#/components/schemas/JarvisId"
+        work_session_id:
+          $ref: "#/components/schemas/JarvisId"
+        created_by_actor_id:
+          $ref: "#/components/schemas/JarvisId"
+        subject_type:
+          $ref: "#/components/schemas/LearningSubjectType"
+        subject_ref:
+          $ref: "#/components/schemas/OpaqueRef"
+        lesson_type:
+          type: string
+          minLength: 1
+        source_event_refs:
+          type: array
+          items:
+            $ref: "#/components/schemas/JarvisId"
+          minItems: 1
+          uniqueItems: true
+        review_state:
+          $ref: "#/components/schemas/LearningReviewState"
+        scope:
+          $ref: "#/components/schemas/OpaqueRef"
+        created_at:
+          $ref: "#/components/schemas/Timestamp"
+        proposed_change:
+          $ref: "#/components/schemas/PortableValue"
+        memory_proposal_refs:
+          type: array
+          items:
+            $ref: "#/components/schemas/JarvisId"
+          uniqueItems: true
+        skill_proposal_refs:
+          type: array
+          items:
+            $ref: "#/components/schemas/JarvisId"
+          uniqueItems: true
+        outcome_report_refs:
+          type: array
+          items:
+            $ref: "#/components/schemas/JarvisId"
+          uniqueItems: true
+      x-jarvis-forbidden-fields:
+        - silent_memory_write
+        - unreviewed_skill_activation
+        - credential
+        - raw_auth_token
+        - database_primary_key
+    MemoryProposal:
+      type: object
+      additionalProperties: false
+      allOf:
+        - if:
+            properties:
+              status:
+                const: accepted
+          then:
+            required:
+              - review_refs
+      required:
+        - id
+        - work_session_id
+        - proposed_by_actor_id
+        - proposed_for
+        - memory_scope
+        - memory_type
+        - content
+        - provenance
+        - confidence
+        - review_required
+        - status
+        - created_at
+      properties:
+        id:
+          $ref: "#/components/schemas/JarvisId"
+        work_session_id:
+          $ref: "#/components/schemas/JarvisId"
+        proposed_by_actor_id:
+          $ref: "#/components/schemas/JarvisId"
+        proposed_for:
+          $ref: "#/components/schemas/ProposalTargetType"
+        memory_scope:
+          $ref: "#/components/schemas/OpaqueRef"
+        memory_type:
+          type: string
+          minLength: 1
+        content:
+          $ref: "#/components/schemas/PortableValue"
+        provenance:
+          type: array
+          items:
+            $ref: "#/components/schemas/OpaqueRef"
+          minItems: 1
+          uniqueItems: true
+        confidence:
+          type: number
+          minimum: 0
+          maximum: 1
+        review_required:
+          type: boolean
+          const: true
+        status:
+          $ref: "#/components/schemas/MemoryProposalStatus"
+        created_at:
+          $ref: "#/components/schemas/Timestamp"
+        source_event_refs:
+          type: array
+          items:
+            $ref: "#/components/schemas/JarvisId"
+          uniqueItems: true
+        review_refs:
+          type: array
+          items:
+            $ref: "#/components/schemas/JarvisId"
+          minItems: 1
+          uniqueItems: true
+        expires_at:
+          $ref: "#/components/schemas/Timestamp"
+        learning_record_refs:
+          type: array
+          items:
+            $ref: "#/components/schemas/JarvisId"
+          uniqueItems: true
+      x-jarvis-forbidden-fields:
+        - silent_memory_write
+        - credential
+        - raw_auth_token
+        - private_embedding_store_id
+        - database_primary_key
+      x-jarvis-invariants:
+        - accepted_memory_requires_review_refs
+        - model_derived_memory_cannot_self_confirm
+        - tool_derived_memory_cannot_self_confirm
+    SkillProposal:
+      type: object
+      additionalProperties: false
+      allOf:
+        - if:
+            properties:
+              status:
+                const: accepted
+          then:
+            required:
+              - review_refs
+      required:
+        - id
+        - work_session_id
+        - proposed_by_actor_id
+        - proposed_for
+        - skill_scope
+        - skill_name
+        - trigger_conditions
+        - procedure
+        - review_checks
+        - failure_cases
+        - provenance
+        - status
+        - created_at
+      properties:
+        id:
+          $ref: "#/components/schemas/JarvisId"
+        work_session_id:
+          $ref: "#/components/schemas/JarvisId"
+        proposed_by_actor_id:
+          $ref: "#/components/schemas/JarvisId"
+        proposed_for:
+          $ref: "#/components/schemas/ProposalTargetType"
+        skill_scope:
+          $ref: "#/components/schemas/OpaqueRef"
+        skill_name:
+          type: string
+          minLength: 1
+        trigger_conditions:
+          type: array
+          items:
+            type: string
+            minLength: 1
+          minItems: 1
+        procedure:
+          type: array
+          items:
+            type: string
+            minLength: 1
+          minItems: 1
+        review_checks:
+          type: array
+          items:
+            type: string
+            minLength: 1
+          minItems: 1
+        failure_cases:
+          type: array
+          items:
+            type: string
+            minLength: 1
+          minItems: 1
+        provenance:
+          type: array
+          items:
+            $ref: "#/components/schemas/OpaqueRef"
+          minItems: 1
+          uniqueItems: true
+        status:
+          $ref: "#/components/schemas/SkillProposalStatus"
+        created_at:
+          $ref: "#/components/schemas/Timestamp"
+        required_tools:
+          type: array
+          items:
+            $ref: "#/components/schemas/OpaqueRef"
+          uniqueItems: true
+        source_event_refs:
+          type: array
+          items:
+            $ref: "#/components/schemas/JarvisId"
+          uniqueItems: true
+        review_refs:
+          type: array
+          items:
+            $ref: "#/components/schemas/JarvisId"
+          minItems: 1
+          uniqueItems: true
+        learning_record_refs:
+          type: array
+          items:
+            $ref: "#/components/schemas/JarvisId"
+          uniqueItems: true
+      x-jarvis-forbidden-fields:
+        - automatic_tool_grant
+        - unreviewed_skill_activation
+        - credential
+        - raw_auth_token
+        - database_primary_key
+      x-jarvis-invariants:
+        - accepted_skill_requires_review_refs
+        - skill_tool_access_expansion_requires_policy_review
+        - unreviewed_skill_change_cannot_activate
+    OutcomeReport:
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - work_session_id
+        - source_ref
+        - reporter_ref
+        - accepted_by_actor_id
+        - outcome
+        - learning_record_refs
+        - received_at
+      properties:
+        id:
+          $ref: "#/components/schemas/JarvisId"
+        work_session_id:
+          $ref: "#/components/schemas/JarvisId"
+        source_ref:
+          $ref: "#/components/schemas/OpaqueRef"
+        reporter_ref:
+          $ref: "#/components/schemas/OpaqueRef"
+        accepted_by_actor_id:
+          $ref: "#/components/schemas/JarvisId"
+        outcome:
+          type: string
+          minLength: 1
+        learning_record_refs:
+          type: array
+          items:
+            $ref: "#/components/schemas/JarvisId"
+          minItems: 1
+          uniqueItems: true
+        received_at:
+          $ref: "#/components/schemas/Timestamp"
+        external_system_ref:
+          $ref: "#/components/schemas/OpaqueRef"
+        reporter_actor_id:
+          $ref: "#/components/schemas/JarvisId"
+        reason:
+          type: string
+          minLength: 1
+        reviewer_feedback_refs:
+          type: array
+          items:
+            $ref: "#/components/schemas/OpaqueRef"
+          uniqueItems: true
+      x-jarvis-forbidden-fields:
+        - task_marketplace_score_rule
+        - payment_status
+        - settlement_account
+        - credential
+        - raw_auth_token
+        - database_primary_key
+        - sealed_work_session_mutation
+        - sealed_evidence_mutation
+      x-jarvis-invariants:
+        - outcome_report_requires_terminal_source
+        - outcome_report_does_not_mutate_sealed_work_session
+        - outcome_report_does_not_mutate_sealed_evidence_manifest
+        - outcome_report_requires_learning_record_refs
   parameters: {}
   headers: {}
   requestBodies: {}
@@ -1412,7 +2066,7 @@ x-jarvis-protocol:
     - task marketplace
     - host workflow
   chunk_lock:
-    id: week-2-chunk-4-control-plane-schemas
+    id: week-2-chunk-5-evidence-learning-schemas
     locks:
       - OpenAPI 3.1.1 entry point
       - v0.1 protocol metadata
@@ -1432,10 +2086,15 @@ x-jarvis-protocol:
       - Review schema
       - ApprovalScope schema
       - Takeover schema
+      - Contribution schema
+      - EvidenceItemRef schema
+      - EvidenceManifest schema
+      - LearningRecord schema
+      - MemoryProposal schema
+      - SkillProposal schema
+      - OutcomeReport schema
     excludes:
       - path operation bodies
       - operation-specific security requirements
-      - Contribution schema
-      - evidence and learning schemas
       - examples
       - conformance fixtures
