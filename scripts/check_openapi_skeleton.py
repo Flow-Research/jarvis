@@ -55,6 +55,11 @@ REQUIRED_SCHEMAS = {
     "PolicyDecisionResult",
     "RiskClass",
     "DataSensitivity",
+    "RequestType",
+    "RequestStatus",
+    "BlockingScope",
+    "ReviewDecision",
+    "TakeoverState",
     "AuthorityScope",
     "AccountabilityScope",
     "CapabilityRef",
@@ -68,6 +73,11 @@ REQUIRED_SCHEMAS = {
     "PolicyActionRule",
     "PolicyRequestLimits",
     "PolicyActionRequest",
+    "RequestOption",
+    "SafeFallback",
+    "ApprovalBoundary",
+    "TakeoverScope",
+    "ApprovalScope",
     "Worker",
     "Actor",
     "HumanWorker",
@@ -76,6 +86,9 @@ REQUIRED_SCHEMAS = {
     "JarvisEvent",
     "Policy",
     "PolicyDecision",
+    "Request",
+    "Review",
+    "Takeover",
 }
 
 REQUIRED_SCHEMA_FIELDS = {
@@ -161,6 +174,67 @@ REQUIRED_SCHEMA_FIELDS = {
         "reason",
         "created_at",
     },
+    "ApprovalScope": {
+        "request_id",
+        "review_id",
+        "policy_decision_id",
+        "request_revision",
+        "request_event_hash",
+        "normalized_action_hash",
+        "approved_action",
+        "allowed_scope",
+        "denied_scope",
+        "expires_at",
+        "max_uses",
+        "applies_to_work_session_id",
+        "applies_to_actor_id",
+    },
+    "TakeoverScope": {
+        "blocking_scope",
+        "scope_ref",
+    },
+    "Request": {
+        "id",
+        "protocol_version",
+        "work_session_id",
+        "requester_actor_id",
+        "requester_worker_id",
+        "target_human_worker_id",
+        "policy_decision_id",
+        "type",
+        "blocking_scope",
+        "reason_code",
+        "reason_summary",
+        "requested_action",
+        "requested_outcome",
+        "risk_class",
+        "human_decision_needed",
+        "options",
+        "default_if_no_response",
+        "status",
+        "created_at",
+        "expires_at",
+    },
+    "Review": {
+        "id",
+        "work_session_id",
+        "reviewer_actor_id",
+        "reviewer_worker_id",
+        "target_ref",
+        "decision",
+        "created_at",
+    },
+    "Takeover": {
+        "id",
+        "work_session_id",
+        "requested_by_actor_id",
+        "controlling_actor_id",
+        "affected_scope",
+        "reason",
+        "lock_epoch",
+        "state",
+        "created_at",
+    },
 }
 
 OPTIONAL_SCHEMA_FIELDS = {
@@ -189,6 +263,39 @@ OPTIONAL_SCHEMA_FIELDS = {
         "denied_grant_refs",
         "request_id",
         "evidence_refs",
+    },
+    "Request": {
+        "missing_permission_or_context",
+        "policy_refs",
+        "data_sensitivity",
+        "recommended_option",
+        "safer_alternatives",
+        "evidence_refs",
+        "artifact_refs",
+        "contribution_refs",
+        "resolved_at",
+        "resolved_by_review_id",
+        "resolved_by_takeover_id",
+        "closed_by_event_ref",
+        "superseded_by_request_id",
+        "duplicate_of_request_id",
+    },
+    "Review": {
+        "comments",
+        "required_changes",
+        "approval_scope",
+        "takeover_id",
+    },
+    "TakeoverScope": {
+        "normalized_action_hash",
+        "artifact_refs",
+    },
+    "Takeover": {
+        "request_id",
+        "resumed_by_actor_id",
+        "reconciliation_notes",
+        "reconciliation_refs",
+        "resolved_at",
     },
 }
 
@@ -248,6 +355,53 @@ REQUIRED_ENUMS = {
         "confidential",
         "restricted",
     },
+    "RequestType": {
+        "permission",
+        "context",
+        "judgment",
+        "review",
+        "correction",
+        "takeover",
+        "escalation",
+    },
+    "RequestStatus": {
+        "pending",
+        "acknowledged",
+        "approved",
+        "denied",
+        "narrowed",
+        "answered",
+        "needs_revision",
+        "takeover",
+        "expired",
+        "cancelled",
+        "superseded",
+    },
+    "BlockingScope": {
+        "action",
+        "branch",
+        "artifact",
+        "tool_call",
+        "external_send",
+        "final_submission",
+        "work_session",
+    },
+    "ReviewDecision": {
+        "approve",
+        "deny",
+        "narrow",
+        "correct",
+        "takeover",
+        "needs_revision",
+    },
+    "TakeoverState": {
+        "requested",
+        "locked",
+        "human_active",
+        "reconciliation_required",
+        "resumed",
+        "closed",
+    },
 }
 
 REQUIRED_CLOSED_OBJECT_SCHEMAS = {
@@ -264,6 +418,11 @@ REQUIRED_CLOSED_OBJECT_SCHEMAS = {
     "PolicyActionRule",
     "PolicyRequestLimits",
     "PolicyActionRequest",
+    "RequestOption",
+    "SafeFallback",
+    "ApprovalBoundary",
+    "TakeoverScope",
+    "ApprovalScope",
     "Worker",
     "Actor",
     "HumanWorker",
@@ -272,6 +431,9 @@ REQUIRED_CLOSED_OBJECT_SCHEMAS = {
     "JarvisEvent",
     "Policy",
     "PolicyDecision",
+    "Request",
+    "Review",
+    "Takeover",
 }
 
 REQUIRED_FORBIDDEN_METADATA = {
@@ -339,6 +501,51 @@ REQUIRED_FORBIDDEN_METADATA = {
         "database_primary_key",
         "runtime_decision_object",
     },
+    "TakeoverScope": {
+        "runtime_lock_id",
+        "database_primary_key",
+        "credential",
+        "raw_auth_token",
+        "ui_session_id",
+    },
+    "ApprovalScope": {
+        "unbounded_approval",
+        "implicit_authority_grant",
+        "credential",
+        "raw_auth_token",
+        "database_primary_key",
+    },
+    "Request": {
+        "private_inbox_id",
+        "notification_provider_id",
+        "credential",
+        "raw_auth_token",
+        "database_primary_key",
+        "runtime_state",
+        "provider_secret",
+        "billing_field",
+        "deployment_field",
+        "ui_state",
+        "hidden_policy_trace",
+        "unbounded_approval",
+        "implicit_authority_grant",
+    },
+    "Review": {
+        "private_comment_thread_id",
+        "credential",
+        "raw_auth_token",
+        "database_primary_key",
+        "ui_state",
+        "unbounded_approval",
+        "implicit_authority_grant",
+    },
+    "Takeover": {
+        "runtime_lock_id",
+        "database_primary_key",
+        "credential",
+        "raw_auth_token",
+        "ui_session_id",
+    },
 }
 
 FORBIDDEN_SCHEMA_PROPERTIES = {
@@ -365,6 +572,16 @@ FORBIDDEN_SCHEMA_PROPERTIES = {
     "cloud_policy_id",
     "hidden_policy_trace",
     "runtime_decision_object",
+    "private_inbox_id",
+    "notification_provider_id",
+    "runtime_state",
+    "billing_field",
+    "deployment_field",
+    "unbounded_approval",
+    "implicit_authority_grant",
+    "private_comment_thread_id",
+    "runtime_lock_id",
+    "ui_session_id",
 }
 
 REQUIRED_TAGS = {
@@ -380,7 +597,7 @@ REQUIRED_TAGS = {
 
 EXPECTED_TITLE = "Jarvis Human-Agent Collaboration Protocol"
 EXPECTED_PLACEHOLDER_SERVER = "https://jarvis.example.invalid"
-EXPECTED_CHUNK_ID = "week-2-chunk-3-worksession-policy-schemas"
+EXPECTED_CHUNK_ID = "week-2-chunk-4-control-plane-schemas"
 REQUIRED_CHUNK_LOCKS = {
     "OpenAPI 3.1.1 entry point",
     "v0.1 protocol metadata",
@@ -396,6 +613,10 @@ REQUIRED_CHUNK_LOCKS = {
     "JarvisEvent schema",
     "Policy schema",
     "PolicyDecision schema",
+    "Request schema",
+    "Review schema",
+    "ApprovalScope schema",
+    "Takeover schema",
 }
 PORTABLE_VALUE_REF = {"$ref": "#/components/schemas/PortableValue"}
 FORBIDDEN_PORTABLE_KEY_PATTERN = (
@@ -436,6 +657,80 @@ def schema_requires_field_when_const(
             continue
         required = consequence.get("required", [])
         if target.get("const") == const_value and required_field in required:
+            return True
+    return False
+
+
+def schema_requires_field_when_enum(
+    schema: dict, property_name: str, enum_values: set[str], required_field: str
+) -> bool:
+    for branch in schema.get("allOf", []):
+        if not isinstance(branch, dict):
+            continue
+        condition = branch.get("if", {})
+        consequence = branch.get("then", {})
+        if not isinstance(condition, dict) or not isinstance(consequence, dict):
+            continue
+        properties = condition.get("properties", {})
+        if not isinstance(properties, dict):
+            continue
+        target = properties.get(property_name, {})
+        if not isinstance(target, dict):
+            continue
+        actual_values = set(target.get("enum", []))
+        required = consequence.get("required", [])
+        if actual_values == enum_values and required_field in required:
+            return True
+    return False
+
+
+def schema_forbids_field_when_enum(
+    schema: dict, property_name: str, enum_values: set[str], forbidden_field: str
+) -> bool:
+    for branch in schema.get("allOf", []):
+        if not isinstance(branch, dict):
+            continue
+        condition = branch.get("if", {})
+        consequence = branch.get("then", {})
+        if not isinstance(condition, dict) or not isinstance(consequence, dict):
+            continue
+        properties = condition.get("properties", {})
+        if not isinstance(properties, dict):
+            continue
+        target = properties.get(property_name, {})
+        if not isinstance(target, dict):
+            continue
+        actual_values = set(target.get("enum", []))
+        forbidden_required = consequence.get("not", {}).get("required", [])
+        if actual_values == enum_values and forbidden_field in forbidden_required:
+            return True
+    return False
+
+
+def schema_forbids_fields_when_enum(
+    schema: dict, property_name: str, enum_values: set[str], forbidden_fields: set[str]
+) -> bool:
+    for branch in schema.get("allOf", []):
+        if not isinstance(branch, dict):
+            continue
+        condition = branch.get("if", {})
+        consequence = branch.get("then", {})
+        if not isinstance(condition, dict) or not isinstance(consequence, dict):
+            continue
+        properties = condition.get("properties", {})
+        if not isinstance(properties, dict):
+            continue
+        target = properties.get(property_name, {})
+        if not isinstance(target, dict):
+            continue
+        actual_values = set(target.get("enum", []))
+        if actual_values != enum_values:
+            continue
+        forbidden = set()
+        for item in consequence.get("not", {}).get("anyOf", []):
+            if isinstance(item, dict):
+                forbidden.update(item.get("required", []))
+        if forbidden_fields <= forbidden:
             return True
     return False
 
@@ -630,6 +925,114 @@ def main() -> int:
                 "PolicyDecision must require request_id when result is "
                 + result_value
             )
+
+    request = schemas["Request"]
+    resolved_statuses = {
+        "approved",
+        "denied",
+        "narrowed",
+        "answered",
+        "needs_revision",
+        "takeover",
+        "expired",
+        "cancelled",
+        "superseded",
+    }
+    review_resolved_statuses = {
+        "approved",
+        "denied",
+        "narrowed",
+        "answered",
+        "needs_revision",
+    }
+    closed_statuses = {
+        "expired",
+        "cancelled",
+        "superseded",
+    }
+    unresolved_statuses = {
+        "pending",
+        "acknowledged",
+    }
+    unresolved_forbidden_fields = {
+        "resolved_at",
+        "resolved_by_review_id",
+        "resolved_by_takeover_id",
+        "closed_by_event_ref",
+        "superseded_by_request_id",
+    }
+    if not schema_forbids_fields_when_enum(
+        request, "status", unresolved_statuses, unresolved_forbidden_fields
+    ):
+        return fail("Request must forbid resolver refs for unresolved statuses")
+    if not schema_requires_field_when_enum(
+        request, "status", resolved_statuses, "resolved_at"
+    ):
+        return fail("Request must require resolved_at for resolved statuses")
+    if not schema_requires_field_when_enum(
+        request, "status", review_resolved_statuses, "resolved_by_review_id"
+    ):
+        return fail(
+            "Request must require resolved_by_review_id for review-resolved statuses"
+        )
+    if not schema_requires_field_when_const(
+        request, "status", "takeover", "resolved_by_takeover_id"
+    ):
+        return fail(
+            "Request must require resolved_by_takeover_id when status is takeover"
+        )
+    if not schema_requires_field_when_enum(
+        request, "status", closed_statuses, "closed_by_event_ref"
+    ):
+        return fail("Request must require closed_by_event_ref for closed statuses")
+    if not schema_requires_field_when_const(
+        request, "status", "superseded", "superseded_by_request_id"
+    ):
+        return fail(
+            "Request must require superseded_by_request_id when status is superseded"
+        )
+
+    review = schemas["Review"]
+    approval_decisions = {"approve", "narrow"}
+    non_approval_decisions = {"deny", "correct", "takeover", "needs_revision"}
+    if not schema_requires_field_when_enum(
+        review, "decision", approval_decisions, "approval_scope"
+    ):
+        return fail("Review must require approval_scope for approve and narrow")
+    if not schema_forbids_field_when_enum(
+        review, "decision", non_approval_decisions, "approval_scope"
+    ):
+        return fail(
+            "Review must forbid approval_scope for non-approval decisions"
+        )
+    if not schema_requires_field_when_const(
+        review, "decision", "takeover", "takeover_id"
+    ):
+        return fail("Review must require takeover_id when decision is takeover")
+
+    takeover = schemas["Takeover"]
+    if not schema_requires_field_when_const(
+        takeover, "state", "resumed", "reconciliation_refs"
+    ):
+        return fail("Takeover must require reconciliation_refs when state is resumed")
+    if not schema_requires_field_when_const(
+        takeover, "state", "resumed", "resumed_by_actor_id"
+    ):
+        return fail("Takeover must require resumed_by_actor_id when state is resumed")
+    if not schema_requires_field_when_const(
+        takeover, "state", "resumed", "resolved_at"
+    ):
+        return fail("Takeover must require resolved_at when state is resumed")
+    active_takeover_states = {"requested", "locked", "human_active"}
+    active_takeover_forbidden_fields = {
+        "resumed_by_actor_id",
+        "reconciliation_refs",
+        "resolved_at",
+    }
+    if not schema_forbids_fields_when_enum(
+        takeover, "state", active_takeover_states, active_takeover_forbidden_fields
+    ):
+        return fail("Takeover must forbid resume refs before reconciliation states")
 
     event_payload_properties = schemas["JarvisEventPayload"].get("properties", {})
     if "extensions" in event_payload_properties:

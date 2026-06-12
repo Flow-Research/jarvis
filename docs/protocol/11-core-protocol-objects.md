@@ -493,6 +493,13 @@ resolved_by_takeover_id
 
 closed_by_event_ref
   required when status is expired, cancelled, or superseded
+
+superseded_by_request_id
+  required when status is superseded
+
+resolved_at, resolved_by_review_id, resolved_by_takeover_id,
+closed_by_event_ref, and superseded_by_request_id
+  forbidden when status is pending or acknowledged
 ```
 
 Forbidden fields:
@@ -535,6 +542,7 @@ Optional fields:
 ```txt
 comments
 required_changes
+takeover_id
 ```
 
 Conditionally required fields:
@@ -543,6 +551,9 @@ Conditionally required fields:
 approval_scope
   required when decision is approve or narrow
   forbidden when decision is deny, correct, takeover, or needs_revision
+
+takeover_id
+  required when decision is takeover
 ```
 
 Nested component:
@@ -585,6 +596,7 @@ id
 work_session_id
 requested_by_actor_id
 controlling_actor_id
+affected_scope
 reason
 lock_epoch
 state
@@ -599,7 +611,9 @@ Optional fields:
 
 ```txt
 resumed_by_actor_id
+request_id
 reconciliation_notes
+reconciliation_refs
 resolved_at
 ```
 
@@ -608,6 +622,22 @@ Conditionally required fields:
 ```txt
 reconciliation_refs
   required before state becomes resumed
+
+resumed_by_actor_id and resolved_at
+  required when state is resumed
+
+resumed_by_actor_id, reconciliation_refs, and resolved_at
+  forbidden when state is requested, locked, or human_active
+```
+
+Nested component:
+
+```txt
+TakeoverScope
+  blocking_scope
+  scope_ref
+  normalized_action_hash
+  artifact_refs
 ```
 
 Forbidden fields:
@@ -1345,6 +1375,7 @@ Rules:
 - Resolved Request status records `resolved_by_review_id` or
   `resolved_by_takeover_id`.
 - Closed Request status records `closed_by_event_ref`.
+- Superseded Request status records `superseded_by_request_id`.
 - Approval is narrower than the requested action when the human restricts scope.
 - Every Request includes options, risk, and default behavior when the human does
   not respond.
@@ -1373,6 +1404,7 @@ Review
   comments
   required_changes
   approval_scope
+  takeover_id
   created_at
 ```
 
@@ -1389,6 +1421,7 @@ Rules:
   Actor, and to the Request revision, Request event hash, PolicyDecision, and
   normalized action hash.
 - Review creates Takeover only when the decision is `takeover`.
+- Review with decision `takeover` records `takeover_id`.
 - Review does not silently mutate Policy, MemoryProposal, SkillProposal, or
   durable learning.
 - Review creates LearningRecord, MemoryProposal, SkillProposal, or policy
@@ -1405,6 +1438,8 @@ Takeover
   work_session_id
   requested_by_actor_id
   controlling_actor_id
+  request_id
+  affected_scope
   reason
   lock_epoch
   state
@@ -1429,6 +1464,10 @@ closed
 Rules:
 
 - Takeover pauses autonomous continuation for the affected WorkSession scope.
+- `affected_scope` declares the blocked WorkSession scope under direct human
+  control through `blocking_scope` and `scope_ref`.
+- `request_id` links the Takeover to the Request it resolves when the Takeover
+  is created from a Request.
 - Takeover increments the lock epoch.
 - Agent actions from an old lock epoch are stale and rejected.
 - Resume requires reconciliation.
