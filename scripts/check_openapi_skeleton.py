@@ -67,6 +67,7 @@ REQUIRED_SCHEMAS = {
     "ProposalTargetType",
     "MemoryProposalStatus",
     "SkillProposalStatus",
+    "ProtocolErrorId",
     "AuthorityScope",
     "AccountabilityScope",
     "CapabilityRef",
@@ -105,6 +106,221 @@ REQUIRED_SCHEMAS = {
     "MemoryProposal",
     "SkillProposal",
     "OutcomeReport",
+    "ProtocolError",
+}
+
+REQUIRED_PARAMETERS = {
+    "WorkerIdPath",
+    "ActorIdPath",
+    "WorkSessionIdPath",
+    "ProtocolVersionHeader",
+    "ActorHeader",
+    "IdempotencyHeader",
+    "RequestTimestampHeader",
+    "RevisionHeader",
+    "PreviousHashHeader",
+}
+
+HEADER_PARAMETER_NAMES = {
+    "ProtocolVersionHeader": "Jarvis-Protocol-Version",
+    "ActorHeader": "Jarvis-Actor-Id",
+    "IdempotencyHeader": "Jarvis-Idempotency-Key",
+    "RequestTimestampHeader": "Jarvis-Request-Timestamp",
+    "RevisionHeader": "Jarvis-Expected-WorkSession-Revision",
+    "PreviousHashHeader": "Jarvis-Previous-Event-Hash",
+}
+
+REQUIRED_REQUEST_BODIES = {
+    "WorkerBody": "Worker",
+    "ActorBody": "Actor",
+    "WorkSessionBody": "WorkSession",
+    "JarvisEventBody": "JarvisEvent",
+    "PolicyDecisionBody": "PolicyDecision",
+    "RequestBody": "Request",
+    "ReviewBody": "Review",
+    "TakeoverBody": "Takeover",
+    "ContributionBody": "Contribution",
+    "LearningRecordBody": "LearningRecord",
+    "MemoryProposalBody": "MemoryProposal",
+    "SkillProposalBody": "SkillProposal",
+    "OutcomeReportBody": "OutcomeReport",
+}
+
+REQUIRED_RESPONSES = {
+    "WorkerResponse": "Worker",
+    "ActorResponse": "Actor",
+    "WorkSessionResponse": "WorkSession",
+    "JarvisEventResponse": "JarvisEvent",
+    "PolicyDecisionResponse": "PolicyDecision",
+    "RequestResponse": "Request",
+    "ReviewResponse": "Review",
+    "TakeoverResponse": "Takeover",
+    "ContributionResponse": "Contribution",
+    "LearningRecordResponse": "LearningRecord",
+    "MemoryProposalResponse": "MemoryProposal",
+    "SkillProposalResponse": "SkillProposal",
+    "EvidenceManifestResponse": "EvidenceManifest",
+    "OutcomeReportResponse": "OutcomeReport",
+    "ProtocolErrorResponse": "ProtocolError",
+}
+
+WORKSESSION_MUTATION_HEADERS = {
+    "ProtocolVersionHeader",
+    "ActorHeader",
+    "IdempotencyHeader",
+    "RequestTimestampHeader",
+    "RevisionHeader",
+    "PreviousHashHeader",
+}
+
+NON_WORKSESSION_MUTATION_HEADERS = {
+    "ProtocolVersionHeader",
+    "ActorHeader",
+    "IdempotencyHeader",
+    "RequestTimestampHeader",
+}
+
+READ_HEADERS = {
+    "ProtocolVersionHeader",
+    "ActorHeader",
+}
+
+REQUIRED_OPERATIONS = {
+    ("put", "/workers/{worker_id}"): {
+        "operation_id": "registerWorker",
+        "tag": "Workers",
+        "headers": NON_WORKSESSION_MUTATION_HEADERS,
+        "path_parameters": {"WorkerIdPath"},
+        "request_body": "WorkerBody",
+        "success_status": "200",
+        "success_response": "WorkerResponse",
+    },
+    ("put", "/actors/{actor_id}"): {
+        "operation_id": "registerActor",
+        "tag": "Workers",
+        "headers": NON_WORKSESSION_MUTATION_HEADERS,
+        "path_parameters": {"ActorIdPath"},
+        "request_body": "ActorBody",
+        "success_status": "200",
+        "success_response": "ActorResponse",
+    },
+    ("post", "/work-sessions"): {
+        "operation_id": "createWorkSession",
+        "tag": "WorkSessions",
+        "headers": WORKSESSION_MUTATION_HEADERS,
+        "path_parameters": set(),
+        "request_body": "WorkSessionBody",
+        "success_status": "201",
+        "success_response": "WorkSessionResponse",
+    },
+    ("get", "/work-sessions/{work_session_id}"): {
+        "operation_id": "getWorkSession",
+        "tag": "WorkSessions",
+        "headers": READ_HEADERS,
+        "path_parameters": {"WorkSessionIdPath"},
+        "request_body": None,
+        "success_status": "200",
+        "success_response": "WorkSessionResponse",
+    },
+    ("post", "/work-sessions/{work_session_id}/events"): {
+        "operation_id": "appendJarvisEvent",
+        "tag": "WorkSessions",
+        "headers": WORKSESSION_MUTATION_HEADERS,
+        "path_parameters": {"WorkSessionIdPath"},
+        "request_body": "JarvisEventBody",
+        "success_status": "201",
+        "success_response": "JarvisEventResponse",
+    },
+    ("post", "/work-sessions/{work_session_id}/policy-decisions"): {
+        "operation_id": "recordPolicyDecision",
+        "tag": "ControlPlane",
+        "headers": WORKSESSION_MUTATION_HEADERS,
+        "path_parameters": {"WorkSessionIdPath"},
+        "request_body": "PolicyDecisionBody",
+        "success_status": "201",
+        "success_response": "PolicyDecisionResponse",
+    },
+    ("post", "/work-sessions/{work_session_id}/requests"): {
+        "operation_id": "createRequest",
+        "tag": "ControlPlane",
+        "headers": WORKSESSION_MUTATION_HEADERS,
+        "path_parameters": {"WorkSessionIdPath"},
+        "request_body": "RequestBody",
+        "success_status": "201",
+        "success_response": "RequestResponse",
+    },
+    ("post", "/work-sessions/{work_session_id}/reviews"): {
+        "operation_id": "recordReview",
+        "tag": "ControlPlane",
+        "headers": WORKSESSION_MUTATION_HEADERS,
+        "path_parameters": {"WorkSessionIdPath"},
+        "request_body": "ReviewBody",
+        "success_status": "201",
+        "success_response": "ReviewResponse",
+    },
+    ("post", "/work-sessions/{work_session_id}/takeovers"): {
+        "operation_id": "recordTakeover",
+        "tag": "ControlPlane",
+        "headers": WORKSESSION_MUTATION_HEADERS,
+        "path_parameters": {"WorkSessionIdPath"},
+        "request_body": "TakeoverBody",
+        "success_status": "201",
+        "success_response": "TakeoverResponse",
+    },
+    ("post", "/work-sessions/{work_session_id}/contributions"): {
+        "operation_id": "recordContribution",
+        "tag": "Attribution",
+        "headers": WORKSESSION_MUTATION_HEADERS,
+        "path_parameters": {"WorkSessionIdPath"},
+        "request_body": "ContributionBody",
+        "success_status": "201",
+        "success_response": "ContributionResponse",
+    },
+    ("post", "/work-sessions/{work_session_id}/learning-records"): {
+        "operation_id": "createLearningRecord",
+        "tag": "Learning",
+        "headers": WORKSESSION_MUTATION_HEADERS,
+        "path_parameters": {"WorkSessionIdPath"},
+        "request_body": "LearningRecordBody",
+        "success_status": "201",
+        "success_response": "LearningRecordResponse",
+    },
+    ("post", "/work-sessions/{work_session_id}/memory-proposals"): {
+        "operation_id": "createMemoryProposal",
+        "tag": "Learning",
+        "headers": WORKSESSION_MUTATION_HEADERS,
+        "path_parameters": {"WorkSessionIdPath"},
+        "request_body": "MemoryProposalBody",
+        "success_status": "201",
+        "success_response": "MemoryProposalResponse",
+    },
+    ("post", "/work-sessions/{work_session_id}/skill-proposals"): {
+        "operation_id": "createSkillProposal",
+        "tag": "Learning",
+        "headers": WORKSESSION_MUTATION_HEADERS,
+        "path_parameters": {"WorkSessionIdPath"},
+        "request_body": "SkillProposalBody",
+        "success_status": "201",
+        "success_response": "SkillProposalResponse",
+    },
+    ("get", "/work-sessions/{work_session_id}/export"): {
+        "operation_id": "exportEvidenceManifest",
+        "tag": "Evidence",
+        "headers": READ_HEADERS,
+        "path_parameters": {"WorkSessionIdPath"},
+        "request_body": None,
+        "success_status": "200",
+        "success_response": "EvidenceManifestResponse",
+    },
+    ("post", "/outcome-reports"): {
+        "operation_id": "submitOutcomeReport",
+        "tag": "Feedback",
+        "headers": NON_WORKSESSION_MUTATION_HEADERS,
+        "path_parameters": set(),
+        "request_body": "OutcomeReportBody",
+        "success_status": "202",
+        "success_response": "OutcomeReportResponse",
+    },
 }
 
 REQUIRED_SCHEMA_FIELDS = {
@@ -346,6 +562,15 @@ REQUIRED_SCHEMA_FIELDS = {
         "outcome",
         "learning_record_refs",
         "received_at",
+    },
+    "ProtocolError": {
+        "error_id",
+        "protocol_version",
+        "object_type",
+        "field",
+        "reason",
+        "remediation",
+        "trace_id",
     },
 }
 
@@ -610,6 +835,63 @@ REQUIRED_ENUMS = {
         "superseded",
         "archived",
     },
+    "ProtocolErrorId": {
+        "invalid_transition",
+        "unknown_state",
+        "missing_protocol_version",
+        "unsupported_protocol_version",
+        "missing_request_timestamp",
+        "stale_request_timestamp",
+        "missing_expected_work_session_revision",
+        "missing_previous_event_hash",
+        "stale_work_session_revision",
+        "missing_idempotency_key",
+        "missing_actor",
+        "invalid_extension_namespace",
+        "extension_core_field_override",
+        "missing_policy",
+        "missing_policy_decision",
+        "missing_objective",
+        "policy_denied",
+        "request_unresolved",
+        "review_required",
+        "invalid_request_transition",
+        "missing_review_resolution",
+        "missing_takeover_resolution",
+        "invalid_approval_scope",
+        "approval_scope_expired",
+        "approval_scope_mismatch",
+        "stale_takeover_epoch",
+        "invalid_event_hash",
+        "invalid_previous_event_hash",
+        "duplicate_idempotency_key_mismatch",
+        "request_livelock",
+        "duplicate_request_mismatch",
+        "missing_jarvis_event",
+        "missing_blocked_scope_resolution_refs",
+        "missing_reconciliation_refs",
+        "mutation_after_closed",
+        "unauthorized_actor",
+        "invalid_export",
+        "invalid_export_state",
+        "invalid_evidence_export_state",
+        "missing_contribution_actor",
+        "invalid_contributor_refs",
+        "shared_contribution_without_individual_refs",
+        "evidence_after_the_fact",
+        "missing_evidence_event_refs",
+        "forbidden_export_field",
+        "silent_memory_mutation",
+        "silent_skill_activation",
+        "model_self_confirmed_memory",
+        "tool_self_confirmed_memory",
+        "skill_expands_tool_access_without_policy_review",
+        "sealed_work_session_mutation",
+        "sealed_evidence_mutation",
+        "outcome_report_without_learning_record",
+        "unsupported_capability",
+        "forbidden_host_private_field",
+    },
 }
 
 REQUIRED_CLOSED_OBJECT_SCHEMAS = {
@@ -651,6 +933,7 @@ REQUIRED_CLOSED_OBJECT_SCHEMAS = {
     "MemoryProposal",
     "SkillProposal",
     "OutcomeReport",
+    "ProtocolError",
 }
 
 REQUIRED_FORBIDDEN_METADATA = {
@@ -850,6 +1133,20 @@ REQUIRED_FORBIDDEN_METADATA = {
         "sealed_work_session_mutation",
         "sealed_evidence_mutation",
     },
+    "ProtocolError": {
+        "credential",
+        "raw_auth_token",
+        "provider_secret",
+        "session_cookie",
+        "private_key",
+        "database_primary_key",
+        "raw_runtime_state",
+        "host_only_database_id",
+        "deployment_detail",
+        "billing_data",
+        "private_score",
+        "ui_state",
+    },
 }
 
 REQUIRED_SCHEMA_INVARIANTS = {
@@ -954,7 +1251,7 @@ REQUIRED_TAGS = {
 
 EXPECTED_TITLE = "Jarvis Human-Agent Collaboration Protocol"
 EXPECTED_PLACEHOLDER_SERVER = "https://jarvis.example.invalid"
-EXPECTED_CHUNK_ID = "week-2-chunk-5-evidence-learning-schemas"
+EXPECTED_CHUNK_ID = "week-2-chunk-6-path-security-binding"
 REQUIRED_CHUNK_LOCKS = {
     "OpenAPI 3.1.1 entry point",
     "v0.1 protocol metadata",
@@ -981,6 +1278,13 @@ REQUIRED_CHUNK_LOCKS = {
     "MemoryProposal schema",
     "SkillProposal schema",
     "OutcomeReport schema",
+    "ProtocolError schema",
+    "path operation layout",
+    "request body refs",
+    "success response refs",
+    "protocol header parameters",
+    "HostAuth security scheme",
+    "protocol error response",
 }
 PORTABLE_VALUE_REF = {"$ref": "#/components/schemas/PortableValue"}
 FORBIDDEN_PORTABLE_KEY_PATTERN = (
@@ -1162,6 +1466,39 @@ def local_ref_exists(document: dict, ref: str) -> bool:
             return False
         current = current[part]
     return True
+
+
+def component_ref(bucket: str, name: str) -> str:
+    return f"#/components/{bucket}/{name}"
+
+
+def media_schema_ref(component: dict) -> str | None:
+    if not isinstance(component, dict):
+        return None
+    content = component.get("content", {})
+    if not isinstance(content, dict):
+        return None
+    media = content.get("application/json", {})
+    if not isinstance(media, dict):
+        return None
+    schema = media.get("schema", {})
+    if not isinstance(schema, dict):
+        return None
+    return schema.get("$ref")
+
+
+def operation_parameter_names(operation: dict) -> set[str]:
+    names = set()
+    for parameter in operation.get("parameters", []):
+        if not isinstance(parameter, dict):
+            names.add("__invalid_parameter__")
+            continue
+        ref = parameter.get("$ref", "")
+        if ref.startswith("#/components/parameters/"):
+            names.add(ref.rsplit("/", 1)[-1])
+        else:
+            names.add("__invalid_parameter__")
+    return names
 
 
 def main() -> int:
@@ -1534,11 +1871,15 @@ def main() -> int:
         return fail("HumanWorker.preferences must use the canonical property pattern")
 
     security_schemes = components["securitySchemes"]
+    if set(security_schemes) != {"HostAuth"}:
+        return fail("components.securitySchemes must contain only HostAuth")
     host_auth = security_schemes.get("HostAuth")
     if not isinstance(host_auth, dict):
         return fail("components.securitySchemes.HostAuth is required")
-    if host_auth.get("type") != "http" or host_auth.get("scheme") != "bearer":
-        return fail("HostAuth must be an HTTP bearer security scheme")
+    if host_auth.get("type") != "apiKey" or host_auth.get("in") != "header":
+        return fail("HostAuth must be a host-owned header security binding")
+    if host_auth.get("name") != "Authorization":
+        return fail("HostAuth must use the Authorization header")
 
     security = data.get("security")
     if security == []:
@@ -1556,6 +1897,123 @@ def main() -> int:
 
     if not isinstance(data["paths"], dict):
         return fail("paths must be an object")
+
+    parameters = components["parameters"]
+    missing_parameters = REQUIRED_PARAMETERS - set(parameters)
+    if missing_parameters:
+        return fail(
+            "missing parameters: " + ", ".join(sorted(missing_parameters))
+        )
+    for name, header_name in HEADER_PARAMETER_NAMES.items():
+        parameter = parameters[name]
+        if parameter.get("in") != "header":
+            return fail(f"{name} must be a header parameter")
+        if parameter.get("name") != header_name:
+            return fail(f"{name} must use header name {header_name}")
+        if parameter.get("required") is not True:
+            return fail(f"{name} must be required")
+    for name in ("WorkerIdPath", "ActorIdPath", "WorkSessionIdPath"):
+        parameter = parameters[name]
+        if parameter.get("in") != "path":
+            return fail(f"{name} must be a path parameter")
+        if parameter.get("required") is not True:
+            return fail(f"{name} must be required")
+
+    request_bodies = components["requestBodies"]
+    missing_request_bodies = set(REQUIRED_REQUEST_BODIES) - set(request_bodies)
+    if missing_request_bodies:
+        return fail(
+            "missing requestBodies: " + ", ".join(sorted(missing_request_bodies))
+        )
+    for body_name, schema_name in REQUIRED_REQUEST_BODIES.items():
+        body = request_bodies[body_name]
+        if body.get("required") is not True:
+            return fail(f"{body_name} must be required")
+        expected_ref = component_ref("schemas", schema_name)
+        if media_schema_ref(body) != expected_ref:
+            return fail(f"{body_name} must reference {expected_ref}")
+
+    responses = components["responses"]
+    missing_responses = set(REQUIRED_RESPONSES) - set(responses)
+    if missing_responses:
+        return fail("missing responses: " + ", ".join(sorted(missing_responses)))
+    for response_name, schema_name in REQUIRED_RESPONSES.items():
+        response = responses[response_name]
+        expected_ref = component_ref("schemas", schema_name)
+        if media_schema_ref(response) != expected_ref:
+            return fail(f"{response_name} must reference {expected_ref}")
+
+    error_ids = set(schemas["ProtocolErrorId"].get("enum", []))
+    required_security_error_ids = {
+        "missing_protocol_version",
+        "unsupported_protocol_version",
+        "missing_actor",
+        "missing_idempotency_key",
+        "missing_request_timestamp",
+        "stale_request_timestamp",
+        "missing_expected_work_session_revision",
+        "stale_work_session_revision",
+        "missing_previous_event_hash",
+        "invalid_previous_event_hash",
+        "invalid_event_hash",
+        "duplicate_idempotency_key_mismatch",
+        "unauthorized_actor",
+    }
+    missing_security_error_ids = required_security_error_ids - error_ids
+    if missing_security_error_ids:
+        return fail(
+            "ProtocolErrorId missing security errors: "
+            + ", ".join(sorted(missing_security_error_ids))
+        )
+
+    paths = data["paths"]
+    for (method, path), expected in REQUIRED_OPERATIONS.items():
+        path_item = paths.get(path)
+        if not isinstance(path_item, dict):
+            return fail(f"missing path {path}")
+        operation = path_item.get(method)
+        if not isinstance(operation, dict):
+            return fail(f"missing operation {method.upper()} {path}")
+        if operation.get("operationId") != expected["operation_id"]:
+            return fail(
+                f"{method.upper()} {path} operationId must be "
+                + expected["operation_id"]
+            )
+        if operation.get("tags") != [expected["tag"]]:
+            return fail(f"{method.upper()} {path} tag must be {expected['tag']}")
+        if operation.get("security") != [{"HostAuth": []}]:
+            return fail(f"{method.upper()} {path} must require HostAuth")
+        actual_parameters = operation_parameter_names(operation)
+        expected_parameters = expected["headers"] | expected["path_parameters"]
+        if actual_parameters != expected_parameters:
+            return fail(
+                f"{method.upper()} {path} parameters mismatch. expected "
+                + ", ".join(sorted(expected_parameters))
+                + "; got "
+                + ", ".join(sorted(actual_parameters))
+            )
+        request_body = expected["request_body"]
+        if request_body is None:
+            if "requestBody" in operation:
+                return fail(f"{method.upper()} {path} must not define requestBody")
+        else:
+            expected_ref = component_ref("requestBodies", request_body)
+            actual_ref = operation.get("requestBody", {}).get("$ref")
+            if actual_ref != expected_ref:
+                return fail(f"{method.upper()} {path} requestBody must be {expected_ref}")
+        responses = operation.get("responses", {})
+        success_status = expected["success_status"]
+        expected_success_ref = component_ref("responses", expected["success_response"])
+        actual_success_ref = responses.get(success_status, {}).get("$ref")
+        if actual_success_ref != expected_success_ref:
+            return fail(
+                f"{method.upper()} {path} {success_status} response must be "
+                + expected_success_ref
+            )
+        if responses.get("400", {}).get("$ref") != component_ref(
+            "responses", "ProtocolErrorResponse"
+        ):
+            return fail(f"{method.upper()} {path} must define ProtocolErrorResponse")
 
     servers = data.get("servers")
     if not servers:

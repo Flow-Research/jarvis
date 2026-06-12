@@ -95,6 +95,15 @@ OutcomeReport
 Chunk 5 does not define path operation bodies, operation-specific security
 requirements, examples, or conformance fixtures.
 
+Chunk 6 defines the path layout, reusable protocol header parameters, request
+bodies, responses, `ProtocolError`, and HostAuth security binding for the v0.1
+operations.
+
+Chunk 6 does not define full examples, conformance fixtures, adapter contracts,
+runtime execution, host implementation behavior, auth provider behavior,
+storage behavior, model calls, tool execution, UI behavior, billing, payment,
+scoring, settlement, or marketplace logic.
+
 ## Boundary
 
 Compatible hosts publish their own server URLs, identity providers, credential

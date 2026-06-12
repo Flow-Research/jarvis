@@ -19,6 +19,9 @@ storage, model calls, adapters, or conformance fixtures beyond the active chunk.
 5. [chunk-5-evidence-learning-schemas.md](./chunk-5-evidence-learning-schemas.md)
    Lock Contribution, EvidenceManifest, LearningRecord, MemoryProposal,
    SkillProposal, and OutcomeReport schemas.
+6. [chunk-6-path-security-binding.md](./chunk-6-path-security-binding.md)
+   Lock path operations, protocol header parameters, request bodies, responses,
+   HostAuth security binding, and ProtocolError.
 
 ## Week 2 Done State
 
