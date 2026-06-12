@@ -9,6 +9,8 @@ import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
 OPENAPI_PATH = ROOT / "docs" / "openapi" / "jarvis-openapi.yaml"
+GOLDEN_PATH_CONFORMANCE = ROOT / "docs" / "conformance" / "golden-path.md"
+FAILURE_MODE_CONFORMANCE = ROOT / "docs" / "conformance" / "failure-modes.md"
 
 REQUIRED_TOP_LEVEL = {
     "openapi",
@@ -162,6 +164,114 @@ REQUIRED_RESPONSES = {
     "EvidenceManifestResponse": "EvidenceManifest",
     "OutcomeReportResponse": "OutcomeReport",
     "ProtocolErrorResponse": "ProtocolError",
+}
+
+REQUIRED_EXAMPLES = {
+    "WorkSessionCreateExample": {
+        "id",
+        "protocol_version",
+        "created_by_actor_id",
+        "objective",
+        "human_worker_id",
+        "agent_worker_id",
+        "policy_id",
+        "status",
+        "revision",
+        "last_event_hash",
+        "event_log_ref",
+        "created_at",
+        "updated_at",
+    },
+    "PolicyDecisionDeniedExample": {
+        "id",
+        "work_session_id",
+        "actor_id",
+        "policy_id",
+        "requested_action",
+        "normalized_action_hash",
+        "risk_class",
+        "result",
+        "reason",
+        "created_at",
+    },
+    "RequestBlockedActionExample": {
+        "id",
+        "protocol_version",
+        "work_session_id",
+        "requester_actor_id",
+        "requester_worker_id",
+        "target_human_worker_id",
+        "policy_decision_id",
+        "type",
+        "blocking_scope",
+        "reason_code",
+        "reason_summary",
+        "requested_action",
+        "requested_outcome",
+        "risk_class",
+        "human_decision_needed",
+        "options",
+        "default_if_no_response",
+        "status",
+        "created_at",
+        "expires_at",
+    },
+    "ReviewApproveRequestExample": {
+        "id",
+        "work_session_id",
+        "reviewer_actor_id",
+        "reviewer_worker_id",
+        "target_ref",
+        "decision",
+        "approval_scope",
+        "created_at",
+    },
+    "EvidenceManifestExportExample": {
+        "id",
+        "work_session_id",
+        "generated_by_actor_id",
+        "objective",
+        "event_chain_root",
+        "evidence_item_refs",
+        "policy_decision_refs",
+        "request_refs",
+        "review_refs",
+        "takeover_refs",
+        "contribution_refs",
+        "export_profile",
+        "generated_at",
+    },
+    "ProtocolErrorExample": {
+        "error_id",
+        "protocol_version",
+        "object_type",
+        "field",
+        "reason",
+        "remediation",
+        "trace_id",
+    },
+}
+
+EXAMPLE_REQUIRED_VALUES = {
+    ("PolicyDecisionDeniedExample", "result"): "deny",
+    ("RequestBlockedActionExample", "status"): "pending",
+    ("ReviewApproveRequestExample", "decision"): "approve",
+}
+
+EXAMPLE_REQUIRED_OBJECTS = {
+    ("ReviewApproveRequestExample", "approval_scope"),
+}
+
+EXAMPLE_REQUIRED_NON_EMPTY_FIELDS = {
+    ("RequestBlockedActionExample", "blocking_scope"),
+}
+
+EXAMPLE_REQUIRED_NON_EMPTY_ARRAYS = {
+    ("EvidenceManifestExportExample", "evidence_item_refs"),
+    ("EvidenceManifestExportExample", "policy_decision_refs"),
+    ("EvidenceManifestExportExample", "request_refs"),
+    ("EvidenceManifestExportExample", "review_refs"),
+    ("EvidenceManifestExportExample", "contribution_refs"),
 }
 
 WORKSESSION_MUTATION_HEADERS = {
@@ -1253,7 +1363,7 @@ REQUIRED_TAGS = {
 
 EXPECTED_TITLE = "Jarvis Human-Agent Collaboration Protocol"
 EXPECTED_PLACEHOLDER_SERVER = "https://jarvis.example.invalid"
-EXPECTED_CHUNK_ID = "week-2-chunk-6-path-security-binding"
+EXPECTED_CHUNK_ID = "week-2-chunk-7-examples-conformance-entry"
 REQUIRED_CHUNK_LOCKS = {
     "OpenAPI 3.1.1 entry point",
     "v0.1 protocol metadata",
@@ -1287,6 +1397,32 @@ REQUIRED_CHUNK_LOCKS = {
     "protocol header parameters",
     "HostAuth security scheme",
     "protocol error response",
+    "protocol examples",
+    "conformance entry documents",
+}
+REQUIRED_CONFORMANCE_REJECTION_IDS = {
+    "missing_protocol_version",
+    "missing_actor",
+    "unauthorized_actor",
+    "missing_idempotency_key",
+    "missing_request_timestamp",
+    "stale_request_timestamp",
+    "missing_expected_work_session_revision",
+    "missing_previous_event_hash",
+    "missing_policy_decision",
+    "missing_review_resolution",
+    "missing_takeover_resolution",
+    "invalid_approval_scope",
+    "stale_work_session_revision",
+    "invalid_previous_event_hash",
+    "stale_takeover_epoch",
+    "invalid_evidence_export_state",
+    "sealed_work_session_mutation",
+    "sealed_evidence_mutation",
+    "forbidden_host_private_field",
+    "silent_memory_mutation",
+    "silent_skill_activation",
+    "outcome_report_without_learning_record",
 }
 PORTABLE_VALUE_REF = {"$ref": "#/components/schemas/PortableValue"}
 FORBIDDEN_PORTABLE_KEY_PATTERN = (
@@ -1503,6 +1639,48 @@ def operation_parameter_names(operation: dict) -> set[str]:
     return names
 
 
+def iter_keys(value, path: str = "$"):
+    if isinstance(value, dict):
+        for key, child in value.items():
+            yield path, str(key)
+            yield from iter_keys(child, f"{path}.{key}")
+    elif isinstance(value, list):
+        for index, child in enumerate(value):
+            yield from iter_keys(child, f"{path}[{index}]")
+
+
+def forbidden_example_keys(value) -> list[str]:
+    forbidden_terms = {
+        "password",
+        "credential",
+        "token",
+        "secret",
+        "private_key",
+        "session_cookie",
+        "cookie",
+        "api_key",
+        "access_key",
+        "auth_header",
+        "oauth",
+        "database",
+        "billing",
+        "runtime",
+        "container",
+        "deployment",
+        "model_api_key",
+        "raw_prompt",
+        "host_account",
+        "ui_state",
+        "private_score",
+    }
+    failures = []
+    for path, key in iter_keys(value):
+        normalized = key.lower()
+        if any(term in normalized for term in forbidden_terms):
+            failures.append(f"{path}.{key}")
+    return failures
+
+
 def main() -> int:
     if not OPENAPI_PATH.exists():
         return fail(f"missing {OPENAPI_PATH.relative_to(ROOT)}")
@@ -1565,6 +1743,49 @@ def main() -> int:
     for bucket in REQUIRED_COMPONENTS:
         if not isinstance(components[bucket], dict):
             return fail(f"components.{bucket} must be an object")
+
+    examples = components["examples"]
+    missing_examples = set(REQUIRED_EXAMPLES) - set(examples)
+    if missing_examples:
+        return fail("missing examples: " + ", ".join(sorted(missing_examples)))
+    for example_name, required_fields in REQUIRED_EXAMPLES.items():
+        example = examples[example_name]
+        if not isinstance(example, dict):
+            return fail(f"{example_name} must be an object")
+        if not example.get("summary"):
+            return fail(f"{example_name} must define summary")
+        value = example.get("value")
+        if not isinstance(value, dict):
+            return fail(f"{example_name}.value must be an object")
+        missing_example_fields = required_fields - set(value)
+        if missing_example_fields:
+            return fail(
+                f"{example_name}.value missing fields: "
+                + ", ".join(sorted(missing_example_fields))
+            )
+        forbidden_keys = forbidden_example_keys(value)
+        if forbidden_keys:
+            return fail(
+                f"{example_name}.value contains forbidden host-private keys: "
+                + ", ".join(forbidden_keys)
+            )
+
+    for (example_name, field), expected_value in EXAMPLE_REQUIRED_VALUES.items():
+        actual_value = examples[example_name]["value"].get(field)
+        if actual_value != expected_value:
+            return fail(
+                f"{example_name}.value.{field} must be {expected_value!r}"
+            )
+    for example_name, field in EXAMPLE_REQUIRED_OBJECTS:
+        if not isinstance(examples[example_name]["value"].get(field), dict):
+            return fail(f"{example_name}.value.{field} must be an object")
+    for example_name, field in EXAMPLE_REQUIRED_NON_EMPTY_FIELDS:
+        if not examples[example_name]["value"].get(field):
+            return fail(f"{example_name}.value.{field} must be non-empty")
+    for example_name, field in EXAMPLE_REQUIRED_NON_EMPTY_ARRAYS:
+        value = examples[example_name]["value"].get(field)
+        if not isinstance(value, list) or not value:
+            return fail(f"{example_name}.value.{field} must be a non-empty array")
 
     schemas = components["schemas"]
     missing_schemas = REQUIRED_SCHEMAS - set(schemas)
@@ -1966,6 +2187,55 @@ def main() -> int:
         return fail(
             "ProtocolErrorId missing security errors: "
             + ", ".join(sorted(missing_security_error_ids))
+        )
+
+    protocol_error_example_id = examples["ProtocolErrorExample"]["value"].get(
+        "error_id"
+    )
+    if protocol_error_example_id not in error_ids:
+        return fail("ProtocolErrorExample.error_id must exist in ProtocolErrorId")
+
+    for conformance_path in (GOLDEN_PATH_CONFORMANCE, FAILURE_MODE_CONFORMANCE):
+        if not conformance_path.exists():
+            return fail(f"missing {conformance_path.relative_to(ROOT)}")
+    golden_text = GOLDEN_PATH_CONFORMANCE.read_text(encoding="utf-8")
+    required_golden_phrases = {
+        "Every WorkSession-scoped mutation validates Jarvis-Protocol-Version.",
+        "Every WorkSession-scoped mutation validates Jarvis-Actor-Id.",
+        "Every WorkSession-scoped mutation validates Jarvis-Idempotency-Key.",
+        "Every WorkSession-scoped mutation validates Jarvis-Request-Timestamp.",
+        "Every WorkSession-scoped mutation validates Jarvis-Expected-WorkSession-Revision.",
+        "Every WorkSession-scoped mutation validates Jarvis-Previous-Event-Hash.",
+        "Every accepted WorkSession-scoped state change verifies Actor authority.",
+        "AgentWorker action records PolicyDecision before accepted protocol state.",
+        "Request resolves only through Review or Takeover.",
+        "Review approve or narrow produces bounded ApprovalScope.",
+        "EvidenceManifest exports portable proof.",
+    }
+    missing_golden_phrases = [
+        phrase for phrase in sorted(required_golden_phrases) if phrase not in golden_text
+    ]
+    if missing_golden_phrases:
+        return fail(
+            "golden-path conformance missing phrases: "
+            + "; ".join(missing_golden_phrases)
+        )
+    failure_text = FAILURE_MODE_CONFORMANCE.read_text(encoding="utf-8")
+    missing_conformance_ids = [
+        rejection_id
+        for rejection_id in sorted(REQUIRED_CONFORMANCE_REJECTION_IDS)
+        if rejection_id not in failure_text
+    ]
+    if missing_conformance_ids:
+        return fail(
+            "failure-mode conformance missing rejection ids: "
+            + ", ".join(missing_conformance_ids)
+        )
+    unknown_conformance_ids = REQUIRED_CONFORMANCE_REJECTION_IDS - error_ids
+    if unknown_conformance_ids:
+        return fail(
+            "failure-mode conformance ids missing from ProtocolErrorId: "
+            + ", ".join(sorted(unknown_conformance_ids))
         )
 
     paths = data["paths"]

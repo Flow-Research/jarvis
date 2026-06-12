@@ -3,8 +3,7 @@
 Week 2 turns the locked protocol into the first OpenAPI 3.1 contract shape and
 conformance entry.
 
-This week does not build a host implementation, runtime features, UI, auth,
-storage, model calls, adapters, or conformance fixtures beyond the active chunk.
+This week locks the OpenAPI protocol contract and conformance entry only.
 
 ## Chunks
 
@@ -22,6 +21,8 @@ storage, model calls, adapters, or conformance fixtures beyond the active chunk.
 6. [chunk-6-path-security-binding.md](./chunk-6-path-security-binding.md)
    Lock path operations, protocol header parameters, request bodies, responses,
    HostAuth security binding, and ProtocolError.
+7. [chunk-7-examples-conformance-entry.md](./chunk-7-examples-conformance-entry.md)
+   Lock OpenAPI examples and conformance entry documents.
 
 ## Week 2 Done State
 
