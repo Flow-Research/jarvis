@@ -65,8 +65,11 @@ Chunk 5 is complete when:
 - the new schemas list forbidden host-private fields in
   `x-jarvis-forbidden-fields`
 - shared Contribution requires multiple contributor refs
+- Contribution contributor refs declare identity uniqueness by `worker_id` and
+  `actor_id`
 - EvidenceItemRef requires at least one source event ref
 - EvidenceManifest requires evidence item refs and contribution refs
+- EvidenceManifest evidence item refs declare identity uniqueness by `id`
 - LearningRecord requires at least one source event ref
 - accepted MemoryProposal requires review refs
 - accepted SkillProposal requires review refs

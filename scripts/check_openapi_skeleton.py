@@ -876,6 +876,17 @@ REQUIRED_SCHEMA_INVARIANTS = {
     },
 }
 
+REQUIRED_IDENTITY_UNIQUE_ARRAYS = {
+    ("Contribution", "contributor_refs"): {
+        "unique_by": ["worker_id", "actor_id"],
+        "duplicate_rejection_id": "duplicate_contributor_ref",
+    },
+    ("EvidenceManifest", "evidence_item_refs"): {
+        "unique_by": ["id"],
+        "duplicate_rejection_id": "duplicate_evidence_item_ref",
+    },
+}
+
 FORBIDDEN_SCHEMA_PROPERTIES = {
     "password",
     "credential",
@@ -1309,6 +1320,22 @@ def main() -> int:
                 + ", ".join(sorted(expected_invariants))
                 + "; got "
                 + ", ".join(sorted(actual_invariants))
+            )
+
+    for (schema_name, property_name), expected in REQUIRED_IDENTITY_UNIQUE_ARRAYS.items():
+        property_schema = schemas[schema_name]["properties"][property_name]
+        if property_schema.get("x-jarvis-unique-by") != expected["unique_by"]:
+            return fail(
+                f"{schema_name}.{property_name} must declare identity uniqueness by "
+                + ", ".join(expected["unique_by"])
+            )
+        if (
+            property_schema.get("x-jarvis-duplicate-rejection-id")
+            != expected["duplicate_rejection_id"]
+        ):
+            return fail(
+                f"{schema_name}.{property_name} must declare duplicate rejection id "
+                + expected["duplicate_rejection_id"]
             )
 
     for schema_name, optional_fields in OPTIONAL_SCHEMA_FIELDS.items():
