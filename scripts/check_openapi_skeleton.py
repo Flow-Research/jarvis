@@ -701,9 +701,25 @@ def schema_forbids_field_when_enum(
         if not isinstance(target, dict):
             continue
         actual_values = set(target.get("enum", []))
-        forbidden_required = consequence.get("not", {}).get("required", [])
-        if actual_values == enum_values and forbidden_field in forbidden_required:
+        negative_schema = consequence.get("not")
+        if actual_values == enum_values and negative_schema_forbids_field(
+            negative_schema, forbidden_field
+        ):
             return True
+    return False
+
+
+def negative_schema_forbids_field(negative_schema, forbidden_field: str) -> bool:
+    if not isinstance(negative_schema, dict):
+        return False
+    if forbidden_field in negative_schema.get("required", []):
+        return True
+    for keyword in ("anyOf", "oneOf"):
+        for subschema in negative_schema.get(keyword, []):
+            if isinstance(subschema, dict) and forbidden_field in subschema.get(
+                "required", []
+            ):
+                return True
     return False
 
 
@@ -726,11 +742,11 @@ def schema_forbids_fields_when_enum(
         actual_values = set(target.get("enum", []))
         if actual_values != enum_values:
             continue
-        forbidden = set()
-        for item in consequence.get("not", {}).get("anyOf", []):
-            if isinstance(item, dict):
-                forbidden.update(item.get("required", []))
-        if forbidden_fields <= forbidden:
+        negative_schema = consequence.get("not")
+        if all(
+            negative_schema_forbids_field(negative_schema, forbidden_field)
+            for forbidden_field in forbidden_fields
+        ):
             return True
     return False
 
