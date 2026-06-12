@@ -12,6 +12,8 @@ storage, model calls, adapters, or conformance fixtures beyond the active chunk.
    Lock the OpenAPI entry point, required buckets, tag taxonomy, and skeleton validation.
 2. [chunk-2-participant-schemas.md](./chunk-2-participant-schemas.md)
    Lock shared schema primitives, Worker, Actor, HumanWorker, and AgentWorker.
+3. [chunk-3-worksession-policy-schemas.md](./chunk-3-worksession-policy-schemas.md)
+   Lock WorkSession, JarvisEvent, Policy, and PolicyDecision schemas.
 
 ## Week 2 Done State
 

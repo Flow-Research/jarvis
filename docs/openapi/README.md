@@ -51,6 +51,20 @@ requirements, WorkSession schema, control-plane schemas, evidence and learning
 schemas, examples, or conformance fixtures. Later chunks define those sections
 from the locked protocol docs.
 
+Chunk 3 defines the WorkSession, event, Policy, and PolicyDecision schema
+spine:
+
+```txt
+WorkSession
+JarvisEvent
+Policy
+PolicyDecision
+```
+
+Chunk 3 does not define Request, Review, Takeover, Contribution,
+EvidenceManifest, learning schemas, path operation bodies, examples, or
+conformance fixtures.
+
 ## Boundary
 
 Compatible hosts publish their own server URLs, identity providers, credential
