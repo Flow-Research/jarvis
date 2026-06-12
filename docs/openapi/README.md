@@ -65,6 +65,18 @@ Chunk 3 does not define Request, Review, Takeover, Contribution,
 EvidenceManifest, learning schemas, path operation bodies, examples, or
 conformance fixtures.
 
+Chunk 4 defines the control-plane schemas:
+
+```txt
+Request
+Review
+ApprovalScope
+Takeover
+```
+
+Chunk 4 does not define Contribution, EvidenceManifest, learning schemas, path
+operation bodies, examples, or conformance fixtures.
+
 ## Boundary
 
 Compatible hosts publish their own server URLs, identity providers, credential

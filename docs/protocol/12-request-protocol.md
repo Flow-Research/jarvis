@@ -312,6 +312,7 @@ cancelled
 superseded
   A newer Request replaces this Request while preserving the blocked action
   hash, policy decision, blocking scope, risk, and event references.
+  `superseded_by_request_id` identifies the replacement Request.
 ```
 
 Human resolution of a Request requires Review or Takeover. Expiry,
@@ -331,6 +332,13 @@ resolved_by_takeover_id
 
 closed_by_event_ref
   required when status is expired, cancelled, or superseded
+
+superseded_by_request_id
+  required when status is superseded
+
+resolved_at, resolved_by_review_id, resolved_by_takeover_id,
+closed_by_event_ref, and superseded_by_request_id
+  forbidden when status is pending or acknowledged
 ```
 
 Missing resolver refs reject with these errors:
@@ -346,6 +354,9 @@ missing_takeover_resolution
 missing_jarvis_event
   Request status is expired, cancelled, or superseded without
   closed_by_event_ref.
+
+missing_superseding_request
+  Request status is superseded without superseded_by_request_id.
 ```
 
 Allowed transitions:
@@ -467,6 +478,7 @@ correct
 
 takeover
   resolves the target Request by creating or referencing Takeover.
+  `takeover_id` records the Takeover that carries the lock epoch.
 
 needs_revision
   resolves the target Request and requires AgentWorker revision before the
@@ -481,6 +493,9 @@ remain governed.
 ## Takeover Lifecycle
 
 Takeover is temporary direct HumanWorker control over a declared scope.
+Every Takeover records `affected_scope.blocking_scope` and
+`affected_scope.scope_ref`. Takeover records `request_id` when it resolves a
+Request.
 
 Takeover states:
 

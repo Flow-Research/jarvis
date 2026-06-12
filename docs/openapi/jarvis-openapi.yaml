@@ -139,6 +139,58 @@ components:
         - private
         - confidential
         - restricted
+    RequestType:
+      type: string
+      enum:
+        - permission
+        - context
+        - judgment
+        - review
+        - correction
+        - takeover
+        - escalation
+    RequestStatus:
+      type: string
+      enum:
+        - pending
+        - acknowledged
+        - approved
+        - denied
+        - narrowed
+        - answered
+        - needs_revision
+        - takeover
+        - expired
+        - cancelled
+        - superseded
+    BlockingScope:
+      type: string
+      enum:
+        - action
+        - branch
+        - artifact
+        - tool_call
+        - external_send
+        - final_submission
+        - work_session
+    ReviewDecision:
+      type: string
+      enum:
+        - approve
+        - deny
+        - narrow
+        - correct
+        - takeover
+        - needs_revision
+    TakeoverState:
+      type: string
+      enum:
+        - requested
+        - locked
+        - human_active
+        - reconciliation_required
+        - resumed
+        - closed
     AuthorityScope:
       type: object
       additionalProperties: false
@@ -377,6 +429,142 @@ components:
           items:
             $ref: "#/components/schemas/OpaqueRef"
           uniqueItems: true
+    RequestOption:
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - label
+        - effect
+      properties:
+        id:
+          $ref: "#/components/schemas/JarvisId"
+        label:
+          type: string
+          minLength: 1
+        effect:
+          type: string
+          minLength: 1
+        risk_class:
+          $ref: "#/components/schemas/RiskClass"
+        scope_ref:
+          $ref: "#/components/schemas/OpaqueRef"
+    SafeFallback:
+      type: object
+      additionalProperties: false
+      required:
+        - action
+        - reason
+      properties:
+        action:
+          type: string
+          enum:
+            - continue_unrelated_safe_work
+            - continue_with_limited_evidence
+            - cancel_blocked_scope
+            - keep_blocked_scope_stopped
+        reason:
+          type: string
+          minLength: 1
+        limitation_ref:
+          $ref: "#/components/schemas/OpaqueRef"
+    ApprovalBoundary:
+      type: object
+      additionalProperties: false
+      required:
+        - scope_ref
+      properties:
+        scope_ref:
+          $ref: "#/components/schemas/OpaqueRef"
+        grant_refs:
+          type: array
+          items:
+            $ref: "#/components/schemas/OpaqueRef"
+          uniqueItems: true
+        constraint_refs:
+          type: array
+          items:
+            $ref: "#/components/schemas/OpaqueRef"
+          uniqueItems: true
+    TakeoverScope:
+      type: object
+      additionalProperties: false
+      required:
+        - blocking_scope
+        - scope_ref
+      properties:
+        blocking_scope:
+          $ref: "#/components/schemas/BlockingScope"
+        scope_ref:
+          $ref: "#/components/schemas/OpaqueRef"
+        normalized_action_hash:
+          type: string
+          minLength: 1
+        artifact_refs:
+          type: array
+          items:
+            $ref: "#/components/schemas/OpaqueRef"
+          uniqueItems: true
+      x-jarvis-forbidden-fields:
+        - runtime_lock_id
+        - database_primary_key
+        - credential
+        - raw_auth_token
+        - ui_session_id
+    ApprovalScope:
+      type: object
+      additionalProperties: false
+      required:
+        - request_id
+        - review_id
+        - policy_decision_id
+        - request_revision
+        - request_event_hash
+        - normalized_action_hash
+        - approved_action
+        - allowed_scope
+        - denied_scope
+        - expires_at
+        - max_uses
+        - applies_to_work_session_id
+        - applies_to_actor_id
+      properties:
+        request_id:
+          $ref: "#/components/schemas/JarvisId"
+        review_id:
+          $ref: "#/components/schemas/JarvisId"
+        policy_decision_id:
+          $ref: "#/components/schemas/JarvisId"
+        request_revision:
+          type: integer
+          minimum: 0
+        request_event_hash:
+          type: string
+          minLength: 1
+        normalized_action_hash:
+          type: string
+          minLength: 1
+        approved_action:
+          $ref: "#/components/schemas/PolicyActionRequest"
+        allowed_scope:
+          $ref: "#/components/schemas/ApprovalBoundary"
+        denied_scope:
+          $ref: "#/components/schemas/ApprovalBoundary"
+        expires_at:
+          $ref: "#/components/schemas/Timestamp"
+        max_uses:
+          type: integer
+          minimum: 1
+        applies_to_work_session_id:
+          $ref: "#/components/schemas/JarvisId"
+        applies_to_actor_id:
+          $ref: "#/components/schemas/JarvisId"
+      x-jarvis-forbidden-fields:
+        - unbounded_approval
+        - implicit_authority_grant
+        - credential
+        - raw_auth_token
+        - database_primary_key
     Worker:
       type: object
       additionalProperties: false
@@ -822,6 +1010,365 @@ components:
         - provider_secret
         - database_primary_key
         - runtime_decision_object
+    Request:
+      type: object
+      additionalProperties: false
+      allOf:
+        - if:
+            properties:
+              status:
+                enum:
+                  - pending
+                  - acknowledged
+          then:
+            not:
+              anyOf:
+                - required:
+                    - resolved_at
+                - required:
+                    - resolved_by_review_id
+                - required:
+                    - resolved_by_takeover_id
+                - required:
+                    - closed_by_event_ref
+                - required:
+                    - superseded_by_request_id
+        - if:
+            properties:
+              status:
+                enum:
+                  - approved
+                  - denied
+                  - narrowed
+                  - answered
+                  - needs_revision
+                  - takeover
+                  - expired
+                  - cancelled
+                  - superseded
+          then:
+            required:
+              - resolved_at
+        - if:
+            properties:
+              status:
+                enum:
+                  - approved
+                  - denied
+                  - narrowed
+                  - answered
+                  - needs_revision
+          then:
+            required:
+              - resolved_by_review_id
+        - if:
+            properties:
+              status:
+                const: takeover
+          then:
+            required:
+              - resolved_by_takeover_id
+        - if:
+            properties:
+              status:
+                enum:
+                  - expired
+                  - cancelled
+                  - superseded
+          then:
+            required:
+              - closed_by_event_ref
+        - if:
+            properties:
+              status:
+                const: superseded
+          then:
+            required:
+              - superseded_by_request_id
+      required:
+        - id
+        - protocol_version
+        - work_session_id
+        - requester_actor_id
+        - requester_worker_id
+        - target_human_worker_id
+        - policy_decision_id
+        - type
+        - blocking_scope
+        - reason_code
+        - reason_summary
+        - requested_action
+        - requested_outcome
+        - risk_class
+        - human_decision_needed
+        - options
+        - default_if_no_response
+        - status
+        - created_at
+        - expires_at
+      properties:
+        id:
+          $ref: "#/components/schemas/JarvisId"
+        protocol_version:
+          type: string
+          const: v0.1
+        work_session_id:
+          $ref: "#/components/schemas/JarvisId"
+        requester_actor_id:
+          $ref: "#/components/schemas/JarvisId"
+        requester_worker_id:
+          $ref: "#/components/schemas/JarvisId"
+        target_human_worker_id:
+          $ref: "#/components/schemas/JarvisId"
+        policy_decision_id:
+          $ref: "#/components/schemas/JarvisId"
+        type:
+          $ref: "#/components/schemas/RequestType"
+        blocking_scope:
+          $ref: "#/components/schemas/BlockingScope"
+        reason_code:
+          type: string
+          minLength: 1
+        reason_summary:
+          type: string
+          minLength: 1
+        requested_action:
+          $ref: "#/components/schemas/PolicyActionRequest"
+        requested_outcome:
+          type: string
+          minLength: 1
+        risk_class:
+          $ref: "#/components/schemas/RiskClass"
+        human_decision_needed:
+          type: string
+          minLength: 1
+        options:
+          type: array
+          items:
+            $ref: "#/components/schemas/RequestOption"
+          minItems: 1
+        default_if_no_response:
+          $ref: "#/components/schemas/SafeFallback"
+        status:
+          $ref: "#/components/schemas/RequestStatus"
+        created_at:
+          $ref: "#/components/schemas/Timestamp"
+        expires_at:
+          $ref: "#/components/schemas/Timestamp"
+        missing_permission_or_context:
+          type: string
+          minLength: 1
+        policy_refs:
+          type: array
+          items:
+            $ref: "#/components/schemas/OpaqueRef"
+          uniqueItems: true
+        data_sensitivity:
+          $ref: "#/components/schemas/DataSensitivity"
+        recommended_option:
+          $ref: "#/components/schemas/JarvisId"
+        safer_alternatives:
+          type: array
+          items:
+            $ref: "#/components/schemas/RequestOption"
+          uniqueItems: true
+        evidence_refs:
+          type: array
+          items:
+            $ref: "#/components/schemas/OpaqueRef"
+          uniqueItems: true
+        artifact_refs:
+          type: array
+          items:
+            $ref: "#/components/schemas/OpaqueRef"
+          uniqueItems: true
+        contribution_refs:
+          type: array
+          items:
+            $ref: "#/components/schemas/JarvisId"
+          uniqueItems: true
+        resolved_at:
+          $ref: "#/components/schemas/Timestamp"
+        resolved_by_review_id:
+          $ref: "#/components/schemas/JarvisId"
+        resolved_by_takeover_id:
+          $ref: "#/components/schemas/JarvisId"
+        closed_by_event_ref:
+          $ref: "#/components/schemas/OpaqueRef"
+        superseded_by_request_id:
+          $ref: "#/components/schemas/JarvisId"
+        duplicate_of_request_id:
+          $ref: "#/components/schemas/JarvisId"
+      x-jarvis-forbidden-fields:
+        - private_inbox_id
+        - notification_provider_id
+        - credential
+        - raw_auth_token
+        - database_primary_key
+        - runtime_state
+        - provider_secret
+        - billing_field
+        - deployment_field
+        - ui_state
+        - hidden_policy_trace
+        - unbounded_approval
+        - implicit_authority_grant
+    Review:
+      type: object
+      additionalProperties: false
+      allOf:
+        - if:
+            properties:
+              decision:
+                enum:
+                  - approve
+                  - narrow
+          then:
+            required:
+              - approval_scope
+        - if:
+            properties:
+              decision:
+                enum:
+                  - deny
+                  - correct
+                  - takeover
+                  - needs_revision
+          then:
+            not:
+              required:
+                - approval_scope
+        - if:
+            properties:
+              decision:
+                const: takeover
+          then:
+            required:
+              - takeover_id
+      required:
+        - id
+        - work_session_id
+        - reviewer_actor_id
+        - reviewer_worker_id
+        - target_ref
+        - decision
+        - created_at
+      properties:
+        id:
+          $ref: "#/components/schemas/JarvisId"
+        work_session_id:
+          $ref: "#/components/schemas/JarvisId"
+        reviewer_actor_id:
+          $ref: "#/components/schemas/JarvisId"
+        reviewer_worker_id:
+          $ref: "#/components/schemas/JarvisId"
+        target_ref:
+          $ref: "#/components/schemas/OpaqueRef"
+        decision:
+          $ref: "#/components/schemas/ReviewDecision"
+        created_at:
+          $ref: "#/components/schemas/Timestamp"
+        comments:
+          type: string
+          minLength: 1
+        required_changes:
+          type: array
+          items:
+            type: string
+            minLength: 1
+        approval_scope:
+          $ref: "#/components/schemas/ApprovalScope"
+        takeover_id:
+          $ref: "#/components/schemas/JarvisId"
+      x-jarvis-forbidden-fields:
+        - private_comment_thread_id
+        - credential
+        - raw_auth_token
+        - database_primary_key
+        - ui_state
+        - unbounded_approval
+        - implicit_authority_grant
+    Takeover:
+      type: object
+      additionalProperties: false
+      allOf:
+        - if:
+            properties:
+              state:
+                const: resumed
+          then:
+            required:
+              - reconciliation_refs
+              - resumed_by_actor_id
+              - resolved_at
+        - if:
+            properties:
+              state:
+                enum:
+                  - requested
+                  - locked
+                  - human_active
+          then:
+            not:
+              anyOf:
+                - required:
+                    - resumed_by_actor_id
+                - required:
+                    - reconciliation_refs
+                - required:
+                    - resolved_at
+      required:
+        - id
+        - work_session_id
+        - requested_by_actor_id
+        - controlling_actor_id
+        - affected_scope
+        - reason
+        - lock_epoch
+        - state
+        - created_at
+      properties:
+        id:
+          $ref: "#/components/schemas/JarvisId"
+        work_session_id:
+          $ref: "#/components/schemas/JarvisId"
+        requested_by_actor_id:
+          $ref: "#/components/schemas/JarvisId"
+        controlling_actor_id:
+          $ref: "#/components/schemas/JarvisId"
+        request_id:
+          $ref: "#/components/schemas/JarvisId"
+        affected_scope:
+          $ref: "#/components/schemas/TakeoverScope"
+        reason:
+          type: string
+          minLength: 1
+        lock_epoch:
+          type: integer
+          minimum: 0
+        state:
+          $ref: "#/components/schemas/TakeoverState"
+        created_at:
+          $ref: "#/components/schemas/Timestamp"
+        resumed_by_actor_id:
+          $ref: "#/components/schemas/JarvisId"
+        reconciliation_notes:
+          type: string
+          minLength: 1
+        reconciliation_refs:
+          type: array
+          items:
+            $ref: "#/components/schemas/OpaqueRef"
+          minItems: 1
+          uniqueItems: true
+        resolved_at:
+          $ref: "#/components/schemas/Timestamp"
+      x-jarvis-forbidden-fields:
+        - runtime_lock_id
+        - database_primary_key
+        - credential
+        - raw_auth_token
+        - ui_session_id
   parameters: {}
   headers: {}
   requestBodies: {}
@@ -865,7 +1412,7 @@ x-jarvis-protocol:
     - task marketplace
     - host workflow
   chunk_lock:
-    id: week-2-chunk-3-worksession-policy-schemas
+    id: week-2-chunk-4-control-plane-schemas
     locks:
       - OpenAPI 3.1.1 entry point
       - v0.1 protocol metadata
@@ -881,12 +1428,14 @@ x-jarvis-protocol:
       - JarvisEvent schema
       - Policy schema
       - PolicyDecision schema
+      - Request schema
+      - Review schema
+      - ApprovalScope schema
+      - Takeover schema
     excludes:
       - path operation bodies
       - operation-specific security requirements
-      - Request schema
-      - Review schema
-      - Takeover schema
+      - Contribution schema
       - evidence and learning schemas
       - examples
       - conformance fixtures

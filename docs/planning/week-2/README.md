@@ -14,6 +14,8 @@ storage, model calls, adapters, or conformance fixtures beyond the active chunk.
    Lock shared schema primitives, Worker, Actor, HumanWorker, and AgentWorker.
 3. [chunk-3-worksession-policy-schemas.md](./chunk-3-worksession-policy-schemas.md)
    Lock WorkSession, JarvisEvent, Policy, and PolicyDecision schemas.
+4. [chunk-4-control-plane-schemas.md](./chunk-4-control-plane-schemas.md)
+   Lock Request, Review, ApprovalScope, and Takeover schemas.
 
 ## Week 2 Done State
 
