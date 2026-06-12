@@ -609,8 +609,10 @@ components:
         - missing_contribution_actor
         - invalid_contributor_refs
         - shared_contribution_without_individual_refs
+        - duplicate_contributor_ref
         - evidence_after_the_fact
         - missing_evidence_event_refs
+        - duplicate_evidence_item_ref
         - forbidden_export_field
         - silent_memory_mutation
         - silent_skill_activation
