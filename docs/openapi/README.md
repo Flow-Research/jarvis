@@ -4,9 +4,9 @@ This directory contains the machine-readable OpenAPI 3.1 communication binding
 for Jarvis v0.1.
 
 Jarvis is the human-agent collaboration and learning-loop protocol. OpenAPI
-defines how compatible hosts exchange Jarvis protocol records. OpenAPI does not
-make Jarvis a runtime, host implementation, auth system, storage system, cloud stack, tool
-protocol, frontend protocol, or agent framework.
+defines how compatible hosts exchange Jarvis protocol records.
+
+OpenAPI defines Jarvis protocol record exchange only.
 
 ## Files
 
@@ -99,13 +99,22 @@ Chunk 6 defines the path layout, reusable protocol header parameters, request
 bodies, responses, `ProtocolError`, and HostAuth security binding for the v0.1
 operations.
 
-Chunk 6 does not define full examples, conformance fixtures, adapter contracts,
-runtime execution, host implementation behavior, auth provider behavior,
-storage behavior, model calls, tool execution, UI behavior, billing, payment,
-scoring, settlement, or marketplace logic.
+Chunk 7 defines the first OpenAPI examples and conformance entry documents:
+
+```txt
+WorkSessionCreateExample
+PolicyDecisionDeniedExample
+RequestBlockedActionExample
+ReviewApproveRequestExample
+EvidenceManifestExportExample
+ProtocolErrorExample
+docs/conformance/golden-path.md
+docs/conformance/failure-modes.md
+```
+
+Chunk 7 does not define executable conformance fixtures.
 
 ## Boundary
 
-Compatible hosts publish their own server URLs, identity providers, credential
-handling, storage, execution, deployment, billing, and UI. Jarvis defines
-protocol records and conformance requirements only.
+Compatible hosts publish their own server URLs. Jarvis defines protocol records
+and conformance requirements only.

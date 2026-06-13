@@ -7,9 +7,7 @@ info:
     Jarvis defines the protocol records and operations for governed
     collaboration between HumanWorkers and AgentWorkers.
 
-    Jarvis does not define runtime execution, UI, authentication
-    provider, storage, model calls, isolation behavior, cloud deployment, billing,
-    task routing, or marketplace logic.
+    Jarvis defines protocol records and operations only.
   version: 0.1.0
 servers:
   - url: https://jarvis.example.invalid
@@ -2696,7 +2694,155 @@ components:
       in: header
       name: Authorization
       description: Host-owned caller authentication. Jarvis requires caller authentication for protocol operations and does not define credential format, token type, session store, or account system.
-  examples: {}
+  examples:
+    WorkSessionCreateExample:
+      summary: WorkSession created for governed human-agent work.
+      value:
+        id: ws-protocol-001
+        protocol_version: v0.1
+        created_by_actor_id: actor-human-001
+        objective: Produce a reviewed evidence-backed answer under bounded policy.
+        human_worker_id: worker-human-001
+        agent_worker_id: worker-agent-001
+        policy_id: policy-bounded-001
+        status: active
+        revision: 0
+        last_event_hash: hash:genesis
+        event_log_ref: event-log:ws-protocol-001
+        created_at: "2026-06-12T18:00:00Z"
+        updated_at: "2026-06-12T18:00:00Z"
+    PolicyDecisionDeniedExample:
+      summary: PolicyDecision recorded before denied AgentWorker action creates Request.
+      value:
+        id: pd-network-001
+        work_session_id: ws-protocol-001
+        actor_id: actor-agent-001
+        policy_id: policy-bounded-001
+        requested_action:
+          action: fetch_external_source
+          target_ref: source:external-reference
+          scope_ref: scope:source-collection
+        normalized_action_hash: hash:action-fetch-external-source
+        risk_class: medium
+        result: deny
+        reason: External source access requires HumanWorker review before continuation.
+        request_id: req-network-001
+        created_at: "2026-06-12T18:05:00Z"
+    RequestBlockedActionExample:
+      summary: Scoped Request blocks one action branch and waits for human judgment.
+      value:
+        id: req-network-001
+        protocol_version: v0.1
+        work_session_id: ws-protocol-001
+        requester_actor_id: actor-agent-001
+        requester_worker_id: worker-agent-001
+        target_human_worker_id: worker-human-001
+        policy_decision_id: pd-network-001
+        type: permission
+        blocking_scope: action
+        reason_code: policy_denied
+        reason_summary: External source access is outside current policy.
+        requested_action:
+          action: fetch_external_source
+          target_ref: source:external-reference
+          scope_ref: scope:source-collection
+        requested_outcome: Allow source collection for the current WorkSession only.
+        risk_class: medium
+        human_decision_needed: Approve, narrow, deny, correct, or take over this action branch.
+        options:
+          - id: option-approve-current-session
+            label: Approve current WorkSession scope
+            effect: AgentWorker collects the referenced source for this WorkSession only after bounded approval.
+            risk_class: medium
+            scope_ref: scope:source-collection
+          - id: option-deny
+            label: Deny source collection
+            effect: AgentWorker continues with existing evidence and records the limitation.
+            risk_class: low
+            scope_ref: scope:existing-evidence
+        default_if_no_response:
+          action: continue_with_limited_evidence
+          reason: The blocked action remains stopped and the WorkSession records an evidence limitation.
+          limitation_ref: limitation:external-source-not-reviewed
+        status: pending
+        created_at: "2026-06-12T18:06:00Z"
+        expires_at: "2026-06-12T18:36:00Z"
+    ReviewApproveRequestExample:
+      summary: HumanWorker Review resolves Request with bounded ApprovalScope.
+      value:
+        id: review-network-001
+        work_session_id: ws-protocol-001
+        reviewer_actor_id: actor-human-001
+        reviewer_worker_id: worker-human-001
+        target_ref: request:req-network-001
+        decision: approve
+        approval_scope:
+          request_id: req-network-001
+          review_id: review-network-001
+          policy_decision_id: pd-network-001
+          request_revision: 1
+          request_event_hash: hash:event-request-network
+          normalized_action_hash: hash:action-fetch-external-source
+          approved_action:
+            action: fetch_external_source
+            target_ref: source:external-reference
+            scope_ref: scope:source-collection
+          allowed_scope:
+            scope_ref: scope:source-collection
+            grant_refs:
+              - grant:read-source
+          denied_scope:
+            scope_ref: scope:any-other-external-source
+          expires_at: "2026-06-12T18:36:00Z"
+          max_uses: 1
+          applies_to_work_session_id: ws-protocol-001
+          applies_to_actor_id: actor-agent-001
+        created_at: "2026-06-12T18:08:00Z"
+    EvidenceManifestExportExample:
+      summary: EvidenceManifest exports portable proof from the WorkSession.
+      value:
+        id: evidence-manifest-001
+        work_session_id: ws-protocol-001
+        generated_by_actor_id: actor-human-001
+        objective: Produce a reviewed evidence-backed answer under bounded policy.
+        event_chain_root: hash:event-chain-root
+        evidence_item_refs:
+          - id: evidence-source-001
+            work_session_id: ws-protocol-001
+            source_event_refs:
+              - event-source-captured-001
+            captured_by_actor_id: actor-agent-001
+            evidence_type: source_summary
+            artifact_ref: artifact:source-summary-001
+            content_hash: hash:source-summary-001
+            trust_label: reviewed
+            redaction_state: redacted
+            captured_at: "2026-06-12T18:10:00Z"
+            limitation_refs:
+              - limitation:none-recorded
+        policy_decision_refs:
+          - pd-network-001
+        request_refs:
+          - req-network-001
+        review_refs:
+          - review-network-001
+        takeover_refs: []
+        contribution_refs:
+          - contribution-shared-001
+        export_profile:
+          profile: portable_evidence_manifest
+          version: v0.1
+        generated_at: "2026-06-12T18:20:00Z"
+    ProtocolErrorExample:
+      summary: ProtocolError reports typed rejection without host-private fields.
+      value:
+        error_id: missing_policy_decision
+        protocol_version: v0.1
+        object_type: jarvis_event
+        field: policy_decision_id
+        reason: AgentWorker action affected WorkSession state without prior PolicyDecision.
+        remediation: Record PolicyDecision before accepting the AgentWorker action as protocol state.
+        trace_id: trace:protocol-error-001
 x-jarvis-protocol:
   version: v0.1
   layer: OpenAPI 3.1 communication binding
@@ -2715,22 +2861,9 @@ x-jarvis-protocol:
     - portable export boundary
     - conformance entry
   outside_jarvis:
-    - runtime execution
-    - UI
-    - authentication provider
-    - authorization backend
-    - storage
-    - queues
-    - cloud provider
-    - sandbox implementation
-    - model provider
-    - tool execution
-    - billing
-    - deployment
-    - task marketplace
-    - host workflow
+    - host-owned behavior outside the protocol contract
   chunk_lock:
-    id: week-2-chunk-6-path-security-binding
+    id: week-2-chunk-7-examples-conformance-entry
     locks:
       - OpenAPI 3.1.1 entry point
       - v0.1 protocol metadata
@@ -2764,6 +2897,7 @@ x-jarvis-protocol:
       - protocol header parameters
       - HostAuth security scheme
       - protocol error response
+      - protocol examples
+      - conformance entry documents
     excludes:
-      - examples
-      - conformance fixtures
+      - executable conformance fixtures
