@@ -91,7 +91,7 @@ Deliverables:
 - define OutcomeReport as an optional post-session feedback extension
 - write the protocol positioning note against MCP, A2A, ACP, AG-UI, and agent
   SDKs
-- define zero-trust OpenAPI headers, security schemes, and forbidden export
+- define zero-trust OpenAPI headers, security scheme, and forbidden export
   fields
 
 Done when:
@@ -118,7 +118,7 @@ Deliverables:
 - path layout for core protocol operations
 - event envelope component
 - portable export component
-- security schemes and required protocol headers
+- security scheme and required protocol headers
 - protocol error model
 - golden-path conformance checklist
 - failure-mode conformance checklist

@@ -7,11 +7,13 @@ goals and human-defined policy. The protocol records the work, requests,
 reviews, takeovers, contributions, evidence, and learning that happen inside a
 WorkSession.
 
-This is the v0.1 lock. OpenAPI contract work starts from here.
+This is the v0.1 protocol lock. Week 2 converted this lock into the OpenAPI
+3.1 contract and conformance entry. Week 3 builds protocol compatibility
+mapping and conformance fixtures on top of that contract.
 
 ## Locked Status
 
-`locked-for-v0.1-openapi-draft`
+`locked-for-v0.1-openapi-contract`
 
 Locked now:
 
@@ -31,11 +33,16 @@ Locked now:
 - OpenAPI security entry requirements
 - positioning and adoption boundary
 
-Week 2 drafts:
+Week 2 completed:
 
 - exact OpenAPI component syntax
 - exact OpenAPI path syntax
 - OpenAPI examples
+- conformance entry documents
+
+Week 3 uses this contract for:
+
+- protocol compatibility mapping
 - conformance fixtures
 
 ## Definition
@@ -124,7 +131,7 @@ MemoryProposal
 SkillProposal
 ```
 
-These names are stable for the v0.1 OpenAPI draft.
+These names are stable for the v0.1 OpenAPI contract.
 
 ## Relationship Model
 
@@ -449,7 +456,8 @@ Compatible implementations preserve host-owned execution.
 Compatible hosts map human-agent work into Jarvis records. They do not replace
 host execution.
 
-A compatible adapter maps:
+Compatible hosts and external systems map existing work into Jarvis protocol
+records. Jarvis does not own adapter code.
 
 ```txt
 human participant                -> HumanWorker + Actor
@@ -520,20 +528,23 @@ limitations
 Extension fields are namespaced. Extensions do not change the meaning of core
 protocol fields.
 
-## OpenAPI Contract Work Starts Here
+## OpenAPI Contract Status
 
-OpenAPI contract work starts with:
+Week 2 converted this protocol lock into:
 
 1. OpenAPI 3.1 component syntax.
 2. OpenAPI 3.1 path syntax.
-3. security scheme encoding from
+3. security scheme and header parameter encoding from
    [15-openapi-communication-binding.md](./15-openapi-communication-binding.md).
 4. required and optional fields per object.
 5. canonical WorkSession export example.
-6. passing and failing conformance fixtures.
+6. golden-path and failure-mode conformance entry documents.
 7. examples for WorkSession, Request, Review, Takeover, Contribution,
    EvidenceManifest, LearningRecord, MemoryProposal, SkillProposal, and
    OutcomeReport.
+
+Week 3 builds protocol compatibility mapping and conformance fixtures on this
+contract.
 
 The thesis is locked. The object model is locked. The lifecycle is locked. The
 control plane is locked. Evidence and learning are locked. OpenAPI security

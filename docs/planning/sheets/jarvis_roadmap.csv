@@ -10,7 +10,7 @@ Now,Jun 2-5,Turn Jarvis into an implementation-ready protocol lock.,"- freeze v0
 - list open OpenAPI questions
 - identify version, capability, extension, and error-model gaps
 - prepare OpenAPI component and path layout
-- define zero-trust headers and security schemes","- defer integration implementation
+- define zero-trust headers, security scheme, and header parameters","- defer integration implementation
 - name compatibility questions only
 - preserve runtime independence","- keep host implementation work out of active scope
 - define compatible-example prerequisites only","Protocol lock is the source for OpenAPI work, OpenAPI 3.1 is the machine-readable communication contract, and no compatible example enters this week."

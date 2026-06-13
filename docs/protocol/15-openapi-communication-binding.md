@@ -26,7 +26,7 @@ Layer 3: Protocol operations
 
 Layer 4: OpenAPI 3.1 communication binding
   HTTP paths, operations, parameters, request bodies, response bodies,
-  component schemas, security schemes, errors, examples
+  component schemas, security scheme, header parameters, errors, examples
 
 Outside Jarvis: Host implementation
   UI, auth, storage, execution, deployment, model calls, and tool execution
@@ -303,17 +303,23 @@ session cookies
 private keys
 ```
 
-## Security Schemes
+## Security Scheme And Header Parameters
 
-Jarvis OpenAPI MUST define security schemes without owning identity.
+Jarvis OpenAPI MUST define the host authentication security scheme without
+owning identity. Jarvis protocol headers MUST be reusable OpenAPI parameters,
+not OpenAPI security schemes.
 
-Required security entries:
+Required security scheme:
 
 ```txt
 HostAuth
   records that the host authenticated the caller without prescribing credential
   format, auth provider, token type, session store, or account system
+```
 
+Required header parameters:
+
+```txt
 ActorHeader
   binds the request to `Jarvis-Actor-Id`
 

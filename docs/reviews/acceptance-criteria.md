@@ -145,9 +145,9 @@ Expected result:
   `outcome_report_without_learning_record`, and
   `forbidden_host_private_field`
 - exported records contain no host-private infrastructure requirement
-- OpenAPI security entry checks require HostAuth, ActorHeader,
-  ProtocolVersionHeader, IdempotencyHeader, RequestTimestampHeader,
-  RevisionHeader, and PreviousHashHeader
+- OpenAPI security entry checks require `HostAuth`; OpenAPI header parameter
+  checks require `ActorHeader`, `ProtocolVersionHeader`, `IdempotencyHeader`,
+  `RequestTimestampHeader`, `RevisionHeader`, and `PreviousHashHeader`
 - Worker registration, Actor registration, and OutcomeReport submission do not
   require `Jarvis-Expected-WorkSession-Revision` or
   `Jarvis-Previous-Event-Hash`
