@@ -191,7 +191,7 @@ Output:
   Contribution, EvidenceManifest, LearningRecord, MemoryProposal, and
   SkillProposal
 - paths for core protocol operations
-- security schemes and required protocol headers
+- security scheme and required protocol headers
 - protocol error responses
 - examples for WorkSession, Request, Review, and export
 

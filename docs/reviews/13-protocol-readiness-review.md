@@ -1,7 +1,7 @@
 # Protocol Readiness Lock
 
-Jarvis is ready to move from design into OpenAPI 3.1 contract work, examples,
-and conformance tests.
+Jarvis moved from design into the OpenAPI 3.1 contract, examples, and
+conformance entry.
 
 ## Baseline
 
@@ -101,9 +101,10 @@ The repo is aligned on the main thesis:
 - MemoryProposal and SkillProposal prevent silent learning mutation.
 - hosts own execution, storage, UI, deployment, and model choice.
 
-## Locked Before Implementation
+## Locked Before OpenAPI Contract
 
-The docs now lock these points before OpenAPI contract work starts:
+The docs locked these points before Week 2 converted them into the OpenAPI
+contract:
 
 - README uses one direct protocol definition.
 - roadmap uses one object vocabulary.
@@ -115,7 +116,7 @@ The docs now lock these points before OpenAPI contract work starts:
 
 ## Week 1 Closeout State
 
-Week 1 has locked the OpenAPI entry decisions needed before contract drafting:
+Week 1 locked the OpenAPI entry decisions that Week 2 encoded:
 
 1. Version negotiation uses `Jarvis-Protocol-Version`.
 2. Capability negotiation uses `Jarvis-Host-Capabilities` and
@@ -133,15 +134,15 @@ Week 1 has locked the OpenAPI entry decisions needed before contract drafting:
 9. Positioning is locked: Jarvis records collaboration around host-owned
    execution and external protocol participation without replacing them.
 
-Week 2 starts from these locked decisions and drafts OpenAPI component syntax,
-path syntax, examples, and conformance fixtures.
+Week 2 converted these locked decisions into OpenAPI component syntax, path
+syntax, examples, and conformance entry documents.
 
 ## Readiness State
 
 The protocol thesis is stable. The boundaries are stable. The object set,
 lifecycle, control plane, evidence model, learning model, OpenAPI security
-entry, and positioning boundary are stable enough to begin Week 2 OpenAPI
-drafting.
+entry, and positioning boundary are encoded in the OpenAPI contract and
+conformance entry.
 
 Compatible examples start only after the OpenAPI contract and conformance
 entry rules are stable.

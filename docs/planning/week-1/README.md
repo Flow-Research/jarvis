@@ -1,6 +1,6 @@
 # Week 1 Execution Spec
 
-Week 1 locks the Jarvis protocol before OpenAPI contract drafting starts.
+Week 1 locked the Jarvis protocol before Week 2 encoded the OpenAPI contract.
 
 This week does not build a host implementation, runtime features, adapters, UI, or
 demo flows. This week locks the protocol meaning, lifecycle, zero-trust
@@ -20,7 +20,7 @@ Week 1 is complete when:
 - EvidenceManifest, Contribution, LearningRecord, MemoryProposal,
   SkillProposal, and OutcomeReport semantics are locked
 - OpenAPI 3.1 remains the machine-readable communication contract
-- zero-trust headers, security schemes, and forbidden export fields are locked
+- zero-trust headers, security scheme, and forbidden export fields are locked
 - Jarvis is explained without relying on a host application, external evaluation, any
   runtime, or any compatible example
 - no document describes Jarvis as a runtime, host implementation, agent
@@ -275,14 +275,14 @@ Done when:
 
 ### Chunk 5: OpenAPI Security Entry Lock
 
-Purpose: lock the OpenAPI inputs required before Week 2 drafting.
+Purpose: lock the OpenAPI inputs that Week 2 encoded.
 
 Spec: [chunk-5-openapi-security-entry-lock.md](./chunk-5-openapi-security-entry-lock.md)
 
 Outputs:
 
 - required headers
-- security scheme requirements
+- security scheme and header parameter requirements
 - protocol error model
 - version negotiation rules
 - capability negotiation rules

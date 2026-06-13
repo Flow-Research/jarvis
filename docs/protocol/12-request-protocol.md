@@ -89,7 +89,7 @@ correction
   HumanWorker correction.
 
 takeover
-  AgentWorker recommends HumanWorker direct control over the declared scope.
+  AgentWorker requests HumanWorker direct control over the declared scope.
 
 escalation
   AgentWorker detects risk, policy conflict, ambiguity, or high-impact action.

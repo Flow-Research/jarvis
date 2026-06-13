@@ -107,7 +107,7 @@ OpenAPI communication binding. Host implementation stays outside Jarvis.
 | Protocol semantics | HumanWorker and AgentWorker collaboration and shared learning. |
 | Protocol objects | WorkSession, Policy, Request, Review, Takeover, Contribution, EvidenceManifest, LearningRecord, MemoryProposal, SkillProposal, and related records. |
 | Protocol operations | Create WorkSession, append event, create Request, record Review, start Takeover, record Contribution, export EvidenceManifest, submit OutcomeReport. |
-| OpenAPI binding | HTTP paths, schemas, security schemes, errors, examples, and conformance entry. |
+| OpenAPI binding | HTTP paths, schemas, security scheme, header parameters, errors, examples, and conformance entry. |
 | Host implementation | UI, auth provider, storage, queue, runtime, isolation mechanism, model provider, deployment, and host workflow. |
 
 <div class="page-break"></div>
@@ -227,7 +227,7 @@ The first 30 days produce a usable protocol contract.
 | --- | --- |
 | `components.schemas` | Encode Worker, Actor, HumanWorker, AgentWorker, WorkSession, JarvisEvent, Policy, PolicyDecision, Request, Review, Takeover, Contribution, EvidenceManifest, LearningRecord, MemoryProposal, SkillProposal, and OutcomeReport. |
 | `paths` | Encode create WorkSession, append event, record PolicyDecision, create Request, record Review, start/reconcile Takeover, record Contribution, create learning records, export EvidenceManifest, and submit OutcomeReport. |
-| `securitySchemes` | Encode HostAuth, ActorHeader, ProtocolVersionHeader, IdempotencyHeader, RequestTimestampHeader, RevisionHeader, and PreviousHashHeader. |
+| `securitySchemes` + `parameters` | Encode `HostAuth` as the security scheme and encode ActorHeader, ProtocolVersionHeader, IdempotencyHeader, RequestTimestampHeader, RevisionHeader, and PreviousHashHeader as header parameters. |
 | Errors | Encode protocol error ids and required error envelope. |
 | Examples | Provide first examples for WorkSession, Request, Review, and EvidenceManifest export. |
 | Conformance | Define golden-path and failure-mode checklists that reject fake implementations. |
