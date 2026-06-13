@@ -107,7 +107,7 @@ Done when:
 
 ## Week 2: OpenAPI Contract And Conformance Entry
 
-Status: active.
+Status: complete.
 
 Goal: produce the first OpenAPI 3.1 contract shape and conformance entry rules.
 
@@ -142,27 +142,29 @@ Done when:
   evidence, or learning
 - host implementation work is still out of scope
 
-## Week 3: Adapter Contract And Conformance Fixtures
+## Week 3: Protocol Compatibility Mapping And Conformance Fixtures
 
-Goal: prove the OpenAPI contract against examples, fixtures, and one
-existing-agent adapter contract.
+Status: active.
+
+Goal: prove the OpenAPI contract through protocol compatibility mapping and
+conformance fixtures.
 
 Deliverables:
 
-- adapter contract for mapping existing agents into Jarvis protocol records
-- valid and invalid OpenAPI examples
+- protocol compatibility mapping for existing agents into Jarvis protocol records
+- valid and invalid conformance fixtures
 - golden-path fixture
 - stale takeover fixture
 - missing policy fixture
 - unresolved Request fixture
 - forbidden host-private export fixture
-- CLI/existing-agent adapter plan
+- existing-agent compatibility proof plan
 
 Done when:
 
 - two host shapes produce equivalent Jarvis protocol records on paper
 - conformance fixtures catch unsafe or incomplete implementations
-- adapter work does not require rewriting the agent runtime
+- compatibility proof does not require rewriting the agent runtime
 - compatible examples start only after the conformance gate
 
 ## Week 4: Compatible Examples And Public Story
@@ -173,8 +175,8 @@ conformance gate are credible.
 Deliverables:
 
 - compatible host mapping example
-- one CLI-agent adapter proof plan
-- one real external-agent or SDK-agent adapter proof plan
+- one CLI-agent compatibility proof plan
+- one real external-agent or SDK-agent compatibility proof plan
 - public README tightened around protocol positioning
 - protocol examples for WorkSession, Request, Review, EvidenceManifest, and
   LearningRecord
@@ -206,7 +208,7 @@ Every day produces one visible artifact:
 - OpenAPI section
 - OpenAPI example
 - conformance test/checklist
-- adapter note
+- compatibility note
 - security note
 - protocol diagram or conformance output
 - public docs update

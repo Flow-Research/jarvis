@@ -191,27 +191,30 @@ and shared learning.
 
 The active focus is the v0.1 first-30-days protocol contract.
 
-Protocol lock is complete. Current work converts the locked protocol into the
-OpenAPI 3.1 contract and conformance entry.
+Protocol lock is complete. Week 2 OpenAPI contract and conformance entry work
+is complete. Current work is Week 3 protocol compatibility mapping and
+conformance fixtures.
 
 Work on:
 
-- OpenAPI 3.1 document skeleton
-- `components.schemas` for core protocol objects
-- path layout for core protocol operations
-- event envelope component
-- portable export component
-- security schemes and required protocol headers
-- protocol error model
-- golden-path conformance checklist
-- failure-mode conformance checklist
-- first OpenAPI examples for WorkSession, Request, Review, and export
+- protocol compatibility mapping
+- valid conformance fixtures
+- invalid conformance fixtures
+- golden-path fixture
+- stale takeover fixture
+- missing policy fixture
+- unresolved Request fixture
+- forbidden host-private export fixture
+- existing-agent compatibility proof plan
+- conformance validator checks
 
 Do not build host implementations in this repo.
 Do not build runtime features in this repo.
+Do not add or own adapters, wrappers, host behavior, or integration code in this
+repo.
 Do not add host-specific assumptions to protocol records.
 Do not reopen locked protocol decisions unless a concrete contradiction blocks
-OpenAPI drafting.
+protocol compatibility mapping or conformance fixture drafting.
 
 ## Wording Rules
 
