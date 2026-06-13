@@ -1,9 +1,9 @@
 # Week 2: OpenAPI Contract And Conformance Entry
 
-Week 2 turns the locked protocol into the first OpenAPI 3.1 contract shape and
+Week 2 turned the locked protocol into the first OpenAPI 3.1 contract shape and
 conformance entry.
 
-This week locks the OpenAPI protocol contract and conformance entry only.
+Week 2 locked the OpenAPI protocol contract and conformance entry only.
 
 ## Chunks
 
@@ -26,7 +26,9 @@ This week locks the OpenAPI protocol contract and conformance entry only.
 
 ## Week 2 Done State
 
-Week 2 is complete when the OpenAPI contract answers:
+Status: complete.
+
+Week 2 completed these checks. The OpenAPI contract answers:
 
 ```txt
 how a host creates a WorkSession
@@ -39,3 +41,5 @@ how OutcomeReport feeds post-session learning
 ```
 
 The contract remains protocol-only. Hosts own implementation.
+
+For closeout, see [closeout.md](./closeout.md).

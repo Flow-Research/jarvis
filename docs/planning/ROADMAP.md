@@ -17,11 +17,16 @@ For the OpenAPI entry gate, see
 
 Week 1 protocol lock is complete.
 
-Current active work: Week 2 OpenAPI contract and conformance entry.
+Current active work: Week 3 protocol compatibility mapping and conformance
+fixtures.
 
-Week 2 drafts the OpenAPI 3.1 component syntax, path syntax, security scheme
+Week 2 completed the OpenAPI 3.1 component syntax, path syntax, security scheme
 encoding, protocol examples, and conformance entry rules from the locked Week 1
 protocol decisions.
+
+Week 3 proves the contract through protocol compatibility mapping and
+conformance fixtures. Jarvis does not add or own adapters, runtimes, wrappers,
+host behavior, or integration code.
 
 ## Roadmap Contract
 
@@ -46,8 +51,8 @@ Jarvis owns:
 - protocol event envelope
 - protocol export format
 - OpenAPI 3.1 communication binding
-- adapter contract
-- adapter conformance expectations
+- protocol compatibility mapping
+- compatibility conformance expectations
 - version negotiation rules
 - capability negotiation rules
 - conformance tests
@@ -130,12 +135,12 @@ MemoryProposal and SkillProposal remain governed
 - portable export profile
 - conformance tests for the golden path
 - interoperability checklist
-- adapter contract
-- one real existing-agent adapter proof
+- protocol compatibility mapping
+- one real existing-agent compatibility proof
 - valid and invalid conformance fixtures
 - version and capability negotiation
 - one protocol simulation that visualizes the proof path
-- host and adapter integration guide
+- compatible implementation guide
 
 ### v0.1 Excludes
 
@@ -174,7 +179,7 @@ Done when:
 
 ## Milestone 1: OpenAPI Contract
 
-Status: active.
+Status: complete.
 
 Owner: Protocol
 
@@ -200,6 +205,8 @@ Done when:
 - no component or path requires implementation-private fields
 
 ## Milestone 2: WorkSession Lifecycle
+
+Status: active.
 
 Owner: Protocol
 
@@ -313,7 +320,7 @@ Output:
 - glossary
 - protocol diagrams
 - OpenAPI examples
-- host and adapter integration guide
+- compatible implementation guide
 - evaluation-system integration guide
 - host integration note
 - interactive simulation
@@ -433,10 +440,12 @@ Control: learning becomes MemoryProposal or SkillProposal until reviewed.
 
 1. Keep the repository protocol-only.
 2. Keep execution and cloud ownership outside the protocol.
-3. Use `11-core-protocol-objects.md` as the source of truth for core terms.
-4. Draft OpenAPI examples for each protocol contract.
-5. Define conformance tests for the golden path.
-6. Keep compatibility example mapping out of the current execution cycle until the
-   OpenAPI contract and conformance fixtures are stable.
-7. Define one real existing-agent adapter proof.
-8. Update the live simulation to show host/execution as outside Jarvis.
+3. Use `11-core-protocol-objects.md`, `jarvis-openapi.yaml`, and
+   `docs/conformance/` as the source of truth for Week 3 work.
+4. Draft protocol compatibility mapping rules.
+5. Create the golden-path conformance fixture.
+6. Create stale takeover, missing policy, unresolved Request, and forbidden
+   host-private export fixtures.
+7. Compare two compatible implementation shapes at the protocol-record level.
+8. Keep adapter code, wrappers, host behavior, and integration code outside
+   Jarvis.
