@@ -5,7 +5,7 @@ collaboration and learning-loop protocol.
 
 This chunk does not create adapters, OpenAPI YAML, conformance fixtures,
 runtime code, UI, or host implementation behavior. It locks the adoption
-argument that Week 2 OpenAPI drafting must preserve.
+argument that the OpenAPI contract preserves.
 
 ## Scope
 

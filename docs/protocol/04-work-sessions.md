@@ -569,9 +569,10 @@ policy_id
 evidence_hashes
 ```
 
-These references stay inside event payloads and evidence records. Provider
-private runtime details stay outside portable exports unless an export profile
-explicitly includes them.
+These references stay inside event payloads and evidence records. Portable
+exports MUST exclude provider-private runtime details. Export records MAY use
+portable opaque refs or redacted summaries when the evidence needs to point to
+host-held material.
 
 ## Learning Pass
 
@@ -671,16 +672,21 @@ human delay.
 
 ## Durability And Recovery
 
-Durable collaboration requires:
+Jarvis durability requires:
 
 - append-only event log as source of truth
+- idempotency keys for protocol mutations
+- recovery states for interrupted work
+- recovery state refs for host-held resume material
+- evidence records for interrupted work
+
+Hosts own recovery mechanisms:
+
 - checkpoints for fast resume
-- idempotency keys for tool calls
 - host leases or equivalent guards to prevent duplicate execution
 - retry policy for recoverable failures
-- recovery states for interrupted work
 - external-send outbox for side effects
-- request store with resume tokens
+- request storage and resume tokens
 
 If a run fails mid-tool, Jarvis records whether the tool was never started,
 started with unknown result, completed with receipt, or needs human

@@ -1,12 +1,12 @@
 # Chunk 5: OpenAPI Security Entry Lock
 
-Chunk 5 locks the OpenAPI security and negotiation inputs required before
-Week 2 OpenAPI drafting starts.
+Chunk 5 locks the OpenAPI security and negotiation inputs that Week 2 encoded
+in the OpenAPI contract.
 
-This chunk does not create the OpenAPI YAML document. It defines the required
-headers, security scheme requirements, protocol error model, version
+This chunk did not create the OpenAPI YAML document. It defined the required
+headers, security scheme and header parameter requirements, protocol error model, version
 negotiation rules, capability negotiation rules, extension namespace rules, and
-forbidden export fields that the Week 2 OpenAPI contract must encode.
+forbidden export fields that the Week 2 OpenAPI contract encoded.
 
 ## Scope
 
@@ -15,7 +15,7 @@ Chunk 5 locks:
 ```txt
 required mutating headers
 read-operation header requirements
-security scheme requirements
+security scheme and header parameter requirements
 Actor authority requirements
 Worker and Actor registration boundary
 idempotency and replay requirements
@@ -119,17 +119,23 @@ WorkSession-scoped or export read
   Jarvis-Actor-Id
 ```
 
-## Security Schemes
+## Security Scheme And Header Parameters
 
-Jarvis OpenAPI MUST define security schemes without owning identity.
+Jarvis OpenAPI MUST define the host authentication security scheme without
+owning identity. Jarvis protocol headers MUST be reusable OpenAPI parameters,
+not OpenAPI security schemes.
 
-The OpenAPI contract MUST support:
+Required security scheme:
 
 ```txt
 HostAuth
   records that the host authenticated the caller without prescribing credential
   format, auth provider, token type, session store, or account system
+```
 
+Required header parameters:
+
+```txt
 ActorHeader
   identifies the protocol Actor for attribution and authority checks
 
@@ -254,10 +260,10 @@ private keys
 Chunk 5 is complete when:
 
 - [15-openapi-communication-binding.md](../../protocol/15-openapi-communication-binding.md)
-  locks headers, security schemes, negotiation, error envelope, and forbidden
+  locks headers, security scheme, header parameters, negotiation, error envelope, and forbidden
   export fields
 - [08-package-contracts.md](../../protocol/08-package-contracts.md) includes
-  release tests for required headers, security schemes, negotiation,
+  release tests for required headers, security scheme, header parameters, negotiation,
   extension namespace rules, protocol errors, and forbidden export fields
 - [10-protocol-mvp.md](../../protocol/10-protocol-mvp.md) includes
   conformance checks for OpenAPI security entry rules

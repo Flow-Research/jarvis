@@ -3,8 +3,8 @@
 ## Goal
 
 Encode the OpenAPI path layout, operation buckets, required protocol headers,
-and security schemes that make Jarvis v0.1 exchangeable between compatible
-hosts.
+security scheme, and header parameters that make Jarvis v0.1 exchangeable
+between compatible hosts.
 
 ## Scope
 
@@ -46,19 +46,9 @@ GET  /work-sessions/{work_session_id}/export
 POST /outcome-reports
 ```
 
-This chunk does not define:
-
-- full examples
-- conformance fixtures
-- adapter contracts
-- runtime execution
-- host implementation behavior
-- auth provider behavior
-- storage behavior
-- model calls
-- tool execution
-- UI behavior
-- billing, payment, scoring, settlement, or marketplace logic
+This chunk does not define behavior outside the path and security binding.
+Chunk 7 locked examples and conformance entry. Week 3 handles protocol
+compatibility mapping and conformance fixtures.
 
 ## Header Classes
 

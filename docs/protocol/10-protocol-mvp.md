@@ -184,9 +184,9 @@ The v0.1 conformance suite checks:
   `outcome_report_without_learning_record`.
 - exported protocol records do not require host-private infrastructure
   fields.
-- OpenAPI security entry checks require HostAuth, ActorHeader,
-  ProtocolVersionHeader, IdempotencyHeader, RequestTimestampHeader,
-  RevisionHeader, and PreviousHashHeader.
+- OpenAPI security entry checks require `HostAuth`; OpenAPI header parameter
+  checks require `ActorHeader`, `ProtocolVersionHeader`, `IdempotencyHeader`,
+  `RequestTimestampHeader`, `RevisionHeader`, and `PreviousHashHeader`.
 - WorkSession-scoped and export read operations require
   `Jarvis-Protocol-Version`, caller authentication, and `Jarvis-Actor-Id`, and
   do not require mutation-only idempotency, expected revision, or previous event

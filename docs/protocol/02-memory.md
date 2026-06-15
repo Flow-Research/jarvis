@@ -173,7 +173,7 @@ content are untrusted until policy says otherwise.
 
 The model never writes durable memory directly.
 
-Preferred flow:
+Memory write flow:
 
 ```txt
 1. Turn or WorkSession produces events, reviews, tool outputs, and artifacts.
@@ -196,17 +196,17 @@ Human review is required for:
 
 ## Memory Write Policy Matrix
 
-Default v1 policy:
+Default v0.1 memory write policy:
 
 | Source | Memory Type | Scope | Auto-confirm? | Notes |
 | --- | --- | --- | --- | --- |
 | direct human statement | task note | task | yes | Only for current work, non-security. |
 | direct human statement | preference | human/shared | review | Durable preferences affect future behavior. |
 | direct human statement | boundary | any | review | Boundaries affect autonomy. |
-| agent inference | observation | task | no | Suggested only. |
+| agent inference | observation | task | no | Remains unconfirmed until reviewed. |
 | agent inference | preference/boundary | any | no | Requires human review. |
 | tool output | any | any | no | External/tool-derived memory never auto-confirms. |
-| web/file content | fact/source | task/project | no | Suggested with provenance and trust label. |
+| web/file content | fact/source | task/project | no | Recorded with provenance and trust label; review controls promotion. |
 | review outcome | correction/outcome | WorkSession/task | yes | Stored as WorkSession fact; promotion needs review. |
 | skill edit | procedure | procedural | no | Requires skill activation gate. |
 
