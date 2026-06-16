@@ -52,7 +52,7 @@ This document records decisions that are fixed for the Jarvis protocol.
 - Compatible implementations MUST NOT silently downgrade a request.
 - Protocol errors use a structured error envelope.
 - WorkSession-scoped and export read operations require protocol version,
-  caller authentication, and Actor authority. They do not require mutation-only
+  host authentication, and Actor authority. They do not require mutation-only
   idempotency, expected revision, or previous event hash headers.
 
 ## Explicit Non-Decisions

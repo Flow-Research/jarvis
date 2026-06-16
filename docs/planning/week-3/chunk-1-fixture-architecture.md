@@ -34,6 +34,7 @@ docs/conformance/fixtures/
     stale-request-timestamp.json
     missing-expected-work-session-revision.json
     missing-previous-event-hash.json
+    missing-policy.json
     missing-policy-decision.json
     missing-review-resolution.json
     missing-takeover-resolution.json
@@ -78,7 +79,7 @@ expected_error_field
 Rules:
 
 - `fixture_id` is stable.
-- `protocol_version` is `0.1`.
+- `protocol_version` is `v0.1`.
 - `kind` is `valid` or `invalid`.
 - `source_contract_refs` points to the protocol docs or OpenAPI components that
   define the behavior under test.
@@ -121,7 +122,7 @@ Rules:
 - `expected_error_id` is present only when the operation rejects.
 - WorkSession-scoped mutations include all six zero-trust headers.
 - Non-WorkSession mutations include the non-WorkSession mutation headers.
-- Read operations include protocol version, actor id, and caller auth.
+- Read operations include protocol version, actor id, and host authentication.
 - Accepted WorkSession-scoped mutations link to the previous event hash.
 - Rejected operations record the protocol error id.
 
@@ -171,9 +172,9 @@ The golden-path fixture proves:
 - WorkSession starts with objective, policy, revision, and event hash state
 - AgentWorker action records PolicyDecision before accepted protocol state
 - Policy-denied action creates scoped Request
-- Review or Takeover resolves Request
+- Review approval or narrowing resolves the golden-path Request
 - Review approval or narrowing creates bounded ApprovalScope
-- Takeover records lock state before human direct control
+- Takeover lock epoch rejection is covered by the stale Takeover fixture
 - Contribution records attributable work
 - EvidenceManifest exports portable proof
 - LearningRecord captures human, agent, or pair learning
@@ -192,6 +193,7 @@ Invalid fixtures prove every required failure-mode rejection id:
 - stale request timestamp
 - missing expected WorkSession revision
 - missing previous event hash
+- missing Policy
 - missing PolicyDecision before AgentWorker state change
 - missing Review resolution
 - missing Takeover resolution

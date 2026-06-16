@@ -7,6 +7,8 @@ contract for governed human-agent collaboration and shared learning.
 
 ## Files
 
+- [compatibility-mapping.md](./compatibility-mapping.md) - required mapping
+  from existing human-agent work into Jarvis protocol records.
 - [golden-path.md](./golden-path.md) - required compatible success path.
 - [failure-modes.md](./failure-modes.md) - required rejection paths.
 

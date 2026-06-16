@@ -259,6 +259,7 @@ missing_request_timestamp
 stale_request_timestamp
 missing_expected_work_session_revision
 missing_previous_event_hash
+missing_policy
 missing_policy_decision
 missing_review_resolution
 missing_takeover_resolution

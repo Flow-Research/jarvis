@@ -341,6 +341,7 @@ The OpenAPI error model must include the protocol errors that protect the v0.1
 spine. These include:
 
 ```txt
+missing_policy
 missing_policy_decision
 request_unresolved
 missing_review_resolution

@@ -26,13 +26,18 @@ The golden-path fixture records:
 - WorkSession creation with genesis revision and event hash
 - PolicyDecision before AgentWorker action
 - Request for blocked work
-- Review resolving Request
+- Review approval or narrowing resolving Request
 - ApprovalScope for approved or narrowed authority
 - Contribution records
 - EvidenceManifest export
 - LearningRecord
 - MemoryProposal or SkillProposal
 - OutcomeReport hook
+
+The golden-path fixture resolves the Request through Review approval or
+narrowing. The stale Takeover fixture proves Takeover lock epoch rejection. A
+valid Takeover path requires a separate fixture or an explicit golden-path
+branch with reconciliation refs before AgentWorker continuation.
 
 ## Done Criteria
 
