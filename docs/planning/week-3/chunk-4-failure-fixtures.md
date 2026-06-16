@@ -22,6 +22,7 @@ missing-request-timestamp.json                 -> missing_request_timestamp
 stale-request-timestamp.json                   -> stale_request_timestamp
 missing-expected-work-session-revision.json    -> missing_expected_work_session_revision
 missing-previous-event-hash.json               -> missing_previous_event_hash
+missing-policy.json                            -> missing_policy
 missing-policy-decision.json                   -> missing_policy_decision
 missing-review-resolution.json                 -> missing_review_resolution
 missing-takeover-resolution.json               -> missing_takeover_resolution
@@ -43,6 +44,10 @@ Chunk 4 also adds this OpenAPI-backed fixture:
 ```txt
 unresolved-request.json                        -> request_unresolved
 ```
+
+`missing-policy.json` proves that `WorkSession.policy_id` MUST reference a
+Policy record. WorkSession creation or AgentWorker state mutation without the
+required Policy rejects as `missing_policy`.
 
 ## Done Criteria
 

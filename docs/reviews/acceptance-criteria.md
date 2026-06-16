@@ -93,7 +93,7 @@ Expected result:
 - every transition out of `waiting_on_human` records blocker accounting
 - WorkSession lifecycle rejection ids include `unknown_state`,
   `missing_idempotency_key`, `duplicate_idempotency_key_mismatch`,
-  `missing_jarvis_event`, `missing_policy_decision`,
+  `missing_jarvis_event`, `missing_policy`, `missing_policy_decision`,
   `missing_blocked_scope_resolution_refs`, `missing_reconciliation_refs`,
   `mutation_after_closed`, `invalid_export_state`, and `unauthorized_actor`
 - final EvidenceManifest export is valid only from completed, failed,
@@ -152,7 +152,7 @@ Expected result:
   require `Jarvis-Expected-WorkSession-Revision` or
   `Jarvis-Previous-Event-Hash`
 - WorkSession-scoped and export read operations require
-  `Jarvis-Protocol-Version`, caller authentication, and `Jarvis-Actor-Id`, and
+  `Jarvis-Protocol-Version`, host authentication, and `Jarvis-Actor-Id`, and
   do not require mutation-only idempotency, expected revision, or previous event
   hash headers
 - Worker and Actor registration does not create accounts, authenticate callers,

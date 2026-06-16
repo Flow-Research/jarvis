@@ -106,7 +106,7 @@ Conformance checks include:
 - OutcomeReport creates or references LearningRecord without mutating sealed
   WorkSession or EvidenceManifest
 - mutating operations enforce required protocol headers
-- read operations enforce protocol version, caller authentication, and Actor
+- read operations enforce protocol version, host authentication, and Actor
   authority
 - protocol errors use the required error envelope
 

@@ -250,7 +250,7 @@ WorkSession-scoped or export read
 ```
 
 Read operations that return WorkSession-scoped records or portable exports MUST
-include caller authentication and:
+include host authentication and:
 
 ```txt
 Jarvis-Protocol-Version

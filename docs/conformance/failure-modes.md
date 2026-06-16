@@ -16,6 +16,7 @@ missing request timestamp
 stale request timestamp
 missing expected WorkSession revision
 missing previous event hash
+missing Policy
 missing PolicyDecision before AgentWorker state change
 Request resolved without Review or Takeover
 approval without bounded ApprovalScope
@@ -44,6 +45,7 @@ missing_request_timestamp
 stale_request_timestamp
 missing_expected_work_session_revision
 missing_previous_event_hash
+missing_policy
 missing_policy_decision
 missing_review_resolution
 missing_takeover_resolution
@@ -66,6 +68,7 @@ The protocol rejects a record when:
 
 ```txt
 AgentWorker action changes WorkSession state without PolicyDecision.
+WorkSession starts or mutates without required Policy.
 Request reaches human-resolved state without Review or Takeover.
 Review approval lacks bounded ApprovalScope.
 Mutation headers are missing or invalid.
