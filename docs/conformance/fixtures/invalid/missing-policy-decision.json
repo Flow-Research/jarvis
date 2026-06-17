@@ -188,6 +188,26 @@
       }
     },
     "jarvis_events": {
+      "worksession_created": {
+        "id": "event-worksession-created",
+        "sequence": 1,
+        "type": "work_session.created",
+        "work_session_id": "ws-invalid-001",
+        "actor_id": "actor-human-invalid",
+        "timestamp": "2026-06-16T10:01:00Z",
+        "payload": {
+          "object_type": "work_session",
+          "object_id": "ws-invalid-001",
+          "action": "created"
+        },
+        "previous_hash": "hash:protocol-genesis",
+        "event_hash": "hash:event-worksession-created",
+        "canonicalization": {
+          "serialization": "json-c14n",
+          "hash_method": "sha256",
+          "profile_ref": "canonicalization:v0.1"
+        }
+      },
       "agent_action_without_policy_decision": {
         "id": "event-agent-action-without-policy-decision",
         "sequence": 2,
@@ -220,7 +240,7 @@
         "Jarvis-Protocol-Version": "v0.1",
         "Jarvis-Actor-Id": "actor-agent-invalid",
         "Jarvis-Idempotency-Key": "idem-policy-invalid",
-        "Jarvis-Request-Timestamp": "2026-06-16T10:05:00Z",
+        "Jarvis-Request-Timestamp": "2026-06-16T10:06:00Z",
         "Jarvis-Expected-WorkSession-Revision": 1,
         "Jarvis-Previous-Event-Hash": "hash:event-worksession-created"
       },

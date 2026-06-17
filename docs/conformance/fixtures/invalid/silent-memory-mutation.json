@@ -187,6 +187,28 @@
         "updated_at": "2026-06-16T10:30:00Z"
       }
     },
+    "jarvis_events": {
+      "worksession_created": {
+        "id": "event-worksession-created",
+        "sequence": 1,
+        "type": "work_session.created",
+        "work_session_id": "ws-invalid-001",
+        "actor_id": "actor-human-invalid",
+        "timestamp": "2026-06-16T10:01:00Z",
+        "payload": {
+          "object_type": "work_session",
+          "object_id": "ws-invalid-001",
+          "action": "created"
+        },
+        "previous_hash": "hash:protocol-genesis",
+        "event_hash": "hash:event-worksession-created",
+        "canonicalization": {
+          "serialization": "json-c14n",
+          "hash_method": "sha256",
+          "profile_ref": "canonicalization:v0.1"
+        }
+      }
+    },
     "memory_proposals": {
       "invalid": {
         "id": "memory-proposal-invalid",
@@ -218,9 +240,9 @@
         "Jarvis-Protocol-Version": "v0.1",
         "Jarvis-Actor-Id": "actor-agent-invalid",
         "Jarvis-Idempotency-Key": "idem-silent-memory",
-        "Jarvis-Request-Timestamp": "2026-06-16T10:05:00Z",
-        "Jarvis-Expected-WorkSession-Revision": 6,
-        "Jarvis-Previous-Event-Hash": "hash:event-learning-recorded"
+        "Jarvis-Request-Timestamp": "2026-06-16T10:18:00Z",
+        "Jarvis-Expected-WorkSession-Revision": 1,
+        "Jarvis-Previous-Event-Hash": "hash:event-worksession-created"
       },
       "actor_id": "actor-agent-invalid",
       "expected_status": 400,

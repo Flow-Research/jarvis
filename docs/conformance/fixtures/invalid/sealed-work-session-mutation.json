@@ -188,13 +188,53 @@
       }
     },
     "jarvis_events": {
+      "worksession_created": {
+        "id": "event-worksession-created",
+        "sequence": 1,
+        "type": "work_session.created",
+        "work_session_id": "ws-invalid-001",
+        "actor_id": "actor-human-invalid",
+        "timestamp": "2026-06-16T10:01:00Z",
+        "payload": {
+          "object_type": "work_session",
+          "object_id": "ws-invalid-001",
+          "action": "created"
+        },
+        "previous_hash": "hash:protocol-genesis",
+        "event_hash": "hash:event-worksession-created",
+        "canonicalization": {
+          "serialization": "json-c14n",
+          "hash_method": "sha256",
+          "profile_ref": "canonicalization:v0.1"
+        }
+      },
+      "worksession_completed": {
+        "id": "event-worksession-completed",
+        "sequence": 5,
+        "type": "work_session.completed",
+        "work_session_id": "ws-invalid-001",
+        "actor_id": "actor-human-invalid",
+        "timestamp": "2026-06-16T10:30:00Z",
+        "payload": {
+          "object_type": "work_session",
+          "object_id": "ws-invalid-001",
+          "action": "completed"
+        },
+        "previous_hash": "hash:event-worksession-created",
+        "event_hash": "hash:event-worksession-completed",
+        "canonicalization": {
+          "serialization": "json-c14n",
+          "hash_method": "sha256",
+          "profile_ref": "canonicalization:v0.1"
+        }
+      },
       "mutation_after_completed": {
         "id": "event-mutation-after-completed",
         "sequence": 6,
         "type": "evidence.captured",
         "work_session_id": "ws-invalid-001",
         "actor_id": "actor-agent-invalid",
-        "timestamp": "2026-06-16T10:06:00Z",
+        "timestamp": "2026-06-16T10:31:00Z",
         "payload": {
           "object_type": "fixture",
           "object_id": "event-mutation-after-completed",
@@ -220,7 +260,7 @@
         "Jarvis-Protocol-Version": "v0.1",
         "Jarvis-Actor-Id": "actor-agent-invalid",
         "Jarvis-Idempotency-Key": "idem-sealed-worksession",
-        "Jarvis-Request-Timestamp": "2026-06-16T10:05:00Z",
+        "Jarvis-Request-Timestamp": "2026-06-16T10:31:00Z",
         "Jarvis-Expected-WorkSession-Revision": 5,
         "Jarvis-Previous-Event-Hash": "hash:event-worksession-completed"
       },

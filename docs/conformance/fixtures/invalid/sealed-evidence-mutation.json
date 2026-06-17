@@ -69,7 +69,8 @@
             "work_session.created",
             "review.recorded",
             "work_session.completed",
-            "learning.recorded"
+            "learning.recorded",
+            "evidence_manifest.mutated"
           ]
         },
         "contribution_scope": {
@@ -171,21 +172,6 @@
         "event_log_ref": "event-log:ws-invalid-001",
         "created_at": "2026-06-16T10:01:00Z",
         "updated_at": "2026-06-16T10:01:00Z"
-      },
-      "completed": {
-        "id": "ws-invalid-001",
-        "protocol_version": "v0.1",
-        "created_by_actor_id": "actor-human-invalid",
-        "objective": "Complete governed human-agent work with protocol proof.",
-        "human_worker_id": "worker-human-invalid",
-        "agent_worker_id": "worker-agent-invalid",
-        "policy_id": "policy-invalid-bounded",
-        "status": "completed",
-        "revision": 5,
-        "last_event_hash": "hash:event-worksession-completed",
-        "event_log_ref": "event-log:ws-invalid-001",
-        "created_at": "2026-06-16T10:01:00Z",
-        "updated_at": "2026-06-16T10:30:00Z"
       }
     },
     "evidence_manifests": {
@@ -230,9 +216,29 @@
       }
     },
     "jarvis_events": {
+      "worksession_created": {
+        "id": "event-worksession-created",
+        "sequence": 1,
+        "type": "work_session.created",
+        "work_session_id": "ws-invalid-001",
+        "actor_id": "actor-human-invalid",
+        "timestamp": "2026-06-16T10:01:00Z",
+        "payload": {
+          "object_type": "work_session",
+          "object_id": "ws-invalid-001",
+          "action": "created"
+        },
+        "previous_hash": "hash:protocol-genesis",
+        "event_hash": "hash:event-worksession-created",
+        "canonicalization": {
+          "serialization": "json-c14n",
+          "hash_method": "sha256",
+          "profile_ref": "canonicalization:v0.1"
+        }
+      },
       "sealed_evidence_mutation": {
         "id": "event-sealed-evidence-mutation",
-        "sequence": 7,
+        "sequence": 2,
         "type": "evidence_manifest.mutated",
         "work_session_id": "ws-invalid-001",
         "actor_id": "actor-human-invalid",
@@ -242,7 +248,7 @@
           "object_id": "event-sealed-evidence-mutation",
           "action": "evidence_manifest.mutated"
         },
-        "previous_hash": "hash:event-worksession-completed",
+        "previous_hash": "hash:event-worksession-created",
         "event_hash": "hash:event-sealed-evidence-mutation",
         "canonicalization": {
           "serialization": "json-c14n",
@@ -262,9 +268,9 @@
         "Jarvis-Protocol-Version": "v0.1",
         "Jarvis-Actor-Id": "actor-human-invalid",
         "Jarvis-Idempotency-Key": "idem-sealed-evidence",
-        "Jarvis-Request-Timestamp": "2026-06-16T10:05:00Z",
-        "Jarvis-Expected-WorkSession-Revision": 6,
-        "Jarvis-Previous-Event-Hash": "hash:event-worksession-completed"
+        "Jarvis-Request-Timestamp": "2026-06-16T10:06:00Z",
+        "Jarvis-Expected-WorkSession-Revision": 1,
+        "Jarvis-Previous-Event-Hash": "hash:event-worksession-created"
       },
       "actor_id": "actor-human-invalid",
       "expected_status": 400,

@@ -167,11 +167,11 @@
         "agent_worker_id": "worker-agent-invalid",
         "policy_id": "policy-invalid-bounded",
         "status": "active",
-        "revision": 1,
-        "last_event_hash": "hash:event-worksession-created",
+        "revision": 3,
+        "last_event_hash": "hash:event-request-created",
         "event_log_ref": "event-log:ws-invalid-001",
         "created_at": "2026-06-16T10:01:00Z",
-        "updated_at": "2026-06-16T10:01:00Z"
+        "updated_at": "2026-06-16T10:05:00Z"
       },
       "completed": {
         "id": "ws-invalid-001",
@@ -245,6 +245,68 @@
         "expires_at": "2026-06-16T10:35:00Z"
       }
     },
+    "jarvis_events": {
+      "worksession_created": {
+        "id": "event-worksession-created",
+        "sequence": 1,
+        "type": "work_session.created",
+        "work_session_id": "ws-invalid-001",
+        "actor_id": "actor-human-invalid",
+        "timestamp": "2026-06-16T10:01:00Z",
+        "payload": {
+          "object_type": "work_session",
+          "object_id": "ws-invalid-001",
+          "action": "created"
+        },
+        "previous_hash": "hash:protocol-genesis",
+        "event_hash": "hash:event-worksession-created",
+        "canonicalization": {
+          "serialization": "json-c14n",
+          "hash_method": "sha256",
+          "profile_ref": "canonicalization:v0.1"
+        }
+      },
+      "policy_decision_recorded": {
+        "id": "event-policy-decision-recorded",
+        "sequence": 2,
+        "type": "policy_decision.recorded",
+        "work_session_id": "ws-invalid-001",
+        "actor_id": "actor-agent-invalid",
+        "timestamp": "2026-06-16T10:04:00Z",
+        "payload": {
+          "object_type": "policy_decision",
+          "object_id": "pd-invalid-001",
+          "action": "recorded"
+        },
+        "previous_hash": "hash:event-worksession-created",
+        "event_hash": "hash:event-policy-decision-recorded",
+        "canonicalization": {
+          "serialization": "json-c14n",
+          "hash_method": "sha256",
+          "profile_ref": "canonicalization:v0.1"
+        }
+      },
+      "request_created": {
+        "id": "event-request-created",
+        "sequence": 3,
+        "type": "request.created",
+        "work_session_id": "ws-invalid-001",
+        "actor_id": "actor-agent-invalid",
+        "timestamp": "2026-06-16T10:05:00Z",
+        "payload": {
+          "object_type": "request",
+          "object_id": "req-invalid-001",
+          "action": "created"
+        },
+        "previous_hash": "hash:event-policy-decision-recorded",
+        "event_hash": "hash:event-request-created",
+        "canonicalization": {
+          "serialization": "json-c14n",
+          "hash_method": "sha256",
+          "profile_ref": "canonicalization:v0.1"
+        }
+      }
+    },
     "reviews": {
       "invalid": {
         "id": "review-invalid-001",
@@ -267,7 +329,7 @@
         "Jarvis-Protocol-Version": "v0.1",
         "Jarvis-Actor-Id": "actor-human-invalid",
         "Jarvis-Idempotency-Key": "idem-invalid-approval",
-        "Jarvis-Request-Timestamp": "2026-06-16T10:05:00Z",
+        "Jarvis-Request-Timestamp": "2026-06-16T10:08:00Z",
         "Jarvis-Expected-WorkSession-Revision": 3,
         "Jarvis-Previous-Event-Hash": "hash:event-request-created"
       },
