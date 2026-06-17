@@ -19,6 +19,7 @@ missing previous event hash
 missing Policy
 missing PolicyDecision before AgentWorker state change
 Request resolved without Review or Takeover
+terminal state with unresolved Request
 approval without bounded ApprovalScope
 stale WorkSession revision
 previous event hash mismatch
@@ -49,6 +50,7 @@ missing_policy
 missing_policy_decision
 missing_review_resolution
 missing_takeover_resolution
+request_unresolved
 invalid_approval_scope
 stale_work_session_revision
 invalid_previous_event_hash

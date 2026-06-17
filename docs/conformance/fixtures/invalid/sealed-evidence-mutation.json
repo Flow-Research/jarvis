@@ -1,0 +1,290 @@
+{
+  "fixture_id": "invalid-sealed-evidence-mutation-v01",
+  "protocol_version": "v0.1",
+  "kind": "invalid",
+  "title": "Reject sealed EvidenceManifest mutation",
+  "description": "The protocol rejects mutation of a sealed EvidenceManifest.",
+  "source_contract_refs": [
+    "docs/conformance/failure-modes.md",
+    "docs/conformance/compatibility-mapping.md",
+    "docs/planning/week-3/chunk-1-fixture-architecture.md",
+    "docs/planning/week-3/chunk-4-failure-fixtures.md",
+    "docs/openapi/jarvis-openapi.yaml#/components/schemas/ProtocolError",
+    "docs/openapi/jarvis-openapi.yaml#/components/schemas/Worker",
+    "docs/openapi/jarvis-openapi.yaml#/components/schemas/Actor",
+    "docs/openapi/jarvis-openapi.yaml#/components/schemas/Policy",
+    "docs/openapi/jarvis-openapi.yaml#/components/schemas/WorkSession",
+    "docs/openapi/jarvis-openapi.yaml#/components/schemas/EvidenceManifest",
+    "docs/openapi/jarvis-openapi.yaml#/components/schemas/JarvisEvent"
+  ],
+  "host_shape_ref": "command_line_host_boundary",
+  "records": {
+    "workers": {
+      "human": {
+        "id": "worker-human-invalid",
+        "type": "human",
+        "role": "responsible reviewer",
+        "authority_scope": {
+          "grants": [
+            "policy:own",
+            "review:approve",
+            "takeover:start"
+          ]
+        },
+        "accountability_scope": {
+          "accountable_for": [
+            "objective",
+            "policy",
+            "final_review"
+          ]
+        }
+      },
+      "agent": {
+        "id": "worker-agent-invalid",
+        "type": "agent",
+        "role": "bounded executor",
+        "authority_scope": {
+          "grants": [
+            "action:propose",
+            "action:execute_after_policy",
+            "evidence:capture"
+          ]
+        },
+        "accountability_scope": {
+          "accountable_for": [
+            "policy_checked_execution",
+            "evidence_capture"
+          ]
+        }
+      }
+    },
+    "actors": {
+      "human": {
+        "id": "actor-human-invalid",
+        "worker_id": "worker-human-invalid",
+        "type": "human",
+        "event_authority": {
+          "can_append_events": true,
+          "allowed_event_types": [
+            "work_session.created",
+            "review.recorded",
+            "work_session.completed",
+            "learning.recorded"
+          ]
+        },
+        "contribution_scope": {
+          "contribution_roles": [
+            "human",
+            "shared"
+          ]
+        },
+        "created_at": "2026-06-16T10:00:00Z",
+        "valid_from": "2026-06-16T10:00:00Z"
+      },
+      "agent": {
+        "id": "actor-agent-invalid",
+        "worker_id": "worker-agent-invalid",
+        "type": "agent",
+        "event_authority": {
+          "can_append_events": true,
+          "allowed_event_types": [
+            "policy_decision.recorded",
+            "request.created",
+            "evidence.captured"
+          ]
+        },
+        "contribution_scope": {
+          "contribution_roles": [
+            "agent",
+            "shared"
+          ]
+        },
+        "created_at": "2026-06-16T10:00:00Z",
+        "valid_from": "2026-06-16T10:00:00Z"
+      }
+    },
+    "policies": {
+      "bounded": {
+        "id": "policy-invalid-bounded",
+        "owner_worker_id": "worker-human-invalid",
+        "created_by_actor_id": "actor-human-invalid",
+        "autonomy_level": "bounded",
+        "allowed_actions": [
+          {
+            "action": "read_local_context",
+            "scope_ref": "scope:local"
+          }
+        ],
+        "denied_actions": [
+          {
+            "action": "send_external",
+            "scope_ref": "scope:external"
+          }
+        ],
+        "review_required_actions": [
+          {
+            "action": "fetch_external_source",
+            "scope_ref": "scope:external"
+          }
+        ],
+        "risk_classes": [
+          "low",
+          "medium",
+          "high"
+        ],
+        "escalation_rules": [
+          {
+            "risk_class": "medium",
+            "action": "create_request"
+          }
+        ],
+        "created_at": "2026-06-16T10:00:00Z"
+      }
+    },
+    "work_sessions": {
+      "genesis_request": {
+        "id": "ws-invalid-001",
+        "protocol_version": "v0.1",
+        "created_by_actor_id": "actor-human-invalid",
+        "objective": "Complete governed human-agent work with protocol proof.",
+        "human_worker_id": "worker-human-invalid",
+        "agent_worker_id": "worker-agent-invalid",
+        "policy_id": "policy-invalid-bounded",
+        "status": "active",
+        "revision": 0,
+        "last_event_hash": "hash:protocol-genesis",
+        "event_log_ref": "event-log:ws-invalid-001",
+        "created_at": "2026-06-16T10:01:00Z",
+        "updated_at": "2026-06-16T10:01:00Z"
+      },
+      "active": {
+        "id": "ws-invalid-001",
+        "protocol_version": "v0.1",
+        "created_by_actor_id": "actor-human-invalid",
+        "objective": "Complete governed human-agent work with protocol proof.",
+        "human_worker_id": "worker-human-invalid",
+        "agent_worker_id": "worker-agent-invalid",
+        "policy_id": "policy-invalid-bounded",
+        "status": "active",
+        "revision": 1,
+        "last_event_hash": "hash:event-worksession-created",
+        "event_log_ref": "event-log:ws-invalid-001",
+        "created_at": "2026-06-16T10:01:00Z",
+        "updated_at": "2026-06-16T10:01:00Z"
+      },
+      "completed": {
+        "id": "ws-invalid-001",
+        "protocol_version": "v0.1",
+        "created_by_actor_id": "actor-human-invalid",
+        "objective": "Complete governed human-agent work with protocol proof.",
+        "human_worker_id": "worker-human-invalid",
+        "agent_worker_id": "worker-agent-invalid",
+        "policy_id": "policy-invalid-bounded",
+        "status": "completed",
+        "revision": 5,
+        "last_event_hash": "hash:event-worksession-completed",
+        "event_log_ref": "event-log:ws-invalid-001",
+        "created_at": "2026-06-16T10:01:00Z",
+        "updated_at": "2026-06-16T10:30:00Z"
+      }
+    },
+    "evidence_manifests": {
+      "sealed": {
+        "id": "evidence-manifest-invalid",
+        "work_session_id": "ws-invalid-001",
+        "generated_by_actor_id": "actor-human-invalid",
+        "objective": "Complete governed human-agent work with protocol proof.",
+        "event_chain_root": "hash:event-worksession-completed",
+        "evidence_item_refs": [
+          {
+            "id": "evidence-invalid-001",
+            "work_session_id": "ws-invalid-001",
+            "source_event_refs": [
+              "event-invalid-001"
+            ],
+            "captured_by_actor_id": "actor-agent-invalid",
+            "evidence_type": "source_summary",
+            "artifact_ref": "artifact:invalid",
+            "content_hash": "hash:evidence-invalid",
+            "trust_label": "unreviewed",
+            "redaction_state": "redacted",
+            "captured_at": "2026-06-16T10:10:00Z"
+          }
+        ],
+        "policy_decision_refs": [
+          "pd-invalid-001"
+        ],
+        "request_refs": [
+          "req-invalid-001"
+        ],
+        "review_refs": [
+          "review-invalid-001"
+        ],
+        "takeover_refs": [],
+        "contribution_refs": [],
+        "export_profile": {
+          "profile": "portable_evidence_manifest",
+          "version": "v0.1"
+        },
+        "generated_at": "2026-06-16T10:25:00Z"
+      }
+    },
+    "jarvis_events": {
+      "sealed_evidence_mutation": {
+        "id": "event-sealed-evidence-mutation",
+        "sequence": 7,
+        "type": "evidence_manifest.mutated",
+        "work_session_id": "ws-invalid-001",
+        "actor_id": "actor-human-invalid",
+        "timestamp": "2026-06-16T10:06:00Z",
+        "payload": {
+          "object_type": "fixture",
+          "object_id": "event-sealed-evidence-mutation",
+          "action": "evidence_manifest.mutated"
+        },
+        "previous_hash": "hash:event-worksession-completed",
+        "event_hash": "hash:event-sealed-evidence-mutation",
+        "canonicalization": {
+          "serialization": "json-c14n",
+          "hash_method": "sha256",
+          "profile_ref": "canonicalization:v0.1"
+        }
+      }
+    }
+  },
+  "operations": [
+    {
+      "operation_id": "appendJarvisEvent",
+      "method": "POST",
+      "path": "/work-sessions/ws-invalid-001/events",
+      "headers": {
+        "Authorization": "HostAuth fixture",
+        "Jarvis-Protocol-Version": "v0.1",
+        "Jarvis-Actor-Id": "actor-human-invalid",
+        "Jarvis-Idempotency-Key": "idem-sealed-evidence",
+        "Jarvis-Request-Timestamp": "2026-06-16T10:05:00Z",
+        "Jarvis-Expected-WorkSession-Revision": 6,
+        "Jarvis-Previous-Event-Hash": "hash:event-worksession-completed"
+      },
+      "actor_id": "actor-human-invalid",
+      "expected_status": 400,
+      "expected_error_id": "sealed_evidence_mutation",
+      "expected_error_field": "records.evidence_manifests.sealed",
+      "work_session_id": "ws-invalid-001",
+      "body_ref": "records.jarvis_events.sealed_evidence_mutation"
+    }
+  ],
+  "assertions": [
+    {
+      "assertion_id": "assert-sealed-evidence-mutation",
+      "class": "evidence_export_gate",
+      "target_ref": "records.evidence_manifests.sealed",
+      "required_state": "The protocol rejects mutation of sealed EvidenceManifest records.",
+      "expected_result": "reject",
+      "expected_error_id": "sealed_evidence_mutation"
+    }
+  ],
+  "expected_result": "reject",
+  "expected_error_id": "sealed_evidence_mutation",
+  "expected_error_field": "records.evidence_manifests.sealed"
+}
