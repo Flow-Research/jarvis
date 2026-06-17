@@ -1,0 +1,1373 @@
+{
+  "fixture_id": "valid-golden-path-v01",
+  "protocol_version": "v0.1",
+  "kind": "valid",
+  "title": "Golden-path governed human-agent collaboration",
+  "description": "A HumanWorker and AgentWorker complete one WorkSession under Policy, create a scoped Request, resolve it through Review approval, record shared Contribution, export EvidenceManifest, and carry governed Learning into future work.",
+  "source_contract_refs": [
+    "docs/conformance/golden-path.md",
+    "docs/conformance/compatibility-mapping.md",
+    "docs/planning/week-3/chunk-1-fixture-architecture.md",
+    "docs/openapi/jarvis-openapi.yaml#/components/schemas/Worker",
+    "docs/openapi/jarvis-openapi.yaml#/components/schemas/Actor",
+    "docs/openapi/jarvis-openapi.yaml#/components/schemas/HumanWorker",
+    "docs/openapi/jarvis-openapi.yaml#/components/schemas/AgentWorker",
+    "docs/openapi/jarvis-openapi.yaml#/components/schemas/Policy",
+    "docs/openapi/jarvis-openapi.yaml#/components/schemas/WorkSession",
+    "docs/openapi/jarvis-openapi.yaml#/components/schemas/JarvisEvent",
+    "docs/openapi/jarvis-openapi.yaml#/components/schemas/PolicyDecision",
+    "docs/openapi/jarvis-openapi.yaml#/components/schemas/Request",
+    "docs/openapi/jarvis-openapi.yaml#/components/schemas/Review",
+    "docs/openapi/jarvis-openapi.yaml#/components/schemas/ApprovalScope",
+    "docs/openapi/jarvis-openapi.yaml#/components/schemas/Contribution",
+    "docs/openapi/jarvis-openapi.yaml#/components/schemas/EvidenceManifest",
+    "docs/openapi/jarvis-openapi.yaml#/components/schemas/LearningRecord",
+    "docs/openapi/jarvis-openapi.yaml#/components/schemas/MemoryProposal",
+    "docs/openapi/jarvis-openapi.yaml#/components/schemas/SkillProposal",
+    "docs/openapi/jarvis-openapi.yaml#/components/schemas/OutcomeReport"
+  ],
+  "host_shape_ref": "command_line_host_boundary",
+  "records": {
+    "workers": {
+      "fixture_registrar": {
+        "id": "worker-fixture-registrar",
+        "type": "service",
+        "role": "protocol registration authority",
+        "authority_scope": {
+          "grants": [
+            "worker:register",
+            "actor:register"
+          ]
+        },
+        "accountability_scope": {
+          "accountable_for": [
+            "worker_registration",
+            "actor_registration"
+          ]
+        },
+        "display_name": "Fixture Registrar"
+      },
+      "human": {
+        "id": "worker-human-golden",
+        "type": "human",
+        "role": "responsible reviewer",
+        "authority_scope": {
+          "grants": [
+            "policy:own",
+            "review:approve",
+            "takeover:start"
+          ]
+        },
+        "accountability_scope": {
+          "accountable_for": [
+            "objective",
+            "policy",
+            "final_review"
+          ]
+        },
+        "display_name": "HumanWorker Golden",
+        "capabilities": [
+          {
+            "ref": "capability:review",
+            "capability_type": "human_judgment",
+            "required": true
+          }
+        ]
+      },
+      "agent": {
+        "id": "worker-agent-golden",
+        "type": "agent",
+        "role": "bounded executor",
+        "authority_scope": {
+          "grants": [
+            "action:propose",
+            "action:execute_after_policy",
+            "evidence:capture"
+          ]
+        },
+        "accountability_scope": {
+          "accountable_for": [
+            "policy_checked_execution",
+            "evidence_capture"
+          ]
+        },
+        "display_name": "AgentWorker Golden",
+        "capabilities": [
+          {
+            "ref": "capability:source_summary",
+            "capability_type": "research",
+            "required": true
+          }
+        ]
+      }
+    },
+    "actors": {
+      "fixture_registrar": {
+        "id": "actor-fixture-registrar",
+        "worker_id": "worker-fixture-registrar",
+        "type": "service",
+        "event_authority": {
+          "can_append_events": false,
+          "allowed_event_types": []
+        },
+        "contribution_scope": {
+          "contribution_roles": [
+            "service"
+          ]
+        },
+        "created_at": "2026-06-16T09:59:00Z",
+        "valid_from": "2026-06-16T09:59:00Z"
+      },
+      "human": {
+        "id": "actor-human-golden",
+        "worker_id": "worker-human-golden",
+        "type": "human",
+        "event_authority": {
+          "can_append_events": true,
+          "allowed_event_types": [
+            "work_session.created",
+            "review.recorded",
+            "contribution.recorded",
+            "learning.recorded",
+            "memory_proposal.created",
+            "skill_proposal.created",
+            "work_session.completed"
+          ]
+        },
+        "contribution_scope": {
+          "contribution_roles": [
+            "human",
+            "shared"
+          ]
+        },
+        "created_at": "2026-06-16T10:00:00Z",
+        "valid_from": "2026-06-16T10:00:00Z"
+      },
+      "agent": {
+        "id": "actor-agent-golden",
+        "worker_id": "worker-agent-golden",
+        "type": "agent",
+        "event_authority": {
+          "can_append_events": true,
+          "allowed_event_types": [
+            "policy_decision.recorded",
+            "request.created",
+            "evidence.captured",
+            "contribution.recorded"
+          ]
+        },
+        "contribution_scope": {
+          "contribution_roles": [
+            "agent",
+            "shared"
+          ]
+        },
+        "created_at": "2026-06-16T10:00:00Z",
+        "valid_from": "2026-06-16T10:00:00Z"
+      }
+    },
+    "human_workers": {
+      "primary": {
+        "worker_id": "worker-human-golden",
+        "actor_id": "actor-human-golden",
+        "role": "policy owner and reviewer",
+        "policy_authority": {
+          "grants": [
+            "policy:own",
+            "policy:narrow"
+          ]
+        },
+        "review_authority": {
+          "grants": [
+            "review:approve",
+            "review:narrow",
+            "review:deny",
+            "takeover:start"
+          ]
+        },
+        "profile_ref": "profile:human-golden",
+        "domain_context_refs": [
+          "context:task-brief"
+        ],
+        "preferences": {
+          "review.default_detail": "evidence_first"
+        },
+        "boundaries": [
+          "external source access requires review"
+        ],
+        "known_patterns": [
+          "ask for bounded approval before external source collection"
+        ]
+      }
+    },
+    "agent_workers": {
+      "primary": {
+        "worker_id": "worker-agent-golden",
+        "actor_id": "actor-agent-golden",
+        "agent_ref": "agent:golden-agent",
+        "role": "bounded research and drafting agent",
+        "capability_refs": [
+          {
+            "ref": "capability:source_summary",
+            "capability_type": "research",
+            "required": true
+          }
+        ],
+        "autonomy_level": "bounded_execute",
+        "operating_constraints": [
+          "record PolicyDecision before action affects WorkSession state",
+          "create Request when Policy denies action",
+          "capture evidence during work"
+        ],
+        "tool_access_profile": "tool-profile:policy-bounded",
+        "memory_access_profile": "memory-profile:read-only"
+      }
+    },
+    "policies": {
+      "bounded": {
+        "id": "policy-golden-bounded",
+        "owner_worker_id": "worker-human-golden",
+        "created_by_actor_id": "actor-human-golden",
+        "autonomy_level": "bounded_execute",
+        "allowed_actions": [
+          {
+            "action": "draft_answer",
+            "scope_ref": "scope:local-worksession",
+            "grant_refs": [
+              "grant:local-context-read"
+            ]
+          }
+        ],
+        "denied_actions": [
+          {
+            "action": "fetch_external_source",
+            "scope_ref": "scope:external-source"
+          }
+        ],
+        "review_required_actions": [
+          {
+            "action": "submit_final_artifact",
+            "scope_ref": "scope:final-submission"
+          }
+        ],
+        "risk_classes": [
+          "low",
+          "medium",
+          "high"
+        ],
+        "escalation_rules": [
+          {
+            "trigger": "external_source_access",
+            "risk_class": "medium",
+            "required_action": "create_request",
+            "reviewer_ref": "worker-human-golden",
+            "reason": "HumanWorker review gates external source collection."
+          }
+        ],
+        "created_at": "2026-06-16T10:00:00Z",
+        "tool_grants": [
+          "grant:local-context-read"
+        ],
+        "memory_grants": [
+          "grant:read-confirmed-memory"
+        ],
+        "request_limits": {
+          "max_pending_requests": 3,
+          "max_repeated_denials": 1,
+          "default_expiry_seconds": 1800
+        }
+      }
+    },
+    "work_sessions": {
+      "genesis_request": {
+        "id": "ws-golden-001",
+        "protocol_version": "v0.1",
+        "created_by_actor_id": "actor-human-golden",
+        "objective": "Produce an evidence-backed answer with human review and governed learning.",
+        "human_worker_id": "worker-human-golden",
+        "agent_worker_id": "worker-agent-golden",
+        "policy_id": "policy-golden-bounded",
+        "status": "active",
+        "revision": 0,
+        "last_event_hash": "hash:protocol-genesis",
+        "event_log_ref": "event-log:ws-golden-001",
+        "created_at": "2026-06-16T10:01:00Z",
+        "updated_at": "2026-06-16T10:01:00Z",
+        "source_ref": "source:golden-path-fixture",
+        "context_manifest_ref": "context:task-brief",
+        "contribution_ledger_ref": "ledger:ws-golden-001"
+      },
+      "created": {
+        "id": "ws-golden-001",
+        "protocol_version": "v0.1",
+        "created_by_actor_id": "actor-human-golden",
+        "objective": "Produce an evidence-backed answer with human review and governed learning.",
+        "human_worker_id": "worker-human-golden",
+        "agent_worker_id": "worker-agent-golden",
+        "policy_id": "policy-golden-bounded",
+        "status": "active",
+        "revision": 1,
+        "last_event_hash": "hash:event-worksession-created",
+        "event_log_ref": "event-log:ws-golden-001",
+        "created_at": "2026-06-16T10:01:00Z",
+        "updated_at": "2026-06-16T10:01:00Z",
+        "source_ref": "source:golden-path-fixture",
+        "context_manifest_ref": "context:task-brief",
+        "contribution_ledger_ref": "ledger:ws-golden-001"
+      },
+      "completed": {
+        "id": "ws-golden-001",
+        "protocol_version": "v0.1",
+        "created_by_actor_id": "actor-human-golden",
+        "objective": "Produce an evidence-backed answer with human review and governed learning.",
+        "human_worker_id": "worker-human-golden",
+        "agent_worker_id": "worker-agent-golden",
+        "policy_id": "policy-golden-bounded",
+        "status": "completed",
+        "revision": 11,
+        "last_event_hash": "hash:event-worksession-completed",
+        "event_log_ref": "event-log:ws-golden-001",
+        "created_at": "2026-06-16T10:01:00Z",
+        "updated_at": "2026-06-16T10:25:00Z",
+        "source_ref": "source:golden-path-fixture",
+        "context_manifest_ref": "context:task-brief",
+        "contribution_ledger_ref": "ledger:ws-golden-001",
+        "evidence_manifest_ref": "evidence-manifest-golden",
+        "learning_record_refs": [
+          "learning-golden-pair"
+        ]
+      }
+    },
+    "policy_decisions": {
+      "external_source_denied": {
+        "id": "pd-golden-source-denied",
+        "work_session_id": "ws-golden-001",
+        "actor_id": "actor-agent-golden",
+        "policy_id": "policy-golden-bounded",
+        "requested_action": {
+          "action": "fetch_external_source",
+          "target_ref": "source:external-reference",
+          "scope_ref": "scope:external-source"
+        },
+        "normalized_action_hash": "hash:action-fetch-external-source",
+        "risk_class": "medium",
+        "result": "deny",
+        "reason": "Policy requires HumanWorker review before external source collection.",
+        "created_at": "2026-06-16T10:04:00Z",
+        "data_sensitivity": "public",
+        "denied_grant_refs": [
+          "grant:external-source-read"
+        ],
+        "request_id": "req-golden-source"
+      },
+      "external_source_allowed": {
+        "id": "pd-golden-source-approved",
+        "work_session_id": "ws-golden-001",
+        "actor_id": "actor-agent-golden",
+        "policy_id": "policy-golden-bounded",
+        "requested_action": {
+          "action": "fetch_external_source",
+          "target_ref": "source:external-reference",
+          "scope_ref": "scope:external-source"
+        },
+        "normalized_action_hash": "hash:action-fetch-external-source",
+        "risk_class": "medium",
+        "result": "allow",
+        "reason": "HumanWorker Review created bounded ApprovalScope for this action.",
+        "created_at": "2026-06-16T10:08:30Z",
+        "data_sensitivity": "public",
+        "selected_grant_refs": [
+          "grant:review-approved-external-source"
+        ]
+      }
+    },
+    "requests": {
+      "pending": {
+        "id": "req-golden-source",
+        "protocol_version": "v0.1",
+        "work_session_id": "ws-golden-001",
+        "requester_actor_id": "actor-agent-golden",
+        "requester_worker_id": "worker-agent-golden",
+        "target_human_worker_id": "worker-human-golden",
+        "policy_decision_id": "pd-golden-source-denied",
+        "type": "permission",
+        "blocking_scope": "action",
+        "reason_code": "policy_denied",
+        "reason_summary": "External source access is outside current Policy until HumanWorker review.",
+        "requested_action": {
+          "action": "fetch_external_source",
+          "target_ref": "source:external-reference",
+          "scope_ref": "scope:external-source"
+        },
+        "requested_outcome": "Approve external source collection for this WorkSession only.",
+        "risk_class": "medium",
+        "human_decision_needed": "Approve, narrow, deny, correct, or take over the blocked action.",
+        "options": [
+          {
+            "id": "option-approve-current-session",
+            "label": "Approve current WorkSession scope",
+            "effect": "AgentWorker collects the referenced source for this WorkSession only.",
+            "risk_class": "medium",
+            "scope_ref": "scope:external-source"
+          },
+          {
+            "id": "option-deny",
+            "label": "Deny external collection",
+            "effect": "AgentWorker continues with existing evidence and records the limitation.",
+            "risk_class": "low",
+            "scope_ref": "scope:local-worksession"
+          }
+        ],
+        "default_if_no_response": {
+          "action": "continue_with_limited_evidence",
+          "reason": "The blocked action remains stopped and the WorkSession records an evidence limitation.",
+          "limitation_ref": "limitation:external-source-not-reviewed"
+        },
+        "status": "pending",
+        "created_at": "2026-06-16T10:05:00Z",
+        "expires_at": "2026-06-16T10:35:00Z",
+        "missing_permission_or_context": "Policy grant for external source collection",
+        "policy_refs": [
+          "policy-golden-bounded"
+        ],
+        "data_sensitivity": "public",
+        "recommended_option": "option-approve-current-session"
+      },
+      "approved": {
+        "id": "req-golden-source",
+        "protocol_version": "v0.1",
+        "work_session_id": "ws-golden-001",
+        "requester_actor_id": "actor-agent-golden",
+        "requester_worker_id": "worker-agent-golden",
+        "target_human_worker_id": "worker-human-golden",
+        "policy_decision_id": "pd-golden-source-denied",
+        "type": "permission",
+        "blocking_scope": "action",
+        "reason_code": "policy_denied",
+        "reason_summary": "External source access is outside current Policy until HumanWorker review.",
+        "requested_action": {
+          "action": "fetch_external_source",
+          "target_ref": "source:external-reference",
+          "scope_ref": "scope:external-source"
+        },
+        "requested_outcome": "Approve external source collection for this WorkSession only.",
+        "risk_class": "medium",
+        "human_decision_needed": "Approve, narrow, deny, correct, or take over the blocked action.",
+        "options": [
+          {
+            "id": "option-approve-current-session",
+            "label": "Approve current WorkSession scope",
+            "effect": "AgentWorker collects the referenced source for this WorkSession only.",
+            "risk_class": "medium",
+            "scope_ref": "scope:external-source"
+          },
+          {
+            "id": "option-deny",
+            "label": "Deny external collection",
+            "effect": "AgentWorker continues with existing evidence and records the limitation.",
+            "risk_class": "low",
+            "scope_ref": "scope:local-worksession"
+          }
+        ],
+        "default_if_no_response": {
+          "action": "continue_with_limited_evidence",
+          "reason": "The blocked action remains stopped and the WorkSession records an evidence limitation.",
+          "limitation_ref": "limitation:external-source-not-reviewed"
+        },
+        "status": "approved",
+        "created_at": "2026-06-16T10:05:00Z",
+        "expires_at": "2026-06-16T10:35:00Z",
+        "missing_permission_or_context": "Policy grant for external source collection",
+        "policy_refs": [
+          "policy-golden-bounded"
+        ],
+        "data_sensitivity": "public",
+        "recommended_option": "option-approve-current-session",
+        "resolved_at": "2026-06-16T10:08:00Z",
+        "resolved_by_review_id": "review-golden-source-approval"
+      }
+    },
+    "reviews": {
+      "approve_source": {
+        "id": "review-golden-source-approval",
+        "work_session_id": "ws-golden-001",
+        "reviewer_actor_id": "actor-human-golden",
+        "reviewer_worker_id": "worker-human-golden",
+        "target_ref": "request:req-golden-source",
+        "decision": "approve",
+        "created_at": "2026-06-16T10:08:00Z",
+        "comments": "Approved for the referenced source and current WorkSession only.",
+        "approval_scope": {
+          "request_id": "req-golden-source",
+          "review_id": "review-golden-source-approval",
+          "policy_decision_id": "pd-golden-source-denied",
+          "request_revision": 3,
+          "request_event_hash": "hash:event-request-created",
+          "normalized_action_hash": "hash:action-fetch-external-source",
+          "approved_action": {
+            "action": "fetch_external_source",
+            "target_ref": "source:external-reference",
+            "scope_ref": "scope:external-source"
+          },
+          "allowed_scope": {
+            "scope_ref": "scope:external-source",
+            "grant_refs": [
+              "grant:review-approved-external-source"
+            ]
+          },
+          "denied_scope": {
+            "scope_ref": "scope:all-other-external-sources"
+          },
+          "expires_at": "2026-06-16T10:35:00Z",
+          "max_uses": 1,
+          "applies_to_work_session_id": "ws-golden-001",
+          "applies_to_actor_id": "actor-agent-golden"
+        }
+      }
+    },
+    "contributions": {
+      "shared_answer": {
+        "id": "contribution-golden-shared-answer",
+        "work_session_id": "ws-golden-001",
+        "contributor_refs": [
+          {
+            "worker_id": "worker-human-golden",
+            "actor_id": "actor-human-golden",
+            "contribution_role": "human"
+          },
+          {
+            "worker_id": "worker-agent-golden",
+            "actor_id": "actor-agent-golden",
+            "contribution_role": "agent"
+          }
+        ],
+        "contributor_type": "shared",
+        "contribution_type": "artifact",
+        "event_refs": [
+          "event-evidence-captured",
+          "event-contribution-recorded"
+        ],
+        "created_at": "2026-06-16T10:16:00Z",
+        "artifact_refs": [
+          "artifact:reviewed-answer"
+        ],
+        "review_refs": [
+          "review-golden-source-approval"
+        ],
+        "evidence_refs": [
+          "evidence-source-summary"
+        ],
+        "confidence": 0.92,
+        "limitations": [
+          "limitation:none-recorded"
+        ]
+      }
+    },
+    "evidence_manifests": {
+      "portable_export": {
+        "id": "evidence-manifest-golden",
+        "work_session_id": "ws-golden-001",
+        "generated_by_actor_id": "actor-human-golden",
+        "objective": "Produce an evidence-backed answer with human review and governed learning.",
+        "event_chain_root": "hash:event-worksession-completed",
+        "evidence_item_refs": [
+          {
+            "id": "evidence-source-summary",
+            "work_session_id": "ws-golden-001",
+            "source_event_refs": [
+              "event-evidence-captured"
+            ],
+            "captured_by_actor_id": "actor-agent-golden",
+            "evidence_type": "source_summary",
+            "artifact_ref": "artifact:source-summary",
+            "content_hash": "hash:source-summary",
+            "trust_label": "reviewed",
+            "redaction_state": "redacted",
+            "captured_at": "2026-06-16T10:12:00Z",
+            "limitation_refs": [
+              "limitation:none-recorded"
+            ]
+          }
+        ],
+        "policy_decision_refs": [
+          "pd-golden-source-denied",
+          "pd-golden-source-approved"
+        ],
+        "request_refs": [
+          "req-golden-source"
+        ],
+        "review_refs": [
+          "review-golden-source-approval"
+        ],
+        "takeover_refs": [],
+        "contribution_refs": [
+          "contribution-golden-shared-answer"
+        ],
+        "export_profile": {
+          "profile": "portable_evidence_manifest",
+          "version": "v0.1",
+          "redaction_profile_ref": "redaction:portable-safe"
+        },
+        "generated_at": "2026-06-16T10:26:00Z",
+        "artifact_refs": [
+          "artifact:reviewed-answer",
+          "artifact:source-summary"
+        ],
+        "limitation_refs": [
+          "limitation:none-recorded"
+        ],
+        "redaction_refs": [
+          "redaction:portable-safe"
+        ]
+      }
+    },
+    "learning_records": {
+      "pair": {
+        "id": "learning-golden-pair",
+        "work_session_id": "ws-golden-001",
+        "created_by_actor_id": "actor-human-golden",
+        "subject_type": "pair",
+        "subject_ref": "pair:worker-human-golden+worker-agent-golden",
+        "lesson_type": "bounded_external_source_approval",
+        "source_event_refs": [
+          "event-request-created",
+          "event-review-approved",
+          "event-evidence-captured"
+        ],
+        "review_state": "accepted",
+        "scope": "scope:future-source-collection",
+        "created_at": "2026-06-16T10:18:00Z",
+        "proposed_change": {
+          "pattern": "Ask for bounded external source approval before collecting evidence outside local context."
+        },
+        "memory_proposal_refs": [
+          "memory-proposal-golden"
+        ],
+        "skill_proposal_refs": [
+          "skill-proposal-golden"
+        ]
+      }
+    },
+    "memory_proposals": {
+      "source_policy_pattern": {
+        "id": "memory-proposal-golden",
+        "work_session_id": "ws-golden-001",
+        "proposed_by_actor_id": "actor-human-golden",
+        "proposed_for": "pair",
+        "memory_scope": "scope:future-source-collection",
+        "memory_type": "collaboration_pattern",
+        "content": {
+          "pattern": "External source collection requires bounded approval tied to WorkSession, Actor, action hash, expiry, and max uses."
+        },
+        "provenance": [
+          "event-request-created",
+          "event-review-approved",
+          "learning-golden-pair"
+        ],
+        "confidence": 0.9,
+        "review_required": true,
+        "status": "pending_review",
+        "created_at": "2026-06-16T10:19:00Z",
+        "source_event_refs": [
+          "event-review-approved",
+          "event-learning-recorded"
+        ],
+        "learning_record_refs": [
+          "learning-golden-pair"
+        ]
+      }
+    },
+    "skill_proposals": {
+      "bounded_source_collection": {
+        "id": "skill-proposal-golden",
+        "work_session_id": "ws-golden-001",
+        "proposed_by_actor_id": "actor-human-golden",
+        "proposed_for": "pair",
+        "skill_scope": "scope:future-source-collection",
+        "skill_name": "bounded_external_source_collection",
+        "trigger_conditions": [
+          "AgentWorker needs evidence outside local context",
+          "Policy denies or requires review for the action"
+        ],
+        "procedure": [
+          "Record PolicyDecision before action acceptance",
+          "Create scoped Request with risk, options, and fallback",
+          "Wait for Review approval or narrowing",
+          "Execute only inside ApprovalScope",
+          "Capture evidence refs during work"
+        ],
+        "review_checks": [
+          "Request references blocking PolicyDecision",
+          "ApprovalScope binds action hash, WorkSession, Actor, expiry, and max uses",
+          "EvidenceManifest excludes host-private fields"
+        ],
+        "failure_cases": [
+          "Request resolves without Review",
+          "Evidence appears after the fact",
+          "Skill activates without review"
+        ],
+        "provenance": [
+          "event-request-created",
+          "event-review-approved",
+          "event-evidence-captured",
+          "learning-golden-pair"
+        ],
+        "status": "pending_review",
+        "created_at": "2026-06-16T10:20:00Z",
+        "required_tools": [
+          "tool:source-reader"
+        ],
+        "source_event_refs": [
+          "event-request-created",
+          "event-review-approved",
+          "event-evidence-captured"
+        ],
+        "learning_record_refs": [
+          "learning-golden-pair"
+        ]
+      }
+    },
+    "outcome_reports": {
+      "post_session": {
+        "id": "outcome-report-golden",
+        "work_session_id": "ws-golden-001",
+        "source_ref": "source:completed-worksession:ws-golden-001",
+        "reporter_ref": "reporter:fixture-evaluator",
+        "accepted_by_actor_id": "actor-human-golden",
+        "outcome": "accepted",
+        "learning_record_refs": [
+          "learning-golden-pair"
+        ],
+        "received_at": "2026-06-16T10:30:00Z",
+        "external_system_ref": "external:evaluation-system",
+        "reporter_actor_id": "actor-human-golden",
+        "reason": "Post-session feedback confirms the bounded Request and Review loop improved future source collection.",
+        "reviewer_feedback_refs": [
+          "feedback:bounded-source-loop-accepted"
+        ]
+      }
+    },
+    "jarvis_events": {
+      "worksession_created": {
+        "id": "event-worksession-created",
+        "sequence": 1,
+        "type": "work_session.created",
+        "work_session_id": "ws-golden-001",
+        "actor_id": "actor-human-golden",
+        "timestamp": "2026-06-16T10:01:00Z",
+        "payload": {
+          "object_type": "work_session",
+          "object_id": "ws-golden-001",
+          "action": "created",
+          "summary": "WorkSession created with HumanWorker, AgentWorker, objective, and Policy."
+        },
+        "previous_hash": "hash:protocol-genesis",
+        "event_hash": "hash:event-worksession-created",
+        "canonicalization": {
+          "serialization": "json-c14n",
+          "hash_method": "sha256",
+          "profile_ref": "canonicalization:v0.1"
+        }
+      },
+      "policy_denied": {
+        "id": "event-policy-denied",
+        "sequence": 2,
+        "type": "policy_decision.recorded",
+        "work_session_id": "ws-golden-001",
+        "actor_id": "actor-agent-golden",
+        "timestamp": "2026-06-16T10:04:00Z",
+        "payload": {
+          "object_type": "policy_decision",
+          "object_id": "pd-golden-source-denied",
+          "action": "deny",
+          "summary": "Policy denied external source collection and required Request."
+        },
+        "previous_hash": "hash:event-worksession-created",
+        "event_hash": "hash:event-policy-denied",
+        "canonicalization": {
+          "serialization": "json-c14n",
+          "hash_method": "sha256",
+          "profile_ref": "canonicalization:v0.1"
+        }
+      },
+      "request_created": {
+        "id": "event-request-created",
+        "sequence": 3,
+        "type": "request.created",
+        "work_session_id": "ws-golden-001",
+        "actor_id": "actor-agent-golden",
+        "timestamp": "2026-06-16T10:05:00Z",
+        "payload": {
+          "object_type": "request",
+          "object_id": "req-golden-source",
+          "action": "created",
+          "summary": "AgentWorker created scoped Request for HumanWorker approval."
+        },
+        "previous_hash": "hash:event-policy-denied",
+        "event_hash": "hash:event-request-created",
+        "canonicalization": {
+          "serialization": "json-c14n",
+          "hash_method": "sha256",
+          "profile_ref": "canonicalization:v0.1"
+        }
+      },
+      "review_approved": {
+        "id": "event-review-approved",
+        "sequence": 4,
+        "type": "review.recorded",
+        "work_session_id": "ws-golden-001",
+        "actor_id": "actor-human-golden",
+        "timestamp": "2026-06-16T10:08:00Z",
+        "payload": {
+          "object_type": "review",
+          "object_id": "review-golden-source-approval",
+          "action": "approve",
+          "summary": "HumanWorker approved Request with bounded ApprovalScope."
+        },
+        "previous_hash": "hash:event-request-created",
+        "event_hash": "hash:event-review-approved",
+        "canonicalization": {
+          "serialization": "json-c14n",
+          "hash_method": "sha256",
+          "profile_ref": "canonicalization:v0.1"
+        }
+      },
+      "policy_allowed": {
+        "id": "event-policy-allowed",
+        "sequence": 5,
+        "type": "policy_decision.recorded",
+        "work_session_id": "ws-golden-001",
+        "actor_id": "actor-agent-golden",
+        "timestamp": "2026-06-16T10:08:30Z",
+        "payload": {
+          "object_type": "policy_decision",
+          "object_id": "pd-golden-source-approved",
+          "action": "allow",
+          "summary": "AgentWorker resumed inside bounded ApprovalScope."
+        },
+        "previous_hash": "hash:event-review-approved",
+        "event_hash": "hash:event-policy-allowed",
+        "canonicalization": {
+          "serialization": "json-c14n",
+          "hash_method": "sha256",
+          "profile_ref": "canonicalization:v0.1"
+        }
+      },
+      "evidence_captured": {
+        "id": "event-evidence-captured",
+        "sequence": 6,
+        "type": "evidence.captured",
+        "work_session_id": "ws-golden-001",
+        "actor_id": "actor-agent-golden",
+        "timestamp": "2026-06-16T10:12:00Z",
+        "payload": {
+          "object_type": "evidence_manifest",
+          "object_id": "evidence-source-summary",
+          "action": "evidence_item_captured",
+          "evidence_refs": [
+            "evidence-source-summary"
+          ],
+          "summary": "AgentWorker captured source summary evidence during work."
+        },
+        "previous_hash": "hash:event-policy-allowed",
+        "event_hash": "hash:event-evidence-captured",
+        "canonicalization": {
+          "serialization": "json-c14n",
+          "hash_method": "sha256",
+          "profile_ref": "canonicalization:v0.1"
+        }
+      },
+      "contribution_recorded": {
+        "id": "event-contribution-recorded",
+        "sequence": 7,
+        "type": "contribution.recorded",
+        "work_session_id": "ws-golden-001",
+        "actor_id": "actor-human-golden",
+        "timestamp": "2026-06-16T10:16:00Z",
+        "payload": {
+          "object_type": "contribution",
+          "object_id": "contribution-golden-shared-answer",
+          "action": "recorded",
+          "summary": "Shared Contribution recorded with human and agent contributor refs."
+        },
+        "previous_hash": "hash:event-evidence-captured",
+        "event_hash": "hash:event-contribution-recorded",
+        "canonicalization": {
+          "serialization": "json-c14n",
+          "hash_method": "sha256",
+          "profile_ref": "canonicalization:v0.1"
+        }
+      },
+      "learning_recorded": {
+        "id": "event-learning-recorded",
+        "sequence": 8,
+        "type": "learning.recorded",
+        "work_session_id": "ws-golden-001",
+        "actor_id": "actor-human-golden",
+        "timestamp": "2026-06-16T10:18:00Z",
+        "payload": {
+          "object_type": "learning_record",
+          "object_id": "learning-golden-pair",
+          "action": "accepted",
+          "summary": "Pair learning recorded from Request, Review, and evidence capture."
+        },
+        "previous_hash": "hash:event-contribution-recorded",
+        "event_hash": "hash:event-learning-recorded",
+        "canonicalization": {
+          "serialization": "json-c14n",
+          "hash_method": "sha256",
+          "profile_ref": "canonicalization:v0.1"
+        }
+      },
+      "memory_proposal_created": {
+        "id": "event-memory-proposal-created",
+        "sequence": 9,
+        "type": "memory_proposal.created",
+        "work_session_id": "ws-golden-001",
+        "actor_id": "actor-human-golden",
+        "timestamp": "2026-06-16T10:19:00Z",
+        "payload": {
+          "object_type": "memory_proposal",
+          "object_id": "memory-proposal-golden",
+          "action": "proposed",
+          "summary": "MemoryProposal keeps durable memory change governed."
+        },
+        "previous_hash": "hash:event-learning-recorded",
+        "event_hash": "hash:event-memory-proposal-created",
+        "canonicalization": {
+          "serialization": "json-c14n",
+          "hash_method": "sha256",
+          "profile_ref": "canonicalization:v0.1"
+        }
+      },
+      "skill_proposal_created": {
+        "id": "event-skill-proposal-created",
+        "sequence": 10,
+        "type": "skill_proposal.created",
+        "work_session_id": "ws-golden-001",
+        "actor_id": "actor-human-golden",
+        "timestamp": "2026-06-16T10:20:00Z",
+        "payload": {
+          "object_type": "skill_proposal",
+          "object_id": "skill-proposal-golden",
+          "action": "proposed",
+          "summary": "SkillProposal keeps reusable process change governed."
+        },
+        "previous_hash": "hash:event-memory-proposal-created",
+        "event_hash": "hash:event-skill-proposal-created",
+        "canonicalization": {
+          "serialization": "json-c14n",
+          "hash_method": "sha256",
+          "profile_ref": "canonicalization:v0.1"
+        }
+      },
+      "worksession_completed": {
+        "id": "event-worksession-completed",
+        "sequence": 11,
+        "type": "work_session.completed",
+        "work_session_id": "ws-golden-001",
+        "actor_id": "actor-human-golden",
+        "timestamp": "2026-06-16T10:25:00Z",
+        "payload": {
+          "object_type": "work_session",
+          "object_id": "ws-golden-001",
+          "action": "completed",
+          "summary": "WorkSession completed before EvidenceManifest export."
+        },
+        "previous_hash": "hash:event-skill-proposal-created",
+        "event_hash": "hash:event-worksession-completed",
+        "canonicalization": {
+          "serialization": "json-c14n",
+          "hash_method": "sha256",
+          "profile_ref": "canonicalization:v0.1"
+        }
+      }
+    }
+  },
+  "operations": [
+    {
+      "operation_id": "registerWorker",
+      "method": "PUT",
+      "path": "/workers/worker-human-golden",
+      "headers": {
+        "Authorization": "HostAuth fixture",
+        "Jarvis-Protocol-Version": "v0.1",
+        "Jarvis-Actor-Id": "actor-fixture-registrar",
+        "Jarvis-Idempotency-Key": "idem-register-worker-human-golden",
+        "Jarvis-Request-Timestamp": "2026-06-16T10:00:00Z"
+      },
+      "body_ref": "records.workers.human",
+      "actor_id": "actor-fixture-registrar",
+      "expected_status": 200
+    },
+    {
+      "operation_id": "registerWorker",
+      "method": "PUT",
+      "path": "/workers/worker-agent-golden",
+      "headers": {
+        "Authorization": "HostAuth fixture",
+        "Jarvis-Protocol-Version": "v0.1",
+        "Jarvis-Actor-Id": "actor-fixture-registrar",
+        "Jarvis-Idempotency-Key": "idem-register-worker-agent-golden",
+        "Jarvis-Request-Timestamp": "2026-06-16T10:00:01Z"
+      },
+      "body_ref": "records.workers.agent",
+      "actor_id": "actor-fixture-registrar",
+      "expected_status": 200
+    },
+    {
+      "operation_id": "registerActor",
+      "method": "PUT",
+      "path": "/actors/actor-human-golden",
+      "headers": {
+        "Authorization": "HostAuth fixture",
+        "Jarvis-Protocol-Version": "v0.1",
+        "Jarvis-Actor-Id": "actor-fixture-registrar",
+        "Jarvis-Idempotency-Key": "idem-register-actor-human-golden",
+        "Jarvis-Request-Timestamp": "2026-06-16T10:00:02Z"
+      },
+      "body_ref": "records.actors.human",
+      "actor_id": "actor-fixture-registrar",
+      "expected_status": 200
+    },
+    {
+      "operation_id": "registerActor",
+      "method": "PUT",
+      "path": "/actors/actor-agent-golden",
+      "headers": {
+        "Authorization": "HostAuth fixture",
+        "Jarvis-Protocol-Version": "v0.1",
+        "Jarvis-Actor-Id": "actor-fixture-registrar",
+        "Jarvis-Idempotency-Key": "idem-register-actor-agent-golden",
+        "Jarvis-Request-Timestamp": "2026-06-16T10:00:03Z"
+      },
+      "body_ref": "records.actors.agent",
+      "actor_id": "actor-fixture-registrar",
+      "expected_status": 200
+    },
+    {
+      "operation_id": "createWorkSession",
+      "method": "POST",
+      "path": "/work-sessions",
+      "headers": {
+        "Authorization": "HostAuth fixture",
+        "Jarvis-Protocol-Version": "v0.1",
+        "Jarvis-Actor-Id": "actor-human-golden",
+        "Jarvis-Idempotency-Key": "idem-create-worksession-golden",
+        "Jarvis-Request-Timestamp": "2026-06-16T10:01:00Z",
+        "Jarvis-Expected-WorkSession-Revision": 0,
+        "Jarvis-Previous-Event-Hash": "hash:protocol-genesis"
+      },
+      "body_ref": "records.work_sessions.genesis_request",
+      "actor_id": "actor-human-golden",
+      "work_session_id": "ws-golden-001",
+      "expected_status": 201,
+      "expected_event_ref": "event-worksession-created"
+    },
+    {
+      "operation_id": "recordPolicyDecision",
+      "method": "POST",
+      "path": "/work-sessions/ws-golden-001/policy-decisions",
+      "headers": {
+        "Authorization": "HostAuth fixture",
+        "Jarvis-Protocol-Version": "v0.1",
+        "Jarvis-Actor-Id": "actor-agent-golden",
+        "Jarvis-Idempotency-Key": "idem-policy-denied-golden",
+        "Jarvis-Request-Timestamp": "2026-06-16T10:04:00Z",
+        "Jarvis-Expected-WorkSession-Revision": 1,
+        "Jarvis-Previous-Event-Hash": "hash:event-worksession-created"
+      },
+      "body_ref": "records.policy_decisions.external_source_denied",
+      "actor_id": "actor-agent-golden",
+      "work_session_id": "ws-golden-001",
+      "expected_status": 201,
+      "expected_event_ref": "event-policy-denied"
+    },
+    {
+      "operation_id": "createRequest",
+      "method": "POST",
+      "path": "/work-sessions/ws-golden-001/requests",
+      "headers": {
+        "Authorization": "HostAuth fixture",
+        "Jarvis-Protocol-Version": "v0.1",
+        "Jarvis-Actor-Id": "actor-agent-golden",
+        "Jarvis-Idempotency-Key": "idem-request-source-golden",
+        "Jarvis-Request-Timestamp": "2026-06-16T10:05:00Z",
+        "Jarvis-Expected-WorkSession-Revision": 2,
+        "Jarvis-Previous-Event-Hash": "hash:event-policy-denied"
+      },
+      "body_ref": "records.requests.pending",
+      "actor_id": "actor-agent-golden",
+      "work_session_id": "ws-golden-001",
+      "expected_status": 201,
+      "expected_event_ref": "event-request-created"
+    },
+    {
+      "operation_id": "recordReview",
+      "method": "POST",
+      "path": "/work-sessions/ws-golden-001/reviews",
+      "headers": {
+        "Authorization": "HostAuth fixture",
+        "Jarvis-Protocol-Version": "v0.1",
+        "Jarvis-Actor-Id": "actor-human-golden",
+        "Jarvis-Idempotency-Key": "idem-review-source-golden",
+        "Jarvis-Request-Timestamp": "2026-06-16T10:08:00Z",
+        "Jarvis-Expected-WorkSession-Revision": 3,
+        "Jarvis-Previous-Event-Hash": "hash:event-request-created"
+      },
+      "body_ref": "records.reviews.approve_source",
+      "actor_id": "actor-human-golden",
+      "work_session_id": "ws-golden-001",
+      "expected_status": 201,
+      "expected_event_ref": "event-review-approved"
+    },
+    {
+      "operation_id": "recordPolicyDecision",
+      "method": "POST",
+      "path": "/work-sessions/ws-golden-001/policy-decisions",
+      "headers": {
+        "Authorization": "HostAuth fixture",
+        "Jarvis-Protocol-Version": "v0.1",
+        "Jarvis-Actor-Id": "actor-agent-golden",
+        "Jarvis-Idempotency-Key": "idem-policy-allowed-golden",
+        "Jarvis-Request-Timestamp": "2026-06-16T10:08:30Z",
+        "Jarvis-Expected-WorkSession-Revision": 4,
+        "Jarvis-Previous-Event-Hash": "hash:event-review-approved"
+      },
+      "body_ref": "records.policy_decisions.external_source_allowed",
+      "actor_id": "actor-agent-golden",
+      "work_session_id": "ws-golden-001",
+      "expected_status": 201,
+      "expected_event_ref": "event-policy-allowed"
+    },
+    {
+      "operation_id": "appendJarvisEvent",
+      "method": "POST",
+      "path": "/work-sessions/ws-golden-001/events",
+      "headers": {
+        "Authorization": "HostAuth fixture",
+        "Jarvis-Protocol-Version": "v0.1",
+        "Jarvis-Actor-Id": "actor-agent-golden",
+        "Jarvis-Idempotency-Key": "idem-evidence-captured-golden",
+        "Jarvis-Request-Timestamp": "2026-06-16T10:12:00Z",
+        "Jarvis-Expected-WorkSession-Revision": 5,
+        "Jarvis-Previous-Event-Hash": "hash:event-policy-allowed"
+      },
+      "body_ref": "records.jarvis_events.evidence_captured",
+      "actor_id": "actor-agent-golden",
+      "work_session_id": "ws-golden-001",
+      "expected_status": 201,
+      "expected_event_ref": "event-evidence-captured"
+    },
+    {
+      "operation_id": "recordContribution",
+      "method": "POST",
+      "path": "/work-sessions/ws-golden-001/contributions",
+      "headers": {
+        "Authorization": "HostAuth fixture",
+        "Jarvis-Protocol-Version": "v0.1",
+        "Jarvis-Actor-Id": "actor-human-golden",
+        "Jarvis-Idempotency-Key": "idem-contribution-golden",
+        "Jarvis-Request-Timestamp": "2026-06-16T10:16:00Z",
+        "Jarvis-Expected-WorkSession-Revision": 6,
+        "Jarvis-Previous-Event-Hash": "hash:event-evidence-captured"
+      },
+      "body_ref": "records.contributions.shared_answer",
+      "actor_id": "actor-human-golden",
+      "work_session_id": "ws-golden-001",
+      "expected_status": 201,
+      "expected_event_ref": "event-contribution-recorded"
+    },
+    {
+      "operation_id": "createLearningRecord",
+      "method": "POST",
+      "path": "/work-sessions/ws-golden-001/learning-records",
+      "headers": {
+        "Authorization": "HostAuth fixture",
+        "Jarvis-Protocol-Version": "v0.1",
+        "Jarvis-Actor-Id": "actor-human-golden",
+        "Jarvis-Idempotency-Key": "idem-learning-golden",
+        "Jarvis-Request-Timestamp": "2026-06-16T10:18:00Z",
+        "Jarvis-Expected-WorkSession-Revision": 7,
+        "Jarvis-Previous-Event-Hash": "hash:event-contribution-recorded"
+      },
+      "body_ref": "records.learning_records.pair",
+      "actor_id": "actor-human-golden",
+      "work_session_id": "ws-golden-001",
+      "expected_status": 201,
+      "expected_event_ref": "event-learning-recorded"
+    },
+    {
+      "operation_id": "createMemoryProposal",
+      "method": "POST",
+      "path": "/work-sessions/ws-golden-001/memory-proposals",
+      "headers": {
+        "Authorization": "HostAuth fixture",
+        "Jarvis-Protocol-Version": "v0.1",
+        "Jarvis-Actor-Id": "actor-human-golden",
+        "Jarvis-Idempotency-Key": "idem-memory-proposal-golden",
+        "Jarvis-Request-Timestamp": "2026-06-16T10:19:00Z",
+        "Jarvis-Expected-WorkSession-Revision": 8,
+        "Jarvis-Previous-Event-Hash": "hash:event-learning-recorded"
+      },
+      "body_ref": "records.memory_proposals.source_policy_pattern",
+      "actor_id": "actor-human-golden",
+      "work_session_id": "ws-golden-001",
+      "expected_status": 201,
+      "expected_event_ref": "event-memory-proposal-created"
+    },
+    {
+      "operation_id": "createSkillProposal",
+      "method": "POST",
+      "path": "/work-sessions/ws-golden-001/skill-proposals",
+      "headers": {
+        "Authorization": "HostAuth fixture",
+        "Jarvis-Protocol-Version": "v0.1",
+        "Jarvis-Actor-Id": "actor-human-golden",
+        "Jarvis-Idempotency-Key": "idem-skill-proposal-golden",
+        "Jarvis-Request-Timestamp": "2026-06-16T10:20:00Z",
+        "Jarvis-Expected-WorkSession-Revision": 9,
+        "Jarvis-Previous-Event-Hash": "hash:event-memory-proposal-created"
+      },
+      "body_ref": "records.skill_proposals.bounded_source_collection",
+      "actor_id": "actor-human-golden",
+      "work_session_id": "ws-golden-001",
+      "expected_status": 201,
+      "expected_event_ref": "event-skill-proposal-created"
+    },
+    {
+      "operation_id": "appendJarvisEvent",
+      "method": "POST",
+      "path": "/work-sessions/ws-golden-001/events",
+      "headers": {
+        "Authorization": "HostAuth fixture",
+        "Jarvis-Protocol-Version": "v0.1",
+        "Jarvis-Actor-Id": "actor-human-golden",
+        "Jarvis-Idempotency-Key": "idem-worksession-completed-golden",
+        "Jarvis-Request-Timestamp": "2026-06-16T10:25:00Z",
+        "Jarvis-Expected-WorkSession-Revision": 10,
+        "Jarvis-Previous-Event-Hash": "hash:event-skill-proposal-created"
+      },
+      "body_ref": "records.jarvis_events.worksession_completed",
+      "actor_id": "actor-human-golden",
+      "work_session_id": "ws-golden-001",
+      "expected_status": 201,
+      "expected_event_ref": "event-worksession-completed"
+    },
+    {
+      "operation_id": "exportEvidenceManifest",
+      "method": "GET",
+      "path": "/work-sessions/ws-golden-001/export",
+      "headers": {
+        "Authorization": "HostAuth fixture",
+        "Jarvis-Protocol-Version": "v0.1",
+        "Jarvis-Actor-Id": "actor-human-golden"
+      },
+      "actor_id": "actor-human-golden",
+      "work_session_id": "ws-golden-001",
+      "expected_status": 200
+    },
+    {
+      "operation_id": "submitOutcomeReport",
+      "method": "POST",
+      "path": "/outcome-reports",
+      "headers": {
+        "Authorization": "HostAuth fixture",
+        "Jarvis-Protocol-Version": "v0.1",
+        "Jarvis-Actor-Id": "actor-human-golden",
+        "Jarvis-Idempotency-Key": "idem-outcome-report-golden",
+        "Jarvis-Request-Timestamp": "2026-06-16T10:30:00Z"
+      },
+      "body_ref": "records.outcome_reports.post_session",
+      "actor_id": "actor-human-golden",
+      "expected_status": 202
+    }
+  ],
+  "assertions": [
+    {
+      "assertion_id": "assert-host-shape-ref",
+      "class": "host_private_boundary_gate",
+      "target_ref": "host_shape_ref",
+      "required_state": "host_shape_ref is present, uses an allowed v0.1 value, is fixture metadata only, and does not appear inside records, operation bodies, JarvisEvents, EvidenceManifest, or export payloads",
+      "expected_result": "pass"
+    },
+    {
+      "assertion_id": "assert-zero-trust-headers",
+      "class": "header_gate",
+      "target_ref": "operations",
+      "required_state": "WorkSession-scoped mutations include six zero-trust headers; non-WorkSession mutations include the non-WorkSession mutation headers; reads omit mutation-only headers",
+      "expected_result": "pass"
+    },
+    {
+      "assertion_id": "assert-worker-records",
+      "class": "actor_authority_gate",
+      "target_ref": "records.workers",
+      "required_state": "HumanWorker and AgentWorker are represented by Worker records with required authority and accountability scope",
+      "expected_result": "pass"
+    },
+    {
+      "assertion_id": "assert-actor-authority",
+      "class": "actor_authority_gate",
+      "target_ref": "records.actors",
+      "required_state": "HumanWorker and AgentWorker are represented by Actor records with event authority and contribution scope",
+      "expected_result": "pass"
+    },
+    {
+      "assertion_id": "assert-event-chain",
+      "class": "event_chain_gate",
+      "target_ref": "records.jarvis_events",
+      "required_state": "Every accepted WorkSession-scoped state change records Actor, expected revision, previous hash, and event hash",
+      "expected_result": "pass"
+    },
+    {
+      "assertion_id": "assert-policy-decision-before-action",
+      "class": "policy_decision_gate",
+      "target_ref": "records.policy_decisions.external_source_denied",
+      "required_state": "AgentWorker action affecting WorkSession has PolicyDecision before accepted protocol state and denied result includes request_id",
+      "expected_result": "pass"
+    },
+    {
+      "assertion_id": "assert-request-resolution",
+      "class": "request_resolution_gate",
+      "target_ref": "records.requests.approved",
+      "required_state": "Request.policy_decision_id matches blocking PolicyDecision and approved status includes resolved_by_review_id",
+      "expected_result": "pass"
+    },
+    {
+      "assertion_id": "assert-approval-scope",
+      "class": "approval_scope_gate",
+      "target_ref": "records.reviews.approve_source.approval_scope",
+      "required_state": "ApprovalScope binds request, review, PolicyDecision, action hash, actor, WorkSession, expiry, and max uses",
+      "expected_result": "pass"
+    },
+    {
+      "assertion_id": "assert-contribution-attribution",
+      "class": "contribution_attribution_gate",
+      "target_ref": "records.contributions.shared_answer",
+      "required_state": "Shared Contribution preserves human and agent contributor refs that point to valid Worker and Actor records",
+      "expected_result": "pass"
+    },
+    {
+      "assertion_id": "assert-evidence-export",
+      "class": "evidence_export_gate",
+      "target_ref": "records.evidence_manifests.portable_export",
+      "required_state": "EvidenceManifest exports only after completed WorkSession, records event chain root, evidence items with source_event_refs, PolicyDecisions, Requests, Reviews, Takeovers, Contributions, limitations, export profile, terminal export state, and excludes forbidden host-private fields",
+      "expected_result": "pass"
+    },
+    {
+      "assertion_id": "assert-learning-governance",
+      "class": "learning_governance_gate",
+      "target_ref": "records.learning_records.pair",
+      "required_state": "LearningRecord captures pair learning and MemoryProposal plus SkillProposal remain governed pending review",
+      "expected_result": "pass"
+    },
+    {
+      "assertion_id": "assert-outcome-report-learning-reference",
+      "class": "learning_governance_gate",
+      "target_ref": "records.outcome_reports.post_session",
+      "required_state": "OutcomeReport references LearningRecord without mutating sealed WorkSession, EvidenceManifest, or LearningRecord state",
+      "expected_result": "pass"
+    }
+  ],
+  "expected_result": "pass"
+}
