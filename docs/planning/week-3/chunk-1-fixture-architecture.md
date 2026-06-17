@@ -118,7 +118,9 @@ Rules:
 - `work_session_id` is present only for WorkSession-scoped operations.
 - `body_ref` is present only when the operation has a request body.
 - `expected_event_ref` is present only when an accepted operation creates or
-  appends a JarvisEvent.
+  appends a JarvisEvent, and it contains the produced JarvisEvent id.
+- Fixtures do not duplicate an accepted operation's produced event with a
+  separate `appendJarvisEvent` operation.
 - `expected_error_id` is present only when the operation rejects.
 - WorkSession-scoped mutations include all six zero-trust headers.
 - Non-WorkSession mutations include the non-WorkSession mutation headers.

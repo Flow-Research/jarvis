@@ -11,6 +11,8 @@ contract for governed human-agent collaboration and shared learning.
   from existing human-agent work into Jarvis protocol records.
 - [golden-path.md](./golden-path.md) - required compatible success path.
 - [failure-modes.md](./failure-modes.md) - required rejection paths.
+- [fixtures/](./fixtures/) - machine-readable fixture records for conformance
+  proof.
 
 Jarvis conformance records protocol behavior. Hosts own behavior outside the
 protocol contract.

@@ -124,6 +124,12 @@ Fixtures MUST use OpenAPI operation ids from the v0.1 contract.
 Policy, HumanWorker, and AgentWorker are fixture records only in v0.1.
 Fixtures MUST NOT invent registration operations for them.
 
+Accepted mutation operations that create protocol state record
+`expected_event_ref` with the id of the JarvisEvent produced by that operation.
+Fixtures MUST NOT duplicate that produced event with a separate
+`appendJarvisEvent` operation. `appendJarvisEvent` maps direct event append
+operations whose request body is a JarvisEvent.
+
 ```txt
 Worker            -> registerWorker
 Actor             -> registerActor

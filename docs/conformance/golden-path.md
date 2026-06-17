@@ -25,7 +25,7 @@ AgentWorker action records PolicyDecision before accepted protocol state.
 Policy-denied action creates scoped Request.
 Request resolves only through Review or Takeover.
 Review approve or narrow produces bounded ApprovalScope.
-Takeover records lock state before human direct control.
+Stale Takeover rejection is covered by the stale Takeover fixture.
 Contribution records attributable human, agent, shared, service, or tool work.
 EvidenceManifest exports portable proof.
 LearningRecord captures human, agent, or pair learning.
