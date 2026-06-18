@@ -109,3 +109,19 @@ or rejects.
 
 Assertion classes come from
 `docs/planning/week-3/chunk-1-fixture-architecture.md`.
+
+## Validator
+
+Run the fixture validator before changing, adding, or reviewing conformance
+fixtures:
+
+```txt
+python3 scripts/check_conformance_fixtures.py
+```
+
+The validator checks fixture envelope fields, operation binding, required
+headers, assertion refs, OpenAPI component refs, required invalid-fixture
+coverage, host-private export boundaries, and expected protocol outcomes.
+
+The validator does not execute host behavior. It validates Jarvis protocol
+fixture records only.
