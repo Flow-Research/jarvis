@@ -260,6 +260,9 @@ When v0.1 proves this loop, Jarvis is real.
   positioning lock.
 - [docs/architecture_brief/](./docs/architecture_brief/) - shareable protocol
   architecture brief and PDF.
+- [docs/conformance/](./docs/conformance/) - compatibility mapping,
+  conformance entries, fixtures, validator requirements, and existing-agent
+  proof plan.
 - [docs/planning/](./docs/planning/) - roadmap, 30-day plan, and upload-ready
   planning sheets.
 - [docs/reviews/](./docs/reviews/) - protocol readiness and acceptance review

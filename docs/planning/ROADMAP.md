@@ -17,16 +17,18 @@ For the OpenAPI entry gate, see
 
 Week 1 protocol lock is complete.
 
-Current active work: Week 3 protocol compatibility mapping and conformance
-fixtures.
+Current active work: Week 4 compatible examples and public story.
 
 Week 2 completed the OpenAPI 3.1 component syntax, path syntax, security scheme
 encoding, protocol examples, and conformance entry rules from the locked Week 1
 protocol decisions.
 
-Week 3 proves the contract through protocol compatibility mapping and
-conformance fixtures. Jarvis does not add or own adapters, runtimes, wrappers,
-host behavior, or integration code.
+Week 3 completed protocol compatibility mapping, conformance fixtures, fixture
+validation, and existing-agent compatibility proof. Jarvis does not add or own
+adapters, runtimes, wrappers, host behavior, or integration code.
+
+Week 4 starts from conformance evidence and prepares compatible examples,
+public README tightening, published conformance checklist, and public story.
 
 ## Roadmap Contract
 
@@ -441,11 +443,10 @@ Control: learning becomes MemoryProposal or SkillProposal until reviewed.
 1. Keep the repository protocol-only.
 2. Keep execution and cloud ownership outside the protocol.
 3. Use `11-core-protocol-objects.md`, `jarvis-openapi.yaml`, and
-   `docs/conformance/` as the source of truth for Week 3 work.
-4. Draft protocol compatibility mapping rules.
-5. Create the golden-path conformance fixture.
-6. Create stale takeover, missing policy, unresolved Request, and forbidden
-   host-private export fixtures.
-7. Compare two compatible implementation shapes at the protocol-record level.
+   `docs/conformance/` as the source of truth for Week 4 work.
+4. Prepare compatible examples from the conformance gate.
+5. Publish the conformance checklist from existing fixtures and rejection gates.
+6. Tighten public README language around Jarvis as protocol only.
+7. Update the public simulation to show the OpenAPI proof path.
 8. Keep adapter code, wrappers, host behavior, and integration code outside
    Jarvis.

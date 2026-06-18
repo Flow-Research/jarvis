@@ -3,6 +3,8 @@
 Week 3 proves the Week 2 OpenAPI contract through protocol compatibility
 mapping and conformance fixtures.
 
+Status: complete.
+
 Week 3 does not build adapters, wrappers, host runtimes, UI, model calls, tool
 execution, storage, auth, billing, scoring, payment, or deployment behavior.
 
@@ -53,6 +55,8 @@ Week 3 produces:
    Define the existing-agent compatibility proof plan without adapter code.
 7. [chunk-7-closeout.md](./chunk-7-closeout.md)
    Close Week 3 and define readiness for compatible examples.
+
+For closeout, see [closeout.md](./closeout.md).
 
 ## Done State
 
