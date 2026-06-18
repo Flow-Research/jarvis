@@ -13,7 +13,30 @@ valid/
   golden-path.json
 
 invalid/
-  added in Week 3 Chunk 4
+  forbidden-host-private-export-field.json
+  invalid-approval-scope.json
+  invalid-evidence-export-state.json
+  invalid-previous-event-hash.json
+  missing-actor.json
+  missing-expected-work-session-revision.json
+  missing-idempotency-key.json
+  missing-policy-decision.json
+  missing-policy.json
+  missing-previous-event-hash.json
+  missing-protocol-version.json
+  missing-request-timestamp.json
+  missing-review-resolution.json
+  missing-takeover-resolution.json
+  outcome-report-without-learning-record.json
+  sealed-evidence-mutation.json
+  sealed-work-session-mutation.json
+  silent-memory-mutation.json
+  silent-skill-activation.json
+  stale-request-timestamp.json
+  stale-takeover-continuation.json
+  stale-work-session-revision.json
+  unauthorized-actor.json
+  unresolved-request.json
 ```
 
 ## Fixture Envelope
