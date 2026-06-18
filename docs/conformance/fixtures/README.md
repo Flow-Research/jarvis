@@ -112,16 +112,16 @@ Assertion classes come from
 
 ## Validator
 
-Run the fixture validator before changing, adding, or reviewing conformance
-fixtures:
+Jarvis defines this validator command for conformance fixtures:
 
 ```txt
 python3 scripts/check_conformance_fixtures.py
 ```
 
-The validator checks fixture envelope fields, operation binding, required
-headers, assertion refs, OpenAPI component refs, required invalid-fixture
-coverage, host-private export boundaries, and expected protocol outcomes.
+Conformance fixture records MUST satisfy fixture envelope fields, operation
+binding, required headers, assertion refs, source_contract_refs, OpenAPI
+component refs, required invalid-fixture coverage, host-private export
+boundaries, and expected protocol outcomes.
 
-The validator does not execute host behavior. It validates Jarvis protocol
+The validator MUST NOT execute host behavior. It validates Jarvis protocol
 fixture records only.

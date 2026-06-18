@@ -267,7 +267,7 @@ When v0.1 proves this loop, Jarvis is real.
 
 ## Local Checks
 
-Run these checks before opening or updating a protocol PR:
+Every protocol PR MUST run:
 
 ```txt
 python3 scripts/check_conformance_fixtures.py
@@ -277,5 +277,5 @@ python3 scripts/check_week1_wording.py
 git diff --check
 ```
 
-`check_conformance_fixtures.py` validates Jarvis conformance fixture records. It
-does not execute host behavior.
+Jarvis defines `check_conformance_fixtures.py` as fixture-record validation only.
+The validator MUST NOT execute host behavior.

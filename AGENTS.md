@@ -255,7 +255,7 @@ source of truth for Jarvis.
 
 ## Local Check Commands
 
-Run the relevant local checks before every protocol PR:
+Every protocol PR MUST run:
 
 ```txt
 python3 scripts/check_conformance_fixtures.py
