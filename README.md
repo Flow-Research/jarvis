@@ -264,3 +264,18 @@ When v0.1 proves this loop, Jarvis is real.
   planning sheets.
 - [docs/reviews/](./docs/reviews/) - protocol readiness and acceptance review
   criteria.
+
+## Local Checks
+
+Every protocol PR MUST run:
+
+```txt
+python3 scripts/check_conformance_fixtures.py
+python3 scripts/check_openapi_skeleton.py
+python3 scripts/check_markdown_links.py
+python3 scripts/check_week1_wording.py
+git diff --check
+```
+
+Jarvis defines `check_conformance_fixtures.py` as fixture-record validation only.
+The validator MUST NOT execute host behavior.
