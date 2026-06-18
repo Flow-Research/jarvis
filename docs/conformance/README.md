@@ -13,6 +13,9 @@ contract for governed human-agent collaboration and shared learning.
 - [failure-modes.md](./failure-modes.md) - required rejection paths.
 - [fixtures/](./fixtures/) - machine-readable fixture records for conformance
   proof.
+- [existing-agent-proof-plan.md](./existing-agent-proof-plan.md) - proof plan
+  for mapping existing human-agent work into equivalent Jarvis records across
+  allowed host shapes.
 
 Jarvis conformance records protocol behavior. Hosts own behavior outside the
 protocol contract.
