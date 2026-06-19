@@ -1,6 +1,12 @@
-# Protocol Artifact Contracts
+# Protocol Artifact And SDK Contracts
 
-Jarvis v0.1 publishes protocol artifacts, not implementation packages.
+Jarvis v0.1 publishes protocol artifacts.
+
+Future Jarvis SDKs are protocol implementation kits. They help compatible
+implementations produce, validate, export, and test Jarvis records. They do
+not become agent frameworks, runtimes, host adapters, wrappers, planners,
+model orchestrators, tool executors, memory engines, UI kits, auth providers,
+storage backends, sandboxes, or workflow engines.
 
 OpenAPI 3.1 is the primary machine-readable communication contract. Supporting
 artifacts exist only to keep the protocol readable, testable, and
@@ -19,11 +25,14 @@ Jarvis owns:
 - conformance checklists
 - conformance fixtures
 - examples
+- protocol implementation helper packages
 
 Hosts own:
 
-- SDKs
-- clients
+- agent SDKs
+- runtime SDKs
+- host SDKs
+- host clients
 - engines
 - factories
 - storage clients
@@ -35,8 +44,51 @@ Hosts own:
 - runtime adapters
 - deployment packages
 
-Jarvis artifacts MUST NOT expose implementation APIs, host service APIs,
-storage clients, runtime adapters, or tool executors.
+Jarvis artifacts and SDKs MUST NOT expose implementation APIs, host service
+APIs, storage clients, runtime adapters, model routers, planning loops, memory
+engines, or tool executors.
+
+## SDK Boundary
+
+A Jarvis SDK contains only:
+
+```txt
+generated OpenAPI clients
+protocol types
+event envelope helpers
+event hash-chain helpers
+idempotency helpers
+mutation-header helpers
+EvidenceManifest helpers
+Request validators
+Review validators
+Takeover validators
+protocol error helpers
+conformance fixture runners
+example record mappers
+```
+
+A Jarvis SDK is rejected when it owns:
+
+```txt
+agent runtime
+planner
+model orchestration
+tool execution
+memory engine
+host adapter
+wrapper runtime
+UI
+auth provider
+storage backend
+sandbox
+workflow engine
+billing
+deployment
+```
+
+Compatible implementations use a Jarvis SDK to implement Jarvis records. They
+do not replace existing agents with a Jarvis-owned agent.
 
 ## OpenAPI Contract
 

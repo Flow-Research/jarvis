@@ -8,7 +8,7 @@ reviews, takeovers, contributions, evidence, and learning that happen inside a
 WorkSession.
 
 This is the v0.1 protocol lock. Week 2 converted this lock into the OpenAPI
-3.1 contract and conformance entry. Week 3 builds protocol compatibility
+3.1 contract and conformance entry. Week 3 built protocol compatibility
 mapping and conformance fixtures on top of that contract.
 
 ## Locked Status
@@ -40,7 +40,7 @@ Week 2 completed:
 - OpenAPI examples
 - conformance entry documents
 
-Week 3 uses this contract for:
+Week 3 used this contract for:
 
 - protocol compatibility mapping
 - conformance fixtures
@@ -543,7 +543,7 @@ Week 2 converted this protocol lock into:
    EvidenceManifest, LearningRecord, MemoryProposal, SkillProposal, and
    OutcomeReport.
 
-Week 3 builds protocol compatibility mapping and conformance fixtures on this
+Week 3 built protocol compatibility mapping and conformance fixtures on this
 contract.
 
 The thesis is locked. The object model is locked. The lifecycle is locked. The

@@ -42,15 +42,14 @@ how Contribution and EvidenceManifest records are exported
 how OutcomeReport feeds post-session learning
 ```
 
-## Week 3 Entry
+## Week 3 Result
 
-Week 3 starts from this contract.
+Week 3 started from this contract.
 
-Week 3 proves the contract through protocol compatibility mapping and
+Week 3 proved the contract through protocol compatibility mapping and
 conformance fixtures.
 
 Jarvis does not add or own adapters, runtimes, wrappers, host behavior, or
 integration code.
 
-Week 3 does not reopen Week 1 protocol locks or Week 2 OpenAPI structure unless
-a concrete conformance contradiction blocks progress.
+Week 3 did not reopen Week 1 protocol locks or Week 2 OpenAPI structure.

@@ -1,6 +1,6 @@
 # Week 3: Protocol Compatibility Mapping And Conformance Fixtures
 
-Week 3 proves the Week 2 OpenAPI contract through protocol compatibility
+Week 3 proved the Week 2 OpenAPI contract through protocol compatibility
 mapping and conformance fixtures.
 
 Status: complete.
@@ -17,7 +17,7 @@ rewriting the agent runtime or moving host behavior into Jarvis.
 
 ## Inputs
 
-Week 3 starts from:
+Week 3 started from:
 
 - [../../openapi/jarvis-openapi.yaml](../../openapi/jarvis-openapi.yaml)
 - [../../conformance/golden-path.md](../../conformance/golden-path.md)
@@ -28,7 +28,7 @@ Week 3 starts from:
 
 ## Week 3 Outputs
 
-Week 3 produces:
+Week 3 produced:
 
 - protocol compatibility mapping rules
 - fixture architecture

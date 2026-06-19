@@ -73,6 +73,18 @@ Hosts provide UI, auth, storage, execution, connectors, notifications,
 monitoring, support, and deployment. Jarvis defines the records that hosts
 exchange. Jarvis does not become the host.
 
+## SDK Boundary
+
+A Jarvis SDK is a protocol implementation kit.
+
+It helps compatible implementations create, validate, export, and test Jarvis
+records. It does not run agents, orchestrate models, execute tools, own memory
+engines, provide UI, manage auth, store records, run sandboxes, schedule work,
+or become a host adapter.
+
+SDK support does not change the category. Jarvis remains the human-agent
+collaboration and learning-loop protocol.
+
 ## Non-Replacement Rule
 
 Compatible implementations MUST NOT require developers to abandon their

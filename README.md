@@ -229,6 +229,24 @@ Jarvis does not own host implementation:
 - monitoring
 - host-specific workflow
 
+## SDK Boundary
+
+A Jarvis SDK is a protocol implementation kit.
+
+It helps compatible implementations create protocol records, attach required
+headers, preserve event hash chains, validate Request/Review/Takeover state,
+export EvidenceManifest records, run conformance fixtures, and map example
+work into Jarvis records.
+
+A Jarvis SDK does not run agents, orchestrate models, execute tools, own memory
+engines, provide UI, manage auth, store records, run sandboxes, schedule work,
+or become a host adapter.
+
+Existing agents remain first-class. Jarvis succeeds when existing agents and
+hosts produce compatible WorkSession, Request, Review, Contribution,
+EvidenceManifest, and LearningRecord records without being rewritten as
+Jarvis-owned agents.
+
 ## What Jarvis v0.1 Must Prove
 
 ```txt

@@ -26,6 +26,12 @@ The practical proof is simple: a human and an existing agent complete real
 work through a WorkSession, produce evidence, record who did what, and leave
 behind learning that improves the next WorkSession.
 
+Jarvis protocol implementation helpers, including SDKs, exist only to help
+compatible implementations produce, validate, export, and test Jarvis records.
+Jarvis SDKs do not become agent frameworks, runtimes, planners, model
+orchestrators, tool executors, memory engines, host adapters, UI kits, auth
+providers, storage backends, sandboxes, or workflow engines.
+
 ## Current Protocol Landscape
 
 Jarvis sits beside existing standards:
@@ -183,6 +189,7 @@ Deliverables:
 - protocol examples for WorkSession, Request, Review, EvidenceManifest, and
   LearningRecord
 - conformance checklist published
+- Jarvis SDK boundary note: protocol implementation kit, not agent framework
 - GitHub Pages simulation updated to show the OpenAPI proof path
 - short public narrative: why Jarvis exists and what it does not replace
 
@@ -229,6 +236,7 @@ Daily checks:
 - Jarvis remains protocol-only.
 - Compatible examples stay outside the protocol core.
 - Existing agents remain first-class.
+- Jarvis SDKs implement protocol helpers only.
 - HumanWorker and AgentWorker are both actors.
 - Learning belongs to the human, agent, and pair.
 - Evidence is captured during work.

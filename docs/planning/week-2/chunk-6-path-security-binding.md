@@ -47,7 +47,7 @@ POST /outcome-reports
 ```
 
 This chunk does not define behavior outside the path and security binding.
-Chunk 7 locked examples and conformance entry. Week 3 handles protocol
+Chunk 7 locked examples and conformance entry. Week 3 handled protocol
 compatibility mapping and conformance fixtures.
 
 ## Header Classes
