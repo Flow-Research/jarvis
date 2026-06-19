@@ -59,6 +59,7 @@ Jarvis owns:
 - capability negotiation rules
 - conformance tests
 - interoperability rules
+- protocol implementation helper rules
 
 Jarvis does not own:
 
@@ -79,6 +80,12 @@ Jarvis does not own:
 - operational monitoring
 
 Hosts own those responsibilities.
+
+Jarvis SDKs are protocol implementation kits. They help compatible
+implementations create, validate, export, and test Jarvis records. They do not
+run agents, orchestrate models, execute tools, own memory engines, provide UI,
+manage auth, store records, run sandboxes, schedule work, or become host
+adapters.
 
 ## Release Strategy
 
@@ -143,10 +150,12 @@ MemoryProposal and SkillProposal remain governed
 - version and capability negotiation
 - one protocol simulation that visualizes the proof path
 - compatible implementation guide
+- protocol implementation helper boundary
 
 ### v0.1 Excludes
 
 - execution packages
+- agent framework packages
 - cloud implementation
 - local execution implementation
 - model calls
@@ -353,6 +362,7 @@ v0.1 is accepted when:
   platform
 - public docs describe Jarvis as protocol only
 - live simulation describes Jarvis as protocol only
+- any Jarvis SDK surface is limited to protocol implementation helpers
 
 ## v0.2 Evidence And Learning Beta
 
@@ -448,6 +458,17 @@ Risk: agent memory mutates without human review.
 
 Control: learning becomes MemoryProposal or SkillProposal until reviewed.
 
+### SDK Creep
+
+Risk: Jarvis SDK work becomes an agent framework, runtime, planner, model
+orchestrator, tool executor, memory engine, host adapter, UI kit, auth
+provider, storage backend, sandbox, or workflow engine.
+
+Control: Jarvis SDK work stays limited to protocol types, OpenAPI clients,
+event helpers, hash-chain helpers, header helpers, validation helpers,
+EvidenceManifest helpers, conformance fixture runners, protocol error helpers,
+and example record mappers.
+
 ## Immediate Next Actions
 
 1. Keep the repository protocol-only.
@@ -460,3 +481,4 @@ Control: learning becomes MemoryProposal or SkillProposal until reviewed.
 7. Update the public simulation to show the OpenAPI proof path.
 8. Keep adapter code, wrappers, host behavior, and integration code outside
    Jarvis.
+9. Keep every Jarvis SDK discussion limited to protocol implementation helpers.

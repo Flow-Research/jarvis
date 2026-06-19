@@ -135,6 +135,39 @@ Outside Jarvis: Host implementation
 OpenAPI 3.1 is the primary machine-readable communication contract. Separate
 schema-file packages are not the primary contract.
 
+## SDK Boundary
+
+A Jarvis SDK is a protocol implementation kit.
+
+A Jarvis SDK helps compatible implementations create, validate, sign, hash,
+export, and test Jarvis protocol records.
+
+A Jarvis SDK does not run agents. A Jarvis SDK does not orchestrate models. A
+Jarvis SDK does not execute tools. A Jarvis SDK does not own memory engines,
+planning loops, UI, auth, storage, sandboxing, queues, billing, deployment, or
+host workflow.
+
+Jarvis SDK work is accepted only when it strengthens protocol implementation:
+
+- generated OpenAPI clients
+- protocol types
+- event envelope helpers
+- event hash-chain helpers
+- idempotency helpers
+- mutation-header helpers
+- EvidenceManifest helpers
+- Request, Review, and Takeover validators
+- conformance fixture runners
+- protocol error helpers
+- example record mappers
+
+Jarvis SDK work is rejected when it becomes an agent framework, runtime,
+planner, model router, tool executor, memory engine, host adapter, wrapper, UI
+kit, auth provider, storage backend, sandbox, or workflow engine.
+
+The adoption test is strict: an existing agent must be able to participate in
+Jarvis through protocol records without being rewritten as a Jarvis agent.
+
 ## Zero-Trust Requirement
 
 Jarvis starts from zero trust.

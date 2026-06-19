@@ -16,6 +16,14 @@ billing, scoring, payment, deployment behavior, or host-specific workflow.
 Compatible implementations MUST preserve host-owned execution and record only
 Jarvis protocol state.
 
+A Jarvis SDK, when used, acts only as a protocol implementation kit. It helps
+the host create, validate, export, and test Jarvis records. It does not run the
+agent, replace the native agent, orchestrate models, execute tools, own memory,
+provide UI, manage auth, store records, or become the host adapter.
+
+The proof rejects compatibility claims that require rewriting an existing agent
+as a Jarvis-owned agent.
+
 ## Proof Inputs
 
 Existing-agent compatibility proof starts from these protocol records:
