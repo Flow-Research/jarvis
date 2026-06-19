@@ -208,7 +208,7 @@ Done when:
 
 ## Milestone 2: WorkSession Lifecycle
 
-Status: active.
+Status: complete.
 
 Owner: Protocol
 
@@ -228,6 +228,8 @@ Done when:
 - events remain attributable to an Actor
 
 ## Milestone 3: Policy, Request, Review, Takeover
+
+Status: complete.
 
 Owner: Safety
 
@@ -251,6 +253,8 @@ Done when:
 
 ## Milestone 4: Contribution And Evidence
 
+Status: complete.
+
 Owner: Evidence
 
 Output:
@@ -270,6 +274,8 @@ Done when:
 - evidence is captured during work, not reconstructed after completion
 
 ## Milestone 5: Governed Learning
+
+Status: complete.
 
 Owner: Learning
 
@@ -292,6 +298,8 @@ Done when:
 
 ## Milestone 6: Conformance Suite
 
+Status: complete.
+
 Owner: Developer Experience
 
 Output:
@@ -313,6 +321,8 @@ Done when a host proves:
 - learning is governed
 
 ## Milestone 7: Examples And Public Docs
+
+Status: active.
 
 Owner: Developer Experience
 
