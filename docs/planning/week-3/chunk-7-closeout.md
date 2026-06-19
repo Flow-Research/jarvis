@@ -22,6 +22,14 @@ Chunk 7 records:
 - remaining protocol gaps
 - Week 4 entry conditions
 
+## Output
+
+Chunk 7 creates:
+
+```txt
+docs/planning/week-3/closeout.md
+```
+
 ## Week 4 Entry Conditions
 
 Week 4 starts only when Week 3 records:

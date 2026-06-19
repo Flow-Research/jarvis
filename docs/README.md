@@ -33,8 +33,22 @@ Planning docs and sheets track execution.
 - [12-30-day-roadmap.md](./planning/12-30-day-roadmap.md)
 - [week-1/README.md](./planning/week-1/README.md)
 - [week-2/README.md](./planning/week-2/README.md)
+- [week-3/README.md](./planning/week-3/README.md)
+- [week-3/closeout.md](./planning/week-3/closeout.md)
 - [sheets/jarvis_roadmap.csv](./planning/sheets/jarvis_roadmap.csv)
 - [sheets/jarvis_roadmap.xlsx](./planning/sheets/jarvis_roadmap.xlsx)
+
+## Conformance
+
+Conformance docs define compatibility mapping, proof fixtures, rejection gates,
+and existing-agent compatibility proof.
+
+- [conformance/README.md](./conformance/README.md)
+- [conformance/compatibility-mapping.md](./conformance/compatibility-mapping.md)
+- [conformance/golden-path.md](./conformance/golden-path.md)
+- [conformance/failure-modes.md](./conformance/failure-modes.md)
+- [conformance/existing-agent-proof-plan.md](./conformance/existing-agent-proof-plan.md)
+- [conformance/fixtures/README.md](./conformance/fixtures/README.md)
 
 ## OpenAPI
 

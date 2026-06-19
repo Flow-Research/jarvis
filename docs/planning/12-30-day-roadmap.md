@@ -144,7 +144,7 @@ Done when:
 
 ## Week 3: Protocol Compatibility Mapping And Conformance Fixtures
 
-Status: active.
+Status: complete.
 
 Goal: prove the OpenAPI contract through protocol compatibility mapping and
 conformance fixtures.
@@ -168,6 +168,8 @@ Done when:
 - compatible examples start only after the conformance gate
 
 ## Week 4: Compatible Examples And Public Story
+
+Status: active.
 
 Goal: prepare compatible examples after the protocol contract and
 conformance gate are credible.
