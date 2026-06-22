@@ -1,22 +1,21 @@
 # Compatible Host Mapping Example
 
-This example shows how two different native host shapes produce equivalent
-Jarvis records for the same human-agent collaboration loop.
+Two different native host shapes produce equivalent Jarvis records for the same
+human-agent collaboration loop.
 
 Jarvis records protocol state. Hosts own native execution.
 
 ## Boundary
 
-This example defines protocol mapping only.
+Jarvis compatibility mapping covers protocol records only.
 
-It does not define host code, adapter code, wrapper code, runtime behavior, UI,
-model calls, tool execution, storage, auth, billing, scoring, payment,
-deployment, or SDK implementation.
+Hosts own host code, adapter code, wrapper code, runtime behavior, UI, model
+calls, tool execution, storage, auth, billing, scoring, payment, deployment,
+and host-specific SDK integration.
 
-`host_shape_ref` is descriptive metadata only. It names the host boundary shape.
-It MUST NOT select behavior, change required records, change conformance
-results, enter protocol records, or imply a Jarvis-owned host adapter or
-runtime.
+`host_shape_ref` records the host boundary shape as metadata only. It MUST NOT
+select behavior, change required records, change conformance results, enter
+protocol records, or imply a Jarvis-owned host adapter or runtime.
 
 Allowed `host_shape_ref` values in this example:
 
@@ -212,6 +211,27 @@ The stale continuation rejection maps to `stale_takeover_epoch`. Resume
 requires `reconciliation_refs`.
 
 ## Evidence And Learning Records
+
+Referenced policy, event, and contribution records:
+
+```txt
+PolicyDecision.id = policy-decision-local-001
+PolicyDecision.result = allow
+PolicyDecision.target_action = inspect_local_context
+
+JarvisEvent.id = event-review-external-source-001
+JarvisEvent.object_ref = review-external-source-001
+JarvisEvent.event_hash = hash:event-review-external-source
+
+JarvisEvent.id = event-evidence-export-001
+JarvisEvent.object_ref = evidence-manifest-research-001
+JarvisEvent.event_hash = hash:event-evidence-export
+
+Contribution.id = contribution-research-001
+Contribution.contributor_refs = human-worker-researcher, agent-worker-research
+Contribution.contribution_type = shared
+Contribution.event_refs = event-review-external-source-001, event-evidence-export-001
+```
 
 Both host shapes export the same portable proof:
 
