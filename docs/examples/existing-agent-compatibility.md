@@ -219,22 +219,25 @@ Request.resolved_by_review_id = review-native-source-001
 Request.resolved_at = 2026-06-12T18:36:00Z
 
 Review.id = review-native-source-001
+Review.work_session_id = work-session-existing-agent-001
+Review.reviewer_actor_id = actor-human-existing-agent
+Review.reviewer_worker_id = worker-human-existing-agent
 Review.decision = narrow
 Review.target_ref = request-native-source-001
-
-ApprovalScope.request_id = request-native-source-001
-ApprovalScope.review_id = review-native-source-001
-ApprovalScope.policy_decision_id = policy-decision-native-source-001
-ApprovalScope.request_revision = 1
-ApprovalScope.request_event_hash = hash:event-request-native-source
-ApprovalScope.normalized_action_hash = hash:action-fetch-native-source
-ApprovalScope.approved_action.action = fetch_external_source
-ApprovalScope.allowed_scope.scope_ref = scope:approved-source-family
-ApprovalScope.denied_scope.scope_ref = scope:credentials-and-external-sends
-ApprovalScope.expires_at = 2026-06-12T18:36:00Z
-ApprovalScope.max_uses = 1
-ApprovalScope.applies_to_work_session_id = work-session-existing-agent-001
-ApprovalScope.applies_to_actor_id = actor-native-agent
+Review.created_at = 2026-06-12T18:36:00Z
+Review.approval_scope.request_id = request-native-source-001
+Review.approval_scope.review_id = review-native-source-001
+Review.approval_scope.policy_decision_id = policy-decision-native-source-001
+Review.approval_scope.request_revision = 1
+Review.approval_scope.request_event_hash = hash:event-request-native-source
+Review.approval_scope.normalized_action_hash = hash:action-fetch-native-source
+Review.approval_scope.approved_action.action = fetch_external_source
+Review.approval_scope.allowed_scope.scope_ref = scope:approved-source-family
+Review.approval_scope.denied_scope.scope_ref = scope:credentials-and-external-sends
+Review.approval_scope.expires_at = 2026-06-12T18:36:00Z
+Review.approval_scope.max_uses = 1
+Review.approval_scope.applies_to_work_session_id = work-session-existing-agent-001
+Review.approval_scope.applies_to_actor_id = actor-native-agent
 ```
 
 The Review decision narrows the native agent. The native agent resumes only
@@ -275,12 +278,17 @@ Request.resolved_by_takeover_id = takeover-native-final-001
 Request.resolved_at = 2026-06-12T18:50:00Z
 
 Takeover.id = takeover-native-final-001
+Takeover.work_session_id = work-session-existing-agent-001
+Takeover.requested_by_actor_id = actor-native-agent
+Takeover.controlling_actor_id = actor-human-existing-agent
 Takeover.request_id = request-native-final-001
 Takeover.lock_epoch = 2
 Takeover.state = resumed
 Takeover.affected_scope.blocking_scope = final_submission
 Takeover.affected_scope.scope_ref = scope:final-submission
 Takeover.affected_scope.normalized_action_hash = hash:action-native-final-submit
+Takeover.reason = high_risk_final_submission
+Takeover.created_at = 2026-06-12T18:48:00Z
 Takeover.reconciliation_refs = ref:takeover-reconciliation-native-final
 Takeover.resumed_by_actor_id = actor-human-existing-agent
 Takeover.resolved_at = 2026-06-12T18:50:00Z
@@ -348,6 +356,8 @@ EvidenceItemRef.limitation_refs = limitation:raw-native-traces-excluded
 
 EvidenceManifest.id = evidence-manifest-native-agent-001
 EvidenceManifest.work_session_id = work-session-existing-agent-001
+EvidenceManifest.generated_by_actor_id = actor-human-existing-agent
+EvidenceManifest.objective = Produce an evidence-backed draft with reviewed external-source use.
 EvidenceManifest.event_chain_root = hash:event-native-final
 EvidenceManifest.evidence_item_refs = evidence-item-native-summary-001
 EvidenceManifest.policy_decision_refs = policy-decision-native-local-001, policy-decision-native-source-001, policy-decision-native-final-001
@@ -357,6 +367,7 @@ EvidenceManifest.takeover_refs = takeover-native-final-001
 EvidenceManifest.contribution_refs = contribution-native-agent-001
 EvidenceManifest.limitations = raw native traces excluded, native memory excluded
 EvidenceManifest.export_profile.profile = portable-v0.1
+EvidenceManifest.generated_at = 2026-06-12T18:52:00Z
 ```
 
 Evidence refs point to JarvisEvents captured during work. EvidenceManifest
@@ -370,10 +381,14 @@ Learning records capture the team improvement:
 ```txt
 LearningRecord.id = learning-record-native-agent-001
 LearningRecord.work_session_id = work-session-existing-agent-001
+LearningRecord.created_by_actor_id = actor-human-existing-agent
 LearningRecord.subject_type = pair
 LearningRecord.subject_ref = ref:pair:human-worker-existing-agent:agent-worker-native-agent
+LearningRecord.lesson_type = native_agent_bounded_source_review
 LearningRecord.source_event_refs = event-review-native-source-001, event-takeover-native-final-001, event-evidence-native-export-001
 LearningRecord.review_state = accepted
+LearningRecord.scope = scope:native-agent-source-review
+LearningRecord.created_at = 2026-06-12T18:53:00Z
 LearningRecord.memory_proposal_refs = memory-proposal-native-source-boundary-001
 LearningRecord.skill_proposal_refs = skill-proposal-native-review-flow-001
 
