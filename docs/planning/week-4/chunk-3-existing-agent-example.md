@@ -6,7 +6,7 @@ Jarvis-owned agent.
 ## Scope
 
 This chunk defines a public example for an existing native agent boundary.
-When the example mentions a Jarvis SDK, the SDK appears only as a protocol
+When the example mentions a Jarvis SDK, the SDK is only a protocol
 implementation helper around that native agent.
 
 The native agent keeps its own runtime, model calls, tool calls, memory,
@@ -108,4 +108,4 @@ Chunk 3 is complete when:
 - SDK language stays limited to protocol implementation helpers
 - local checks pass
 - internal reviewer lanes have no valid unresolved findings
-- CodeRabbit has no valid unresolved findings
+- required automated-review comments have no valid unresolved findings
