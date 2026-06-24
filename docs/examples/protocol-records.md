@@ -1065,6 +1065,6 @@ Compatible implementations MUST preserve this order:
 14. OutcomeReport MUST carry post-session feedback without sealed record mutation.
 ```
 
-The examples demonstrate records only. They do not require a specific host,
-runtime, agent framework, UI, storage system, model provider, tool runner,
-memory engine, or deployment platform.
+The protocol defines record examples only. Hosts own execution architecture,
+including UI, storage, model provider, tool runner, memory engine, and
+deployment choices.
