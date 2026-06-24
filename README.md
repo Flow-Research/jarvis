@@ -57,13 +57,13 @@ record around human-agent work: WorkSession, Policy, PolicyDecision, Request,
 Review, Takeover, Contribution, EvidenceManifest, LearningRecord,
 MemoryProposal, SkillProposal, and OutcomeReport.
 
-Existing agents participate by preserving native execution and producing
-Jarvis-compatible protocol records. Hosts keep their own UI, storage, auth,
-execution, models, tools, memory engines, deployment, monitoring, and workflow.
+Existing agents participate by preserving native execution and emitting
+Jarvis-compatible protocol records. Hosts own UI, storage, auth, execution,
+models, tools, memory engines, deployment, monitoring, and workflow.
 
 ## Compatible Implementations
 
-A compatible implementation proves:
+Compatible implementations MUST prove:
 
 - WorkSession-scoped mutations carry the required Jarvis headers.
 - Actor authority is verified before accepted protocol state.
