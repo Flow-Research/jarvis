@@ -8,8 +8,8 @@
       name="description"
       content="An interactive simulation of Jarvis as the human-agent collaboration and learning-loop protocol."
     />
-    <link rel="icon" href="./assets/favicon.svg?v=protocol4" type="image/svg+xml" />
-    <link rel="stylesheet" href="./assets/styles.css?v=protocol4" />
+    <link rel="icon" href="./assets/favicon.svg?v=protocol7" type="image/svg+xml" />
+    <link rel="stylesheet" href="./assets/styles.css?v=protocol7" />
   </head>
   <body>
     <canvas id="signalCanvas" aria-hidden="true"></canvas>
@@ -19,12 +19,12 @@
           <span class="brand-mark">J</span>
           <span>
             <strong>Jarvis</strong>
-            <small>collaboration + learning loop</small>
+            <small>protocol walkthrough</small>
           </span>
         </a>
         <div class="topbar-meta">
           <span>WorkSession WS-1042</span>
-          <span>bounded policy</span>
+          <span>OpenAPI 3.1 binding</span>
           <span id="topbarStatus">created</span>
         </div>
       </header>
@@ -36,10 +36,9 @@
             Jarvis
           </h1>
           <p class="hero-text">
-            Human-agent collaboration and learning-loop protocol. Watch one
-            HumanWorker and AgentWorker move through shared goals, policy,
-            autonomous execution, request approval, review, contribution,
-            evidence, and governed learning.
+            MCP connects agents to tools. A2A connects agents to agents.
+            AG-UI connects agents to UI. Jarvis records how HumanWorkers and
+            AgentWorkers collaborate, produce evidence, and learn.
           </p>
           <div class="hero-actions" aria-label="Simulation controls">
             <button class="command primary" id="startBtn" type="button">
@@ -71,7 +70,7 @@
             </div>
             <div>
               <dt>Protocol</dt>
-              <dd>Jarvis v0</dd>
+              <dd>Jarvis v0.1</dd>
             </div>
             <div>
               <dt>Evidence</dt>
@@ -87,7 +86,7 @@
 
       <section class="simulator" aria-label="Jarvis operating simulation">
         <nav class="sequence" aria-label="WorkSession steps">
-          <div class="section-label">Execution path</div>
+          <div class="section-label">OpenAPI record path</div>
           <ol id="timeline"></ol>
         </nav>
 
@@ -95,9 +94,9 @@
           <div class="stage-top">
             <div>
               <span class="section-label">Current phase</span>
-              <h2 id="stepTitle">Start the WorkSession</h2>
+              <h2 id="stepTitle">Mutation Headers</h2>
             </div>
-            <span class="counter" id="stepCounter">01 / 09</span>
+            <span class="counter" id="stepCounter">01 / 12</span>
           </div>
 
           <div class="protocol-map" aria-label="Human-agent protocol map">
@@ -125,8 +124,8 @@
 
             <div class="node host" data-node="host">
               <span>Host</span>
-              <strong>executes outside Jarvis</strong>
-              <small>UI storage tools sandbox</small>
+              <strong>owns implementation</strong>
+              <small>UI storage tools execution</small>
             </div>
 
             <div class="node request" data-node="request">
@@ -143,7 +142,7 @@
 
           <div class="phase-brief">
             <p id="stepSummary">
-              Jarvis creates the collaboration record before the agent starts.
+              The WorkSession-scoped mutation enters through required Jarvis headers.
             </p>
             <ul id="eventLog"></ul>
           </div>
@@ -151,9 +150,9 @@
 
         <aside class="right-stack" aria-label="State rails">
           <section class="rail policy-rail" aria-labelledby="policyTitle">
-            <div class="rail-head">
-              <span class="section-label">Control plane</span>
-              <h3 id="policyTitle">Policy gate</h3>
+              <div class="rail-head">
+              <span class="section-label">Mutation gate</span>
+              <h3 id="policyTitle">Protocol checks</h3>
             </div>
             <div class="gate-meter" id="gateMeter">
               <span></span>
@@ -164,7 +163,7 @@
           <section class="rail" aria-labelledby="memoryTitle">
             <div class="rail-head">
               <span class="section-label">Context plane</span>
-              <h3 id="memoryTitle">Memory loaded</h3>
+              <h3 id="memoryTitle">Protocol records</h3>
             </div>
             <ul id="memoryList"></ul>
           </section>
@@ -184,25 +183,25 @@
           <span>01</span>
           <h3>WorkSession is the surface</h3>
           <p>
-            Every serious interaction has a durable collaboration record:
+            WorkSession is the durable protocol record for human-agent work:
             goals, events, requests, reviews, contributions, evidence, and
             learning.
           </p>
         </article>
         <article>
           <span>02</span>
-          <h3>Policy creates autonomy</h3>
+          <h3>Policy governs autonomy</h3>
           <p>
             The AgentWorker works inside human-defined policy. Outside policy,
-            it creates a Request instead of silently acting.
+            it creates a Request instead of acting silently.
           </p>
         </article>
         <article>
           <span>03</span>
-          <h3>Memory is governed</h3>
+          <h3>Learning is governed</h3>
           <p>
-            Human learning, agent learning, and pair learning become governed
-            proposals with policy, provenance, and review.
+            Human learning, agent learning, and pair learning stay governed
+            through LearningRecord, MemoryProposal, and SkillProposal records.
           </p>
         </article>
         <article>
@@ -216,6 +215,6 @@
       </section>
     </main>
 
-    <script src="./assets/app.js?v=protocol4"></script>
+    <script src="./assets/app.js?v=protocol7"></script>
   </body>
 </html>

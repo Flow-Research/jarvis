@@ -44,6 +44,41 @@ collects evidence, and proposes improvements.
 Jarvis defines the rules of that collaboration. Hosts and external systems
 implement those rules.
 
+## Protocol Position
+
+MCP connects agents to tools.
+A2A connects agents to agents.
+AG-UI connects agents to UI.
+Jarvis records how HumanWorkers and AgentWorkers collaborate, produce evidence,
+and learn.
+
+Jarvis does not replace those protocols. Jarvis defines the collaboration
+record around human-agent work: WorkSession, Policy, PolicyDecision, Request,
+Review, Takeover, Contribution, EvidenceManifest, LearningRecord,
+MemoryProposal, SkillProposal, and OutcomeReport.
+
+Existing agents participate by preserving native execution and producing
+Jarvis-compatible protocol records. Hosts keep their own UI, storage, auth,
+execution, models, tools, memory engines, deployment, monitoring, and workflow.
+
+## Compatible Implementations
+
+A compatible implementation proves:
+
+- WorkSession-scoped mutations carry the required Jarvis headers.
+- Actor authority is verified before accepted protocol state.
+- WorkSession revision and previous event hash are checked before mutation.
+- PolicyDecision is recorded before accepted AgentWorker action state.
+- Request records blocked or review-required scope.
+- Review or Takeover resolves Request.
+- ApprovalScope bounds Review-approved continuation.
+- Takeover lock epoch and reconciliation refs bind Takeover continuation.
+- Contribution records who did what.
+- EvidenceManifest exports portable proof without host-private fields.
+- LearningRecord records human, agent, or pair learning.
+- MemoryProposal and SkillProposal remain governed.
+- OutcomeReport carries post-session feedback without sealed-record mutation.
+
 ## Thesis
 
 The winning unit is not the human alone and not the agent alone. The winning
@@ -180,6 +215,7 @@ EvidenceManifest
 LearningRecord
 MemoryProposal
 SkillProposal
+OutcomeReport
 ```
 
 ## Protocol Laws
@@ -255,16 +291,19 @@ Jarvis-owned agents.
 3. Start WorkSession.
 4. Attach Policy.
 5. Send objective.
-6. AgentWorker acts inside policy.
-7. AgentWorker hits blocked action.
-8. AgentWorker creates Request.
-9. HumanWorker approves, denies, narrows, answers, or takes over.
-10. AgentWorker resumes.
-11. Contribution is recorded.
-12. Evidence is captured.
-13. Learning is proposed.
-14. Human confirms or rejects Learning.
-15. EvidenceManifest exports.
+6. AgentWorker action records PolicyDecision before accepted protocol state.
+7. AgentWorker acts inside policy.
+8. AgentWorker hits blocked or review-required scope.
+9. AgentWorker creates Request.
+10. HumanWorker approves, denies, narrows, answers, or takes over.
+11. ApprovalScope bounds approved continuation.
+12. Takeover records lock epoch and reconciliation refs.
+13. Contribution records who did what.
+14. Evidence is captured.
+15. LearningRecord records human, agent, or pair learning.
+16. MemoryProposal or SkillProposal remains governed.
+17. EvidenceManifest exports after terminal WorkSession state.
+18. OutcomeReport carries post-session feedback into governed learning.
 ```
 
 When v0.1 proves this loop, Jarvis is real.
