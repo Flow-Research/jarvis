@@ -1046,23 +1046,23 @@ learning.
 
 ## Required Record Order
 
-Compatible implementations preserve this order:
+Compatible implementations MUST preserve this order:
 
 ```txt
-1. Worker records exist.
-2. Actor records exist.
-3. HumanWorker and AgentWorker records bind Worker to Actor.
-4. Policy exists before WorkSession starts.
-5. WorkSession starts with objective, Policy, revision, and event hash state.
-6. AgentWorker action records PolicyDecision before accepted protocol state.
-7. Blocked action creates Request.
-8. Review or Takeover resolves blocked scope.
-9. ApprovalScope bounds narrowed authority.
-10. Contribution records who did what.
-11. EvidenceManifest exports portable proof.
-12. LearningRecord records human, agent, or pair learning.
-13. MemoryProposal and SkillProposal remain governed.
-14. OutcomeReport carries post-session feedback without sealed record mutation.
+1. Worker records MUST exist before Actor records.
+2. Actor records MUST exist before HumanWorker and AgentWorker records bind Worker to Actor.
+3. HumanWorker and AgentWorker records MUST bind valid Worker and Actor refs.
+4. Policy MUST exist before WorkSession starts.
+5. WorkSession MUST start with objective, Policy, revision, and event hash state.
+6. AgentWorker action MUST record PolicyDecision before accepted protocol state.
+7. Blocked action MUST create Request.
+8. Review or Takeover MUST resolve blocked scope.
+9. ApprovalScope MUST bound narrowed authority.
+10. Contribution MUST record who did what.
+11. EvidenceManifest MUST export portable proof only after terminal WorkSession state.
+12. LearningRecord MUST record human, agent, or pair learning.
+13. MemoryProposal and SkillProposal MUST remain governed.
+14. OutcomeReport MUST carry post-session feedback without sealed record mutation.
 ```
 
 The examples demonstrate records only. They do not require a specific host,
