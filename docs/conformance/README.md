@@ -7,6 +7,8 @@ contract for governed human-agent collaboration and shared learning.
 
 ## Files
 
+- Start with [checklist.md](./checklist.md). It is the public compatibility
+  checklist for implementers.
 - [compatibility-mapping.md](./compatibility-mapping.md) - required mapping
   from existing human-agent work into Jarvis protocol records.
 - [golden-path.md](./golden-path.md) - required compatible success path.
