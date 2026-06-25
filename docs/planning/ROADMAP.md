@@ -17,7 +17,7 @@ For the OpenAPI entry gate, see
 
 Week 1 protocol lock is complete.
 
-Current active work: Week 4 compatible examples and public story.
+Current active work: v0.1 acceptance review after Week 4 closeout.
 
 Week 2 completed the OpenAPI 3.1 component syntax, path syntax, security scheme
 encoding, protocol examples, and conformance entry rules from the locked Week 1
@@ -27,8 +27,8 @@ Week 3 completed protocol compatibility mapping, conformance fixtures, fixture
 validation, and existing-agent compatibility proof. Jarvis does not add or own
 adapters, runtimes, wrappers, host behavior, or integration code.
 
-Week 4 starts from conformance evidence and prepares compatible examples,
-public README tightening, published conformance checklist, and public story.
+Week 4 completed compatible examples, public README tightening, published
+conformance checklist, protocol record examples, and public story.
 
 ## Roadmap Contract
 
@@ -99,7 +99,7 @@ v0.2 Evidence And Learning Beta
   contracts
 
 v0.3 Ecosystem Conformance
-  host conformance suite, examples, and host integration guides
+  host conformance suite, examples, and compatibility-mapping records
 
 v1.0 Stable Protocol
   stable public protocol, compatibility rules, export format, and migration
@@ -331,7 +331,7 @@ Done when a host proves:
 
 ## Milestone 7: Examples And Public Docs
 
-Status: active.
+Status: complete.
 
 Owner: Developer Experience
 
@@ -342,8 +342,8 @@ Output:
 - protocol diagrams
 - OpenAPI examples
 - compatible implementation guide
-- evaluation-system integration guide
-- host integration note
+- EvidenceManifest consumption rules
+- compatible host boundary note
 - interactive simulation
 
 Done when:
@@ -356,7 +356,7 @@ Done when:
 
 v0.1 is accepted when:
 
-- OpenAPI contract is stable enough for implementation
+- OpenAPI contract passes the v0.1 acceptance review
 - conformance tests cover the golden path
 - no protocol contract names a cloud, database, sandbox, or deployment
   platform
@@ -373,7 +373,7 @@ Output:
 - richer contribution taxonomy
 - stronger evidence export profiles
 - limitation and uncertainty records
-- learning proposal review workflows
+- LearningRecord, MemoryProposal, and SkillProposal review-state rules
 - memory scope compatibility rules
 - skill proposal compatibility rules
 
@@ -474,11 +474,10 @@ and example record mappers.
 1. Keep the repository protocol-only.
 2. Keep execution and cloud ownership outside the protocol.
 3. Use `11-core-protocol-objects.md`, `jarvis-openapi.yaml`, and
-   `docs/conformance/` as the source of truth for Week 4 work.
-4. Prepare compatible examples from the conformance gate.
-5. Publish the conformance checklist from existing fixtures and rejection gates.
-6. Tighten public README language around Jarvis as protocol only.
-7. Update the public simulation to show the OpenAPI proof path.
-8. Keep adapter code, wrappers, host behavior, and integration code outside
+   `docs/conformance/` as the source of truth for v0.1 acceptance review.
+4. Review Week 4 closeout against the OpenAPI contract, conformance fixtures,
+   public examples, README, and simulation.
+5. Record public-readiness gaps before starting next-phase specification.
+6. Keep adapter code, wrappers, host behavior, and integration code outside
    Jarvis.
-9. Keep every Jarvis SDK discussion limited to protocol implementation helpers.
+7. Keep every Jarvis SDK discussion limited to protocol implementation helpers.

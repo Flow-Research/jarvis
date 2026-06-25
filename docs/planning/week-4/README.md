@@ -3,7 +3,7 @@
 Week 4 turns the locked protocol, OpenAPI contract, conformance fixtures, and
 existing-agent proof plan into public compatibility artifacts.
 
-Status: active.
+Status: complete.
 
 Week 4 does not build adapters, wrappers, host runtimes, UI, model calls, tool
 execution, storage, auth, billing, scoring, payment, deployment behavior, or
@@ -19,7 +19,7 @@ agents or moving host behavior into Jarvis.
 
 ## Inputs
 
-Week 4 starts from:
+Week 4 started from:
 
 - [../../openapi/jarvis-openapi.yaml](../../openapi/jarvis-openapi.yaml)
 - [../../conformance/compatibility-mapping.md](../../conformance/compatibility-mapping.md)
