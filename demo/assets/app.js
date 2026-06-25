@@ -1,199 +1,331 @@
 const steps = [
   {
-    title: "Start the WorkSession",
-    status: "active",
-    mission: "WorkSession created",
+    title: "Mutation Headers",
+    status: "created",
+    mission: "Header gate",
+    gate: 10,
+    gateColor: "#78f7b4",
+    activeNodes: ["human", "kernel"],
+    activeBeams: ["beam-human"],
+    summary:
+      "The WorkSession-scoped mutation enters through the OpenAPI binding with protocol version, actor id, idempotency key, timestamp, expected revision, and previous event hash.",
+    events: [
+      "Authorization: Bearer host-auth-ref",
+      "Jarvis-Protocol-Version: v0.1",
+      "Jarvis-Actor-Id: actor-human-reviewer",
+      "Jarvis-Idempotency-Key: idem-work-session-create-001",
+      "Jarvis-Request-Timestamp: 2026-06-24T09:00:00Z",
+      "Jarvis-Expected-WorkSession-Revision: 0",
+      "Jarvis-Previous-Event-Hash: hash:protocol-genesis"
+    ],
+    memory: [
+      "Worker ref: worker-human-researcher",
+      "Actor ref: actor-human-reviewer",
+      "Trace ref: trace-work-session-1042"
+    ],
+    policy: [
+      "Protocol version accepted.",
+      "Idempotency key recorded.",
+      "Timestamp checked."
+    ],
+    evidence: ["mutation_headers", "trace_context", "previous_hash"]
+  },
+  {
+    title: "Authority And Revision",
+    status: "created",
+    mission: "Authority verified",
     gate: 18,
     gateColor: "#78f7b4",
     activeNodes: ["human", "kernel"],
     activeBeams: ["beam-human"],
     summary:
-      "The HumanWorker gives Jarvis a real objective. Jarvis creates the durable collaboration record before the AgentWorker starts.",
+      "Jarvis verifies Actor authority, checks the WorkSession revision, and links the previous event hash before accepting protocol state.",
     events: [
-      "HumanWorker intent: inspect project and produce an implementation plan.",
-      "AgentWorker assigned with bounded autonomy.",
-      "WorkSession WS-1042 created as the protocol source of truth."
-    ],
-    memory: ["HumanWorker preference: direct protocol language.", "Shared rule: ask when permission or judgment is missing."],
-    policy: ["Policy profile attached: bounded local work.", "Network policy ref: denied."],
-    evidence: ["work_session_started event", "initial trace context"]
-  },
-  {
-    title: "Context Assembly",
-    status: "active",
-    mission: "Memory selected",
-    gate: 28,
-    gateColor: "#78f7b4",
-    activeNodes: ["kernel", "agent"],
-    activeBeams: ["beam-agent"],
-    summary:
-      "ContextManifest records the context refs available to the AgentWorker: human memory, shared memory, skill refs, active policy, and tool grants.",
-    events: [
-      "ContextManifest references scoped human, shared, and work memory.",
-      "Skill refs identify research and inspection procedures.",
-      "ContextManifest stores retrieval reasons and hashes."
+      "Actor authority permits work_session.create.",
+      "Expected revision matches current revision.",
+      "Previous event hash matches the chain head."
     ],
     memory: [
-      "Project memory: Jarvis owns the collaboration and learning-loop protocol.",
-      "Skill memory: inspect repo before proposing implementation.",
-      "Context manifest: memory ids, skill ids, policy profile, tool hash."
+      "EventAuthority.can_append_events: true",
+      "ContributionScope includes human.",
+      "No host credential enters the protocol record."
     ],
-    policy: ["Only granted tools become visible.", "Untrusted content is data, not instruction."],
-    evidence: ["context_manifest", "skill_inventory_hash", "tool_inventory_hash"]
-  },
-  {
-    title: "Autonomous Execution",
-    status: "running",
-    mission: "Agent executing",
-    gate: 46,
-    gateColor: "#78f7b4",
-    activeNodes: ["agent", "kernel", "host"],
-    activeBeams: ["beam-agent", "beam-host"],
-    summary:
-      "The AgentWorker works inside the allowed scope. Jarvis records the protocol facts while the host handles execution, tools, storage, and interface.",
-    events: [
-      "AgentWorker proposes plan and starts project inspection.",
-      "Policy allows read-only local file inspection.",
-      "Host-owned execution ref is attached to the WorkSession."
-    ],
-    memory: ["Active memory remains scoped to this project.", "No new durable memory yet."],
     policy: [
-      "read_private: allowed for project files.",
-      "write_local: allowed only inside workspace scratch paths."
+      "Invalid Actor rejects.",
+      "Stale revision rejects.",
+      "Previous hash mismatch rejects."
     ],
-    evidence: ["plan_proposed", "tool_allowed", "host_execution_started"]
+    evidence: ["actor_authority_check", "revision_check", "hash_link_check"]
   },
   {
-    title: "Policy Boundary",
+    title: "WorkSession And Policy",
+    status: "active",
+    mission: "WorkSession active",
+    gate: 27,
+    gateColor: "#78f7b4",
+    activeNodes: ["human", "agent", "kernel"],
+    activeBeams: ["beam-human", "beam-agent"],
+    summary:
+      "The WorkSession starts as the durable collaboration record. Policy defines the boundary for autonomous AgentWorker action.",
+    events: [
+      "WorkSession WS-1042 created.",
+      "HumanWorker and AgentWorker refs attached.",
+      "Policy policy-research-001 attached."
+    ],
+    memory: [
+      "Objective: produce evidence-backed protocol note.",
+      "HumanWorker role: policy owner and reviewer.",
+      "AgentWorker role: bounded research executor."
+    ],
+    policy: [
+      "Allowed: inspect local context.",
+      "Review required: external source use.",
+      "Denied: credentials and unapproved external sends."
+    ],
+    evidence: ["work_session_created", "policy_attached", "worker_refs"]
+  },
+  {
+    title: "PolicyDecision First",
+    status: "active",
+    mission: "Action checked",
+    gate: 36,
+    gateColor: "#78f7b4",
+    activeNodes: ["agent", "kernel"],
+    activeBeams: ["beam-agent"],
+    summary:
+      "Every AgentWorker action that affects a WorkSession records a PolicyDecision before the action becomes accepted protocol state.",
+    events: [
+      "AgentWorker proposes inspect_local_context.",
+      "PolicyDecision records result: allow.",
+      "Accepted action links to policy-decision-local-context-001."
+    ],
+    memory: [
+      "Requested action hash recorded.",
+      "Risk class: low.",
+      "Selected grant ref: grant:local-read."
+    ],
+    policy: [
+      "PolicyDecision precedes action event.",
+      "Accepted action links to previous hash.",
+      "Host execution remains outside Jarvis."
+    ],
+    evidence: ["policy_decision_allow", "accepted_action_event", "event_hash"]
+  },
+  {
+    title: "Request For Blocked Scope",
     status: "waiting_on_human",
-    mission: "Request generated",
-    gate: 62,
+    mission: "Request created",
+    gate: 48,
     gateColor: "#ffb86b",
     activeNodes: ["agent", "kernel", "request"],
     activeBeams: ["beam-agent", "beam-request"],
     summary:
-      "The AgentWorker asks for network access. PolicyDecision denies the action, Request records the blocker, and the affected branch remains blocked.",
+      "The AgentWorker reaches a review-required external-source action. Jarvis records a scoped Request instead of treating the message as chat.",
     events: [
-      "AgentWorker requests network_fetch for example.com.",
-      "PolicyDecision denies uncovered network dimension.",
-      "Request created with risk, host, expiry, action hash, and safe alternative."
+      "PolicyDecision records result: review_required.",
+      "Request request-external-source-001 created.",
+      "Blocking scope: tool_call."
     ],
-    memory: ["Denied action does not mutate memory."],
+    memory: [
+      "Reason: external source access requires HumanWorker review.",
+      "Default fallback: continue with limited evidence.",
+      "Request expiry recorded."
+    ],
     policy: [
-      "network_fetch: blocked.",
-      "Approval required for one host and one WorkSession only."
+      "Blocked action stays blocked.",
+      "Unrelated safe work stays available.",
+      "Request is not authority."
     ],
-    evidence: ["tool_denied", "PolicyDecision", "request_created"]
+    evidence: ["policy_decision_review_required", "request_created", "safe_fallback"]
   },
   {
-    title: "Human Approval",
+    title: "Review And ApprovalScope",
     status: "waiting_on_human",
-    mission: "Human narrows scope",
-    gate: 70,
+    mission: "Scope narrowed",
+    gate: 58,
     gateColor: "#ffb86b",
     activeNodes: ["human", "request", "kernel"],
     activeBeams: ["beam-request", "beam-human"],
     summary:
-      "The HumanWorker does not micromanage the task. They approve a narrow capability and hand the work back to the AgentWorker.",
+      "HumanWorker judgment resolves the Request through Review. ApprovalScope bounds the approved continuation to one action, one actor, and one WorkSession.",
     events: [
-      "Request records the exact blocked action and risk.",
-      "HumanWorker approves network_fetch:example.com for this WorkSession.",
-      "ApprovalScope binds to request version and action hash."
-    ],
-    memory: ["HumanWorker review pattern becomes a learning signal."],
-    policy: [
-      "Temporary grant created.",
-      "Grant expires with WorkSession.",
-      "Stale ApprovalScope use is rejected."
-    ],
-    evidence: ["review_added", "approval_scope_created", "request_resolved"]
-  },
-  {
-    title: "Resume And Produce",
-    status: "running",
-    mission: "Artifact produced",
-    gate: 82,
-    gateColor: "#78f7b4",
-    activeNodes: ["agent", "kernel", "host"],
-    activeBeams: ["beam-agent", "beam-host"],
-    summary:
-      "The AgentWorker resumes from the WorkSession event log, uses the approved scope, and produces a draft artifact with traceable evidence.",
-    events: [
-      "WorkSession resumes after request resolution.",
-      "Host-owned execution produces the approved protocol event.",
-      "AgentWorker writes a plan artifact into the workspace."
-    ],
-    memory: ["ContextManifest updates with approval event.", "Learning remains proposed until review."],
-    policy: [
-      "Approval is one-use.",
-      "Host or payload change invalidates authorization."
-    ],
-    evidence: ["tool_executed", "artifact_created", "execution_trace"]
-  },
-  {
-    title: "Review And Teach",
-    status: "review",
-    mission: "Review captured",
-    gate: 88,
-    gateColor: "#6fd9ff",
-    activeNodes: ["human", "kernel", "agent"],
-    activeBeams: ["beam-human", "beam-agent"],
-    summary:
-      "The HumanWorker reviews the artifact. Jarvis records correction as teaching material instead of burying it inside chat history.",
-    events: [
-      "HumanWorker approves the plan structure.",
-      "HumanWorker corrects tone: direct protocol contract language.",
-      "Jarvis creates memory and skill update proposals."
+      "Review decision: narrow.",
+      "ApprovalScope binds request revision 4.",
+      "ApprovalScope binds normalized action hash."
     ],
     memory: [
-      "Memory proposal: use direct protocol-contract wording.",
-      "Skill proposal: roadmap review checklist.",
-      "State: proposed, not automatically confirmed."
+      "Allowed scope: single approved source.",
+      "Denied scope: all other external sends.",
+      "Max uses: 1."
     ],
-    policy: ["Model cannot confirm its own learning.", "Memory write requires policy gate."],
-    evidence: ["review_added", "memory_proposed", "skill_proposed"]
+    policy: [
+      "Unbounded approval rejects.",
+      "Stale ApprovalScope use rejects.",
+      "Actor mismatch rejects."
+    ],
+    evidence: ["review_recorded", "approval_scope_created", "request_resolved"]
   },
   {
-    title: "EvidenceManifest",
+    title: "Takeover Continuation",
+    status: "takeover",
+    mission: "Human controls scope",
+    gate: 68,
+    gateColor: "#6fd9ff",
+    activeNodes: ["human", "kernel", "request"],
+    activeBeams: ["beam-human", "beam-request"],
+    summary:
+      "A final-submission Request resolves through Takeover. Lock epoch and reconciliation refs bind the human-controlled continuation.",
+    events: [
+      "Request request-final-submission-001 records status: takeover.",
+      "Takeover lock epoch: 2.",
+      "Resumed Takeover records reconciliation refs."
+    ],
+    memory: [
+      "Affected scope: final_submission.",
+      "Controlling Actor: actor-human-reviewer.",
+      "Resumed by HumanWorker after reconciliation."
+    ],
+    policy: [
+      "Stale agent continuation rejects.",
+      "Missing reconciliation refs reject resumed state.",
+      "Takeover stays scoped."
+    ],
+    evidence: ["takeover_recorded", "lock_epoch", "reconciliation_refs"]
+  },
+  {
+    title: "Contribution Recorded",
+    status: "active",
+    mission: "Attribution recorded",
+    gate: 76,
+    gateColor: "#78f7b4",
+    activeNodes: ["human", "agent", "kernel"],
+    activeBeams: ["beam-human", "beam-agent"],
+    summary:
+      "Contribution records who did what. Shared work preserves individual HumanWorker and AgentWorker contributor refs.",
+    events: [
+      "Contribution contributor_type: shared.",
+      "HumanWorker contribution ref recorded.",
+      "AgentWorker contribution ref recorded."
+    ],
+    memory: [
+      "Contribution links to request, review, takeover, and action events.",
+      "Artifact refs attach to contribution.",
+      "Limitations remain visible."
+    ],
+    policy: [
+      "Missing contribution Actor rejects.",
+      "Duplicate contributor refs reject.",
+      "Shared contribution requires individual refs."
+    ],
+    evidence: ["contribution_recorded", "artifact_ref", "review_refs"]
+  },
+  {
+    title: "LearningRecord Created",
+    status: "active",
+    mission: "Learning recorded",
+    gate: 84,
+    gateColor: "#78f7b4",
+    activeNodes: ["human", "agent", "kernel"],
+    activeBeams: ["beam-human", "beam-agent"],
+    summary:
+      "LearningRecord records what the HumanWorker, AgentWorker, or pair learned from the WorkSession before the WorkSession is sealed.",
+    events: [
+      "LearningRecord subject_type: pair.",
+      "Source event refs point to review, action, and takeover events.",
+      "Review state records accepted learning."
+    ],
+    memory: [
+      "The HumanWorker learned review boundaries.",
+      "The AgentWorker learned source-scope preference.",
+      "The pair learned the next comparison workflow."
+    ],
+    policy: [
+      "Learning is governed.",
+      "LearningRecord does not silently mutate memory.",
+      "LearningRecord links to proposals."
+    ],
+    evidence: ["learning_record", "source_event_refs", "pair_learning"]
+  },
+  {
+    title: "Memory And Skill Proposals",
+    status: "active",
+    mission: "Proposals governed",
+    gate: 90,
+    gateColor: "#78f7b4",
+    activeNodes: ["agent", "kernel", "human"],
+    activeBeams: ["beam-agent", "beam-human"],
+    summary:
+      "MemoryProposal and SkillProposal keep future behavior governed. Proposed memory and reusable workflow changes require review before durable effect.",
+    events: [
+      "MemoryProposal status: pending_review.",
+      "SkillProposal status: pending_review.",
+      "Tool access expansion still requires policy review."
+    ],
+    memory: [
+      "Memory scope: future protocol comparison work.",
+      "Skill scope: protocol comparison workflow.",
+      "Provenance links to learning and source events."
+    ],
+    policy: [
+      "Model self-confirmed memory rejects.",
+      "Tool self-confirmed memory rejects.",
+      "Unreviewed skill activation rejects."
+    ],
+    evidence: ["memory_proposal", "skill_proposal", "provenance_refs"]
+  },
+  {
+    title: "EvidenceManifest Export",
     status: "completed",
-    mission: "Manifest ready",
-    gate: 96,
+    mission: "Evidence exported",
+    gate: 95,
     gateColor: "#78f7b4",
     activeNodes: ["kernel", "host"],
     activeBeams: ["beam-host"],
     summary:
-      "EvidenceManifest records what happened, what was approved, what context was used, what artifact was produced, and what limits remain.",
+      "EvidenceManifest exports portable proof after terminal WorkSession state without host-private fields.",
     events: [
-      "EvidenceManifest generated.",
-      "Manifest includes event-chain root, item hashes, reviews, policy decisions, and artifacts.",
-      "Redacted exports remain derived from raw immutable evidence."
-    ],
-    memory: ["Confirmed memory waits for HumanWorker decision."],
-    policy: ["EvidenceManifest records redaction state.", "External effect remains blocked unless approved."],
-    evidence: ["EvidenceManifest JSON", "artifact refs", "known limitations"]
-  },
-  {
-    title: "Learning Carries Forward",
-    status: "completed",
-    mission: "Future work improved",
-    gate: 100,
-    gateColor: "#78f7b4",
-    activeNodes: ["human", "kernel", "agent"],
-    activeBeams: ["beam-human", "beam-agent"],
-    summary:
-      "The next WorkSession starts smarter because the HumanWorker, AgentWorker, and their shared working loop improve from confirmed learning.",
-    events: [
-      "HumanWorker confirms what the human learned, what the agent learned, and what the pair carries forward.",
-      "Skill update is versioned.",
-      "Next WorkSession inherits confirmed memory only."
+      "WorkSession status: completed.",
+      "EvidenceManifest includes event chain root.",
+      "Export profile redacts host-private fields."
     ],
     memory: [
-      "Confirmed: direct protocol-contract wording.",
-      "Confirmed: ask before external network access.",
-      "Skill v1: protocol-review-checklist."
+      "Evidence item refs link to source JarvisEvents.",
+      "PolicyDecision refs included.",
+      "Request, Review, Takeover, and Contribution refs included."
     ],
-    policy: ["Learning is governed.", "Untrusted content remains fenced as data."],
-    evidence: ["memory_confirmed", "skill_updated", "work_session_completed"]
+    policy: [
+      "Sealed EvidenceManifest mutation rejects.",
+      "Host-private export fields reject.",
+      "After-the-fact evidence rejects."
+    ],
+    evidence: ["event_chain_root", "portable_export", "redaction_refs"]
+  },
+  {
+    title: "OutcomeReport Feedback",
+    status: "closed",
+    mission: "Loop improved",
+    gate: 100,
+    gateColor: "#78f7b4",
+    activeNodes: ["human", "agent", "kernel"],
+    activeBeams: ["beam-human", "beam-agent"],
+    summary:
+      "OutcomeReport enters post-session feedback without rewriting the sealed WorkSession or EvidenceManifest. A new LearningRecord carries the feedback forward.",
+    events: [
+      "OutcomeReport arrives after WorkSession completion.",
+      "OutcomeReport references learning-record-outcome-001.",
+      "Sealed WorkSession and EvidenceManifest remain unchanged."
+    ],
+    memory: [
+      "Post-session feedback becomes governed learning.",
+      "Next WorkSession inherits accepted learning only.",
+      "Human-agent pair improves without changing history."
+    ],
+    policy: [
+      "OutcomeReport is not scoring or payment logic.",
+      "Sealed WorkSession mutation rejects.",
+      "Sealed EvidenceManifest mutation rejects."
+    ],
+    evidence: ["outcome_report", "outcome_learning_record", "sealed_records"]
   }
 ];
 
@@ -240,14 +372,21 @@ function renderTimeline() {
   steps.forEach((step, stepIndex) => {
     const item = document.createElement("li");
     if (stepIndex === current) item.className = "active";
-    item.innerHTML = `
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "timeline-step";
+    if (stepIndex === current) {
+      button.setAttribute("aria-current", "step");
+    }
+    button.innerHTML = `
       <span class="step-index">${pad(stepIndex + 1)}</span>
       <span class="step-name">${step.title}</span>
     `;
-    item.addEventListener("click", () => {
+    button.addEventListener("click", () => {
       setStep(stepIndex);
       stopAuto();
     });
+    item.append(button);
     els.timeline.append(item);
   });
 }
@@ -353,7 +492,7 @@ function runCanvas() {
 
   function resize() {
     const ratio = window.devicePixelRatio || 1;
-    width = window.innerWidth;
+    width = document.documentElement.clientWidth;
     height = window.innerHeight;
     canvas.width = Math.floor(width * ratio);
     canvas.height = Math.floor(height * ratio);

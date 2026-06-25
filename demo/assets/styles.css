@@ -77,7 +77,8 @@ button {
   position: fixed;
   inset: 0;
   z-index: -1;
-  width: 100vw;
+  max-width: 100%;
+  width: 100%;
   height: 100vh;
   opacity: 0.68;
 }
@@ -371,7 +372,12 @@ button {
 }
 
 .sequence li {
+  display: block;
+}
+
+.timeline-step {
   min-height: 54px;
+  width: 100%;
   display: grid;
   grid-template-columns: 34px 1fr;
   gap: 10px;
@@ -379,11 +385,18 @@ button {
   padding: 9px;
   border: 1px solid transparent;
   border-radius: 8px;
+  background: transparent;
   color: #aeb9ae;
   cursor: pointer;
+  text-align: left;
 }
 
-.sequence li.active {
+.timeline-step:focus-visible {
+  outline: 2px solid var(--mint);
+  outline-offset: 2px;
+}
+
+.sequence li.active .timeline-step {
   border-color: rgb(120 247 180 / 44%);
   background: rgb(120 247 180 / 8%);
   color: var(--ink);
@@ -402,7 +415,7 @@ button {
   font-weight: 900;
 }
 
-.sequence li.active .step-index {
+.sequence li.active .timeline-step .step-index {
   border-color: var(--mint);
   background: var(--mint);
   color: #061009;
@@ -840,17 +853,31 @@ button {
 
 @media (max-width: 760px) {
   .shell {
-    width: calc(100vw - 20px);
-    max-width: 360px;
-    margin: 0 10px;
-    padding-top: 10px;
-    overflow: hidden;
+    width: min(340px, calc(100vw - 20px));
+    max-width: none;
+    margin: 0;
+    padding: 10px;
+    overflow: visible;
   }
 
   .topbar,
   .stage-top {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .topbar-meta {
+    display: grid;
+    grid-template-columns: 1fr;
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .topbar-meta span {
+    max-width: 100%;
+    min-width: 0;
+    white-space: normal;
+    overflow-wrap: anywhere;
   }
 
   .hero-grid {
@@ -868,7 +895,7 @@ button {
   }
 
   .hero-copy h1 {
-    max-width: min(100%, 345px);
+    max-width: 100%;
     font-size: clamp(2.55rem, 10.8vw, 3rem);
     line-height: 0.95;
     text-wrap: auto;
@@ -881,7 +908,7 @@ button {
 
   .hero-actions {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-columns: 1fr;
     width: 100%;
     max-width: 100%;
   }
@@ -904,6 +931,27 @@ button {
     grid-template-columns: 1fr;
   }
 
+  .mission-panel,
+  .simulator,
+  .operating-stage,
+  .sequence,
+  .rail,
+  .story-strip article {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .mission-grid div,
+  .timeline-step,
+  .phase-brief p,
+  .phase-brief li,
+  .rail li {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
   .simulator,
   .operating-stage {
     padding: 10px;
@@ -924,7 +972,8 @@ button {
   .node {
     left: 50%;
     right: auto;
-    width: min(270px, calc(100% - 28px));
+    width: calc(100% - 28px);
+    max-width: 270px;
     transform: translateX(-50%);
   }
 
