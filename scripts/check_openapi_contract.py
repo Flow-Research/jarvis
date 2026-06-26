@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate the Jarvis v0.1 OpenAPI skeleton."""
+"""Validate the Jarvis v0.1 OpenAPI contract."""
 
 from pathlib import Path
 import sys
@@ -1441,7 +1441,7 @@ PORTABLE_PROPERTY_PATTERN = (
 
 
 def fail(message: str) -> int:
-    print(f"openapi skeleton check failed: {message}")
+    print(f"openapi contract check failed: {message}")
     return 1
 
 
@@ -2298,7 +2298,7 @@ def main() -> int:
     if "Jarvis does not operate this server" not in description:
         return fail("server description must state that Jarvis does not operate it")
 
-    print("openapi skeleton ok")
+    print("openapi contract ok")
     return 0
 
 

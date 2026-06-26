@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Reject wording that drifts away from the Jarvis protocol boundary."""
+"""Validate wording against the Jarvis protocol boundary."""
 
 from pathlib import Path
 import re
@@ -62,8 +62,6 @@ def main() -> int:
                 continue
             if in_code_block:
                 continue
-            if path.name == "check_week1_wording.py":
-                continue
             line_to_check = NORMATIVE_TERM_PATTERN.sub("", line)
             for pattern in [*compiled, *lowercase_compiled]:
                 if pattern.search(line_to_check):
@@ -75,7 +73,7 @@ def main() -> int:
             print(f"{path}:{line_number}: rejected wording: {line}")
         return 1
 
-    print("week1 wording ok")
+    print("protocol wording ok")
     return 0
 
 

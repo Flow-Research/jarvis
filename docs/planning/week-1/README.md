@@ -104,7 +104,7 @@ Every chunk runs:
 ```txt
 git diff --check
 python3 scripts/check_markdown_links.py
-python3 scripts/check_week1_wording.py
+python3 scripts/check_protocol_wording.py
 ```
 
 If those scripts do not exist in the branch, the chunk adds them before the PR.
