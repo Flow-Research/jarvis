@@ -226,17 +226,16 @@ The active focus is the v0.1 first-30-days protocol contract.
 
 Protocol lock is complete. Week 2 OpenAPI contract and conformance entry work
 is complete. Week 3 protocol compatibility mapping and conformance fixtures
-are complete. Current work is Week 4 compatible examples and public story.
+are complete. Week 4 compatible examples and public story are complete.
+Current work is v0.1 acceptance review after Week 4 closeout.
 
 Work on:
 
-- compatible examples after the conformance gate
-- conformance checklist publication
-- public README tightening
-- protocol examples for WorkSession, Request, Review, EvidenceManifest, and
-  LearningRecord
-- public simulation update for the OpenAPI proof path
-- public story explaining why Jarvis exists and what it does not replace
+- v0.1 acceptance review
+- protocol implementation helper boundary
+- public-readiness gap log
+- additional conformance evidence only when it preserves the protocol boundary
+- next-phase specification after acceptance review
 
 Do not build host implementations in this repo.
 Do not build runtime features in this repo.
@@ -244,7 +243,7 @@ Do not add or own adapters, wrappers, host behavior, or integration code in this
 repo.
 Do not add host-specific assumptions to protocol records.
 Do not reopen locked protocol decisions unless a concrete contradiction blocks
-compatible examples or public protocol documentation.
+v0.1 acceptance review.
 
 ## Wording Rules
 

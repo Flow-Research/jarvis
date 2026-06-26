@@ -2,9 +2,9 @@
 
 This roadmap turns Jarvis from design into a credible protocol proof.
 
-Jarvis is the human-agent collaboration and learning-loop protocol. The next 30
-days prove that existing human-agent work maps into Jarvis protocol records
-without moving host implementation into Jarvis.
+Jarvis is the human-agent collaboration and learning-loop protocol. The first
+30-day proof shows that existing human-agent work maps into Jarvis protocol
+records without moving host implementation into Jarvis.
 
 ## Thesis
 
@@ -175,7 +175,7 @@ Done when:
 
 ## Week 4: Compatible Examples And Public Story
 
-Status: active.
+Status: complete.
 
 Goal: prepare compatible examples after the protocol contract and
 conformance gate are credible.
@@ -183,27 +183,26 @@ conformance gate are credible.
 Deliverables:
 
 - compatible host mapping example
-- one CLI-agent compatibility proof plan
-- one real external-agent or SDK-agent compatibility proof plan
+- existing-agent compatibility example
+- public conformance checklist
+- protocol record examples for WorkSession, Request, Review, Takeover,
+  Contribution, EvidenceManifest, LearningRecord, MemoryProposal,
+  SkillProposal, and OutcomeReport
 - public README tightened around protocol positioning
-- protocol examples for WorkSession, Request, Review, EvidenceManifest, and
-  LearningRecord
-- conformance checklist published
 - Jarvis SDK boundary note: protocol implementation kit, not agent framework
 - GitHub Pages simulation updated to show the OpenAPI proof path
 - short public narrative: why Jarvis exists and what it does not replace
 
-First Compatibility Targets:
+Completed Compatibility Targets:
 
 - command-line host boundary
 - local execution host boundary
-- hosted execution host boundary
-- tool-use protocol boundary
+- existing native agent boundary
 
-Done when:
+Done:
 
-- at least two different compatible implementation shapes have a credible
-  plan against the same OpenAPI contract
+- at least two different compatible implementation shapes map to the same
+  OpenAPI contract
 - a compatible host example maps real work into Jarvis records without becoming the
   protocol itself
 - the team shares one URL and one README that explain the point clearly
