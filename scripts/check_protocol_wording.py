@@ -62,8 +62,6 @@ def main() -> int:
                 continue
             if in_code_block:
                 continue
-            if path.name == "check_protocol_wording.py":
-                continue
             line_to_check = NORMATIVE_TERM_PATTERN.sub("", line)
             for pattern in [*compiled, *lowercase_compiled]:
                 if pattern.search(line_to_check):
