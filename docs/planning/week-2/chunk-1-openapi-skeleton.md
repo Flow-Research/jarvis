@@ -33,7 +33,7 @@ This chunk does not define:
 
 - [../../openapi/jarvis-openapi.yaml](../../openapi/jarvis-openapi.yaml)
 - [../../openapi/README.md](../../openapi/README.md)
-- [../../../scripts/check_openapi_skeleton.py](../../../scripts/check_openapi_skeleton.py)
+- [../../../scripts/check_openapi_contract.py](../../../scripts/check_openapi_contract.py)
 
 ## Acceptance
 

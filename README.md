@@ -17,6 +17,9 @@ external system that needs to participate in governed human-agent collaboration.
 
 ## Interactive Simulation
 
+The simulation is non-normative public explanation. It is not protocol proof
+and it is not a host UI implementation.
+
 Open the live simulation here:
 
 https://flow-research.github.io/jarvis/
@@ -331,9 +334,9 @@ Every protocol PR MUST run:
 
 ```txt
 python3 scripts/check_conformance_fixtures.py
-python3 scripts/check_openapi_skeleton.py
+python3 scripts/check_openapi_contract.py
 python3 scripts/check_markdown_links.py
-python3 scripts/check_week1_wording.py
+python3 scripts/check_protocol_wording.py
 git diff --check
 ```
 

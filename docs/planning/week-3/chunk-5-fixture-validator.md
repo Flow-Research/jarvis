@@ -69,9 +69,9 @@ Every conformance-fixture change MUST run:
 
 ```txt
 python3 scripts/check_conformance_fixtures.py
-python3 scripts/check_openapi_skeleton.py
+python3 scripts/check_openapi_contract.py
 python3 scripts/check_markdown_links.py
-python3 scripts/check_week1_wording.py
+python3 scripts/check_protocol_wording.py
 git diff --check
 ```
 

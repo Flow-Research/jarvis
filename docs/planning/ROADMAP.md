@@ -17,7 +17,8 @@ For the OpenAPI entry gate, see
 
 Week 1 protocol lock is complete.
 
-Current active work: v0.1 acceptance review after Week 4 closeout.
+Current active work: [v0.1 acceptance review](./v0.1-acceptance-review/README.md)
+after Week 4 closeout.
 
 Week 2 completed the OpenAPI 3.1 component syntax, path syntax, security scheme
 encoding, protocol examples, and conformance entry rules from the locked Week 1
@@ -148,7 +149,7 @@ MemoryProposal and SkillProposal remain governed
 - one real existing-agent compatibility proof
 - valid and invalid conformance fixtures
 - version and capability negotiation
-- one protocol simulation that visualizes the proof path
+- non-normative public simulation boundary
 - compatible implementation guide
 - protocol implementation helper boundary
 
@@ -344,13 +345,13 @@ Output:
 - compatible implementation guide
 - EvidenceManifest consumption rules
 - compatible host boundary note
-- interactive simulation
+- non-normative public simulation boundary
 
 Done when:
 
 - a team understands Jarvis without knowing any specific host
 - a host implements Jarvis without inheriting execution assumptions
-- the public simulation matches the protocol definition
+- the public simulation, when present, stays non-normative and protocol-aligned
 
 ## v0.1 Acceptance
 
@@ -361,7 +362,7 @@ v0.1 is accepted when:
 - no protocol contract names a cloud, database, sandbox, or deployment
   platform
 - public docs describe Jarvis as protocol only
-- live simulation describes Jarvis as protocol only
+- live simulation, when present, describes Jarvis as protocol only
 - any Jarvis SDK surface is limited to protocol implementation helpers
 
 ## v0.2 Evidence And Learning Beta
@@ -476,7 +477,7 @@ and example record mappers.
 3. Use `11-core-protocol-objects.md`, `jarvis-openapi.yaml`, and
    `docs/conformance/` as the source of truth for v0.1 acceptance review.
 4. Review Week 4 closeout against the OpenAPI contract, conformance fixtures,
-   public examples, README, and simulation.
+   public examples, README, and non-normative simulation boundary.
 5. Record public-readiness gaps before starting next-phase specification.
 6. Keep adapter code, wrappers, host behavior, and integration code outside
    Jarvis.

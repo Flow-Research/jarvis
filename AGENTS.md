@@ -237,6 +237,11 @@ Work on:
 - additional conformance evidence only when it preserves the protocol boundary
 - next-phase specification after acceptance review
 
+The v0.1 acceptance review starts from
+[docs/planning/v0.1-acceptance-review/README.md](./docs/planning/v0.1-acceptance-review/README.md)
+and
+[docs/planning/v0.1-acceptance-review/acceptance-spec.md](./docs/planning/v0.1-acceptance-review/acceptance-spec.md).
+
 Do not build host implementations in this repo.
 Do not build runtime features in this repo.
 Do not add or own adapters, wrappers, host behavior, or integration code in this
@@ -263,7 +268,7 @@ Soft protocol wording is a defect.
 
 Do not write protocol rules with soft modal verbs, speculative phrases,
 advisory phrases, or generic implementation-concern phrasing. The wording
-guard in [scripts/check_week1_wording.py](./scripts/check_week1_wording.py)
+guard in [scripts/check_protocol_wording.py](./scripts/check_protocol_wording.py)
 rejects the blocked terms.
 
 Use direct ownership and state language instead:
@@ -288,9 +293,9 @@ Every protocol PR MUST run:
 
 ```txt
 python3 scripts/check_conformance_fixtures.py
-python3 scripts/check_openapi_skeleton.py
+python3 scripts/check_openapi_contract.py
 python3 scripts/check_markdown_links.py
-python3 scripts/check_week1_wording.py
+python3 scripts/check_protocol_wording.py
 git diff --check
 ```
 

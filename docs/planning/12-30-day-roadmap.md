@@ -190,7 +190,7 @@ Deliverables:
   SkillProposal, and OutcomeReport
 - public README tightened around protocol positioning
 - Jarvis SDK boundary note: protocol implementation kit, not agent framework
-- GitHub Pages simulation updated to show the OpenAPI proof path
+- GitHub Pages simulation kept as non-normative public explanation
 - short public narrative: why Jarvis exists and what it does not replace
 
 Completed Compatibility Targets:
@@ -242,6 +242,18 @@ Daily checks:
 - Contributions remain attributable.
 - Memory and skills do not silently mutate.
 - Compatibility matters more than owning the runtime.
+
+## v0.1 Acceptance Review
+
+The 30-day proof now enters
+[v0.1 acceptance review](./v0.1-acceptance-review/README.md).
+
+Acceptance review audits the full protocol contract, OpenAPI binding,
+conformance surface, public examples, README, and non-normative simulation
+boundary before v0.1 is called Protocol Alpha.
+
+The acceptance gates are defined in
+[acceptance-spec.md](./v0.1-acceptance-review/acceptance-spec.md).
 
 ## First 72 Hours
 
