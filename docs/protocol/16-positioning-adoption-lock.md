@@ -19,7 +19,7 @@ future WorkSessions.
 
 Jarvis is not an agent protocol in the narrow sense.
 
-Jarvis is the human-agent collaboration protocol.
+Jarvis is the human-agent collaboration and learning-loop protocol.
 
 The primitive is:
 
@@ -77,10 +77,10 @@ exchange. Jarvis does not become the host.
 
 A Jarvis SDK is a protocol implementation kit.
 
-It helps compatible implementations create, validate, export, and test Jarvis
-records. It does not run agents, orchestrate models, execute tools, own memory
-engines, provide UI, manage auth, store records, run sandboxes, schedule work,
-or become a host adapter.
+A Jarvis SDK provides protocol helpers for compatible implementations to create,
+validate, export, and test Jarvis records. It does not run agents, orchestrate
+models, execute tools, own memory engines, provide UI, manage auth, store
+records, run sandboxes, schedule work, or become a host adapter.
 
 SDK support does not change the category. Jarvis remains the human-agent
 collaboration and learning-loop protocol.
@@ -122,7 +122,7 @@ governed learning
 memory and skill proposals
 ```
 
-Jarvis is worth adopting when a team needs to answer:
+Jarvis answers these protocol accountability questions:
 
 ```txt
 What work happened?

@@ -3,7 +3,7 @@
   "protocol_version": "v0.1",
   "kind": "invalid",
   "title": "Reject OutcomeReport without LearningRecord",
-  "description": "The protocol rejects OutcomeReport that does not create or reference a LearningRecord.",
+  "description": "The protocol rejects OutcomeReport that does not reference a LearningRecord.",
   "source_contract_refs": [
     "docs/conformance/failure-modes.md",
     "docs/conformance/compatibility-mapping.md",
@@ -224,7 +224,7 @@
       "assertion_id": "assert-outcome-report-without-learning-record",
       "class": "learning_governance_gate",
       "target_ref": "records.outcome_reports.invalid",
-      "required_state": "OutcomeReport must create or reference LearningRecord.",
+      "required_state": "OutcomeReport must reference LearningRecord.",
       "expected_result": "reject",
       "expected_error_id": "outcome_report_without_learning_record"
     }

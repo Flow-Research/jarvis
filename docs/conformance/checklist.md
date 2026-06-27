@@ -304,8 +304,8 @@ Compatible implementations MUST prove:
 - LearningRecord references source events.
 - LearningRecord does not directly create durable memory or active skill
   behavior.
-- OutcomeReport-backed LearningRecord references accepted OutcomeReport
-  evidence.
+- OutcomeReport-backed LearningRecord records `outcome_report_refs` and
+  WorkSession source events that support the learning.
 
 The protocol rejects:
 
@@ -338,7 +338,7 @@ Compatible implementations MUST prove:
 - SkillProposal records a proposed reusable way of working.
 - SkillProposal does not activate without review.
 - SkillProposal does not expand tool access without policy review.
-- Rejected, superseded, or expired SkillProposal does not affect future work.
+- Rejected, superseded, or archived SkillProposal does not affect future work.
 
 The protocol rejects:
 
@@ -355,7 +355,7 @@ Compatible implementations MUST prove:
   EvidenceManifest.
 - OutcomeReport identifies the report source.
 - OutcomeReport records the accepting Actor.
-- OutcomeReport creates or references LearningRecord.
+- OutcomeReport references at least one LearningRecord.
 - OutcomeReport submission uses the non-WorkSession mutation header set.
 
 The protocol rejects:

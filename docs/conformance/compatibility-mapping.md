@@ -90,7 +90,7 @@ Compatible implementations MUST map this surface:
 | confirmed improvement | `LearningRecord` | LearningRecord subject is human, agent, or pair and references source events |
 | memory update proposal | `MemoryProposal` | durable memory stays proposed until governed review accepts it |
 | reusable process proposal | `SkillProposal` | active skill behavior stays proposed until governed review accepts it |
-| post-session feedback | `OutcomeReport`, `LearningRecord` | OutcomeReport creates or references LearningRecord and does not mutate sealed records |
+| post-session feedback | `OutcomeReport`, `LearningRecord` | OutcomeReport references at least one LearningRecord and does not mutate sealed records |
 | unsupported native concept | `limitations` or `unsupported_capability` | portable record states the missing capability or evidence limitation |
 
 ## Mapping Order

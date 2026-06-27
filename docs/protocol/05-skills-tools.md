@@ -1,9 +1,10 @@
 # Skills And Tools
 
-Skills and tools are protocol-visible capabilities in Jarvis.
+Jarvis defines protocol-visible skill and tool metadata.
 
 Skills are procedural memory. Tools are host-provided capabilities. Both must
-be governed by policy before they affect a WorkSession.
+be governed by policy before they affect a WorkSession. Hosts own skill
+registries, connector architecture, and execution.
 
 ## Skill Model
 

@@ -495,7 +495,7 @@ Takeover, Contribution, EvidenceManifest, or LearningRecord gates.
 
 ## Public Questions Answered
 
-Why does an existing agent still need Jarvis?
+What does Jarvis record beyond native agent logs?
 
 ```txt
 Native agents perform work, but native logs and outputs do not create the

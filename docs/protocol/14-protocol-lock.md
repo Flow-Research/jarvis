@@ -446,8 +446,9 @@ Rules:
   `rejected`, `superseded`, and `expired`.
 - SkillProposal states are `proposed`, `pending_review`, `accepted`,
   `rejected`, `superseded`, and `archived`.
-- OutcomeReport is an optional extension that creates or references governed
-  LearningRecord without mutating sealed WorkSession or EvidenceManifest.
+- OutcomeReport is a v0.1 extension protocol object that references governed
+  LearningRecord records without mutating sealed WorkSession or
+  EvidenceManifest.
 
 ## Compatibility
 
@@ -524,6 +525,11 @@ MemoryProposals
 SkillProposals
 limitations
 ```
+
+OutcomeReport is outside the sealed WorkSession portable export. When
+distributed, OutcomeReport travels as a separate v0.1 extension record linked by
+`work_session_id` and `learning_record_refs`. It MUST NOT mutate the sealed
+WorkSession export or EvidenceManifest.
 
 Extension fields are namespaced. Extensions do not change the meaning of core
 protocol fields.

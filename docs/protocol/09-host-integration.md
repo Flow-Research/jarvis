@@ -116,9 +116,12 @@ Jarvis export.
 
 A portable Jarvis export contains:
 
+- protocol_version
 - WorkSession
-- events
-- Policy decisions
+- Workers
+- Actors
+- JarvisEvents
+- PolicyDecisions
 - Requests
 - Reviews
 - Takeovers
@@ -128,6 +131,10 @@ A portable Jarvis export contains:
 - MemoryProposals
 - SkillProposals
 - limitations
+
+OutcomeReport is outside this sealed WorkSession export. When distributed,
+OutcomeReport travels as a separate v0.1 extension record linked by
+`work_session_id` and `learning_record_refs`.
 
 ## Compatibility
 

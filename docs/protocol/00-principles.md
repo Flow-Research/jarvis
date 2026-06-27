@@ -9,10 +9,9 @@ contributions, capture evidence, and both improve across WorkSessions.
 
 ## One-Line Definition
 
-Jarvis is the open protocol that lets HumanWorkers and AgentWorkers collaborate
-under shared goals and policy, producing durable WorkSessions, reviewable
-Requests, attributable Contributions, governed shared Learning, and portable
-Evidence.
+Jarvis defines how HumanWorkers and AgentWorkers collaborate under shared goals
+and Policy, producing durable WorkSessions, reviewable Requests, attributable
+Contributions, governed shared Learning, and portable Evidence.
 
 ## Simple Definition
 

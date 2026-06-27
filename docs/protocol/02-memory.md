@@ -1,9 +1,10 @@
 # Memory
 
-Memory is the most important Jarvis-owned layer after the collaboration kernel.
+Jarvis defines governed LearningRecord and MemoryProposal semantics. Hosts own
+memory engines, transcript stores, vector databases, retrieval, and storage.
 
-Jarvis memory lets the human and agent learn how to work together. It is not a
-raw transcript dump or only a vector database.
+Jarvis memory records how the human and agent learn to work together. It is
+not a raw transcript dump or only a vector database.
 
 ## Memory Scopes
 
@@ -364,9 +365,10 @@ submissions, and required revisions.
 
 A compatible system records that feedback through an OutcomeReport extension or
 an equivalent attributable external feedback record. The completed WorkSession
-and EvidenceManifest stay sealed. The new feedback links back to the original
-WorkSession and produces a new LearningRecord, MemoryProposal, or
-SkillProposal.
+and EvidenceManifest stay sealed. OutcomeReport links to governed
+LearningRecord records through `learning_record_refs`. New LearningRecord,
+MemoryProposal, or SkillProposal records are created only through their own
+governed protocol operations.
 
 This closes the learning loop without rewriting history.
 

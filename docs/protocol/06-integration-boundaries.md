@@ -5,8 +5,8 @@ Jarvis is a compatibility protocol. It does not define how work runs.
 Hosts decide where and how execution happens. Jarvis defines the protocol
 records those systems produce and consume.
 
-Jarvis lets different humans, agents, hosts, and external systems
-share the same collaboration records without sharing the same infrastructure.
+Jarvis defines shared collaboration records for different humans, agents,
+hosts, and external systems without requiring shared infrastructure.
 
 ## Jarvis Boundary
 
@@ -29,6 +29,7 @@ EvidenceManifest
 LearningRecord
 MemoryProposal
 SkillProposal
+OutcomeReport
 ```
 
 Jarvis defines the meaning of those contracts, the allowed state transitions,
@@ -101,7 +102,7 @@ The locked positioning rules are defined in
 External systems report what happened after a WorkSession export. That
 feedback closes the learning loop without rewriting the completed session.
 
-`OutcomeReport` is an optional extension record:
+`OutcomeReport` is a v0.1 extension protocol object:
 
 ```txt
 OutcomeReport
@@ -124,7 +125,8 @@ Rules:
 - OutcomeReport arrives after a WorkSession is completed, failed, cancelled, or
   closed.
 - It does not mutate the sealed WorkSession or EvidenceManifest.
-- The report creates or references a new LearningRecord.
+- OutcomeReport MUST reference at least one governed LearningRecord through
+  `learning_record_refs`.
 - OutcomeReport does not define evaluation, payment, scoring, settlement, or
   marketplace logic.
 - `source_ref` is required and identifies the completed, failed, cancelled, or
@@ -136,11 +138,13 @@ Rules:
   accepted the report into Jarvis records.
 - `reporter_actor_id` is present only when the reporter is already represented
   as a protocol Actor.
-- OutcomeReport is an extension. It does not change the v0.1 core object list.
+- OutcomeReport is part of the v0.1 protocol contract as an extension object.
+- OutcomeReport stays outside the sealed WorkSession export and does not change
+  the WorkSession core object list.
 
 ## Host Contract
 
-A Jarvis-compatible host must be able to:
+A Jarvis-compatible host MUST produce and consume protocol records for:
 
 ```txt
 start WorkSession
@@ -152,6 +156,7 @@ record Takeover and reconciliation
 record Contribution entries
 capture EvidenceManifest entries during work
 propose MemoryProposal and SkillProposal records
+submit OutcomeReport post-session feedback records
 export protocol records without host-private implementation details
 ```
 

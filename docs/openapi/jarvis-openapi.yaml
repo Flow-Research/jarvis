@@ -5,7 +5,7 @@ info:
   summary: Human-agent collaboration and learning-loop protocol.
   description: |
     Jarvis defines the protocol records and operations for governed
-    collaboration between HumanWorkers and AgentWorkers.
+    collaboration and shared learning between HumanWorkers and AgentWorkers.
 
     Jarvis defines protocol records and operations only.
   version: 0.1.0
@@ -2340,6 +2340,7 @@ components:
         - unreviewed_skill_change_cannot_activate
     OutcomeReport:
       type: object
+      description: v0.1 extension protocol object for post-session feedback ingress. OutcomeReport stays outside the sealed WorkSession export and does not mutate WorkSession, EvidenceManifest, or LearningRecord records.
       additionalProperties: false
       required:
         - id

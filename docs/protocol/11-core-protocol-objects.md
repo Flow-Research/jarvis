@@ -793,9 +793,10 @@ outcome_report_refs
 ```
 
 Source rule: `source_event_refs` is required for every LearningRecord.
-OutcomeReport-backed LearningRecords use the OutcomeReport acceptance
-JarvisEvent as `source_event_refs` and record `outcome_report_refs` when
-external feedback exists.
+OutcomeReport-backed LearningRecords record `outcome_report_refs` when external
+feedback exists. `source_event_refs` continue to reference the WorkSession
+events that support the learning. OutcomeReport submission does not append a
+JarvisEvent to a sealed WorkSession event log.
 
 Review states:
 
@@ -937,10 +938,12 @@ raw_auth_token
 database_primary_key
 ```
 
-### OutcomeReport Extension Field Lock
+### OutcomeReport Extension Object Field Lock
 
-`OutcomeReport` is an extension object. It does not change the v0.1 core object
-list.
+`OutcomeReport` is a v0.1 extension protocol object. It is part of the v0.1
+OpenAPI contract and conformance surface as post-session feedback ingress. It
+stays outside the sealed WorkSession core and does not mutate WorkSession,
+EvidenceManifest, or LearningRecord records.
 
 Required fields:
 
@@ -1665,8 +1668,8 @@ A portable Jarvis export contains:
 ```txt
 protocol_version
 WorkSession
-Actors
 Workers
+Actors
 JarvisEvents
 PolicyDecisions
 Requests
@@ -1679,6 +1682,11 @@ MemoryProposals
 SkillProposals
 limitations
 ```
+
+OutcomeReport is outside the sealed WorkSession portable export. When
+distributed, OutcomeReport travels as a separate v0.1 extension record linked by
+`work_session_id` and `learning_record_refs`. It MUST NOT mutate the sealed
+WorkSession export or EvidenceManifest.
 
 The export must not require a receiving system to understand host-private
 database ids, cloud resources, execution objects, UI state, credentials, or

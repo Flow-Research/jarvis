@@ -116,8 +116,10 @@ Layer 1: Protocol semantics
   HumanWorker + AgentWorker collaboration and learning loop
 
 Layer 2: Protocol objects
-  WorkSession, Policy, Request, Review, Takeover, Contribution,
-  EvidenceManifest, LearningRecord, MemoryProposal, SkillProposal
+  Worker, Actor, HumanWorker, AgentWorker, WorkSession, JarvisEvent,
+  Policy, PolicyDecision, Request, Review, Takeover, Contribution,
+  EvidenceManifest, LearningRecord, MemoryProposal, SkillProposal,
+  OutcomeReport
 
 Layer 3: Protocol operations
   create WorkSession, append event, create Request, record Review,
@@ -139,8 +141,8 @@ schema-file packages are not the primary contract.
 
 A Jarvis SDK is a protocol implementation kit.
 
-A Jarvis SDK helps compatible implementations create, validate, sign, hash,
-export, and test Jarvis protocol records.
+A Jarvis SDK provides protocol helpers for compatible implementations to create,
+validate, sign, hash, export, and test Jarvis protocol records.
 
 A Jarvis SDK does not run agents. A Jarvis SDK does not orchestrate models. A
 Jarvis SDK does not execute tools. A Jarvis SDK does not own memory engines,
@@ -165,7 +167,7 @@ Jarvis SDK work is rejected when it becomes an agent framework, runtime,
 planner, model router, tool executor, memory engine, host adapter, wrapper, UI
 kit, auth provider, storage backend, sandbox, or workflow engine.
 
-The adoption test is strict: an existing agent must be able to participate in
+The protocol compatibility test is strict: an existing agent participates in
 Jarvis through protocol records without being rewritten as a Jarvis agent.
 
 ## Zero-Trust Requirement

@@ -1,4 +1,4 @@
-# Work Sessions
+# WorkSession
 
 Jarvis centers serious work around a `WorkSession`.
 
@@ -513,7 +513,7 @@ EvidenceItem
 Redacted exports are derived artifacts. They never replace raw immutable
 evidence inside the WorkSession record.
 
-## Evidence Manifest
+## EvidenceManifest
 
 Evidence is exportable as a manifest:
 
@@ -552,8 +552,8 @@ policy profile
 tool inventory hash
 ```
 
-This lets a WorkSession resume and lets humans inspect why the agent saw a
-particular context.
+This record supports WorkSession resumption and human inspection of the exact
+context the agent received.
 
 ## Reproducibility References
 
@@ -576,8 +576,8 @@ host-held material.
 
 ## Learning Pass
 
-After a WorkSession produces reviewable output, a compatible implementation
-runs a learning pass:
+After a WorkSession produces reviewable output, compatible implementations
+record a protocol-visible learning pass:
 
 ```txt
 1. inspect conversation, actions, reviews, artifacts, and outcome
@@ -667,8 +667,8 @@ A WorkSession is resumable:
 - restore relevant memory snapshot
 - explain what remains
 
-The agent continues without losing context after host interruption, restart, or
-human delay.
+Protocol records preserve enough context for a host to resume AgentWorker work
+after interruption, restart, or human delay.
 
 ## Durability And Recovery
 
