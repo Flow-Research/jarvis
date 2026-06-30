@@ -253,6 +253,8 @@ REQUIRED_EXAMPLES = {
 }
 
 EXAMPLE_REQUIRED_VALUES = {
+    ("WorkSessionCreateExample", "revision"): 1,
+    ("WorkSessionCreateExample", "last_event_hash"): "hash:event-worksession-created",
     ("PolicyDecisionDeniedExample", "result"): "deny",
     ("RequestBlockedActionExample", "status"): "pending",
     ("ReviewApproveRequestExample", "decision"): "approve",
@@ -298,6 +300,7 @@ READ_HEADERS = {
 REQUIRED_OPERATIONS = {
     ("put", "/workers/{worker_id}"): {
         "operation_id": "registerWorker",
+        "operation_class": "non_worksession_mutation",
         "tag": "Workers",
         "headers": NON_WORKSESSION_MUTATION_HEADERS,
         "path_parameters": {"WorkerIdPath"},
@@ -307,6 +310,7 @@ REQUIRED_OPERATIONS = {
     },
     ("put", "/actors/{actor_id}"): {
         "operation_id": "registerActor",
+        "operation_class": "non_worksession_mutation",
         "tag": "Workers",
         "headers": NON_WORKSESSION_MUTATION_HEADERS,
         "path_parameters": {"ActorIdPath"},
@@ -316,6 +320,7 @@ REQUIRED_OPERATIONS = {
     },
     ("post", "/work-sessions"): {
         "operation_id": "createWorkSession",
+        "operation_class": "worksession_genesis_mutation",
         "tag": "WorkSessions",
         "headers": WORKSESSION_MUTATION_HEADERS,
         "path_parameters": set(),
@@ -325,6 +330,7 @@ REQUIRED_OPERATIONS = {
     },
     ("get", "/work-sessions/{work_session_id}"): {
         "operation_id": "getWorkSession",
+        "operation_class": "worksession_scoped_read",
         "tag": "WorkSessions",
         "headers": READ_HEADERS,
         "path_parameters": {"WorkSessionIdPath"},
@@ -334,6 +340,7 @@ REQUIRED_OPERATIONS = {
     },
     ("post", "/work-sessions/{work_session_id}/events"): {
         "operation_id": "appendJarvisEvent",
+        "operation_class": "worksession_scoped_mutation",
         "tag": "WorkSessions",
         "headers": WORKSESSION_MUTATION_HEADERS,
         "path_parameters": {"WorkSessionIdPath"},
@@ -343,6 +350,7 @@ REQUIRED_OPERATIONS = {
     },
     ("post", "/work-sessions/{work_session_id}/policy-decisions"): {
         "operation_id": "recordPolicyDecision",
+        "operation_class": "worksession_scoped_mutation",
         "tag": "ControlPlane",
         "headers": WORKSESSION_MUTATION_HEADERS,
         "path_parameters": {"WorkSessionIdPath"},
@@ -352,6 +360,7 @@ REQUIRED_OPERATIONS = {
     },
     ("post", "/work-sessions/{work_session_id}/requests"): {
         "operation_id": "createRequest",
+        "operation_class": "worksession_scoped_mutation",
         "tag": "ControlPlane",
         "headers": WORKSESSION_MUTATION_HEADERS,
         "path_parameters": {"WorkSessionIdPath"},
@@ -361,6 +370,7 @@ REQUIRED_OPERATIONS = {
     },
     ("post", "/work-sessions/{work_session_id}/reviews"): {
         "operation_id": "recordReview",
+        "operation_class": "worksession_scoped_mutation",
         "tag": "ControlPlane",
         "headers": WORKSESSION_MUTATION_HEADERS,
         "path_parameters": {"WorkSessionIdPath"},
@@ -370,6 +380,7 @@ REQUIRED_OPERATIONS = {
     },
     ("post", "/work-sessions/{work_session_id}/takeovers"): {
         "operation_id": "recordTakeover",
+        "operation_class": "worksession_scoped_mutation",
         "tag": "ControlPlane",
         "headers": WORKSESSION_MUTATION_HEADERS,
         "path_parameters": {"WorkSessionIdPath"},
@@ -379,6 +390,7 @@ REQUIRED_OPERATIONS = {
     },
     ("post", "/work-sessions/{work_session_id}/contributions"): {
         "operation_id": "recordContribution",
+        "operation_class": "worksession_scoped_mutation",
         "tag": "Attribution",
         "headers": WORKSESSION_MUTATION_HEADERS,
         "path_parameters": {"WorkSessionIdPath"},
@@ -388,6 +400,7 @@ REQUIRED_OPERATIONS = {
     },
     ("post", "/work-sessions/{work_session_id}/learning-records"): {
         "operation_id": "createLearningRecord",
+        "operation_class": "worksession_scoped_mutation",
         "tag": "Learning",
         "headers": WORKSESSION_MUTATION_HEADERS,
         "path_parameters": {"WorkSessionIdPath"},
@@ -397,6 +410,7 @@ REQUIRED_OPERATIONS = {
     },
     ("post", "/work-sessions/{work_session_id}/memory-proposals"): {
         "operation_id": "createMemoryProposal",
+        "operation_class": "worksession_scoped_mutation",
         "tag": "Learning",
         "headers": WORKSESSION_MUTATION_HEADERS,
         "path_parameters": {"WorkSessionIdPath"},
@@ -406,6 +420,7 @@ REQUIRED_OPERATIONS = {
     },
     ("post", "/work-sessions/{work_session_id}/skill-proposals"): {
         "operation_id": "createSkillProposal",
+        "operation_class": "worksession_scoped_mutation",
         "tag": "Learning",
         "headers": WORKSESSION_MUTATION_HEADERS,
         "path_parameters": {"WorkSessionIdPath"},
@@ -415,6 +430,7 @@ REQUIRED_OPERATIONS = {
     },
     ("get", "/work-sessions/{work_session_id}/export"): {
         "operation_id": "exportEvidenceManifest",
+        "operation_class": "export_read",
         "tag": "Evidence",
         "headers": READ_HEADERS,
         "path_parameters": {"WorkSessionIdPath"},
@@ -424,6 +440,7 @@ REQUIRED_OPERATIONS = {
     },
     ("post", "/outcome-reports"): {
         "operation_id": "submitOutcomeReport",
+        "operation_class": "non_worksession_mutation",
         "tag": "Feedback",
         "headers": NON_WORKSESSION_MUTATION_HEADERS,
         "path_parameters": set(),
@@ -1169,6 +1186,8 @@ REQUIRED_FORBIDDEN_METADATA = {
         "credential",
         "raw_auth_token",
         "provider_secret",
+        "session_cookie",
+        "private_key",
         "database_primary_key",
         "cloud_storage_secret",
         "unredacted_secret_value",
@@ -1183,6 +1202,8 @@ REQUIRED_FORBIDDEN_METADATA = {
         "credential",
         "raw_auth_token",
         "provider_secret",
+        "session_cookie",
+        "private_key",
         "database_primary_key",
         "cloud_storage_secret",
         "unredacted_secret_value",
@@ -1204,6 +1225,8 @@ REQUIRED_FORBIDDEN_METADATA = {
         "credential",
         "raw_auth_token",
         "provider_secret",
+        "session_cookie",
+        "private_key",
         "database_primary_key",
         "cloud_storage_secret",
         "unredacted_secret_value",
@@ -2251,6 +2274,50 @@ def main() -> int:
                 f"{method.upper()} {path} operationId must be "
                 + expected["operation_id"]
             )
+        if not operation.get("summary"):
+            return fail(f"{method.upper()} {path} must define summary")
+        description = operation.get("description")
+        if not isinstance(description, str) or not description.strip():
+            return fail(f"{method.upper()} {path} must define description")
+        normalized_description = " ".join(description.split())
+        if "Compatible implementations MUST verify" not in normalized_description:
+            return fail(
+                f"{method.upper()} {path} description must define verification duty"
+            )
+        if operation.get("x-jarvis-operation-class") != expected["operation_class"]:
+            return fail(
+                f"{method.upper()} {path} x-jarvis-operation-class must be "
+                + expected["operation_class"]
+            )
+        if expected["operation_class"] in {
+            "worksession_scoped_read",
+            "export_read",
+        }:
+            if "Actor read authority" not in normalized_description:
+                return fail(
+                    f"{method.upper()} {path} description must require Actor read authority"
+                )
+            if "MUST NOT require mutation-only" not in normalized_description:
+                return fail(
+                    f"{method.upper()} {path} description must exclude mutation-only headers"
+                )
+        if expected["operation_class"] == "non_worksession_mutation":
+            if (
+                "does not require WorkSession revision or previous event hash"
+                not in normalized_description
+            ):
+                return fail(
+                    f"{method.upper()} {path} description must exclude WorkSession revision and previous hash"
+                )
+        if expected["operation_class"] == "worksession_genesis_mutation":
+            if "expected revision `0`" not in normalized_description:
+                return fail(
+                    f"{method.upper()} {path} description must require genesis revision"
+                )
+            if "`hash:protocol-genesis`" not in normalized_description:
+                return fail(
+                    f"{method.upper()} {path} description must require protocol genesis hash"
+                )
         if operation.get("tags") != [expected["tag"]]:
             return fail(f"{method.upper()} {path} tag must be {expected['tag']}")
         if operation.get("security") != [{"HostAuth": []}]:
