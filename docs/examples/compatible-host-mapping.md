@@ -123,6 +123,7 @@ the Actor.
 | local context read | terminal output stays host-owned | local file/process trace stays host-owned | `JarvisEvent` with portable evidence refs only |
 | allowed agent action | allowed command step | allowed local step | `PolicyDecision.result = allow` before accepted event |
 | external source blocked | CLI step pauses | local process branch pauses | `PolicyDecision.result = review_required` and scoped `Request` |
+| connector-backed source result | CLI host owns connector execution | local host owns connector execution | `Review` grants bounded scope and `EvidenceItemRef` records source event refs, artifact ref, content hash, trust label, and limitations |
 | human narrowed approval | CLI response narrows scope | local workspace response narrows scope | `Review.decision = narrow` and bounded `ApprovalScope` |
 | high-risk branch | human pauses CLI branch | human locks local branch | `Takeover` with `lock_epoch` and `reconciliation_refs` |
 | performed work | command transcript summary | local trace summary | `Contribution` with contributor refs |
@@ -248,9 +249,9 @@ EvidenceManifest.export_profile.profile = portable-v0.1
 ```
 
 Evidence item refs point to source JarvisEvents. They do not expose raw
-terminal state, local process state, credentials, raw auth tokens,
-provider secrets, host-only database ids, billing data, private scores, UI
-state, deployment details, private keys, or raw runtime state.
+terminal state, local process state, raw connector responses, credentials, raw
+auth tokens, provider secrets, host-only database ids, billing data, private
+scores, UI state, deployment details, private keys, or raw runtime state.
 
 Learning records preserve the human-agent learning loop:
 
@@ -358,11 +359,10 @@ This example is governed by:
 - [Existing-agent compatibility proof plan](../conformance/existing-agent-proof-plan.md)
 - [Golden-path conformance entry](../conformance/golden-path.md)
 - [Fixture documentation](../conformance/fixtures/README.md)
-- [Week 4 Chunk 2 spec](../planning/week-4/chunk-2-compatible-host-mapping.md)
 
-## Done State
+## Compatibility Conditions
 
-This mapping satisfies Chunk 2 when:
+This mapping is compatible only when:
 
 - both host shapes produce equivalent Jarvis records
 - `host_shape_ref` stays metadata only
@@ -372,6 +372,8 @@ This mapping satisfies Chunk 2 when:
 - Request resolves only through Review or Takeover
 - Takeover resume requires reconciliation refs
 - Contribution remains attributable
+- connector execution stays host-owned and EvidenceManifest records only
+  protocol-visible evidence refs
 - EvidenceManifest excludes forbidden host-private fields
 - LearningRecord, MemoryProposal, and SkillProposal stay governed
 - OutcomeReport remains post-session feedback without sealed-record mutation

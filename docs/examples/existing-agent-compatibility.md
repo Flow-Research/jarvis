@@ -165,6 +165,7 @@ portable protocol state.
 | native policy settings | host owns policy UI and storage | `Policy` record |
 | native tool step allowed by policy | host owns tool execution | `PolicyDecision.result = allow` before accepted state |
 | native tool step requiring human judgment | host pauses affected branch | `PolicyDecision.result = review_required` + `Request` |
+| connector-backed source result | host owns connector execution and raw connector response | `Review` grants bounded scope and `EvidenceItemRef` records source event refs, artifact ref, content hash, trust label, and limitations |
 | human narrows action | host owns UI or command surface | `Review.decision = narrow` + `ApprovalScope` |
 | human takes over final submission | host owns direct control surface | `Takeover` with `lock_epoch` and `reconciliation_refs` |
 | native agent output | host owns raw traces and formatting | `Contribution` + evidence refs |
@@ -173,9 +174,9 @@ portable protocol state.
 | future procedure change | host owns skill storage or prompt library | `SkillProposal` |
 | external result | external system owns evaluation source | `OutcomeReport` |
 
-Native memory, traces, prompts, tool logs, and scratchpads never enter portable
-records unless they are converted into permitted evidence refs without
-host-private fields.
+Native memory, traces, prompts, tool logs, connector responses, and scratchpads
+never enter portable records unless they are converted into permitted evidence
+refs without host-private fields.
 
 ## Review Resolution Branch
 
@@ -535,11 +536,10 @@ being rewritten as a Jarvis agent.
 - [Compatible host mapping example](./compatible-host-mapping.md)
 - [Golden-path conformance entry](../conformance/golden-path.md)
 - [Fixture documentation](../conformance/fixtures/README.md)
-- [Week 4 Chunk 3 spec](../planning/week-4/chunk-3-existing-agent-example.md)
 
-## Done State
+## Compatibility Conditions
 
-This example satisfies Chunk 3 when:
+This example is compatible only when:
 
 - the existing native agent remains native
 - Jarvis records collaboration only
@@ -552,6 +552,8 @@ This example satisfies Chunk 3 when:
 - ApprovalScope bounds narrowed authority
 - Takeover resume requires reconciliation refs
 - Contribution remains attributable
+- connector execution stays host-owned and EvidenceManifest records only
+  protocol-visible evidence refs
 - EvidenceManifest excludes forbidden host-private fields
 - LearningRecord, MemoryProposal, and SkillProposal stay governed
 - OutcomeReport remains post-session feedback without sealed-record mutation

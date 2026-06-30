@@ -93,7 +93,7 @@ Host-owned runtime details are outside compatibility comparison.
 
 ## Proof Pair
 
-Chunk 6 locks this v0.1 proof pair:
+The compatibility proof locks this v0.1 proof pair:
 
 ```txt
 command_line_host_boundary
@@ -400,9 +400,9 @@ Unsupported native concepts MUST record `limitations` or reject as
 Request, Review, Takeover, Contribution, EvidenceManifest, or LearningRecord
 gates.
 
-## Week 4 Entry Gate
+## Compatible Examples Entry Gate
 
-Week 4 compatible examples MUST start from this proof plan and the Week 3
+Compatible examples MUST start from this proof plan and the conformance
 fixtures.
 
 Compatible examples MUST NOT start from adapter behavior, host runtime behavior,
@@ -426,9 +426,9 @@ forbidden host-private fields
 required rejection gates
 ```
 
-## Done State
+## Compatibility Conditions
 
-Existing-agent compatibility proof is complete for v0.1 when:
+Existing-agent compatibility proof requires:
 
 - two allowed host shapes map the same collaboration loop into equivalent
   Jarvis records
