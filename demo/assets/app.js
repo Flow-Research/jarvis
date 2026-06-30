@@ -10,7 +10,7 @@ const steps = [
     summary:
       "The WorkSession-scoped mutation enters through the OpenAPI binding with protocol version, actor id, idempotency key, timestamp, expected revision, and previous event hash.",
     events: [
-      "Authorization: Bearer host-auth-ref",
+      "Authorization: HostAuth fixture",
       "Jarvis-Protocol-Version: v0.1",
       "Jarvis-Actor-Id: actor-human-reviewer",
       "Jarvis-Idempotency-Key: idem-work-session-create-001",
@@ -41,7 +41,7 @@ const steps = [
     summary:
       "Jarvis verifies Actor authority, checks the WorkSession revision, and links the previous event hash before accepting protocol state.",
     events: [
-      "Actor authority permits work_session.create.",
+      "Actor authority permits createWorkSession.",
       "Expected revision matches current revision.",
       "Previous event hash matches the chain head."
     ],
@@ -282,7 +282,7 @@ const steps = [
     activeNodes: ["kernel", "host"],
     activeBeams: ["beam-host"],
     summary:
-      "EvidenceManifest exports portable proof after terminal WorkSession state without host-private fields.",
+      "EvidenceManifest exports a portable evidence record after terminal WorkSession state without host-private fields.",
     events: [
       "WorkSession status: completed.",
       "EvidenceManifest includes event chain root.",
@@ -309,14 +309,14 @@ const steps = [
     activeNodes: ["human", "agent", "kernel"],
     activeBeams: ["beam-human", "beam-agent"],
     summary:
-      "OutcomeReport enters post-session feedback without rewriting the sealed WorkSession or EvidenceManifest. A new LearningRecord carries the feedback forward.",
+      "OutcomeReport enters post-session feedback without rewriting the sealed WorkSession or EvidenceManifest. A governed LearningRecord carries the feedback forward.",
     events: [
       "OutcomeReport arrives after WorkSession completion.",
       "OutcomeReport references learning-record-outcome-001.",
       "Sealed WorkSession and EvidenceManifest remain unchanged."
     ],
     memory: [
-      "Post-session feedback becomes governed learning.",
+      "Post-session feedback is linked to governed learning.",
       "Next WorkSession inherits accepted learning only.",
       "Human-agent pair improves without changing history."
     ],

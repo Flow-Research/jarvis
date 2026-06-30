@@ -41,14 +41,16 @@ Contributions, governed shared Learning, and portable Evidence.
 
 ## Plain English Definition
 
-Jarvis is how humans and agents work together properly.
+Jarvis defines protocol rules for humans and agents to work together under
+policy, review, evidence, and shared learning.
 
 The human does not just prompt. The agent does not just answer. They both
 participate in the work.
 
 The human gives direction, judgment, context, correction, approval, and
-accountability. The agent plans, executes, researches, drafts, uses tools,
-collects evidence, and proposes improvements.
+accountability. The AgentWorker contributes planning, research, drafting,
+evidence collection, and improvement proposals through host-owned execution
+and tool use.
 
 Jarvis defines the rules of that collaboration. Hosts and external systems
 implement those rules.

@@ -6,7 +6,7 @@
     <title>Jarvis</title>
     <meta
       name="description"
-      content="An interactive simulation of Jarvis as the human-agent collaboration and learning-loop protocol."
+      content="A non-normative public walkthrough of Jarvis as the human-agent collaboration and learning-loop protocol."
     />
     <link rel="icon" href="./assets/favicon.svg?v=protocol7" type="image/svg+xml" />
     <link rel="stylesheet" href="./assets/styles.css?v=protocol7" />
@@ -14,7 +14,7 @@
   <body>
     <canvas id="signalCanvas" aria-hidden="true"></canvas>
     <main class="shell">
-      <header class="topbar" aria-label="Jarvis simulation header">
+      <header class="topbar" aria-label="Jarvis walkthrough header">
         <a class="brand" href="./">
           <span class="brand-mark">J</span>
           <span>
@@ -23,7 +23,7 @@
           </span>
         </a>
         <div class="topbar-meta">
-          <span>WorkSession WS-1042</span>
+          <span>Example WorkSession WS-1042</span>
           <span>OpenAPI 3.1 binding</span>
           <span id="topbarStatus">created</span>
         </div>
@@ -40,9 +40,13 @@
             AG-UI connects agents to UI. Jarvis records how HumanWorkers and
             AgentWorkers collaborate, produce evidence, and learn.
           </p>
-          <div class="hero-actions" aria-label="Simulation controls">
+          <p class="demo-boundary">
+            Non-normative walkthrough. Not protocol proof. Not a host UI
+            implementation.
+          </p>
+          <div class="hero-actions" aria-label="Walkthrough controls">
             <button class="command primary" id="startBtn" type="button">
-              Launch WorkSession
+              Start Walkthrough
             </button>
             <button class="command" id="prevBtn" type="button">Back</button>
             <button class="command" id="nextBtn" type="button">Advance</button>
@@ -58,7 +62,7 @@
           </div>
         </div>
 
-        <aside class="mission-panel" aria-label="Live mission state">
+        <aside class="mission-panel" aria-label="Walkthrough state">
           <div class="mission-header">
             <span class="pulse"></span>
             <span id="missionState">Ready</span>
@@ -84,13 +88,13 @@
         </aside>
       </section>
 
-      <section class="simulator" aria-label="Jarvis operating simulation">
+      <section class="simulator" aria-label="Jarvis protocol walkthrough">
         <nav class="sequence" aria-label="WorkSession steps">
           <div class="section-label">OpenAPI record path</div>
           <ol id="timeline"></ol>
         </nav>
 
-        <section class="operating-stage" aria-label="Operating surface">
+        <section class="operating-stage" aria-label="Protocol record path">
           <div class="stage-top">
             <div>
               <span class="section-label">Current phase</span>
@@ -109,7 +113,7 @@
             <div class="node agent" data-node="agent">
               <span>AgentWorker</span>
               <strong>autonomous worker</strong>
-              <small>plan, execute, learn</small>
+              <small>plan, research, learn</small>
             </div>
 
             <div class="core" data-node="kernel">
@@ -148,7 +152,7 @@
           </div>
         </section>
 
-        <aside class="right-stack" aria-label="State rails">
+        <aside class="right-stack" aria-label="Record rails">
           <section class="rail policy-rail" aria-labelledby="policyTitle">
               <div class="rail-head">
               <span class="section-label">Mutation gate</span>
@@ -162,7 +166,7 @@
 
           <section class="rail" aria-labelledby="memoryTitle">
             <div class="rail-head">
-              <span class="section-label">Context plane</span>
+              <span class="section-label">Record context</span>
               <h3 id="memoryTitle">Protocol records</h3>
             </div>
             <ul id="memoryList"></ul>
@@ -170,8 +174,8 @@
 
           <section class="rail" aria-labelledby="evidenceTitle">
             <div class="rail-head">
-              <span class="section-label">Proof plane</span>
-              <h3 id="evidenceTitle">Evidence ledger</h3>
+              <span class="section-label">Evidence export</span>
+              <h3 id="evidenceTitle">EvidenceManifest</h3>
             </div>
             <ul id="evidenceList"></ul>
           </section>
@@ -181,7 +185,7 @@
       <section class="story-strip" aria-label="Jarvis model summary">
         <article>
           <span>01</span>
-          <h3>WorkSession is the surface</h3>
+          <h3>WorkSession is the record</h3>
           <p>
             WorkSession is the durable protocol record for human-agent work:
             goals, events, requests, reviews, contributions, evidence, and
