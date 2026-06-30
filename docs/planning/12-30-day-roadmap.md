@@ -41,9 +41,10 @@ Jarvis sits beside existing standards:
   not MCP.
 - A2A standardizes agent-to-agent communication and delegation. Jarvis records
   A2A delegation inside a WorkSession, but Jarvis is not A2A.
-- AG-UI standardizes agent-to-frontend interaction. Hosts expose Jarvis
-  WorkSession records to AG-UI clients, but Jarvis does not define frontend
-  events, rendering, UI state, or UI transport.
+- AG-UI standardizes event-based frontend interaction. When a host already
+  uses AG-UI, host-owned code maps Jarvis WorkSession state to AG-UI clients.
+  Jarvis does not require AG-UI integration and does not define frontend
+  events, frontend rendering, user interface state, or UI transport.
 - Existing execution systems provide runtimes, tools, sessions, handoffs, and
   tracing. Compatible hosts map that work into
   collaboration records instead of replacing those systems.

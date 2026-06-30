@@ -173,7 +173,7 @@ Gate 4 status: pass.
 
 Accepted proof rows: G4-01 through G4-08.
 
-Resolved blockers: G4-B1, G4-B2, G4-B3.
+Resolved blockers: G4-B1, G4-B2, G4-B3, G4-B4.
 
 Remaining blockers: none.
 

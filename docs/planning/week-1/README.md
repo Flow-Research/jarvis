@@ -122,8 +122,8 @@ XLSX sanity check
 ## Stale Wording Scan
 
 The scan rejects wording that violates the boundaries in `AGENTS.md`, turns
-Jarvis into a host-owned implementation concern, makes compatible example active
-before the conformance gate, or makes locked protocol decisions sound optional.
+Jarvis into host implementation scope, makes compatible example active before
+the conformance gate, or makes locked protocol decisions sound optional.
 
 ## Week 1 Chunks
 

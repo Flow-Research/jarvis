@@ -113,11 +113,15 @@ Expected result:
 - Takeover creates lock state
 - Takeover rejects stale AgentWorker continuation
 - Takeover resume requires reconciliation refs
-- mutating WorkSession-scoped attribution, evidence, learning, proposal, and
-  export operations require `Jarvis-Protocol-Version`, `Jarvis-Actor-Id`,
+- mutating WorkSession-scoped attribution, evidence, learning, and proposal
+  operations require `Jarvis-Protocol-Version`, `Jarvis-Actor-Id`,
   `Jarvis-Idempotency-Key`, `Jarvis-Request-Timestamp`,
   `Jarvis-Expected-WorkSession-Revision`, and
   `Jarvis-Previous-Event-Hash`
+- EvidenceManifest export is an export read operation. It requires
+  `Jarvis-Protocol-Version`, host authentication, `Jarvis-Actor-Id`, and Actor
+  read authority. It does not require mutation-only idempotency, expected
+  revision, or previous event hash headers.
 - OutcomeReport submission uses the non-WorkSession mutation header set:
   `Jarvis-Protocol-Version`, `Jarvis-Actor-Id`, `Jarvis-Idempotency-Key`, and
   `Jarvis-Request-Timestamp`; it does not require

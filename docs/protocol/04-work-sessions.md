@@ -93,13 +93,13 @@ reconciling
   AgentWorker continuation.
 
 completed
-  The WorkSession reached its intended outcome.
+  The WorkSession reached its declared objective.
 
 failed
-  The WorkSession cannot reach its intended outcome.
+  The WorkSession cannot reach its declared objective.
 
 cancelled
-  An authorized Actor stopped the WorkSession before intended completion.
+  An authorized Actor stopped the WorkSession before declared completion.
 
 closed
   The WorkSession is sealed for archival/export state. No further mutation is
@@ -261,7 +261,8 @@ skill_proposed
 skill_updated
 ```
 
-The event log supports observability, debugging, evidence, and learning.
+The event log records the protocol basis for observability, debugging,
+evidence, and learning.
 
 The event log is append-only. Host checkpoints accelerate resume, but
 events are the source of truth.
@@ -552,8 +553,8 @@ policy profile
 tool inventory hash
 ```
 
-This record supports WorkSession resumption and human inspection of the exact
-context the agent received.
+This record preserves the WorkSession resumption basis and the exact context
+the agent received for human inspection.
 
 ## Reproducibility References
 
@@ -593,13 +594,13 @@ Policy decides what becomes durable.
 
 ## Completion, Failure, Cancellation, And Closure
 
-`completed` means the WorkSession reached its intended outcome.
+`completed` means the WorkSession reached its declared objective.
 
-`failed` means the WorkSession cannot reach its intended outcome. Failure records
+`failed` means the WorkSession cannot reach its declared objective. Failure records
 the reason, evidence limitations, and remaining unresolved Requests when they
 exist.
 
-`cancelled` means an authorized Actor stopped the WorkSession before intended
+`cancelled` means an authorized Actor stopped the WorkSession before declared
 completion. Cancellation records the Actor, reason, and policy basis. It does
 not grant authority to execute blocked work.
 

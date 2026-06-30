@@ -62,10 +62,10 @@ interrupt delivery, output retrieval, or ACP agent interfaces.
 AG-UI standardizes how AI agents connect to user-facing applications through an
 open, lightweight, event-based protocol. AG-UI focuses on agent state, UI
 intents, user interactions, frontend tools, streaming, and interactive
-frontends. A Jarvis-compatible host exposes WorkSession state,
-Requests, Reviews, Takeovers, Contributions, Evidence, and Learning to AG-UI
-clients. Jarvis does not define frontend events, rendering, UI state, or
-user-interface transport.
+frontends. When a host chooses AG-UI integration, host-owned code maps
+WorkSession state, Requests, Reviews, Takeovers, Contributions, Evidence, and
+Learning to AG-UI clients. Jarvis does not require AG-UI integration and does
+not define frontend events, rendering, UI state, or user-interface transport.
 
 ## Host Boundary
 
