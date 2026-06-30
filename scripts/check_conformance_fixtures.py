@@ -832,6 +832,10 @@ def validate_operation(
             raise FixtureError(f"{rel(path)}: {operation_id} requires work_session_id")
 
     if rejecting_operation(operation):
+        if expected_error_id is None:
+            raise FixtureError(
+                f"{rel(path)}: {operation_id} rejecting operation requires expected_error_id"
+            )
         if operation.get("expected_error_id") != expected_error_id:
             raise FixtureError(
                 f"{rel(path)}: {operation_id} expected_error_id must match fixture"
@@ -1088,6 +1092,12 @@ def validate_golden_path_semantics(path: Path, fixture: dict[str, Any]) -> None:
         raise FixtureError(f"{rel(path)}: golden Request MUST resolve by Review")
 
     approval_scope = review.get("approval_scope") if isinstance(review, dict) else None
+    approval_scope_expires_at = (
+        parse_utc_timestamp(approval_scope.get("expires_at"))
+        if isinstance(approval_scope, dict)
+        else None
+    )
+    review_timestamp = timestamp_field(review) if isinstance(review, dict) else None
     if (
         not isinstance(approval_scope, dict)
         or approval_scope.get("request_id") != request.get("id")
@@ -1098,9 +1108,9 @@ def validate_golden_path_semantics(path: Path, fixture: dict[str, Any]) -> None:
         or approval_scope.get("approved_action") != request.get("requested_action")
         or not is_int(approval_scope.get("max_uses"))
         or approval_scope.get("max_uses") <= 0
-        or not parse_utc_timestamp(approval_scope.get("expires_at"))
-        or parse_utc_timestamp(approval_scope.get("expires_at"))
-        <= timestamp_field(review)
+        or approval_scope_expires_at is None
+        or review_timestamp is None
+        or approval_scope_expires_at <= review_timestamp
         or not isinstance(approval_scope.get("normalized_action_hash"), str)
         or not approval_scope["normalized_action_hash"].startswith("hash:")
     ):
@@ -1392,13 +1402,17 @@ def validate_invalid_fixture_semantics(path: Path, fixture: dict[str, Any]) -> N
         )
         operation_snapshot = work_session_snapshot_for_operation(records, operation, body)
         attempted_lock_epoch = operation.get("attempted_takeover_lock_epoch")
+        active_lock_epoch = active_takeover.get("lock_epoch") if active_takeover else None
         stale_epoch = (
             isinstance(body, dict)
             and active_takeover is not None
             and body.get("work_session_id") == active_takeover.get("work_session_id")
             and body.get("actor_id") == operation.get("actor_id")
             and is_int(attempted_lock_epoch)
-            and attempted_lock_epoch != active_takeover.get("lock_epoch")
+            and is_int(active_lock_epoch)
+            and attempted_lock_epoch >= 0
+            and active_lock_epoch >= 0
+            and attempted_lock_epoch < active_lock_epoch
         )
         if (
             active_takeover is None
@@ -1636,8 +1650,6 @@ def validate_fixture(
     validate_host_shape(path, fixture)
     validate_forbidden_export_fields(path, fixture)
     validate_event_chain(path, fixture)
-    validate_golden_path_semantics(path, fixture)
-    validate_invalid_fixture_semantics(path, fixture)
 
     for operation in fixture["operations"]:
         if not isinstance(operation, dict):
@@ -1648,6 +1660,9 @@ def validate_fixture(
         if not isinstance(assertion, dict):
             raise FixtureError(f"{rel(path)}: assertion entries MUST be objects")
         validate_assertion(path, fixture, assertion)
+
+    validate_golden_path_semantics(path, fixture)
+    validate_invalid_fixture_semantics(path, fixture)
     return fixture
 
 

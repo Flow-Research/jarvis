@@ -8,6 +8,7 @@
     "docs/conformance/golden-path.md",
     "docs/conformance/compatibility-mapping.md",
     "docs/conformance/checklist.md",
+    "docs/protocol/15-openapi-communication-binding.md",
     "docs/openapi/jarvis-openapi.yaml#/components/schemas/Worker",
     "docs/openapi/jarvis-openapi.yaml#/components/schemas/Actor",
     "docs/openapi/jarvis-openapi.yaml#/components/schemas/HumanWorker",
