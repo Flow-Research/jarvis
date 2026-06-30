@@ -56,6 +56,7 @@ The acceptance review starts from:
 - [../../examples/compatible-host-mapping.md](../../examples/compatible-host-mapping.md)
 - [../../examples/existing-agent-compatibility.md](../../examples/existing-agent-compatibility.md)
 - [../../examples/protocol-records.md](../../examples/protocol-records.md)
+- [protocol-publication-discipline.md](./protocol-publication-discipline.md)
 - [../../../README.md](../../../README.md)
 - [../../../demo/index.html](../../../demo/index.html)
 - [../../../demo/assets/app.js](../../../demo/assets/app.js)
@@ -68,7 +69,7 @@ runtime, framework, host UI, or host implementation.
 
 ## Review Units
 
-The v0.1 acceptance review has eight units:
+The v0.1 acceptance review has nine units:
 
 ```txt
 1. protocol contract audit
@@ -78,11 +79,18 @@ The v0.1 acceptance review has eight units:
 5. README and non-normative simulation boundary audit
 6. boundary and wording audit
 7. local validation audit
-8. acceptance decision record
+8. protocol publication discipline audit
+9. acceptance decision record
 ```
 
 Each unit records findings, blockers, decisions, and required fixes before the
 acceptance decision.
+
+Protocol publication discipline uses
+[protocol-publication-discipline.md](./protocol-publication-discipline.md).
+The review adopts release, versioning, conformance-claim, extension, and
+governance-gap discipline only. It does not change Jarvis semantics or add host
+implementation scope.
 
 ## Acceptance Rule
 

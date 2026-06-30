@@ -168,6 +168,20 @@ Expected result:
   `missing_expected_work_session_revision`, `missing_previous_event_hash`,
   `invalid_extension_namespace`, and `extension_core_field_override`
 - protocol error responses exclude forbidden host-private fields
+- public version labels agree across README, OpenAPI metadata, conformance
+  fixtures, architecture brief, roadmap, demo text, and acceptance decision
+- OpenAPI `info.version: 0.1.0` is treated as the OpenAPI artifact version, and
+  OpenAPI `x-jarvis-protocol.version: v0.1` is treated as the protocol line
+- public conformance claims include protocol version, conformance surface,
+  fixture or checklist basis, and verification date
+- public docs reject vague compliance, unverified certification, and official
+  host claims before governance defines those claims
+- release-readiness gaps classify changelog, contributing guide, security
+  policy, citation metadata, license clarity, issue templates, PR template, CI
+  workflows, governance process, website, release notes, known-limit coverage,
+  and conformance report format
+- v0.1 docs do not claim v1.0 stability, long-term support, foundation
+  governance, production adoption, or certification
 
 ## Conformance Acceptance
 

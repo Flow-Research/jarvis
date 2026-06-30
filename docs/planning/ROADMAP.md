@@ -3,8 +3,8 @@
 Jarvis is the open-source human-agent collaboration and learning-loop
 compatibility protocol.
 
-The roadmap turns the protocol into a stable OpenAPI 3.1 contract,
-conformance tests, examples, and documentation. It does not create an execution
+The roadmap turns the protocol into a locked OpenAPI 3.1 contract, conformance
+tests, examples, and documentation. It does not create an execution
 stack.
 
 For the immediate execution plan, see
@@ -30,6 +30,10 @@ adapters, runtimes, wrappers, host behavior, or integration code.
 
 Week 4 completed compatible examples, public README tightening, published
 conformance checklist, protocol record examples, and public story.
+
+The v0.1 acceptance review now includes protocol-publication discipline:
+version consistency, precise conformance-claim language, release-readiness gap
+logging, extension boundary checks, and governance-gap classification.
 
 ## Roadmap Contract
 
@@ -92,7 +96,7 @@ adapters.
 
 ```txt
 v0.1 Protocol Alpha
-  stable vocabulary, OpenAPI 3.1 contract, event envelope, and golden-path
+  locked vocabulary, OpenAPI 3.1 contract, event envelope, and golden-path
   conformance
 
 v0.2 Evidence And Learning Beta
@@ -152,6 +156,7 @@ MemoryProposal and SkillProposal remain governed
 - non-normative public simulation boundary
 - compatible implementation guide
 - protocol implementation helper boundary
+- protocol-publication discipline gate
 
 ### v0.1 Excludes
 
@@ -364,6 +369,8 @@ v0.1 is accepted when:
 - public docs describe Jarvis as protocol only
 - live simulation, when present, describes Jarvis as protocol only
 - any Jarvis SDK surface is limited to protocol implementation helpers
+- public version labels, conformance claims, release-readiness gaps, and
+  extension rules pass protocol-publication discipline review
 
 ## v0.2 Evidence And Learning Beta
 
@@ -482,3 +489,4 @@ and example record mappers.
 6. Keep adapter code, wrappers, host behavior, and integration code outside
    Jarvis.
 7. Keep every Jarvis SDK discussion limited to protocol implementation helpers.
+8. Complete protocol-publication discipline review before v0.1 acceptance.
