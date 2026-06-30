@@ -7,8 +7,8 @@
   "source_contract_refs": [
     "docs/conformance/failure-modes.md",
     "docs/conformance/compatibility-mapping.md",
-    "docs/planning/week-3/chunk-1-fixture-architecture.md",
-    "docs/planning/week-3/chunk-4-failure-fixtures.md",
+    "docs/conformance/checklist.md",
+    "docs/protocol/15-openapi-communication-binding.md",
     "docs/openapi/jarvis-openapi.yaml#/components/schemas/ProtocolError",
     "docs/openapi/jarvis-openapi.yaml#/components/schemas/Worker",
     "docs/openapi/jarvis-openapi.yaml#/components/schemas/Actor",
@@ -251,7 +251,7 @@
       "assertion_id": "assert-invalid-evidence-export-state",
       "class": "evidence_export_gate",
       "target_ref": "records.work_sessions.active",
-      "required_state": "EvidenceManifest final export requires completed, failed, cancelled, or externally_submitted WorkSession state.",
+      "required_state": "EvidenceManifest final export requires completed, failed, cancelled, or closed WorkSession state.",
       "expected_result": "reject",
       "expected_error_id": "invalid_evidence_export_state"
     }

@@ -7,8 +7,8 @@
   "source_contract_refs": [
     "docs/conformance/failure-modes.md",
     "docs/conformance/compatibility-mapping.md",
-    "docs/planning/week-3/chunk-1-fixture-architecture.md",
-    "docs/planning/week-3/chunk-4-failure-fixtures.md",
+    "docs/conformance/checklist.md",
+    "docs/protocol/15-openapi-communication-binding.md",
     "docs/openapi/jarvis-openapi.yaml#/components/schemas/ProtocolError",
     "docs/openapi/jarvis-openapi.yaml#/components/schemas/Worker",
     "docs/openapi/jarvis-openapi.yaml#/components/schemas/Actor",
