@@ -1,6 +1,6 @@
 # Protocol Publication Discipline
 
-Status: active input.
+Status: adopted input.
 
 Review date: 2026-06-30.
 

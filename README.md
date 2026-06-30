@@ -18,9 +18,10 @@ and shared learning.
 
 ## Status
 
-v0.1 acceptance review is active.
-Jarvis v0.1 is not accepted, released, or tagged until the acceptance decision
-records every required gate as passed.
+Jarvis v0.1 is accepted as Protocol Alpha.
+This does not release or tag v0.1, certify Jarvis or any implementation,
+designate an official host, claim production adoption, establish foundation
+governance, or create long-term support.
 
 ## Interactive Simulation
 

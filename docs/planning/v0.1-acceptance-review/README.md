@@ -1,12 +1,12 @@
 # v0.1 Acceptance Review
 
-Status: active.
+Status: complete; Jarvis v0.1 is accepted as Protocol Alpha.
 
-This review decides whether Jarvis v0.1 is ready to be called Protocol Alpha.
+This review accepts Jarvis v0.1 as Protocol Alpha.
 
-The review starts after Week 4 closeout. It audits the full protocol contract,
-OpenAPI binding, conformance surface, public examples, README, and
-non-normative simulation boundary before any v0.1 acceptance decision.
+The review started after Week 4 closeout. It audited the full protocol
+contract, OpenAPI binding, conformance surface, public examples, README, and
+non-normative simulation boundary before the v0.1 acceptance decision.
 
 Jarvis records protocol proof. Hosts own native execution.
 
@@ -95,11 +95,11 @@ implementation scope.
 
 ## Acceptance Rule
 
-v0.1 is accepted only when every acceptance gate in
-[acceptance-spec.md](./acceptance-spec.md) passes.
+v0.1 is accepted because every acceptance gate in
+[acceptance-spec.md](./acceptance-spec.md) passed.
 
-The acceptance decision MUST be a separate record. This README starts the
-review. It does not accept v0.1.
+The acceptance decision is recorded in
+[acceptance-decision.md](./acceptance-decision.md).
 
 ## Review Output
 
@@ -113,9 +113,10 @@ acceptance decision record
 next-phase entry notes
 ```
 
-The acceptance decision record starts as pending in
-[acceptance-decision.md](./acceptance-decision.md). Gate 9 updates it after all
-acceptance gates pass and every blocker is resolved.
+The acceptance decision record marks Jarvis v0.1 accepted as Protocol Alpha.
+This does not release or tag v0.1, certify Jarvis or any implementation,
+designate an official host, claim production adoption, establish foundation
+governance, or create long-term support.
 
 The review rejects any attempt to turn Jarvis into an agent framework, runtime,
 host product, adapter layer, tool executor, UI surface, auth system, storage
