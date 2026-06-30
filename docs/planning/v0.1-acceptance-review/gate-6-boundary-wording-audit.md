@@ -65,6 +65,7 @@ Every changed file belongs to a coverage row:
 | `docs/examples/protocol-records.md` | Public examples |
 | `docs/planning/12-30-day-roadmap.md` | Planning docs |
 | `docs/planning/v0.1-acceptance-review/acceptance-spec.md` | Acceptance and review docs |
+| `docs/planning/v0.1-acceptance-review/gate-4-compatibility-examples-audit.md` | Acceptance and review docs |
 | `docs/planning/week-1/README.md` | Planning docs |
 | `docs/planning/week-1/chunk-6-positioning-adoption-lock.md` | Planning docs |
 | `docs/protocol/04-work-sessions.md` | Protocol docs |
@@ -157,10 +158,10 @@ Final branch diff stat against `main`:
 ```txt
  .../jarvis_protocol_architecture_brief.md          |   8 +-
  docs/examples/protocol-records.md                  |   6 +-
- docs/planning/12-30-day-roadmap.md                 |   5 +-
+ docs/planning/12-30-day-roadmap.md                 |   7 +-
  .../v0.1-acceptance-review/acceptance-spec.md      |   7 +-
  .../gate-4-compatibility-examples-audit.md         |   2 +-
- .../gate-6-boundary-wording-audit.md               | 212 +++++++++++++++++++++
+ .../gate-6-boundary-wording-audit.md               | 213 +++++++++++++++++++++
  docs/planning/week-1/README.md                     |   4 +-
  .../week-1/chunk-6-positioning-adoption-lock.md    |   9 +-
  docs/protocol/04-work-sessions.md                  |  19 ++-
@@ -168,7 +169,7 @@ Final branch diff stat against `main`:
  docs/protocol/16-positioning-adoption-lock.md      |   8 +-
  docs/reviews/acceptance-criteria.md                |   8 +-
  scripts/check_protocol_wording.py                  |   1 +
- 13 files changed, 261 insertions(+), 36 deletions(-)
+ 13 files changed, 263 insertions(+), 37 deletions(-)
 ```
 
 Final branch diff name-only against `main`:
