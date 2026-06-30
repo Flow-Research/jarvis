@@ -127,8 +127,10 @@ paths:
       description: |
         Returns a WorkSession protocol record. Compatible implementations MUST
         verify HostAuth, Jarvis-Protocol-Version, Jarvis-Actor-Id, and Actor
-        read authority. Read operations MUST NOT require mutation-only
-        idempotency, expected revision, or previous event hash headers.
+        read authority. Read operations MAY include
+        Jarvis-Required-Capabilities and Jarvis-Extensions. Read operations
+        MUST NOT require mutation-only idempotency, expected revision, or
+        previous event hash headers.
       x-jarvis-operation-class: worksession_scoped_read
       tags:
         - WorkSessions
@@ -138,6 +140,8 @@ paths:
         - $ref: "#/components/parameters/WorkSessionIdPath"
         - $ref: "#/components/parameters/ProtocolVersionHeader"
         - $ref: "#/components/parameters/ActorHeader"
+        - $ref: "#/components/parameters/RequiredCapabilitiesHeader"
+        - $ref: "#/components/parameters/ExtensionsHeader"
       responses:
         "200":
           $ref: "#/components/responses/WorkSessionResponse"
@@ -417,8 +421,9 @@ paths:
         Exports portable EvidenceManifest proof from a terminal WorkSession
         state. Compatible implementations MUST verify HostAuth,
         Jarvis-Protocol-Version, Jarvis-Actor-Id, and Actor read authority.
-        Export reads MUST NOT require mutation-only idempotency, expected
-        revision, or previous event hash headers.
+        Export reads MAY include Jarvis-Required-Capabilities and
+        Jarvis-Extensions. Export reads MUST NOT require mutation-only
+        idempotency, expected revision, or previous event hash headers.
       x-jarvis-operation-class: export_read
       tags:
         - Evidence
@@ -428,6 +433,8 @@ paths:
         - $ref: "#/components/parameters/WorkSessionIdPath"
         - $ref: "#/components/parameters/ProtocolVersionHeader"
         - $ref: "#/components/parameters/ActorHeader"
+        - $ref: "#/components/parameters/RequiredCapabilitiesHeader"
+        - $ref: "#/components/parameters/ExtensionsHeader"
       responses:
         "200":
           $ref: "#/components/responses/EvidenceManifestResponse"
@@ -2634,6 +2641,22 @@ components:
         type: string
         minLength: 1
       description: Links the accepted mutation to the current WorkSession event chain. Genesis WorkSession creation uses the protocol genesis hash.
+    RequiredCapabilitiesHeader:
+      name: Jarvis-Required-Capabilities
+      in: header
+      required: false
+      schema:
+        type: string
+        minLength: 1
+      description: Declares caller-required optional Jarvis capabilities. Unsupported required capabilities reject as unsupported_capability.
+    ExtensionsHeader:
+      name: Jarvis-Extensions
+      in: header
+      required: false
+      schema:
+        type: string
+        minLength: 1
+      description: Declares requested extension namespaces. Extension fields remain namespaced and MUST NOT override core fields.
   headers:
     ProtocolVersionResponseHeader:
       description: Jarvis protocol version used by the response.

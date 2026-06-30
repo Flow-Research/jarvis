@@ -95,21 +95,24 @@ adapters.
 ## Release Strategy
 
 ```txt
-v0.1 Protocol Alpha
+v0.1 target: Protocol Alpha
   locked vocabulary, OpenAPI 3.1 contract, event envelope, and golden-path
   conformance
 
-v0.2 Evidence And Learning Beta
+v0.2 target: Evidence And Learning Beta
   stronger EvidenceManifest, Contribution, MemoryProposal, and SkillProposal
   contracts
 
-v0.3 Ecosystem Conformance
+v0.3 target: Ecosystem Conformance
   host conformance suite, examples, and compatibility-mapping records
 
-v1.0 Stable Protocol
+v1.0 target: Stable Protocol
   stable public protocol, compatibility rules, export format, and migration
   policy
 ```
+
+These are roadmap targets. They are not release, tag, certification,
+long-term-support, governance, or adoption claims.
 
 ## v0.1 Protocol Alpha
 
@@ -412,7 +415,7 @@ Done when:
 - compatible hosts exchange WorkSession evidence without sharing
   infrastructure
 
-## v1.0 Stable Protocol
+## v1.0 Target: Stable Protocol
 
 Goal: freeze the protocol surface.
 

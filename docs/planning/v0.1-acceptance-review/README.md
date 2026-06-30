@@ -57,6 +57,7 @@ The acceptance review starts from:
 - [../../examples/existing-agent-compatibility.md](../../examples/existing-agent-compatibility.md)
 - [../../examples/protocol-records.md](../../examples/protocol-records.md)
 - [protocol-publication-discipline.md](./protocol-publication-discipline.md)
+- [acceptance-decision.md](./acceptance-decision.md)
 - [../../../README.md](../../../README.md)
 - [../../../demo/index.html](../../../demo/index.html)
 - [../../../demo/assets/app.js](../../../demo/assets/app.js)
@@ -111,6 +112,10 @@ resolved-finding log
 acceptance decision record
 next-phase entry notes
 ```
+
+The acceptance decision record starts as pending in
+[acceptance-decision.md](./acceptance-decision.md). Gate 9 updates it after all
+acceptance gates pass and every blocker is resolved.
 
 The review rejects any attempt to turn Jarvis into an agent framework, runtime,
 host product, adapter layer, tool executor, UI surface, auth system, storage

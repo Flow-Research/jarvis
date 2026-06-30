@@ -482,6 +482,20 @@ A product, host, SDK helper, or external system MUST NOT claim Jarvis
 compatibility because it has chat, approval buttons, logs, agent runs, or
 memory.
 
+Public compatibility claims MUST use this exact structure:
+
+```txt
+Implementation <name> supports Jarvis <protocol-version> compatibility,
+verified against <conformance-surface> on <date>.
+```
+
+The claim MUST name:
+
+- protocol version
+- conformance surface
+- fixture or checklist basis
+- verification date
+
 Jarvis compatibility requires this proof:
 
 ```txt

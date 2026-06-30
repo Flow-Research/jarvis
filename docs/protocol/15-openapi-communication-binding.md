@@ -342,6 +342,16 @@ PreviousHashHeader
   binds the request to `Jarvis-Previous-Event-Hash`
 ```
 
+Optional negotiation header parameters:
+
+```txt
+RequiredCapabilitiesHeader
+  binds the request to `Jarvis-Required-Capabilities`
+
+ExtensionsHeader
+  binds the request to `Jarvis-Extensions`
+```
+
 Authentication proves caller identity to the host. Authorization verifies that
 `Jarvis-Actor-Id` has authority for the requested protocol operation. Jarvis
 records the Actor and authority check result. Jarvis does not own the host

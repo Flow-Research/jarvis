@@ -360,9 +360,9 @@ This example is governed by:
 - [Golden-path conformance entry](../conformance/golden-path.md)
 - [Fixture documentation](../conformance/fixtures/README.md)
 
-## Compatibility Conditions
+## Example Conditions
 
-This mapping is compatible only when:
+This mapping is valid only when:
 
 - both host shapes produce equivalent Jarvis records
 - `host_shape_ref` stays metadata only
