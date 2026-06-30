@@ -372,7 +372,7 @@ Jarvis.
 | --- | --- | --- |
 | Compatibility boundaries | Map command-line, local execution, hosted execution, and tool-use flows into Jarvis records. | Hosts preserve their own execution systems. |
 | Host conformance | Provide golden-path and failure-mode fixtures that prove protocol behavior. | Conformance checks behavior, not infrastructure. |
-| Compatibility guidance | Map host work into Jarvis WorkSessions and EvidenceManifest exports. | The host remains the host; Jarvis remains the protocol. |
+| Compatibility rules | Map host work into Jarvis WorkSessions and EvidenceManifest exports. | The host remains the host; Jarvis remains the protocol. |
 | External protocol bridges | Record MCP, A2A, ACP, and AG-UI participation as Jarvis evidence and contribution records. | Jarvis does not redefine those protocols. |
 | Evaluation feedback | Use OutcomeReport to carry external outcomes into governed LearningRecords. | Jarvis does not own task routing, scoring, payment, settlement, or marketplace logic. |
 | Public protocol package | Publish OpenAPI contract, examples, conformance checklist, and protocol architecture brief. | Adoption does not require a runtime owned by Jarvis. |
@@ -391,15 +391,15 @@ InitiativeBalance
 TeachingSignal
 HumanGrowthRecord
 SimulatedHumanWorker
-full host adapters
+host-owned adapter examples
 full external outcome feedback loop
 compatibility examples
 MCP/A2A/ACP/AG-UI bridges
 multi-agent reviewer protocol
 ```
 
-These remain future extensions, examples, adapters, or conformance fixtures.
-They do not enter the v0.1 object spine.
+These remain future extension contracts, host-owned examples, or conformance
+fixtures. They do not enter the v0.1 object spine.
 
 ## Scope Boundary
 

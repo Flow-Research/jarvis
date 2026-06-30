@@ -76,10 +76,11 @@ does not define remote-agent run execution, thread execution, output retrieval,
 or ACP agent interfaces.
 
 AG-UI standardizes how agents connect to user-facing applications through
-event-based frontend interaction. Hosts expose Jarvis WorkSession state,
-Requests, Reviews, Takeovers, Contributions, and Evidence to AG-UI clients.
-Jarvis does not define frontend events, frontend rendering, user interface
-state, or UI transport.
+event-based frontend interaction. When a host already uses AG-UI, host-owned
+code maps Jarvis WorkSession state, Requests, Reviews, Takeovers,
+Contributions, and Evidence to AG-UI clients. Jarvis does not require AG-UI
+integration and does not define frontend events, frontend rendering, user
+interface state, or UI transport.
 
 ## Host Boundary
 

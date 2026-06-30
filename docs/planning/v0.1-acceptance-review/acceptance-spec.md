@@ -127,8 +127,8 @@ Required proof:
   behavior, model calls, tool execution, storage, auth, billing, scoring,
   payment, or deployment
 
-The gate fails when an example makes Jarvis own Garden-like product behavior,
-native agent runtime behavior, external task-system behavior, or connector
+The gate fails when an example makes Jarvis own host-product behavior, native
+agent runtime behavior, external task-system behavior, or connector
 execution.
 
 ## Gate 5: Public README And Non-Normative Simulation
@@ -174,7 +174,8 @@ Required proof:
 - `python3 scripts/check_protocol_wording.py` passes
 
 The gate fails when a document weakens locked decisions or describes Jarvis as
-guidance, product strategy, host implementation, or third-party review.
+advisory material, product strategy, host implementation, or third-party
+review.
 
 ## Gate 7: Local Validation
 

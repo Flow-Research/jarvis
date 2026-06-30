@@ -44,7 +44,7 @@ into learning.
 Worker and Actor registration are non-WorkSession protocol mutations.
 
 ```txt
-Authorization: Bearer host-auth-ref
+Authorization: HostAuth fixture
 Jarvis-Protocol-Version: v0.1
 Jarvis-Actor-Id: actor-host-protocol
 Jarvis-Idempotency-Key: idem-register-worker-human-001
@@ -54,7 +54,7 @@ Jarvis-Request-Timestamp: 2026-06-24T09:00:00Z
 WorkSession-scoped mutations require revision and previous event hash.
 
 ```txt
-Authorization: Bearer host-auth-ref
+Authorization: HostAuth fixture
 Jarvis-Protocol-Version: v0.1
 Jarvis-Actor-Id: actor-agent-research
 Jarvis-Idempotency-Key: idem-policy-decision-source-001
@@ -66,7 +66,7 @@ Jarvis-Previous-Event-Hash: hash:event-local-context-read-001
 OutcomeReport submission is a non-WorkSession protocol mutation.
 
 ```txt
-Authorization: Bearer host-auth-ref
+Authorization: HostAuth fixture
 Jarvis-Protocol-Version: v0.1
 Jarvis-Actor-Id: actor-human-reviewer
 Jarvis-Idempotency-Key: idem-outcome-report-001

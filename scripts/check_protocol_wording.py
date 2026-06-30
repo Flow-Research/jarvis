@@ -36,6 +36,7 @@ PATTERNS = [
     r"\bconsider\b",
     r"\bsuggest\b",
     r"\badvice\b",
+    r"\bguidance\b",
     r"\bcandidate\b",
     r"implementation concerns",
     r"those are implementation concerns",
