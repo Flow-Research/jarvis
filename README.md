@@ -2,8 +2,8 @@
 
 Human-agent collaboration and learning-loop protocol.
 
-Jarvis is the protocol for governed collaboration between human workers and
-agent workers.
+Jarvis is the protocol for governed collaboration and shared learning between
+human workers and agent workers.
 
 It defines how human workers and agent workers coordinate under shared goals
 and human-defined policy, complete work together, review each other, record
@@ -13,7 +13,8 @@ Jarvis stays focused on the collaboration and learning loop. Hosts and
 external systems integrate with Jarvis by implementing its protocol contracts.
 
 Jarvis is the compatibility protocol for any HumanWorker, AgentWorker, host, or
-external system that needs to participate in governed human-agent collaboration.
+external system that needs to participate in governed human-agent collaboration
+and shared learning.
 
 ## Interactive Simulation
 
@@ -28,10 +29,9 @@ The page is served directly by GitHub Pages from this repository.
 
 ## One-Line Definition
 
-Jarvis is the open protocol that lets HumanWorkers and AgentWorkers collaborate
-under shared goals and policy, producing durable WorkSessions, reviewable
-Requests, attributable Contributions, governed shared Learning, and portable
-Evidence.
+Jarvis defines how HumanWorkers and AgentWorkers collaborate under shared goals
+and Policy, producing durable WorkSessions, reviewable Requests, attributable
+Contributions, governed shared Learning, and portable Evidence.
 
 ## Plain English Definition
 
@@ -272,17 +272,17 @@ Jarvis does not own host implementation:
 
 A Jarvis SDK is a protocol implementation kit.
 
-It helps compatible implementations create protocol records, attach required
-headers, preserve event hash chains, validate Request/Review/Takeover state,
-export EvidenceManifest records, run conformance fixtures, and map example
-work into Jarvis records.
+A Jarvis SDK provides protocol helpers for compatible implementations to create
+protocol records, attach required headers, preserve event hash chains, validate
+Request/Review/Takeover state, export EvidenceManifest records, run conformance
+fixtures, and map example work into Jarvis records.
 
 A Jarvis SDK does not run agents, orchestrate models, execute tools, own memory
 engines, provide UI, manage auth, store records, run sandboxes, schedule work,
 or become a host adapter.
 
-Existing agents remain first-class. Jarvis succeeds when existing agents and
-hosts produce compatible WorkSession, Request, Review, Contribution,
+Existing agents remain first-class. Compatibility requires existing agents and
+hosts to produce compatible WorkSession, Request, Review, Contribution,
 EvidenceManifest, and LearningRecord records without being rewritten as
 Jarvis-owned agents.
 
@@ -309,7 +309,7 @@ Jarvis-owned agents.
 18. OutcomeReport carries post-session feedback into governed learning.
 ```
 
-When v0.1 proves this loop, Jarvis is real.
+v0.1 acceptance requires proof for this loop.
 
 ## Docs
 

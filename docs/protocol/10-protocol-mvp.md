@@ -80,6 +80,7 @@ LearningRecord
 MemoryProposal
 SkillProposal
 JarvisEvent
+OutcomeReport
 ```
 
 ## Event Envelope
@@ -170,7 +171,7 @@ The v0.1 conformance suite checks:
 - SkillProposal rejects activation without review.
 - SkillProposal rejects tool access expansion without policy review.
 - LearningRecord describes human learning, agent learning, or pair learning.
-- OutcomeReport creates or references LearningRecord without mutating sealed
+- OutcomeReport references at least one LearningRecord without mutating sealed
   WorkSession or EvidenceManifest.
 - attribution/evidence/learning rejection ids include
   `missing_contribution_actor`, `invalid_contributor_refs`,
@@ -207,7 +208,7 @@ The v0.1 conformance suite checks:
 
 ## Success Condition
 
-Jarvis v0.1 succeeds when a compatible implementation runs a HumanWorker and
-AgentWorker through a WorkSession, proves policy-governed autonomy, captures
-human judgment, records contribution, exports evidence, and carries governed
+Jarvis v0.1 acceptance requires a compatible implementation to run a HumanWorker
+and AgentWorker through a WorkSession, prove policy-governed autonomy, capture
+human judgment, record contribution, export evidence, and carry governed
 learning into the next WorkSession without adopting a runtime owned by Jarvis.

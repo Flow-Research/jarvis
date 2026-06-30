@@ -2,11 +2,11 @@
 
 Jarvis v0.1 publishes protocol artifacts.
 
-Future Jarvis SDKs are protocol implementation kits. They help compatible
-implementations produce, validate, export, and test Jarvis records. They do
-not become agent frameworks, runtimes, host adapters, wrappers, planners,
-model orchestrators, tool executors, memory engines, UI kits, auth providers,
-storage backends, sandboxes, or workflow engines.
+Future Jarvis SDKs are protocol implementation kits. A Jarvis SDK provides
+protocol helpers for compatible implementations to produce, validate, export,
+and test Jarvis records. It does not become an agent framework, runtime, host
+adapter, wrapper, planner, model orchestrator, tool executor, memory engine, UI
+kit, auth provider, storage backend, sandbox, or workflow engine.
 
 OpenAPI 3.1 is the primary machine-readable communication contract. Supporting
 artifacts exist only to keep the protocol readable, testable, and
@@ -155,7 +155,7 @@ Conformance checks include:
 - LearningRecord remains governed
 - MemoryProposal cannot self-confirm from model or tool output
 - SkillProposal cannot activate or expand tool access without review
-- OutcomeReport creates or references LearningRecord without mutating sealed
+- OutcomeReport references at least one LearningRecord without mutating sealed
   WorkSession or EvidenceManifest
 - mutating operations enforce required protocol headers
 - read operations enforce protocol version, host authentication, and Actor

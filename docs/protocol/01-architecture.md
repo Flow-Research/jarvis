@@ -60,13 +60,16 @@ EvidenceManifest
 LearningRecord
 MemoryProposal
 SkillProposal
+OutcomeReport
 ```
 
-The key architectural rule is direct: HumanWorker and AgentWorker collaborate
-inside a WorkSession. Policy bounds autonomy. Request and Review keep human
-judgment in the loop. Contribution and EvidenceManifest make the work
-inspectable. LearningRecord, MemoryProposal, and SkillProposal make the next
-WorkSession better.
+Jarvis defines this architecture: HumanWorker and AgentWorker collaborate
+inside a WorkSession. Policy bounds AgentWorker autonomy. Request, Review, and
+Takeover record human judgment and resolution. Contribution records
+attributable work. EvidenceManifest records portable evidence. LearningRecord,
+MemoryProposal, and SkillProposal carry governed learning into future
+WorkSessions. OutcomeReport carries post-session feedback without mutating
+sealed WorkSession or EvidenceManifest records.
 
 ## Standard Work Flow
 

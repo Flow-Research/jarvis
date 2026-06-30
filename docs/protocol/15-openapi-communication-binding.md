@@ -16,8 +16,10 @@ Layer 1: Protocol semantics
   HumanWorker + AgentWorker collaboration and learning loop
 
 Layer 2: Protocol objects
-  WorkSession, Policy, Request, Review, Takeover, Contribution,
-  EvidenceManifest, LearningRecord, MemoryProposal, SkillProposal
+  Worker, Actor, HumanWorker, AgentWorker, WorkSession, JarvisEvent,
+  Policy, PolicyDecision, Request, Review, Takeover, Contribution,
+  EvidenceManifest, LearningRecord, MemoryProposal, SkillProposal,
+  OutcomeReport
 
 Layer 3: Protocol operations
   create WorkSession, append event, create Request, record Review,
@@ -52,8 +54,9 @@ retrieval, and errors through a REST-based OpenAPI contract. Jarvis uses that
 lesson for its host-facing communication binding.
 
 OpenAPI 3.1 defines a standard interface description for HTTP APIs that humans
-and computers discover and implement without reading source code. Jarvis needs
-that property for adoption.
+and computers discover and implement without reading source code. OpenAPI 3.1
+provides the discoverable HTTP contract that compatible implementations use
+without reading source code.
 
 Primary references:
 
@@ -363,10 +366,9 @@ Version negotiation rules:
 ```txt
 Unsupported Jarvis-Protocol-Version rejects the request.
 Compatible minor version proceeds only when required capabilities match.
-Protocol downgrade is rejected as unsupported_protocol_version.
+Compatible implementations MUST NOT silently downgrade a request.
 A caller requests an older supported version only by explicitly setting
-Jarvis-Protocol-Version to that version. Implementations MUST NOT silently
-downgrade a request.
+Jarvis-Protocol-Version to that version.
 ```
 
 Capability negotiation rules:

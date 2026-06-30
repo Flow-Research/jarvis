@@ -463,8 +463,9 @@ Event chain index:
 | 13 | 13 | `event-skill-proposal-protocol-comparison-001` | `hash:event-memory-proposal-source-scope-001` | `hash:event-skill-proposal-protocol-comparison-001` | `skill-proposal-protocol-comparison-001` |
 | 14 | 14 | `event-work-session-completed-001` | `hash:event-skill-proposal-protocol-comparison-001` | `hash:event-work-session-completed-001` | `work_session.completed` |
 
-OutcomeReport acceptance uses `event-outcome-report-review-001` after export.
-It does not mutate the sealed WorkSession or EvidenceManifest.
+OutcomeReport submission happens after export through the non-WorkSession
+mutation surface. It does not append to the sealed WorkSession event log and it
+does not mutate the sealed WorkSession or EvidenceManifest.
 
 ## PolicyDecision
 
@@ -903,31 +904,6 @@ Conformance gate:
 }
 ```
 
-OutcomeReport-backed learning:
-
-```json
-{
-  "id": "learning-record-outcome-001",
-  "work_session_id": "work-session-research-001",
-  "created_by_actor_id": "actor-human-reviewer",
-  "subject_type": "pair",
-  "subject_ref": "pair:human-researcher-agent-research",
-  "lesson_type": "post_session_feedback",
-  "source_event_refs": [
-    "event-outcome-report-review-001"
-  ],
-  "review_state": "accepted",
-  "scope": "scope:future-protocol-comparison-work",
-  "created_at": "2026-06-24T10:31:00Z",
-  "proposed_change": {
-    "summary": "Carry post-session feedback into the next comparison WorkSession."
-  },
-  "outcome_report_refs": [
-    "outcome-report-review-001"
-  ]
-}
-```
-
 ## MemoryProposal
 
 Conformance gate:
@@ -1028,7 +1004,7 @@ Conformance gate:
   "accepted_by_actor_id": "actor-human-reviewer",
   "outcome": "needs_revision",
   "learning_record_refs": [
-    "learning-record-outcome-001"
+    "learning-record-pair-001"
   ],
   "received_at": "2026-06-24T10:30:00Z",
   "external_system_ref": "system:review-channel",
@@ -1041,8 +1017,33 @@ Conformance gate:
 ```
 
 OutcomeReport does not mutate the sealed WorkSession or EvidenceManifest. It
-creates or references LearningRecord so future WorkSessions inherit governed
-learning.
+references governed LearningRecord records so future WorkSessions inherit
+governed learning.
+
+Post-session LearningRecord creation uses its own governed learning operation:
+
+```json
+{
+  "id": "learning-record-outcome-001",
+  "work_session_id": "work-session-research-001",
+  "created_by_actor_id": "actor-human-reviewer",
+  "subject_type": "pair",
+  "subject_ref": "pair:human-researcher-agent-research",
+  "lesson_type": "post_session_feedback",
+  "source_event_refs": [
+    "event-work-session-completed-001"
+  ],
+  "review_state": "accepted",
+  "scope": "scope:future-protocol-comparison-work",
+  "created_at": "2026-06-24T10:31:00Z",
+  "proposed_change": {
+    "summary": "Carry post-session feedback into the next comparison WorkSession."
+  },
+  "outcome_report_refs": [
+    "outcome-report-review-001"
+  ]
+}
+```
 
 ## Required Record Order
 
@@ -1063,6 +1064,7 @@ Compatible implementations MUST preserve this order:
 12. LearningRecord MUST record human, agent, or pair learning.
 13. MemoryProposal and SkillProposal MUST remain governed.
 14. OutcomeReport MUST carry post-session feedback without sealed record mutation.
+15. Post-session LearningRecord creation MUST use a governed learning operation.
 ```
 
 The protocol defines record examples only. Hosts own execution architecture,

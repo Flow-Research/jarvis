@@ -131,7 +131,7 @@ Expected result:
 - MemoryProposal rejects model-derived or tool-derived self-confirmation
 - SkillProposal rejects activation without review and rejects tool access
   expansion without policy review
-- OutcomeReport creates or references LearningRecord without mutating sealed
+- OutcomeReport references at least one LearningRecord without mutating sealed
   WorkSession or EvidenceManifest
 - attribution/evidence/learning rejection ids include
   `missing_contribution_actor`, `invalid_contributor_refs`,

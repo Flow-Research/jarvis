@@ -101,8 +101,8 @@ Required proof:
 - public checklist covers protocol error envelope
 - public checklist covers capability negotiation and extension rejection
 
-The gate fails when a fake implementation skips policy, review, evidence,
-learning, or mutation-header enforcement and still appears compatible.
+The gate fails when an implementation claims compatibility while skipping
+policy, review, evidence, learning, or mutation-header enforcement.
 
 ## Gate 4: Compatibility Examples
 

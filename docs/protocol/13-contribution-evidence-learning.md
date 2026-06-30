@@ -208,10 +208,11 @@ Rules:
 
 - Learning is not only agent memory.
 - Jarvis records human learning, agent learning, and pair learning.
-- LearningRecord references source events. OutcomeReport-backed
-  LearningRecords use the OutcomeReport acceptance JarvisEvent as
-  `source_event_refs` and record `outcome_report_refs` when external feedback
-  exists.
+- LearningRecord references source events. OutcomeReport-backed LearningRecords
+  record `outcome_report_refs` when external feedback exists. `source_event_refs`
+  continue to reference the WorkSession events that support the learning.
+  OutcomeReport submission does not append a JarvisEvent to a sealed WorkSession
+  event log.
 - LearningRecord references MemoryProposal or SkillProposal when learning
   becomes governed memory or skill change.
 - LearningRecord does not create durable memory or active skill behavior by
@@ -287,7 +288,7 @@ skill_expands_tool_access_without_policy_review
 
 ## OutcomeReport
 
-OutcomeReport is an optional post-session feedback extension.
+OutcomeReport is a v0.1 extension protocol object for post-session feedback.
 
 OutcomeReport records attributable feedback that arrives after a WorkSession
 export. It closes the learning loop without rewriting completed work.
@@ -298,11 +299,13 @@ Rules:
   closed.
 - OutcomeReport does not mutate the sealed WorkSession.
 - OutcomeReport does not mutate the sealed EvidenceManifest.
-- OutcomeReport creates or references governed LearningRecord.
+- OutcomeReport MUST reference at least one governed LearningRecord through
+  `learning_record_refs`.
 - OutcomeReport is not an evaluation system.
 - OutcomeReport is not payment, scoring, settlement, or marketplace logic.
-- OutcomeReport remains an extension and does not change the v0.1 core object
-  list.
+- OutcomeReport is part of the v0.1 protocol contract as an extension object.
+- OutcomeReport stays outside the sealed WorkSession export and does not change
+  the WorkSession core object list.
 
 Rejections:
 
@@ -334,6 +337,6 @@ LearningRecord subject_type is human, agent, or pair.
 MemoryProposal cannot self-confirm from model or tool output.
 SkillProposal cannot activate without review.
 SkillProposal cannot expand tool access without policy review.
-OutcomeReport creates or references LearningRecord.
+OutcomeReport references at least one LearningRecord.
 OutcomeReport does not mutate sealed WorkSession or EvidenceManifest.
 ```

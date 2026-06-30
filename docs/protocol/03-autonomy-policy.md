@@ -1,6 +1,6 @@
 # Autonomy And Policy
 
-Jarvis lets the AgentWorker work without human babysitting.
+Jarvis defines policy-governed AgentWorker autonomy.
 
 The HumanWorker defines boundaries. The AgentWorker operates inside them. When
 the AgentWorker needs something outside them, it creates a request.
@@ -306,7 +306,7 @@ Takeover states map to the protocol state machine in
 [12-request-protocol.md](./12-request-protocol.md). Resume requires
 reconciliation refs before AgentWorker autonomy continues.
 
-## Policy Decision Points
+## PolicyDecision Points
 
 Jarvis records PolicyDecision before an AgentWorker action is accepted as
 protocol state for:

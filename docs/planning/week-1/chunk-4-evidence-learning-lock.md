@@ -97,7 +97,7 @@ Tool-derived memory cannot confirm itself.
 Unreviewed skill changes do not become active behavior.
 Skill changes cannot expand tool access without separate policy review.
 OutcomeReport does not mutate sealed WorkSession or EvidenceManifest.
-OutcomeReport creates or references governed LearningRecord.
+OutcomeReport references governed LearningRecord.
 ```
 
 ## Required Review States
