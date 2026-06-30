@@ -121,6 +121,8 @@ REQUIRED_PARAMETERS = {
     "RequestTimestampHeader",
     "RevisionHeader",
     "PreviousHashHeader",
+    "RequiredCapabilitiesHeader",
+    "ExtensionsHeader",
 }
 
 HEADER_PARAMETER_NAMES = {
@@ -130,6 +132,11 @@ HEADER_PARAMETER_NAMES = {
     "RequestTimestampHeader": "Jarvis-Request-Timestamp",
     "RevisionHeader": "Jarvis-Expected-WorkSession-Revision",
     "PreviousHashHeader": "Jarvis-Previous-Event-Hash",
+}
+
+OPTIONAL_HEADER_PARAMETER_NAMES = {
+    "RequiredCapabilitiesHeader": "Jarvis-Required-Capabilities",
+    "ExtensionsHeader": "Jarvis-Extensions",
 }
 
 REQUIRED_REQUEST_BODIES = {
@@ -297,6 +304,11 @@ READ_HEADERS = {
     "ActorHeader",
 }
 
+READ_OPTIONAL_NEGOTIATION_HEADERS = {
+    "RequiredCapabilitiesHeader",
+    "ExtensionsHeader",
+}
+
 REQUIRED_OPERATIONS = {
     ("put", "/workers/{worker_id}"): {
         "operation_id": "registerWorker",
@@ -332,7 +344,7 @@ REQUIRED_OPERATIONS = {
         "operation_id": "getWorkSession",
         "operation_class": "worksession_scoped_read",
         "tag": "WorkSessions",
-        "headers": READ_HEADERS,
+        "headers": READ_HEADERS | READ_OPTIONAL_NEGOTIATION_HEADERS,
         "path_parameters": {"WorkSessionIdPath"},
         "request_body": None,
         "success_status": "200",
@@ -432,7 +444,7 @@ REQUIRED_OPERATIONS = {
         "operation_id": "exportEvidenceManifest",
         "operation_class": "export_read",
         "tag": "Evidence",
-        "headers": READ_HEADERS,
+        "headers": READ_HEADERS | READ_OPTIONAL_NEGOTIATION_HEADERS,
         "path_parameters": {"WorkSessionIdPath"},
         "request_body": None,
         "success_status": "200",
@@ -2158,6 +2170,14 @@ def main() -> int:
             return fail(f"{name} must use header name {header_name}")
         if parameter.get("required") is not True:
             return fail(f"{name} must be required")
+    for name, header_name in OPTIONAL_HEADER_PARAMETER_NAMES.items():
+        parameter = parameters[name]
+        if parameter.get("in") != "header":
+            return fail(f"{name} must be a header parameter")
+        if parameter.get("name") != header_name:
+            return fail(f"{name} must use header name {header_name}")
+        if parameter.get("required") is not False:
+            return fail(f"{name} must be optional")
     for name in ("WorkerIdPath", "ActorIdPath", "WorkSessionIdPath"):
         parameter = parameters[name]
         if parameter.get("in") != "path":

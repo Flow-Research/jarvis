@@ -63,7 +63,15 @@ export payloads.
 
 ## Required Compatibility Claim
 
-A compatible implementation proves this claim:
+A public compatibility claim for this proof MUST use this format:
+
+```txt
+Implementation <name> supports Jarvis v0.1 compatibility, verified against the
+existing-agent proof plan, public conformance checklist, and v0.1 golden-path
+and failure-mode fixtures on <verification-date>.
+```
+
+The proof behind that claim is:
 
 ```txt
 Different native host shapes produce equivalent Jarvis records for the same

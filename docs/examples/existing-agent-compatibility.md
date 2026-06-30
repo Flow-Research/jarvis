@@ -37,13 +37,22 @@ exports, and tests Jarvis records. It MUST NOT run the agent, plan the task,
 route the model, execute tools, own native memory, own UI, own auth, own
 storage, or become the host adapter.
 
-## Compatibility Claim
+## Example Scope
 
-A compatible implementation preserves this claim:
+This example demonstrates this protocol record shape:
 
 ```txt
 An existing native agent completes work in its own environment while Jarvis
 records the human-agent collaboration contract around that work.
+```
+
+A public compatibility claim using this example MUST use this format:
+
+```txt
+Implementation <name> supports Jarvis v0.1 compatibility, verified against the
+existing-agent compatibility example, existing-agent proof plan, public
+conformance checklist, and v0.1 golden-path and failure-mode fixtures on
+<verification-date>.
 ```
 
 The existing agent remains native. Jarvis records how the HumanWorker and
@@ -522,7 +531,7 @@ what policy governed the work, what was blocked, how the human resolved it, who
 contributed, what evidence exists, and what learning carries forward.
 ```
 
-What makes the example compatible?
+What proof does this example show?
 
 ```txt
 The existing native agent produces the same required Jarvis records without
@@ -537,9 +546,9 @@ being rewritten as a Jarvis agent.
 - [Golden-path conformance entry](../conformance/golden-path.md)
 - [Fixture documentation](../conformance/fixtures/README.md)
 
-## Compatibility Conditions
+## Example Conditions
 
-This example is compatible only when:
+This example is valid only when:
 
 - the existing native agent remains native
 - Jarvis records collaboration only
