@@ -7,7 +7,7 @@
   "source_contract_refs": [
     "docs/conformance/golden-path.md",
     "docs/conformance/compatibility-mapping.md",
-    "docs/planning/week-3/chunk-1-fixture-architecture.md",
+    "docs/conformance/checklist.md",
     "docs/openapi/jarvis-openapi.yaml#/components/schemas/Worker",
     "docs/openapi/jarvis-openapi.yaml#/components/schemas/Actor",
     "docs/openapi/jarvis-openapi.yaml#/components/schemas/HumanWorker",

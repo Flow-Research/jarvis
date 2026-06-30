@@ -107,8 +107,9 @@ a JarvisEvent request body.
 `assertions` record the protocol gates that a compatible implementation proves
 or rejects.
 
-Assertion classes come from
-`docs/planning/week-3/chunk-1-fixture-architecture.md`.
+Assertion classes come from the public conformance gates in
+`docs/conformance/checklist.md` and the allowed validator set in
+`scripts/check_conformance_fixtures.py`.
 
 ## Validator
 
@@ -120,8 +121,10 @@ python3 scripts/check_conformance_fixtures.py
 
 Conformance fixture records MUST satisfy fixture envelope fields, operation
 binding, required headers, assertion refs, source_contract_refs, OpenAPI
-component refs, required invalid-fixture coverage, host-private export
-boundaries, and expected protocol outcomes.
+component refs, required invalid-fixture coverage, global assertion-class
+coverage, golden-path semantic coverage, invalid rejection semantics,
+WorkSession revision and previous-hash binding, host-private export boundaries,
+and expected protocol outcomes.
 
 The validator MUST NOT execute host behavior. It validates Jarvis protocol
 fixture records only.

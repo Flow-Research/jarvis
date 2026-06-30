@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+from datetime import datetime, timezone
 from pathlib import Path
 import json
 import re
@@ -43,6 +44,57 @@ ASSERTION_CLASSES = {
     "learning_governance_gate",
     "host_private_boundary_gate",
 }
+
+GOLDEN_PATH_REQUIRED_RECORD_GROUPS = {
+    "actors",
+    "agent_workers",
+    "contributions",
+    "evidence_manifests",
+    "human_workers",
+    "jarvis_events",
+    "learning_records",
+    "memory_proposals",
+    "outcome_reports",
+    "policies",
+    "policy_decisions",
+    "requests",
+    "reviews",
+    "skill_proposals",
+    "work_sessions",
+    "workers",
+}
+
+GOLDEN_PATH_REQUIRED_ASSERTION_CLASSES = {
+    "header_gate",
+    "actor_authority_gate",
+    "event_chain_gate",
+    "policy_decision_gate",
+    "request_resolution_gate",
+    "approval_scope_gate",
+    "contribution_attribution_gate",
+    "evidence_export_gate",
+    "learning_governance_gate",
+    "host_private_boundary_gate",
+}
+
+GLOBAL_REQUIRED_ASSERTION_CLASSES = ASSERTION_CLASSES
+
+TERMINAL_WORK_SESSION_STATES = {
+    "completed",
+    "failed",
+    "cancelled",
+    "closed",
+}
+
+REVIEW_RESOLVED_REQUEST_STATUSES = {
+    "approved",
+    "denied",
+    "narrowed",
+    "answered",
+    "needs_revision",
+}
+
+STALE_TIMESTAMP_MIN_SECONDS = 300
 
 REQUIRED_INVALID_FIXTURES = {
     "forbidden-host-private-export-field.json": "forbidden_host_private_field",
@@ -260,6 +312,152 @@ def get_ref(data: dict[str, Any], ref: str) -> Any:
     return current
 
 
+def all_records(records: dict[str, Any], group_name: str) -> list[dict[str, Any]]:
+    group = records.get(group_name, {})
+    if not isinstance(group, dict):
+        return []
+    return [value for value in group.values() if isinstance(value, dict)]
+
+
+def ids_for(records: dict[str, Any], group_name: str) -> set[str]:
+    return {
+        record["id"]
+        for record in all_records(records, group_name)
+        if isinstance(record.get("id"), str)
+    }
+
+
+def record_by_id(
+    records: dict[str, Any], group_name: str, record_id: str | None
+) -> dict[str, Any] | None:
+    if record_id is None:
+        return None
+    for record in all_records(records, group_name):
+        if record.get("id") == record_id:
+            return record
+    return None
+
+
+def rejecting_operation(operation: dict[str, Any]) -> bool:
+    status = operation.get("expected_status")
+    return is_int(status) and status >= 400
+
+
+def first_rejecting_operation(fixture: dict[str, Any]) -> dict[str, Any]:
+    expected_error_id = fixture.get("expected_error_id")
+    for operation in fixture.get("operations", []):
+        if (
+            isinstance(operation, dict)
+            and rejecting_operation(operation)
+            and operation.get("expected_error_id") == expected_error_id
+        ):
+            return operation
+    return {}
+
+
+def operation_body(fixture: dict[str, Any], operation: dict[str, Any]) -> Any:
+    body_ref = operation.get("body_ref")
+    if isinstance(body_ref, str):
+        return get_ref(fixture, body_ref)
+    return None
+
+
+def actor_by_id(records: dict[str, Any], actor_id: str | None) -> dict[str, Any] | None:
+    return record_by_id(records, "actors", actor_id)
+
+
+def worker_for_actor(
+    records: dict[str, Any], actor: dict[str, Any] | None
+) -> dict[str, Any] | None:
+    if actor is None:
+        return None
+    worker_id = actor.get("worker_id")
+    if not isinstance(worker_id, str):
+        return None
+    return record_by_id(records, "workers", worker_id)
+
+
+def worker_grants(worker: dict[str, Any] | None) -> set[str]:
+    if worker is None:
+        return set()
+    authority_scope = worker.get("authority_scope", {})
+    if not isinstance(authority_scope, dict):
+        return set()
+    grants = authority_scope.get("grants", [])
+    if not isinstance(grants, list):
+        return set()
+    return {grant for grant in grants if isinstance(grant, str)}
+
+
+def parse_utc_timestamp(value: Any) -> datetime | None:
+    if not isinstance(value, str):
+        return None
+    try:
+        parsed = datetime.strptime(value, "%Y-%m-%dT%H:%M:%SZ")
+    except ValueError:
+        return None
+    return parsed.replace(tzinfo=timezone.utc)
+
+
+def timestamp_field(value: dict[str, Any]) -> datetime | None:
+    for field_name in ("created_at", "updated_at", "timestamp", "received_at"):
+        parsed = parse_utc_timestamp(value.get(field_name))
+        if parsed is not None:
+            return parsed
+    return None
+
+
+def request_id_from_target_ref(target_ref: Any) -> str | None:
+    if isinstance(target_ref, str) and target_ref.startswith("request:"):
+        return target_ref.removeprefix("request:")
+    return None
+
+
+def target_work_session_id(operation: dict[str, Any], body: Any) -> str | None:
+    if isinstance(operation.get("work_session_id"), str):
+        return operation["work_session_id"]
+    if isinstance(body, dict) and isinstance(body.get("work_session_id"), str):
+        return body["work_session_id"]
+    return None
+
+
+def work_session_snapshot_for_operation(
+    records: dict[str, Any], operation: dict[str, Any], body: Any
+) -> dict[str, Any] | None:
+    work_session_id = target_work_session_id(operation, body)
+    if work_session_id is None:
+        return None
+    revision = operation.get("headers", {}).get("Jarvis-Expected-WorkSession-Revision")
+    previous_hash = operation.get("headers", {}).get("Jarvis-Previous-Event-Hash")
+    for snapshot in all_records(records, "work_sessions"):
+        if snapshot.get("id") != work_session_id:
+            continue
+        if is_int(revision) and previous_hash is not None:
+            if (
+                snapshot.get("revision") == revision
+                and snapshot.get("last_event_hash") == previous_hash
+            ):
+                return snapshot
+    return None
+
+
+def resolved_state_ref(path: Path, fixture: dict[str, Any], state_ref: str) -> Any:
+    value = get_ref(fixture, state_ref)
+    if value is None:
+        raise FixtureError(f"{rel(path)}: expected_error_field does not resolve")
+    return value
+
+
+def records_with_status(
+    records: dict[str, Any], group_name: str, statuses: set[str]
+) -> list[dict[str, Any]]:
+    return [
+        record
+        for record in all_records(records, group_name)
+        if record.get("status") in statuses
+    ]
+
+
 def ref_targets_protocol_state(ref: str) -> bool:
     return ref == "host_shape_ref" or ref == "operations" or ref.startswith(
         "records."
@@ -444,7 +642,7 @@ def validate_fixture_envelope(path: Path, fixture: dict[str, Any], expected_kind
             operation
             for operation in fixture["operations"]
             if isinstance(operation, dict)
-            and operation.get("expected_status", 0) >= 400
+            and rejecting_operation(operation)
             and operation.get("expected_error_id") == fixture.get("expected_error_id")
         ]
         if not rejected_operations:
@@ -533,6 +731,8 @@ def validate_operation(
         raise FixtureError(f"{rel(path)}: unknown operation_id {operation_id}")
     operation_info = operations[operation_id]
 
+    if not is_int(operation.get("expected_status")):
+        raise FixtureError(f"{rel(path)}: {operation_id} expected_status MUST be integer")
     if operation.get("method") != operation_info["method"]:
         raise FixtureError(f"{rel(path)}: {operation_id} method does not match OpenAPI")
     path_values = path_param_values(operation_info["path_template"], operation.get("path", ""))
@@ -631,7 +831,7 @@ def validate_operation(
         if "work_session_id" not in operation:
             raise FixtureError(f"{rel(path)}: {operation_id} requires work_session_id")
 
-    if operation.get("expected_status", 0) >= 400:
+    if rejecting_operation(operation):
         if operation.get("expected_error_id") != expected_error_id:
             raise FixtureError(
                 f"{rel(path)}: {operation_id} expected_error_id must match fixture"
@@ -831,6 +1031,513 @@ def validate_assertion(path: Path, fixture: dict[str, Any], assertion: dict[str,
         raise FixtureError(f"{rel(path)}: passing assertion has expected_error_id")
 
 
+def validate_golden_path_semantics(path: Path, fixture: dict[str, Any]) -> None:
+    if path.name != "golden-path.json":
+        return
+
+    records = fixture.get("records", {})
+    missing_record_groups = sorted(GOLDEN_PATH_REQUIRED_RECORD_GROUPS - set(records))
+    if missing_record_groups:
+        raise FixtureError(
+            f"{rel(path)}: golden path missing record groups: "
+            + ", ".join(missing_record_groups)
+        )
+
+    assertion_classes = {
+        assertion.get("class")
+        for assertion in fixture.get("assertions", [])
+        if isinstance(assertion, dict)
+    }
+    missing_assertion_classes = sorted(
+        GOLDEN_PATH_REQUIRED_ASSERTION_CLASSES - assertion_classes
+    )
+    if missing_assertion_classes:
+        raise FixtureError(
+            f"{rel(path)}: golden path missing assertion classes: "
+            + ", ".join(missing_assertion_classes)
+        )
+
+    request = get_ref(fixture, "records.requests.approved")
+    review = get_ref(fixture, "records.reviews.approve_source")
+    policy_decision = get_ref(
+        fixture, "records.policy_decisions.external_source_denied"
+    )
+    evidence_manifest = get_ref(fixture, "records.evidence_manifests.portable_export")
+    learning_record = get_ref(fixture, "records.learning_records.pair")
+    outcome_report = get_ref(fixture, "records.outcome_reports.post_session")
+    memory_proposal = get_ref(fixture, "records.memory_proposals.source_policy_pattern")
+    skill_proposal = get_ref(fixture, "records.skill_proposals.bounded_source_collection")
+    contribution = get_ref(fixture, "records.contributions.shared_answer")
+
+    if (
+        not isinstance(policy_decision, dict)
+        or not isinstance(request, dict)
+        or policy_decision.get("request_id") != request.get("id")
+        or request.get("policy_decision_id") != policy_decision.get("id")
+        or policy_decision.get("work_session_id") != request.get("work_session_id")
+        or policy_decision.get("actor_id") != request.get("requester_actor_id")
+    ):
+        raise FixtureError(f"{rel(path)}: golden PolicyDecision MUST create Request")
+
+    if (
+        not isinstance(review, dict)
+        or request.get("resolved_by_review_id") != review.get("id")
+        or review.get("target_ref") != f"request:{request.get('id')}"
+        or review.get("work_session_id") != request.get("work_session_id")
+    ):
+        raise FixtureError(f"{rel(path)}: golden Request MUST resolve by Review")
+
+    approval_scope = review.get("approval_scope") if isinstance(review, dict) else None
+    if (
+        not isinstance(approval_scope, dict)
+        or approval_scope.get("request_id") != request.get("id")
+        or approval_scope.get("review_id") != review.get("id")
+        or approval_scope.get("policy_decision_id") != policy_decision.get("id")
+        or approval_scope.get("applies_to_work_session_id") != request.get("work_session_id")
+        or approval_scope.get("applies_to_actor_id") != request.get("requester_actor_id")
+        or approval_scope.get("approved_action") != request.get("requested_action")
+        or not is_int(approval_scope.get("max_uses"))
+        or approval_scope.get("max_uses") <= 0
+        or not parse_utc_timestamp(approval_scope.get("expires_at"))
+        or parse_utc_timestamp(approval_scope.get("expires_at"))
+        <= timestamp_field(review)
+        or not isinstance(approval_scope.get("normalized_action_hash"), str)
+        or not approval_scope["normalized_action_hash"].startswith("hash:")
+    ):
+        raise FixtureError(f"{rel(path)}: golden Review MUST create ApprovalScope")
+
+    worker_ids = ids_for(records, "workers")
+    actor_ids = ids_for(records, "actors")
+    if (
+        not isinstance(contribution, dict)
+        or contribution.get("contributor_type") != "shared"
+        or not isinstance(contribution.get("contributor_refs"), list)
+        or len(contribution["contributor_refs"]) < 2
+    ):
+        raise FixtureError(f"{rel(path)}: golden Contribution MUST be attributable")
+    contributor_roles = {
+        contributor.get("contribution_role")
+        for contributor in contribution["contributor_refs"]
+        if isinstance(contributor, dict)
+    }
+    if not {"human", "agent"} <= contributor_roles:
+        raise FixtureError(f"{rel(path)}: golden Contribution MUST include human and agent")
+    if contribution.get("work_session_id") != request.get("work_session_id"):
+        raise FixtureError(f"{rel(path)}: golden Contribution MUST bind WorkSession")
+    for contributor in contribution["contributor_refs"]:
+        if not isinstance(contributor, dict):
+            raise FixtureError(
+                f"{rel(path)}: golden Contribution contributor refs MUST resolve"
+            )
+        contributor_worker = record_by_id(records, "workers", contributor.get("worker_id"))
+        contributor_actor = record_by_id(records, "actors", contributor.get("actor_id"))
+        if (
+            contributor.get("contribution_role") not in {"human", "agent"}
+            or contributor.get("worker_id") not in worker_ids
+            or contributor.get("actor_id") not in actor_ids
+            or not isinstance(contributor_worker, dict)
+            or not isinstance(contributor_actor, dict)
+            or contributor_worker.get("type") != contributor.get("contribution_role")
+            or contributor_actor.get("type") != contributor.get("contribution_role")
+            or contributor_actor.get("worker_id") != contributor_worker.get("id")
+        ):
+            raise FixtureError(
+                f"{rel(path)}: golden Contribution contributor refs MUST resolve"
+            )
+
+    event_ids = ids_for(records, "jarvis_events")
+    policy_decision_ids = ids_for(records, "policy_decisions")
+    request_ids = ids_for(records, "requests")
+    review_ids = ids_for(records, "reviews")
+    contribution_ids = ids_for(records, "contributions")
+    takeover_ids = ids_for(records, "takeovers")
+    terminal_snapshots = [
+        snapshot
+        for snapshot in all_records(records, "work_sessions")
+        if snapshot.get("id") == evidence_manifest.get("work_session_id")
+        and snapshot.get("status") in TERMINAL_WORK_SESSION_STATES
+    ] if isinstance(evidence_manifest, dict) else []
+
+    if (
+        not isinstance(evidence_manifest, dict)
+        or evidence_manifest.get("generated_by_actor_id") not in actor_ids
+        or evidence_manifest.get("work_session_id") != contribution.get("work_session_id")
+        or not terminal_snapshots
+        or evidence_manifest.get("event_chain_root")
+        not in {snapshot.get("last_event_hash") for snapshot in terminal_snapshots}
+        or not isinstance(evidence_manifest.get("evidence_item_refs"), list)
+        or not evidence_manifest["evidence_item_refs"]
+        or not isinstance(evidence_manifest.get("export_profile"), dict)
+        or not evidence_manifest.get("artifact_refs")
+        or not evidence_manifest.get("limitation_refs")
+        or contribution.get("id") not in evidence_manifest.get("contribution_refs", [])
+    ):
+        raise FixtureError(f"{rel(path)}: golden EvidenceManifest MUST export evidence")
+    for evidence_item in evidence_manifest["evidence_item_refs"]:
+        if (
+            not isinstance(evidence_item, dict)
+            or evidence_item.get("work_session_id") != evidence_manifest.get("work_session_id")
+            or evidence_item.get("captured_by_actor_id") not in actor_ids
+            or not set(evidence_item.get("source_event_refs", [])) <= event_ids
+        ):
+            raise FixtureError(
+                f"{rel(path)}: golden EvidenceManifest evidence items MUST bind events"
+            )
+    reference_sets = {
+        "policy_decision_refs": policy_decision_ids,
+        "request_refs": request_ids,
+        "review_refs": review_ids,
+        "takeover_refs": takeover_ids,
+        "contribution_refs": contribution_ids,
+    }
+    for field_name, allowed_ids in reference_sets.items():
+        refs = evidence_manifest.get(field_name, [])
+        if not isinstance(refs, list) or not set(refs) <= allowed_ids:
+            raise FixtureError(
+                f"{rel(path)}: golden EvidenceManifest {field_name} MUST resolve"
+            )
+
+    if not isinstance(learning_record, dict) or learning_record.get("subject_type") not in {
+        "human",
+        "agent",
+        "pair",
+    }:
+        raise FixtureError(f"{rel(path)}: golden LearningRecord subject_type is invalid")
+    learning_id = learning_record.get("id")
+    if (
+        not set(learning_record.get("source_event_refs", [])) <= event_ids
+        or not isinstance(memory_proposal, dict)
+        or not isinstance(skill_proposal, dict)
+        or learning_id not in memory_proposal.get("learning_record_refs", [])
+        or learning_id not in skill_proposal.get("learning_record_refs", [])
+        or not set(memory_proposal.get("source_event_refs", [])) <= event_ids
+        or not set(skill_proposal.get("source_event_refs", [])) <= event_ids
+    ):
+        raise FixtureError(f"{rel(path)}: golden LearningRecord refs MUST resolve")
+
+    if (
+        not isinstance(outcome_report, dict)
+        or learning_id not in outcome_report.get("learning_record_refs", [])
+        or outcome_report.get("work_session_id") != learning_record.get("work_session_id")
+        or outcome_report.get("accepted_by_actor_id") not in actor_ids
+    ):
+        raise FixtureError(f"{rel(path)}: golden OutcomeReport MUST reference learning")
+
+
+def validate_invalid_fixture_semantics(path: Path, fixture: dict[str, Any]) -> None:
+    expected_error_id = fixture.get("expected_error_id")
+    if not expected_error_id:
+        return
+
+    records = fixture.get("records", {})
+    operation = first_rejecting_operation(fixture)
+    body = operation_body(fixture, operation)
+
+    if expected_error_id == "stale_request_timestamp":
+        header_timestamp = parse_utc_timestamp(
+            operation.get("headers", {}).get("Jarvis-Request-Timestamp")
+        )
+        body_timestamp = timestamp_field(body) if isinstance(body, dict) else None
+        if (
+            header_timestamp is None
+            or body_timestamp is None
+            or (body_timestamp - header_timestamp).total_seconds()
+            < STALE_TIMESTAMP_MIN_SECONDS
+        ):
+            raise FixtureError(
+                f"{rel(path)}: stale_request_timestamp fixture MUST use stale timestamp"
+            )
+
+    elif expected_error_id == "missing_policy":
+        if not isinstance(body, dict):
+            raise FixtureError(f"{rel(path)}: missing_policy fixture MUST submit WorkSession")
+        policy_id = body.get("policy_id")
+        if not isinstance(policy_id, str) or policy_id in ids_for(records, "policies"):
+            raise FixtureError(
+                f"{rel(path)}: missing_policy fixture MUST reference absent Policy"
+            )
+
+    elif expected_error_id == "missing_policy_decision":
+        if not isinstance(body, dict):
+            raise FixtureError(
+                f"{rel(path)}: missing_policy_decision fixture MUST submit JarvisEvent"
+            )
+        actor = actor_by_id(records, body.get("actor_id"))
+        payload = body.get("payload", {})
+        has_policy_decision_ref = any(
+            key in body or (isinstance(payload, dict) and key in payload)
+            for key in ("policy_decision_id", "policy_decision_ref", "policy_decision_refs")
+        )
+        if actor is None or actor.get("type") != "agent" or has_policy_decision_ref:
+            raise FixtureError(
+                f"{rel(path)}: missing_policy_decision fixture MUST be AgentWorker "
+                "state without PolicyDecision"
+            )
+
+    elif expected_error_id == "missing_review_resolution":
+        if not isinstance(body, dict):
+            raise FixtureError(
+                f"{rel(path)}: missing_review_resolution fixture MUST submit Request"
+            )
+        if body.get("status") not in REVIEW_RESOLVED_REQUEST_STATUSES:
+            raise FixtureError(
+                f"{rel(path)}: missing_review_resolution fixture MUST use review-resolved status"
+            )
+        if body.get("resolved_by_review_id"):
+            raise FixtureError(
+                f"{rel(path)}: missing_review_resolution fixture MUST omit Review resolution"
+            )
+
+    elif expected_error_id == "missing_takeover_resolution":
+        if not isinstance(body, dict):
+            raise FixtureError(
+                f"{rel(path)}: missing_takeover_resolution fixture MUST submit Request"
+            )
+        if body.get("status") != "takeover" or body.get("resolved_by_takeover_id"):
+            raise FixtureError(
+                f"{rel(path)}: missing_takeover_resolution fixture MUST omit Takeover resolution"
+            )
+
+    elif expected_error_id == "request_unresolved":
+        work_session_id = target_work_session_id(operation, body)
+        pending_requests = [
+            request
+            for request in records_with_status(records, "requests", {"pending"})
+            if request.get("work_session_id") == work_session_id
+        ]
+        if not pending_requests or not isinstance(body, dict):
+            raise FixtureError(
+                f"{rel(path)}: request_unresolved fixture MUST keep Request pending"
+            )
+        if (
+            body.get("type") != "work_session.completed"
+            or body.get("work_session_id") != work_session_id
+        ):
+            raise FixtureError(
+                f"{rel(path)}: request_unresolved fixture MUST attempt terminal completion"
+            )
+
+    elif expected_error_id == "invalid_approval_scope":
+        if not isinstance(body, dict) or body.get("decision") not in {"approve", "narrow"}:
+            raise FixtureError(
+                f"{rel(path)}: invalid_approval_scope fixture MUST submit approve or narrow Review"
+            )
+        approval_scope = body.get("approval_scope")
+        request_id = request_id_from_target_ref(body.get("target_ref"))
+        request = record_by_id(records, "requests", request_id)
+        if (
+            not isinstance(request, dict)
+            or request.get("work_session_id") != body.get("work_session_id")
+        ):
+            raise FixtureError(
+                f"{rel(path)}: invalid_approval_scope fixture MUST target Request"
+            )
+        required = {
+            "request_id",
+            "review_id",
+            "policy_decision_id",
+            "normalized_action_hash",
+            "approved_action",
+            "allowed_scope",
+            "denied_scope",
+            "expires_at",
+            "max_uses",
+            "applies_to_work_session_id",
+            "applies_to_actor_id",
+        }
+        if not isinstance(approval_scope, dict):
+            return
+        if not required <= set(approval_scope):
+            return
+        approval_scope_valid = (
+            isinstance(request, dict)
+            and approval_scope.get("request_id") == request.get("id")
+            and approval_scope.get("review_id") == body.get("id")
+            and approval_scope.get("policy_decision_id") == request.get("policy_decision_id")
+            and approval_scope.get("applies_to_work_session_id")
+            == body.get("work_session_id")
+            and approval_scope.get("applies_to_actor_id") == request.get("requester_actor_id")
+            and approval_scope.get("approved_action") == request.get("requested_action")
+            and is_int(approval_scope.get("max_uses"))
+            and approval_scope.get("max_uses") > 0
+            and parse_utc_timestamp(approval_scope.get("expires_at")) is not None
+            and timestamp_field(body) is not None
+            and parse_utc_timestamp(approval_scope.get("expires_at")) > timestamp_field(body)
+            and isinstance(approval_scope.get("normalized_action_hash"), str)
+            and approval_scope["normalized_action_hash"].startswith("hash:")
+            and isinstance(approval_scope.get("approved_action"), dict)
+            and isinstance(approval_scope.get("allowed_scope"), dict)
+            and isinstance(approval_scope.get("denied_scope"), dict)
+        )
+        if approval_scope_valid:
+            raise FixtureError(
+                f"{rel(path)}: invalid_approval_scope fixture MUST have invalid bounds"
+            )
+
+    elif expected_error_id == "stale_takeover_epoch":
+        active_takeovers = [
+            takeover
+            for takeover in all_records(records, "takeovers")
+            if takeover.get("state") == "active"
+        ]
+        actor = actor_by_id(records, operation.get("actor_id"))
+        work_session_id = target_work_session_id(operation, body)
+        active_takeover = next(
+            (
+                takeover
+                for takeover in active_takeovers
+                if takeover.get("work_session_id") == work_session_id
+            ),
+            None,
+        )
+        operation_snapshot = work_session_snapshot_for_operation(records, operation, body)
+        attempted_lock_epoch = operation.get("attempted_takeover_lock_epoch")
+        stale_epoch = (
+            isinstance(body, dict)
+            and active_takeover is not None
+            and body.get("work_session_id") == active_takeover.get("work_session_id")
+            and body.get("actor_id") == operation.get("actor_id")
+            and is_int(attempted_lock_epoch)
+            and attempted_lock_epoch != active_takeover.get("lock_epoch")
+        )
+        if (
+            active_takeover is None
+            or actor is None
+            or actor.get("type") != "agent"
+            or operation_snapshot is None
+            or operation_snapshot.get("last_event_hash")
+            != operation.get("headers", {}).get("Jarvis-Previous-Event-Hash")
+            or not stale_epoch
+        ):
+            raise FixtureError(
+                f"{rel(path)}: stale_takeover_epoch fixture MUST show AgentWorker "
+                "continuing during active Takeover"
+            )
+
+    elif expected_error_id == "invalid_evidence_export_state":
+        error_field = fixture.get("expected_error_field")
+        if not isinstance(error_field, str) or not error_field.endswith(".status"):
+            raise FixtureError(
+                f"{rel(path)}: invalid_evidence_export_state fixture MUST target status"
+            )
+        target_ref = error_field.removesuffix(".status")
+        work_session = resolved_state_ref(path, fixture, target_ref)
+        if (
+            not isinstance(work_session, dict)
+            or work_session.get("id") != operation.get("work_session_id")
+            or work_session.get("status") in TERMINAL_WORK_SESSION_STATES
+        ):
+            raise FixtureError(
+                f"{rel(path)}: invalid_evidence_export_state fixture MUST use non-terminal state"
+            )
+
+    elif expected_error_id == "sealed_work_session_mutation":
+        operation_snapshot = work_session_snapshot_for_operation(records, operation, body)
+        if (
+            operation_snapshot is None
+            or operation_snapshot.get("status") not in TERMINAL_WORK_SESSION_STATES
+            or operation.get("method") == "GET"
+            or not isinstance(body, dict)
+            or body.get("work_session_id") != operation_snapshot.get("id")
+        ):
+            raise FixtureError(
+                f"{rel(path)}: sealed_work_session_mutation fixture MUST mutate sealed WorkSession"
+            )
+
+    elif expected_error_id == "sealed_evidence_mutation":
+        if not isinstance(body, dict) or body.get("type") != "evidence_manifest.mutated":
+            raise FixtureError(
+                f"{rel(path)}: sealed_evidence_mutation fixture MUST submit evidence mutation event"
+            )
+        if not all_records(records, "evidence_manifests"):
+            raise FixtureError(
+                f"{rel(path)}: sealed_evidence_mutation fixture MUST include EvidenceManifest"
+            )
+        evidence_manifest = next(iter(all_records(records, "evidence_manifests")), {})
+        if evidence_manifest.get("work_session_id") != body.get("work_session_id"):
+            raise FixtureError(
+                f"{rel(path)}: sealed_evidence_mutation fixture MUST target sealed EvidenceManifest"
+            )
+
+    elif expected_error_id == "silent_memory_mutation":
+        if not isinstance(body, dict):
+            raise FixtureError(
+                f"{rel(path)}: silent_memory_mutation fixture MUST submit MemoryProposal"
+            )
+        if body.get("review_required") is not False or body.get("status") != "accepted":
+            raise FixtureError(
+                f"{rel(path)}: silent_memory_mutation fixture MUST silently accept memory"
+            )
+
+    elif expected_error_id == "silent_skill_activation":
+        if not isinstance(body, dict):
+            raise FixtureError(
+                f"{rel(path)}: silent_skill_activation fixture MUST submit SkillProposal"
+            )
+        if body.get("status") != "active" or body.get("review_refs"):
+            raise FixtureError(
+                f"{rel(path)}: silent_skill_activation fixture MUST activate without review"
+            )
+
+    elif expected_error_id == "outcome_report_without_learning_record":
+        if not isinstance(body, dict):
+            raise FixtureError(
+                f"{rel(path)}: outcome_report_without_learning_record fixture MUST submit OutcomeReport"
+            )
+        if body.get("learning_record_refs"):
+            raise FixtureError(
+                f"{rel(path)}: outcome_report_without_learning_record fixture MUST omit learning refs"
+            )
+
+    elif expected_error_id == "unauthorized_actor":
+        if not isinstance(body, dict):
+            raise FixtureError(
+                f"{rel(path)}: unauthorized_actor fixture MUST submit protocol body"
+            )
+        actor_id = operation.get("actor_id")
+        actor = actor_by_id(records, actor_id)
+        worker = worker_for_actor(records, actor)
+        grants = worker_grants(worker)
+        if actor is None:
+            raise FixtureError(
+                f"{rel(path)}: unauthorized_actor fixture MUST use represented Actor"
+            )
+        if operation.get("operation_id") == "createWorkSession":
+            if (
+                actor_id == body.get("created_by_actor_id")
+                and "policy:own" in grants
+            ):
+                raise FixtureError(
+                    f"{rel(path)}: unauthorized_actor fixture MUST use Actor outside authority"
+                )
+        else:
+            required_grants_by_operation = {
+                "recordReview": "review:approve",
+                "startTakeover": "takeover:start",
+                "appendJarvisEvent": "action:execute_after_policy",
+            }
+            required_grant = required_grants_by_operation.get(operation.get("operation_id"))
+            if required_grant is not None and required_grant in grants:
+                raise FixtureError(
+                    f"{rel(path)}: unauthorized_actor fixture MUST use Actor outside authority"
+                )
+
+
+def validate_assertion_coverage(fixtures: list[dict[str, Any]]) -> None:
+    covered = {
+        assertion.get("class")
+        for fixture in fixtures
+        for assertion in fixture.get("assertions", [])
+        if isinstance(assertion, dict)
+    }
+    missing = sorted(GLOBAL_REQUIRED_ASSERTION_CLASSES - covered)
+    if missing:
+        raise FixtureError(
+            "docs/conformance/fixtures: missing assertion class coverage: "
+            + ", ".join(missing)
+        )
+
+
 def represented_hash_set(fixture: dict[str, Any]) -> set[str]:
     hashes = {PROTOCOL_GENESIS_HASH}
     for event in fixture.get("records", {}).get("jarvis_events", {}).values():
@@ -917,7 +1624,7 @@ def validate_fixture(
     openapi: dict[str, Any],
     operations: dict[str, dict[str, Any]],
     protocol_error_ids: set[str],
-) -> None:
+) -> dict[str, Any]:
     fixture = load_json(path)
     validate_fixture_envelope(path, fixture, expected_kind)
 
@@ -929,6 +1636,8 @@ def validate_fixture(
     validate_host_shape(path, fixture)
     validate_forbidden_export_fields(path, fixture)
     validate_event_chain(path, fixture)
+    validate_golden_path_semantics(path, fixture)
+    validate_invalid_fixture_semantics(path, fixture)
 
     for operation in fixture["operations"]:
         if not isinstance(operation, dict):
@@ -939,6 +1648,7 @@ def validate_fixture(
         if not isinstance(assertion, dict):
             raise FixtureError(f"{rel(path)}: assertion entries MUST be objects")
         validate_assertion(path, fixture, assertion)
+    return fixture
 
 
 def validate_required_fixture_set() -> None:
@@ -968,14 +1678,17 @@ def main() -> int:
         operations = openapi_operations(openapi)
         protocol_error_ids = schema_enum(openapi, "ProtocolErrorId")
 
+        loaded_fixtures: list[dict[str, Any]] = []
         for path, expected_kind in fixture_files():
-            validate_fixture(
+            fixture = validate_fixture(
                 path,
                 expected_kind,
                 openapi,
                 operations,
                 protocol_error_ids,
             )
+            loaded_fixtures.append(fixture)
+        validate_assertion_coverage(loaded_fixtures)
     except FixtureError as exc:
         return fail(str(exc))
 
