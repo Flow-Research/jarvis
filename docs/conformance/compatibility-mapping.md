@@ -21,7 +21,7 @@ provider secrets, session cookies, or private keys.
 
 ## Host Shape Reference
 
-Every Week 3 fixture includes `host_shape_ref`.
+Every compatibility fixture includes `host_shape_ref`.
 
 Allowed v0.1 fixture shape refs:
 
@@ -209,7 +209,7 @@ Contribution, EvidenceManifest, or LearningRecord requirements.
 
 ## Compatibility Assertions
 
-Week 3 fixtures MUST assert:
+Compatibility fixtures MUST assert:
 
 ```txt
 host_shape_ref is present
@@ -281,13 +281,13 @@ unsupported_capability
 
 The fixture uses one primary rejection id per invalid case.
 
-## Done State
+## Compatibility Conditions
 
-Compatibility mapping is complete for v0.1 when:
+Compatibility mapping requires:
 
 - every required native surface has a Jarvis protocol target
 - every unsupported native concept records `limitations` or rejects as
   `unsupported_capability`
 - host-owned execution remains outside portable protocol records
 - fixture `host_shape_ref` values stay host-private-free
-- Week 3 valid and invalid fixtures use this mapping as their source
+- valid and invalid compatibility fixtures use this mapping as their source

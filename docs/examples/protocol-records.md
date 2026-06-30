@@ -244,15 +244,20 @@ Conformance gate:
       "ref": "capability:evidence-capture",
       "capability_type": "evidence_capture",
       "required": true
+    },
+    {
+      "ref": "capability:reviewed-connector-source-read",
+      "capability_type": "connector_source_read",
+      "required": false
     }
   ],
   "autonomy_level": "bounded_execute",
   "operating_constraints": [
     "act only inside Policy",
-    "create Request for review-required external source use",
+    "create Request for review-required connector-backed external source use",
     "propose learning without silently mutating memory"
   ],
-  "tool_access_profile": "profile:local-context-only",
+  "tool_access_profile": "profile:local-context-and-reviewed-connector",
   "memory_access_profile": "profile:proposal-only"
 }
 ```
@@ -793,6 +798,9 @@ Conformance gate:
 [EvidenceManifest Gate](../conformance/checklist.md#evidencemanifest-gate)
 
 EvidenceManifest export happens after terminal WorkSession state.
+The approved external source item represents connector-backed evidence. Hosts
+own connector execution and raw connector responses. Jarvis records only source
+event refs, redacted artifact refs, hashes, trust labels, and limitations.
 
 ```json
 {
@@ -824,10 +832,10 @@ EvidenceManifest export happens after terminal WorkSession state.
         "event-approved-source-fetch-001"
       ],
       "captured_by_actor_id": "actor-agent-research",
-      "evidence_type": "approved_external_source_summary",
-      "artifact_ref": "artifact:approved-source-summary",
-      "content_hash": "hash:evidence-approved-source",
-      "trust_label": "human_reviewed_source",
+      "evidence_type": "approved_connector_source_summary",
+      "artifact_ref": "artifact:approved-connector-source-summary",
+      "content_hash": "hash:evidence-approved-connector-source",
+      "trust_label": "human_reviewed_connector_source",
       "redaction_state": "redacted",
       "captured_at": "2026-06-24T09:16:00Z",
       "limitation_refs": [
@@ -978,7 +986,8 @@ Conformance gate:
   "status": "pending_review",
   "created_at": "2026-06-24T09:43:00Z",
   "required_tools": [
-    "capability:local-context-read"
+    "capability:local-context-read",
+    "capability:reviewed-connector-source-read"
   ],
   "source_event_refs": [
     "event-review-external-source-001",
@@ -1068,5 +1077,5 @@ Compatible implementations MUST preserve this order:
 ```
 
 The protocol defines record examples only. Hosts own execution architecture,
-including UI, storage, model provider, tool runner, memory engine, and
-deployment choices.
+including UI, storage, model provider, tool runner, connector implementation,
+memory engine, and deployment choices.
