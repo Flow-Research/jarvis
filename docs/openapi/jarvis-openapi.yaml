@@ -35,6 +35,15 @@ paths:
   /workers/{worker_id}:
     put:
       operationId: registerWorker
+      summary: Register Worker protocol reference.
+      description: |
+        Records a Worker protocol reference. Hosts own account creation,
+        authentication, identity storage, and credentials. Compatible
+        implementations MUST verify Actor authority, HostAuth,
+        Jarvis-Protocol-Version, Jarvis-Actor-Id, Jarvis-Idempotency-Key, and
+        Jarvis-Request-Timestamp. This non-WorkSession mutation does not
+        require WorkSession revision or previous event hash.
+      x-jarvis-operation-class: non_worksession_mutation
       tags:
         - Workers
       security:
@@ -55,6 +64,15 @@ paths:
   /actors/{actor_id}:
     put:
       operationId: registerActor
+      summary: Register Actor protocol authority reference.
+      description: |
+        Records an Actor protocol authority reference for an existing Worker.
+        Hosts own identity proof, credentials, sessions, and account storage.
+        Compatible implementations MUST verify Actor authority, HostAuth,
+        Jarvis-Protocol-Version, Jarvis-Actor-Id, Jarvis-Idempotency-Key, and
+        Jarvis-Request-Timestamp. This non-WorkSession mutation does not
+        require WorkSession revision or previous event hash.
+      x-jarvis-operation-class: non_worksession_mutation
       tags:
         - Workers
       security:
@@ -75,6 +93,15 @@ paths:
   /work-sessions:
     post:
       operationId: createWorkSession
+      summary: Create WorkSession genesis record.
+      description: |
+        Creates the genesis WorkSession protocol record for one governed
+        HumanWorker and AgentWorker collaboration loop. Compatible
+        implementations MUST verify Actor authority, HostAuth, all six Jarvis
+        mutation headers, expected revision `0`, and
+        `Jarvis-Previous-Event-Hash` equal to `hash:protocol-genesis` before
+        accepting the WorkSession creation state.
+      x-jarvis-operation-class: worksession_genesis_mutation
       tags:
         - WorkSessions
       security:
@@ -96,6 +123,13 @@ paths:
   /work-sessions/{work_session_id}:
     get:
       operationId: getWorkSession
+      summary: Read WorkSession protocol record.
+      description: |
+        Returns a WorkSession protocol record. Compatible implementations MUST
+        verify HostAuth, Jarvis-Protocol-Version, Jarvis-Actor-Id, and Actor
+        read authority. Read operations MUST NOT require mutation-only
+        idempotency, expected revision, or previous event hash headers.
+      x-jarvis-operation-class: worksession_scoped_read
       tags:
         - WorkSessions
       security:
@@ -112,6 +146,13 @@ paths:
   /work-sessions/{work_session_id}/events:
     post:
       operationId: appendJarvisEvent
+      summary: Append JarvisEvent to WorkSession.
+      description: |
+        Appends an attributable JarvisEvent to the WorkSession event chain.
+        Compatible implementations MUST verify Actor authority, HostAuth, all
+        six Jarvis mutation headers, current WorkSession revision, and previous
+        event hash before accepting protocol state.
+      x-jarvis-operation-class: worksession_scoped_mutation
       tags:
         - WorkSessions
       security:
@@ -134,6 +175,13 @@ paths:
   /work-sessions/{work_session_id}/policy-decisions:
     post:
       operationId: recordPolicyDecision
+      summary: Record PolicyDecision before accepted AgentWorker action.
+      description: |
+        Records a PolicyDecision for an AgentWorker action before that action
+        becomes accepted protocol state. Compatible implementations MUST verify
+        Actor authority, HostAuth, all six Jarvis mutation headers, current
+        WorkSession revision, and previous event hash.
+      x-jarvis-operation-class: worksession_scoped_mutation
       tags:
         - ControlPlane
       security:
@@ -156,6 +204,14 @@ paths:
   /work-sessions/{work_session_id}/requests:
     post:
       operationId: createRequest
+      summary: Create scoped Request for blocked work.
+      description: |
+        Creates a scoped Request when AgentWorker cannot continue a declared
+        work scope safely without HumanWorker permission, context, judgment,
+        review, correction, or Takeover. Compatible implementations MUST verify
+        Actor authority, HostAuth, all six Jarvis mutation headers, current
+        WorkSession revision, and previous event hash.
+      x-jarvis-operation-class: worksession_scoped_mutation
       tags:
         - ControlPlane
       security:
@@ -178,6 +234,14 @@ paths:
   /work-sessions/{work_session_id}/reviews:
     post:
       operationId: recordReview
+      summary: Record HumanWorker Review.
+      description: |
+        Records HumanWorker judgment over a Request or protocol target.
+        Review resolves Request scopes through approve, deny, narrow, correct,
+        takeover, or needs_revision decisions. Compatible implementations MUST
+        verify Actor authority, HostAuth, all six Jarvis mutation headers,
+        current WorkSession revision, and previous event hash.
+      x-jarvis-operation-class: worksession_scoped_mutation
       tags:
         - ControlPlane
       security:
@@ -200,6 +264,14 @@ paths:
   /work-sessions/{work_session_id}/takeovers:
     post:
       operationId: recordTakeover
+      summary: Record Takeover and reconciliation state.
+      description: |
+        Records HumanWorker direct-control state for a declared WorkSession
+        scope and prevents stale AgentWorker continuation. Compatible
+        implementations MUST verify Actor authority, HostAuth, all six Jarvis
+        mutation headers, current WorkSession revision, previous event hash,
+        and Takeover lock epoch rules.
+      x-jarvis-operation-class: worksession_scoped_mutation
       tags:
         - ControlPlane
       security:
@@ -222,6 +294,14 @@ paths:
   /work-sessions/{work_session_id}/contributions:
     post:
       operationId: recordContribution
+      summary: Record attributable Contribution.
+      description: |
+        Records who contributed work, which Actor represented the contributor,
+        and which events or artifacts support the contribution. Compatible
+        implementations MUST verify Actor authority, HostAuth, all six Jarvis
+        mutation headers, current WorkSession revision, and previous event
+        hash.
+      x-jarvis-operation-class: worksession_scoped_mutation
       tags:
         - Attribution
       security:
@@ -244,6 +324,13 @@ paths:
   /work-sessions/{work_session_id}/learning-records:
     post:
       operationId: createLearningRecord
+      summary: Create governed LearningRecord.
+      description: |
+        Creates a governed LearningRecord for human, agent, or pair learning
+        supported by WorkSession source events. Compatible implementations MUST
+        verify Actor authority, HostAuth, all six Jarvis mutation headers,
+        current WorkSession revision, and previous event hash.
+      x-jarvis-operation-class: worksession_scoped_mutation
       tags:
         - Learning
       security:
@@ -266,6 +353,13 @@ paths:
   /work-sessions/{work_session_id}/memory-proposals:
     post:
       operationId: createMemoryProposal
+      summary: Create governed MemoryProposal.
+      description: |
+        Creates a MemoryProposal that remains governed until reviewed.
+        Compatible implementations MUST verify Actor authority, HostAuth, all
+        six Jarvis mutation headers, current WorkSession revision, previous
+        event hash, provenance, and review-required state.
+      x-jarvis-operation-class: worksession_scoped_mutation
       tags:
         - Learning
       security:
@@ -288,6 +382,14 @@ paths:
   /work-sessions/{work_session_id}/skill-proposals:
     post:
       operationId: createSkillProposal
+      summary: Create governed SkillProposal.
+      description: |
+        Creates a SkillProposal that remains governed until reviewed and cannot
+        expand tool access without policy review. Compatible implementations
+        MUST verify Actor authority, HostAuth, all six Jarvis mutation headers,
+        current WorkSession revision, previous event hash, provenance, and
+        review-required state.
+      x-jarvis-operation-class: worksession_scoped_mutation
       tags:
         - Learning
       security:
@@ -310,6 +412,14 @@ paths:
   /work-sessions/{work_session_id}/export:
     get:
       operationId: exportEvidenceManifest
+      summary: Export EvidenceManifest.
+      description: |
+        Exports portable EvidenceManifest proof from a terminal WorkSession
+        state. Compatible implementations MUST verify HostAuth,
+        Jarvis-Protocol-Version, Jarvis-Actor-Id, and Actor read authority.
+        Export reads MUST NOT require mutation-only idempotency, expected
+        revision, or previous event hash headers.
+      x-jarvis-operation-class: export_read
       tags:
         - Evidence
       security:
@@ -326,6 +436,16 @@ paths:
   /outcome-reports:
     post:
       operationId: submitOutcomeReport
+      summary: Submit OutcomeReport post-session feedback.
+      description: |
+        Records attributable post-session feedback after WorkSession export.
+        OutcomeReport references governed LearningRecord records and does not
+        mutate sealed WorkSession, EvidenceManifest, or LearningRecord records.
+        Compatible implementations MUST verify Actor authority, HostAuth,
+        Jarvis-Protocol-Version, Jarvis-Actor-Id, Jarvis-Idempotency-Key, and
+        Jarvis-Request-Timestamp. This non-WorkSession mutation does not
+        require WorkSession revision or previous event hash.
+      x-jarvis-operation-class: non_worksession_mutation
       tags:
         - Feedback
       security:
@@ -1034,6 +1154,8 @@ components:
         - credential
         - raw_auth_token
         - provider_secret
+        - session_cookie
+        - private_key
         - database_primary_key
         - cloud_storage_secret
         - unredacted_secret_value
@@ -1096,6 +1218,8 @@ components:
         - credential
         - raw_auth_token
         - provider_secret
+        - session_cookie
+        - private_key
         - database_primary_key
         - cloud_storage_secret
         - unredacted_secret_value
@@ -2073,6 +2197,8 @@ components:
         - credential
         - raw_auth_token
         - provider_secret
+        - session_cookie
+        - private_key
         - database_primary_key
         - cloud_storage_secret
         - unredacted_secret_value
@@ -2707,8 +2833,8 @@ components:
         agent_worker_id: worker-agent-001
         policy_id: policy-bounded-001
         status: active
-        revision: 0
-        last_event_hash: hash:genesis
+        revision: 1
+        last_event_hash: hash:event-worksession-created
         event_log_ref: event-log:ws-protocol-001
         created_at: "2026-06-12T18:00:00Z"
         updated_at: "2026-06-12T18:00:00Z"
