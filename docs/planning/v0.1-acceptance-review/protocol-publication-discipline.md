@@ -17,14 +17,14 @@ routing, tool execution, runtime behavior, or product workflow.
 Jarvis v0.1 acceptance includes these protocol-publication rules:
 
 ```txt
-public version labels stay consistent
-conformance claims use a precise claim format
-conformance proof names the tested suite or fixture set
-extension rules preserve the rigid core
-public release notes record known limits
-security disclosure and governance gaps stay visible
-machine-readable contracts and prose contracts cross-check each other
-public examples stay separate from protocol claims
+public version labels MUST stay consistent
+conformance claims MUST use a precise claim format
+conformance proof MUST name the tested suite or fixture set
+extension rules MUST preserve the rigid core
+public release notes MUST record known limits
+security disclosure and governance gaps MUST stay visible
+machine-readable contracts and prose contracts MUST cross-check each other
+public examples MUST stay separate from protocol claims
 ```
 
 These rules strengthen Jarvis as a protocol.

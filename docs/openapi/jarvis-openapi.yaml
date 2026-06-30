@@ -2972,7 +2972,6 @@ components:
         trace_id: trace:protocol-error-001
 x-jarvis-protocol:
   version: v0.1
-  openapi_artifact_version: 0.1.0
   layer: OpenAPI 3.1 communication binding
   source_of_truth:
     - docs/protocol/14-protocol-lock.md
