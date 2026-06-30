@@ -201,6 +201,49 @@ Demo syntax failure creates a public-readiness finding. It does not fail the
 protocol acceptance gate unless the demo misrepresents Jarvis as a product,
 runtime, framework, host UI, or host implementation.
 
+## Gate 8: Protocol Publication Discipline
+
+Protocol publication discipline passes when:
+
+```txt
+public protocol materials use consistent v0.1 status language, precise
+conformance claim language, visible release-readiness gaps, and consistent
+version labels.
+```
+
+Required proof:
+
+- README, OpenAPI metadata, architecture brief, conformance docs, examples,
+  roadmap, demo text, and acceptance decision record use consistent v0.1
+  status language
+- OpenAPI `info.version`, OpenAPI `x-jarvis-protocol.version`, fixture
+  `protocol_version`, README status, and acceptance decision status do not
+  conflict
+- OpenAPI `info.version: 0.1.0` identifies the OpenAPI artifact version, and
+  OpenAPI `x-jarvis-protocol.version: v0.1` identifies the protocol line
+- public conformance wording uses exact proof language instead of vague
+  compliance language
+- compatibility claims include protocol version, conformance surface, fixture
+  or checklist basis, and verification date
+- public docs reject `certified`, `official host`, and unverified
+  compatibility claims unless a future governance process defines them
+- extension text preserves namespaced extensions and rejects core-field
+  override
+- prose docs, OpenAPI, examples, fixtures, and validator checks agree on the
+  same contract
+- release-readiness gap log classifies changelog, contributing guide, security
+  policy, citation metadata, license clarity, issue templates, PR template, CI
+  workflows, governance process, website, release notes, known-limit coverage,
+  and conformance report format
+- v0.1 public docs do not claim v1.0 stability, long-term support, foundation
+  governance, production adoption, or certification
+- research lessons stay scoped to publication discipline and do not add host
+  implementation to Jarvis
+
+The gate fails when public materials contain version drift, vague conformance
+claims, unverified certification language, missing release-readiness
+classification, or non-Jarvis copying that changes Jarvis semantics.
+
 ## Decision Rule
 
 The v0.1 acceptance decision MUST record:

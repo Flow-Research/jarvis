@@ -249,11 +249,17 @@ The 30-day proof now enters
 [v0.1 acceptance review](./v0.1-acceptance-review/README.md).
 
 Acceptance review audits the full protocol contract, OpenAPI binding,
-conformance surface, public examples, README, and non-normative simulation
-boundary before v0.1 is called Protocol Alpha.
+conformance surface, public examples, README, non-normative simulation
+boundary, and protocol-publication discipline before v0.1 is called Protocol
+Alpha.
 
 The acceptance gates are defined in
 [acceptance-spec.md](./v0.1-acceptance-review/acceptance-spec.md).
+
+The protocol-publication discipline review is recorded in
+[protocol-publication-discipline.md](./v0.1-acceptance-review/protocol-publication-discipline.md).
+It strengthens release, versioning, conformance-claim, extension, and
+governance-gap discipline without changing Jarvis protocol semantics.
 
 ## First 72 Hours
 

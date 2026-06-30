@@ -235,6 +235,7 @@ Work on:
 
 - v0.1 acceptance review
 - protocol implementation helper boundary
+- protocol-publication discipline
 - public-readiness gap log
 - additional conformance evidence only when it preserves the protocol boundary
 - next-phase specification after acceptance review

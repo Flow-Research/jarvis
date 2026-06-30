@@ -16,6 +16,12 @@ Jarvis is the compatibility protocol for any HumanWorker, AgentWorker, host, or
 external system that needs to participate in governed human-agent collaboration
 and shared learning.
 
+## Status
+
+v0.1 acceptance review is active.
+Jarvis v0.1 is not accepted, released, or tagged until the acceptance decision
+records every required gate as passed.
+
 ## Interactive Simulation
 
 The simulation is non-normative public explanation. It is not protocol proof
