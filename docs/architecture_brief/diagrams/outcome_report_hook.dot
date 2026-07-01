@@ -5,14 +5,15 @@ digraph G {
 
   export [label="Sealed WorkSession\nEvidenceManifest exported", fillcolor="#ecfeff", color="#0891b2"];
   external [label="External Outcome\naccepted · rejected · needs_revision\npartial · disputed", fillcolor="#ffffff"];
-  outcome [label="OutcomeReport\nexternal feedback ingress\nno sealed session mutation", fillcolor="#fffbeb", color="#d97706", penwidth=2];
-  learning [label="LearningRecord\npost-session learning", fillcolor="#f5f3ff", color="#7c3aed"];
+  learning [label="LearningRecord\ncreated through own operation\ngoverned post-session learning", fillcolor="#f5f3ff", color="#7c3aed"];
+  outcome [label="OutcomeReport\nreferences learning_record_refs\nno sealed session mutation", fillcolor="#fffbeb", color="#d97706", penwidth=2];
   proposal [label="MemoryProposal / SkillProposal\ngoverned update", fillcolor="#f0fdf4", color="#16a34a"];
   boundary [label="Outside Jarvis\nscoring · payment · settlement · routing\nmarketplace logic", fillcolor="#fef2f2", color="#dc2626"];
 
   export -> external [label="evaluated by external system"];
+  external -> learning [label="produces governed"];
   external -> outcome [label="reported through"];
-  outcome -> learning [label="references governed"];
+  learning -> outcome [label="referenced by"];
   learning -> proposal [label="proposes governed update"];
   boundary -> outcome [style=dashed, label="does not enter core"];
 }

@@ -66,12 +66,12 @@ Both host shapes create the same baseline records:
 ```txt
 WorkSession.id = work-session-research-001
 WorkSession.objective = Prepare an evidence-backed answer for a bounded research task.
-WorkSession.human_worker_id = human-worker-researcher
-WorkSession.agent_worker_id = agent-worker-research
+WorkSession.human_worker_id = worker-human-researcher
+WorkSession.agent_worker_id = worker-agent-research
 WorkSession.policy_id = policy-research-001
 WorkSession.status = active
-WorkSession.revision = 0
-WorkSession.last_event_hash = hash:genesis
+WorkSession.revision = 1
+WorkSession.last_event_hash = hash:event-worksession-created
 
 Policy.id = policy-research-001
 Policy.allowed_actions = inspect_local_context, summarize_local_evidence, draft_artifact
@@ -160,13 +160,13 @@ review_id = review-external-source-001
 approval_scope.request_id = request-external-source-001
 approval_scope.review_id = review-external-source-001
 approval_scope.policy_decision_id = policy-decision-external-source-001
-approval_scope.request_revision = 1
-approval_scope.request_event_hash = hash:event-request-external-source
+approval_scope.request_revision = 5
+approval_scope.request_event_hash = hash:event-request-external-source-001
 approval_scope.normalized_action_hash = hash:action-fetch-approved-source
 approval_scope.approved_action.action = fetch_external_source
 approval_scope.allowed_scope.scope_ref = scope:approved-source-family
 approval_scope.denied_scope.scope_ref = scope:all-other-external-sends-and-credentials
-approval_scope.expires_at = 2026-06-12T18:36:00Z
+approval_scope.expires_at = 2026-06-12T19:06:00Z
 approval_scope.max_uses = 1
 approval_scope.applies_to_work_session_id = work-session-research-001
 approval_scope.applies_to_actor_id = actor-agent-worker
@@ -224,14 +224,14 @@ JarvisEvent.id = event-review-external-source-001
 JarvisEvent.object_ref = review-external-source-001
 JarvisEvent.event_hash = hash:event-review-external-source
 
-JarvisEvent.id = event-evidence-export-001
-JarvisEvent.object_ref = evidence-manifest-research-001
-JarvisEvent.event_hash = hash:event-evidence-export
+JarvisEvent.id = event-evidence-captured-001
+JarvisEvent.object_ref = evidence-item-approved-source-001
+JarvisEvent.event_hash = hash:event-evidence-captured
 
 Contribution.id = contribution-research-001
-Contribution.contributor_refs = human-worker-researcher, agent-worker-research
+Contribution.contributor_refs = worker-human-researcher, worker-agent-research
 Contribution.contribution_type = shared
-Contribution.event_refs = event-review-external-source-001, event-evidence-export-001
+Contribution.event_refs = event-review-external-source-001, event-evidence-captured-001
 ```
 
 Both host shapes export the same portable proof:
@@ -258,8 +258,8 @@ Learning records preserve the human-agent learning loop:
 ```txt
 LearningRecord.id = learning-record-research-001
 LearningRecord.subject_type = pair
-LearningRecord.subject_ref = ref:pair:human-worker-researcher:agent-worker-research
-LearningRecord.source_event_refs = event-review-external-source-001, event-evidence-export-001
+LearningRecord.subject_ref = ref:pair:worker-human-researcher:worker-agent-research
+LearningRecord.source_event_refs = event-review-external-source-001, event-evidence-captured-001
 LearningRecord.review_state = accepted
 
 MemoryProposal.id = memory-proposal-source-boundary-001

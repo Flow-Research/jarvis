@@ -78,7 +78,7 @@ snapshots:
 
 ```txt
 genesis_request
-created
+active
 pending
 approved
 completed
@@ -126,5 +126,5 @@ coverage, golden-path semantic coverage, invalid rejection semantics,
 WorkSession revision and previous-hash binding, host-private export boundaries,
 and expected protocol outcomes.
 
-The validator MUST NOT execute host behavior. It validates Jarvis protocol
-fixture records only.
+The validator MUST NOT execute host behavior. It validates only Jarvis protocol
+fixture records.

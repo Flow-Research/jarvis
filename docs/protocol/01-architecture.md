@@ -82,7 +82,8 @@ sealed WorkSession or EvidenceManifest records.
 5. AgentWorker plans and executes inside policy.
 6. Policy evaluates every meaningful action.
 7. Missing permission, context, or judgment becomes a Request.
-8. HumanWorker reviews, approves, denies, narrows, corrects, or takes over.
+8. HumanWorker reviews, answers, approves, denies, narrows, corrects, or takes
+   over.
 9. AgentWorker resumes when allowed.
 10. Events, contributions, and evidence are recorded as protocol records.
 11. Memory, skill, and learning updates are proposed for the human, agent, and

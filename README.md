@@ -86,6 +86,7 @@ Compatible implementations MUST prove:
 
 - WorkSession-scoped mutations carry the required Jarvis headers.
 - Actor authority is verified before accepted protocol state.
+- Actor-bearing mutation bodies match `Jarvis-Actor-Id`.
 - WorkSession revision and previous event hash are checked before mutation.
 - PolicyDecision is recorded before accepted AgentWorker action state.
 - Request records blocked or review-required scope.
@@ -144,7 +145,7 @@ infrastructure.
 2. Policy defines boundaries.
 3. Agent works inside those boundaries.
 4. Agent asks when blocked.
-5. Human reviews, approves, denies, narrows, corrects, or takes over.
+5. Human reviews, answers, approves, denies, narrows, corrects, or takes over.
 6. Work continues.
 7. Contributions are recorded.
 8. Evidence is captured.

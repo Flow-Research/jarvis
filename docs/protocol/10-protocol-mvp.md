@@ -105,7 +105,6 @@ The event chain makes the collaboration inspectable and exportable.
 ## WorkSession Statuses
 
 ```txt
-created
 active
 waiting_on_human
 takeover

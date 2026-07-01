@@ -21,8 +21,8 @@ Jarvis architecture is accepted only when these criteria hold.
 - AgentWorker is an autonomous but policy-bounded contributor.
 - HumanWorker and AgentWorker are both actors in the protocol.
 - HumanWorker and AgentWorker both learn from completed WorkSessions.
-- HumanWorker approves, denies, narrows, corrects, requests revision, or takes
-  over.
+- HumanWorker answers, approves, denies, narrows, corrects, requests revision,
+  or takes over.
 - Corrections create or reference LearningRecord, MemoryProposal, or
   SkillProposal records when they change future WorkSession behavior.
 
@@ -62,10 +62,10 @@ Jarvis architecture is accepted only when these criteria hold.
 The first protocol release passes these checks:
 
 ```txt
-create HumanWorker
-create AgentWorker
+register Worker and Actor protocol refs
+provide HumanWorker and AgentWorker records
 start WorkSession
-attach Policy
+provide Policy record
 record objective
 record allowed AgentWorker action
 record policy-denied AgentWorker action
@@ -99,7 +99,8 @@ Expected result:
 - final EvidenceManifest export is valid only from completed, failed,
   cancelled, or closed WorkSession state
 - Request cannot reach human-resolved state without Review or Takeover
-- Review supports approve, deny, narrow, correct, takeover, and needs_revision
+- Review supports answer, approve, deny, narrow, correct, takeover, and
+  needs_revision
 - Request blocks only its declared scope unless scope is whole WorkSession
 - invalid Request transitions are rejected
 - ApprovalScope rejects stale, mismatched, expired, or over-broad execution
@@ -157,6 +158,8 @@ Expected result:
   `Jarvis-Previous-Event-Hash`
 - OpenAPI path/body identity checks reject mismatched ids as
   `path_body_id_mismatch`
+- OpenAPI actor/body identity checks reject actor-bearing mutation body mismatch
+  with `Jarvis-Actor-Id` as `actor_body_id_mismatch`
 - WorkSession-scoped and export read operations require
   `Jarvis-Protocol-Version`, host authentication, and `Jarvis-Actor-Id`, and
   do not require mutation-only idempotency, expected revision, or previous event

@@ -121,8 +121,11 @@ ref, or governed learning review.
 
 Fixtures MUST use OpenAPI operation ids from the v0.1 contract.
 
-Policy, HumanWorker, and AgentWorker are fixture records only in v0.1.
-Fixtures MUST NOT invent registration operations for them.
+Policy, HumanWorker, and AgentWorker are protocol records in v0.1. They are
+not separate top-level registration resources. Compatible implementations MUST
+dereference them when creating WorkSession state, preserving evidence, and
+exporting portable records. Fixtures MUST include them as protocol records and
+MUST NOT invent registration operations for them.
 
 Accepted mutation operations that create protocol state record
 `expected_event_ref` with the id of the JarvisEvent produced by that operation.

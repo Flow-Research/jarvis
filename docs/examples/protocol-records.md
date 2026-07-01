@@ -345,8 +345,8 @@ Conformance gate:
   "agent_worker_id": "worker-agent-research",
   "policy_id": "policy-research-001",
   "status": "active",
-  "revision": 0,
-  "last_event_hash": "hash:protocol-genesis",
+  "revision": 1,
+  "last_event_hash": "hash:event-worksession-created",
   "event_log_ref": "event-log:work-session-research-001",
   "created_at": "2026-06-24T09:02:00Z",
   "updated_at": "2026-06-24T09:02:00Z",
@@ -366,7 +366,7 @@ Terminal WorkSession snapshot before EvidenceManifest export:
   "agent_worker_id": "worker-agent-research",
   "policy_id": "policy-research-001",
   "status": "completed",
-  "revision": 14,
+  "revision": 15,
   "last_event_hash": "hash:event-work-session-completed-001",
   "event_log_ref": "event-log:work-session-research-001",
   "created_at": "2026-06-24T09:02:00Z",
@@ -385,14 +385,43 @@ Conformance gates:
 [WorkSession Gate](../conformance/checklist.md#worksession-gate),
 [EvidenceManifest Gate](../conformance/checklist.md#evidencemanifest-gate)
 
-This file expands the first PolicyDecision event and the first accepted
-AgentWorker action event. Later event refs identify records in the same
-append-only event chain.
+This file expands the initial WorkSession creation event, the first
+PolicyDecision event, and the first accepted AgentWorker action event. Later
+event refs identify records in the same append-only event chain.
+
+```json
+{
+  "id": "event-worksession-created",
+  "sequence": 1,
+  "type": "work_session.created",
+  "work_session_id": "work-session-research-001",
+  "actor_id": "actor-human-reviewer",
+  "timestamp": "2026-06-24T09:02:00Z",
+  "payload": {
+    "object_type": "work_session",
+    "object_id": "work-session-research-001",
+    "action": "create_work_session",
+    "field_refs": [
+      "worker:worker-human-researcher",
+      "worker:worker-agent-research",
+      "policy:policy-research-001"
+    ],
+    "summary": "WorkSession accepted as active at revision 1."
+  },
+  "previous_hash": "hash:protocol-genesis",
+  "event_hash": "hash:event-worksession-created",
+  "canonicalization": {
+    "serialization": "json-c14n",
+    "hash_method": "sha256",
+    "profile_ref": "canonicalization:jarvis-v01"
+  }
+}
+```
 
 ```json
 {
   "id": "event-policy-decision-local-context-001",
-  "sequence": 1,
+  "sequence": 2,
   "type": "policy_decision.recorded",
   "work_session_id": "work-session-research-001",
   "actor_id": "actor-agent-research",
@@ -407,11 +436,11 @@ append-only event chain.
     ],
     "summary": "PolicyDecision recorded allow result for local context inspection."
   },
-  "previous_hash": "hash:protocol-genesis",
+  "previous_hash": "hash:event-worksession-created",
   "event_hash": "hash:event-policy-decision-local-context-001",
   "canonicalization": {
     "serialization": "json-c14n",
-    "hash_method": "sha-256",
+    "hash_method": "sha256",
     "profile_ref": "canonicalization:jarvis-v01"
   }
 }
@@ -420,7 +449,7 @@ append-only event chain.
 ```json
 {
   "id": "event-local-context-read-001",
-  "sequence": 2,
+  "sequence": 3,
   "type": "agent.action.accepted",
   "work_session_id": "work-session-research-001",
   "actor_id": "actor-agent-research",
@@ -443,7 +472,7 @@ append-only event chain.
   "event_hash": "hash:event-local-context-read-001",
   "canonicalization": {
     "serialization": "json-c14n",
-    "hash_method": "sha-256",
+    "hash_method": "sha256",
     "profile_ref": "canonicalization:jarvis-v01"
   }
 }
@@ -453,20 +482,21 @@ Event chain index:
 
 | Sequence | Revision After Event | Event Ref | Previous Hash | Event Hash | Protocol Record |
 | --- | ---: | --- | --- | --- | --- |
-| 1 | 1 | `event-policy-decision-local-context-001` | `hash:protocol-genesis` | `hash:event-policy-decision-local-context-001` | `policy-decision-local-context-001` |
-| 2 | 2 | `event-local-context-read-001` | `hash:event-policy-decision-local-context-001` | `hash:event-local-context-read-001` | `agent.action.accepted` |
-| 3 | 3 | `event-policy-decision-external-source-001` | `hash:event-local-context-read-001` | `hash:event-policy-decision-external-source-001` | `policy-decision-external-source-001` |
-| 4 | 4 | `event-request-external-source-001` | `hash:event-policy-decision-external-source-001` | `hash:event-request-external-source-001` | `request-external-source-001` |
-| 5 | 5 | `event-review-external-source-001` | `hash:event-request-external-source-001` | `hash:event-review-external-source-001` | `review-external-source-001` |
-| 6 | 6 | `event-approved-source-fetch-001` | `hash:event-review-external-source-001` | `hash:event-approved-source-fetch-001` | `agent.action.accepted` |
-| 7 | 7 | `event-policy-decision-final-submission-001` | `hash:event-approved-source-fetch-001` | `hash:event-policy-decision-final-submission-001` | `policy-decision-final-submission-001` |
-| 8 | 8 | `event-request-final-submission-001` | `hash:event-policy-decision-final-submission-001` | `hash:event-request-final-submission-001` | `request-final-submission-001` |
-| 9 | 9 | `event-takeover-final-submission-001` | `hash:event-request-final-submission-001` | `hash:event-takeover-final-submission-001` | `takeover-final-submission-001` |
-| 10 | 10 | `event-contribution-shared-research-note-001` | `hash:event-takeover-final-submission-001` | `hash:event-contribution-shared-research-note-001` | `contribution-shared-research-note-001` |
-| 11 | 11 | `event-learning-record-pair-001` | `hash:event-contribution-shared-research-note-001` | `hash:event-learning-record-pair-001` | `learning-record-pair-001` |
-| 12 | 12 | `event-memory-proposal-source-scope-001` | `hash:event-learning-record-pair-001` | `hash:event-memory-proposal-source-scope-001` | `memory-proposal-source-scope-001` |
-| 13 | 13 | `event-skill-proposal-protocol-comparison-001` | `hash:event-memory-proposal-source-scope-001` | `hash:event-skill-proposal-protocol-comparison-001` | `skill-proposal-protocol-comparison-001` |
-| 14 | 14 | `event-work-session-completed-001` | `hash:event-skill-proposal-protocol-comparison-001` | `hash:event-work-session-completed-001` | `work_session.completed` |
+| 1 | 1 | `event-worksession-created` | `hash:protocol-genesis` | `hash:event-worksession-created` | `work-session-research-001` |
+| 2 | 2 | `event-policy-decision-local-context-001` | `hash:event-worksession-created` | `hash:event-policy-decision-local-context-001` | `policy-decision-local-context-001` |
+| 3 | 3 | `event-local-context-read-001` | `hash:event-policy-decision-local-context-001` | `hash:event-local-context-read-001` | `agent.action.accepted` |
+| 4 | 4 | `event-policy-decision-external-source-001` | `hash:event-local-context-read-001` | `hash:event-policy-decision-external-source-001` | `policy-decision-external-source-001` |
+| 5 | 5 | `event-request-external-source-001` | `hash:event-policy-decision-external-source-001` | `hash:event-request-external-source-001` | `request-external-source-001` |
+| 6 | 6 | `event-review-external-source-001` | `hash:event-request-external-source-001` | `hash:event-review-external-source-001` | `review-external-source-001` |
+| 7 | 7 | `event-approved-source-fetch-001` | `hash:event-review-external-source-001` | `hash:event-approved-source-fetch-001` | `agent.action.accepted` |
+| 8 | 8 | `event-policy-decision-final-submission-001` | `hash:event-approved-source-fetch-001` | `hash:event-policy-decision-final-submission-001` | `policy-decision-final-submission-001` |
+| 9 | 9 | `event-request-final-submission-001` | `hash:event-policy-decision-final-submission-001` | `hash:event-request-final-submission-001` | `request-final-submission-001` |
+| 10 | 10 | `event-takeover-final-submission-001` | `hash:event-request-final-submission-001` | `hash:event-takeover-final-submission-001` | `takeover-final-submission-001` |
+| 11 | 11 | `event-contribution-shared-research-note-001` | `hash:event-takeover-final-submission-001` | `hash:event-contribution-shared-research-note-001` | `contribution-shared-research-note-001` |
+| 12 | 12 | `event-learning-record-pair-001` | `hash:event-contribution-shared-research-note-001` | `hash:event-learning-record-pair-001` | `learning-record-pair-001` |
+| 13 | 13 | `event-memory-proposal-source-scope-001` | `hash:event-learning-record-pair-001` | `hash:event-memory-proposal-source-scope-001` | `memory-proposal-source-scope-001` |
+| 14 | 14 | `event-skill-proposal-protocol-comparison-001` | `hash:event-memory-proposal-source-scope-001` | `hash:event-skill-proposal-protocol-comparison-001` | `skill-proposal-protocol-comparison-001` |
+| 15 | 15 | `event-work-session-completed-001` | `hash:event-skill-proposal-protocol-comparison-001` | `hash:event-work-session-completed-001` | `work_session.completed` |
 
 OutcomeReport submission happens after export through the non-WorkSession
 mutation surface. It does not append to the sealed WorkSession event log and it
@@ -672,7 +702,7 @@ Conformance gate:
     "request_id": "request-external-source-001",
     "review_id": "review-external-source-001",
     "policy_decision_id": "policy-decision-external-source-001",
-    "request_revision": 4,
+    "request_revision": 5,
     "request_event_hash": "hash:event-request-external-source-001",
     "normalized_action_hash": "hash:action-fetch-external-source",
     "approved_action": {
@@ -764,6 +794,7 @@ Conformance gate:
   "contributor_type": "shared",
   "contribution_type": "artifact",
   "event_refs": [
+    "event-worksession-created",
     "event-policy-decision-local-context-001",
     "event-local-context-read-001",
     "event-policy-decision-external-source-001",

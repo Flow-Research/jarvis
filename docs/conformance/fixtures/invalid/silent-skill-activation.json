@@ -235,7 +235,8 @@
         "provenance": [
           "event-invalid-001"
         ],
-        "status": "active",
+        "status": "accepted",
+        "review_refs": [],
         "created_at": "2026-06-16T10:20:00Z"
       }
     }
@@ -257,7 +258,7 @@
       "actor_id": "actor-agent-invalid",
       "expected_status": 400,
       "expected_error_id": "silent_skill_activation",
-      "expected_error_field": "records.skill_proposals.invalid.status",
+      "expected_error_field": "records.skill_proposals.invalid.review_refs",
       "work_session_id": "ws-invalid-001",
       "body_ref": "records.skill_proposals.invalid"
     }
@@ -274,5 +275,5 @@
   ],
   "expected_result": "reject",
   "expected_error_id": "silent_skill_activation",
-  "expected_error_field": "records.skill_proposals.invalid.status"
+  "expected_error_field": "records.skill_proposals.invalid.review_refs"
 }

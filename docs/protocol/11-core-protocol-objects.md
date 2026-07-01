@@ -413,6 +413,7 @@ data_sensitivity
 selected_grant_refs
 denied_grant_refs
 request_id
+  conditionally required when result is deny or review_required
 evidence_refs
 ```
 
@@ -550,7 +551,7 @@ Conditionally required fields:
 ```txt
 approval_scope
   required when decision is approve or narrow
-  forbidden when decision is deny, correct, takeover, or needs_revision
+  forbidden when decision is answer, deny, correct, takeover, or needs_revision
 
 takeover_id
   required when decision is takeover
@@ -793,10 +794,10 @@ outcome_report_refs
 ```
 
 Source rule: `source_event_refs` is required for every LearningRecord.
-OutcomeReport-backed LearningRecords record `outcome_report_refs` when external
-feedback exists. `source_event_refs` continue to reference the WorkSession
-events that support the learning. OutcomeReport submission does not append a
-JarvisEvent to a sealed WorkSession event log.
+LearningRecord records `outcome_report_refs` when an OutcomeReport references
+it. `source_event_refs` continue to reference the WorkSession events that
+support the learning. OutcomeReport submission does not append a JarvisEvent to
+a sealed WorkSession event log.
 
 Review states:
 
@@ -1157,7 +1158,6 @@ WorkSession
 Statuses:
 
 ```txt
-created
 active
 waiting_on_human
 takeover
@@ -1228,9 +1228,13 @@ Rules:
   `event_hash`, `actor_signature`, and signature metadata fields.
 - `canonicalization` records the serialization and hash method used by the
   export profile.
+- Jarvis v0.1 canonicalization uses `json-c14n` serialization and `sha256`.
 - Export profiles use deterministic JSON canonicalization such as
   [RFC 8785 JCS](https://www.rfc-editor.org/rfc/rfc8785) unless the profile
   declares another method.
+- Conformance fixtures use symbolic `hash:` values to prove event-chain
+  linkage. They do not claim cryptographic digest recomputation for fixture
+  examples.
 - `actor_signature` and `signing_key_ref` are optional. Signed export profiles
   use them to prove authorship; unsigned profiles still require Actor
   attribution.
@@ -1403,7 +1407,8 @@ Review
   reviewer_actor_id
   reviewer_worker_id
   target_ref
-  decision: approve | deny | narrow | correct | takeover | needs_revision
+  decision: answer | approve | deny | narrow | correct | takeover |
+    needs_revision
   comments
   required_changes
   approval_scope
@@ -1427,9 +1432,9 @@ Rules:
 - Review with decision `takeover` records `takeover_id`.
 - Review does not silently mutate Policy, MemoryProposal, SkillProposal, or
   durable learning.
-- Review creates LearningRecord, MemoryProposal, SkillProposal, or policy
-  change proposal records when it changes future WorkSession behavior. Those
-  records remain governed.
+- Review requires or references separate governed LearningRecord,
+  MemoryProposal, or SkillProposal records when it changes future WorkSession
+  behavior. Review does not create those records as a side effect.
 
 ## Takeover
 

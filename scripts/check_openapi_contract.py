@@ -9,6 +9,7 @@ import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
 OPENAPI_PATH = ROOT / "docs" / "openapi" / "jarvis-openapi.yaml"
+OPENAPI_BINDING_PATH = ROOT / "docs" / "protocol" / "15-openapi-communication-binding.md"
 GOLDEN_PATH_CONFORMANCE = ROOT / "docs" / "conformance" / "golden-path.md"
 FAILURE_MODE_CONFORMANCE = ROOT / "docs" / "conformance" / "failure-modes.md"
 
@@ -332,6 +333,7 @@ REQUIRED_OPERATIONS = {
             "body_field": "id",
             "rejection_id": "path_body_id_mismatch",
         },
+        "actor_match": None,
         "success_status": "200",
         "success_response": "WorkerResponse",
     },
@@ -347,6 +349,7 @@ REQUIRED_OPERATIONS = {
             "body_field": "id",
             "rejection_id": "path_body_id_mismatch",
         },
+        "actor_match": None,
         "success_status": "200",
         "success_response": "ActorResponse",
     },
@@ -358,6 +361,11 @@ REQUIRED_OPERATIONS = {
         "path_parameters": set(),
         "request_body": "WorkSessionBody",
         "identity_match": None,
+        "actor_match": {
+            "header": "Jarvis-Actor-Id",
+            "body_field": "created_by_actor_id",
+            "rejection_id": "actor_body_id_mismatch",
+        },
         "success_status": "201",
         "success_response": "WorkSessionResponse",
     },
@@ -369,6 +377,7 @@ REQUIRED_OPERATIONS = {
         "path_parameters": {"WorkSessionIdPath"},
         "request_body": None,
         "identity_match": None,
+        "actor_match": None,
         "success_status": "200",
         "success_response": "WorkSessionResponse",
     },
@@ -383,6 +392,11 @@ REQUIRED_OPERATIONS = {
             "path_parameter": "work_session_id",
             "body_field": "work_session_id",
             "rejection_id": "path_body_id_mismatch",
+        },
+        "actor_match": {
+            "header": "Jarvis-Actor-Id",
+            "body_field": "actor_id",
+            "rejection_id": "actor_body_id_mismatch",
         },
         "success_status": "201",
         "success_response": "JarvisEventResponse",
@@ -399,6 +413,11 @@ REQUIRED_OPERATIONS = {
             "body_field": "work_session_id",
             "rejection_id": "path_body_id_mismatch",
         },
+        "actor_match": {
+            "header": "Jarvis-Actor-Id",
+            "body_field": "actor_id",
+            "rejection_id": "actor_body_id_mismatch",
+        },
         "success_status": "201",
         "success_response": "PolicyDecisionResponse",
     },
@@ -413,6 +432,11 @@ REQUIRED_OPERATIONS = {
             "path_parameter": "work_session_id",
             "body_field": "work_session_id",
             "rejection_id": "path_body_id_mismatch",
+        },
+        "actor_match": {
+            "header": "Jarvis-Actor-Id",
+            "body_field": "requester_actor_id",
+            "rejection_id": "actor_body_id_mismatch",
         },
         "success_status": "201",
         "success_response": "RequestResponse",
@@ -429,6 +453,11 @@ REQUIRED_OPERATIONS = {
             "body_field": "work_session_id",
             "rejection_id": "path_body_id_mismatch",
         },
+        "actor_match": {
+            "header": "Jarvis-Actor-Id",
+            "body_field": "reviewer_actor_id",
+            "rejection_id": "actor_body_id_mismatch",
+        },
         "success_status": "201",
         "success_response": "ReviewResponse",
     },
@@ -443,6 +472,11 @@ REQUIRED_OPERATIONS = {
             "path_parameter": "work_session_id",
             "body_field": "work_session_id",
             "rejection_id": "path_body_id_mismatch",
+        },
+        "actor_match": {
+            "header": "Jarvis-Actor-Id",
+            "body_field": "controlling_actor_id",
+            "rejection_id": "actor_body_id_mismatch",
         },
         "success_status": "201",
         "success_response": "TakeoverResponse",
@@ -459,6 +493,7 @@ REQUIRED_OPERATIONS = {
             "body_field": "work_session_id",
             "rejection_id": "path_body_id_mismatch",
         },
+        "actor_match": None,
         "success_status": "201",
         "success_response": "ContributionResponse",
     },
@@ -473,6 +508,11 @@ REQUIRED_OPERATIONS = {
             "path_parameter": "work_session_id",
             "body_field": "work_session_id",
             "rejection_id": "path_body_id_mismatch",
+        },
+        "actor_match": {
+            "header": "Jarvis-Actor-Id",
+            "body_field": "created_by_actor_id",
+            "rejection_id": "actor_body_id_mismatch",
         },
         "success_status": "201",
         "success_response": "LearningRecordResponse",
@@ -489,6 +529,11 @@ REQUIRED_OPERATIONS = {
             "body_field": "work_session_id",
             "rejection_id": "path_body_id_mismatch",
         },
+        "actor_match": {
+            "header": "Jarvis-Actor-Id",
+            "body_field": "proposed_by_actor_id",
+            "rejection_id": "actor_body_id_mismatch",
+        },
         "success_status": "201",
         "success_response": "MemoryProposalResponse",
     },
@@ -504,6 +549,11 @@ REQUIRED_OPERATIONS = {
             "body_field": "work_session_id",
             "rejection_id": "path_body_id_mismatch",
         },
+        "actor_match": {
+            "header": "Jarvis-Actor-Id",
+            "body_field": "proposed_by_actor_id",
+            "rejection_id": "actor_body_id_mismatch",
+        },
         "success_status": "201",
         "success_response": "SkillProposalResponse",
     },
@@ -515,6 +565,7 @@ REQUIRED_OPERATIONS = {
         "path_parameters": {"WorkSessionIdPath"},
         "request_body": None,
         "identity_match": None,
+        "actor_match": None,
         "success_status": "200",
         "success_response": "EvidenceManifestResponse",
     },
@@ -526,6 +577,11 @@ REQUIRED_OPERATIONS = {
         "path_parameters": set(),
         "request_body": "OutcomeReportBody",
         "identity_match": None,
+        "actor_match": {
+            "header": "Jarvis-Actor-Id",
+            "body_field": "accepted_by_actor_id",
+            "rejection_id": "actor_body_id_mismatch",
+        },
         "success_status": "202",
         "success_response": "OutcomeReportResponse",
     },
@@ -912,7 +968,6 @@ REQUIRED_ENUMS = {
         "full_execute_in_scope",
     },
     "WorkSessionStatus": {
-        "created",
         "active",
         "waiting_on_human",
         "takeover",
@@ -972,6 +1027,7 @@ REQUIRED_ENUMS = {
         "work_session",
     },
     "ReviewDecision": {
+        "answer",
         "approve",
         "deny",
         "narrow",
@@ -1056,6 +1112,7 @@ REQUIRED_ENUMS = {
         "missing_idempotency_key",
         "missing_actor",
         "path_body_id_mismatch",
+        "actor_body_id_mismatch",
         "invalid_extension_namespace",
         "extension_core_field_override",
         "missing_policy",
@@ -1067,6 +1124,7 @@ REQUIRED_ENUMS = {
         "invalid_request_transition",
         "missing_review_resolution",
         "missing_takeover_resolution",
+        "missing_superseding_request",
         "invalid_approval_scope",
         "approval_scope_expired",
         "approval_scope_mismatch",
@@ -1550,6 +1608,27 @@ def fail(message: str) -> int:
     return 1
 
 
+def fenced_block_after_heading(text: str, heading: str) -> list[str]:
+    marker = f"## {heading}"
+    start = text.find(marker)
+    if start == -1:
+        return []
+    fence_start = text.find("```txt", start)
+    if fence_start == -1:
+        return []
+    content_start = text.find("\n", fence_start)
+    if content_start == -1:
+        return []
+    fence_end = text.find("```", content_start + 1)
+    if fence_end == -1:
+        return []
+    return [
+        line.strip()
+        for line in text[content_start + 1 : fence_end].splitlines()
+        if line.strip()
+    ]
+
+
 def schema_requires_field_when_const(
     schema: dict, property_name: str, const_value: str, required_field: str
 ) -> bool:
@@ -1908,6 +1987,15 @@ def main() -> int:
                 + ", ".join(sorted(actual_values))
             )
 
+    canonicalization = schemas["CanonicalizationProfile"]
+    canonicalization_properties = canonicalization.get("properties", {})
+    if canonicalization_properties.get("serialization", {}).get("enum") != [
+        "json-c14n"
+    ]:
+        return fail("CanonicalizationProfile.serialization must be json-c14n")
+    if canonicalization_properties.get("hash_method", {}).get("enum") != ["sha256"]:
+        return fail("CanonicalizationProfile.hash_method must be sha256")
+
     for schema_name in REQUIRED_CLOSED_OBJECT_SCHEMAS:
         schema = schemas[schema_name]
         if not isinstance(schema, dict):
@@ -2090,7 +2178,13 @@ def main() -> int:
 
     review = schemas["Review"]
     approval_decisions = {"approve", "narrow"}
-    non_approval_decisions = {"deny", "correct", "takeover", "needs_revision"}
+    non_approval_decisions = {
+        "answer",
+        "deny",
+        "correct",
+        "takeover",
+        "needs_revision",
+    }
     if not schema_requires_field_when_enum(
         review, "decision", approval_decisions, "approval_scope"
     ):
@@ -2310,10 +2404,25 @@ def main() -> int:
             return fail(f"{response_name} must declare Jarvis response headers")
 
     error_ids = set(schemas["ProtocolErrorId"].get("enum", []))
+    if not OPENAPI_BINDING_PATH.exists():
+        return fail(f"missing {OPENAPI_BINDING_PATH.relative_to(ROOT)}")
+    binding_text = OPENAPI_BINDING_PATH.read_text(encoding="utf-8")
+    binding_error_ids = set(fenced_block_after_heading(binding_text, "Error Model"))
+    if binding_error_ids != error_ids:
+        missing = error_ids - binding_error_ids
+        extra = binding_error_ids - error_ids
+        parts = []
+        if missing:
+            parts.append("missing from binding: " + ", ".join(sorted(missing)))
+        if extra:
+            parts.append("extra in binding: " + ", ".join(sorted(extra)))
+        return fail("ProtocolErrorId binding list mismatch: " + "; ".join(parts))
+
     required_security_error_ids = {
         "missing_protocol_version",
         "unsupported_protocol_version",
         "missing_actor",
+        "actor_body_id_mismatch",
         "missing_idempotency_key",
         "missing_request_timestamp",
         "stale_request_timestamp",
@@ -2350,6 +2459,7 @@ def main() -> int:
         "Every WorkSession-scoped mutation validates Jarvis-Expected-WorkSession-Revision.",
         "Every WorkSession-scoped mutation validates Jarvis-Previous-Event-Hash.",
         "Every accepted WorkSession-scoped state change verifies Actor authority.",
+        "Every actor-bearing mutation body matches Jarvis-Actor-Id.",
         "AgentWorker action records PolicyDecision before accepted protocol state.",
         "Request resolves only through Review or Takeover.",
         "Review approve or narrow produces bounded ApprovalScope.",
@@ -2382,6 +2492,34 @@ def main() -> int:
         )
 
     paths = data["paths"]
+    expected_paths = {path for _, path in REQUIRED_OPERATIONS}
+    actual_paths = set(paths)
+    if actual_paths != expected_paths:
+        return fail(
+            "paths mismatch. expected "
+            + ", ".join(sorted(expected_paths))
+            + "; got "
+            + ", ".join(sorted(actual_paths))
+        )
+    expected_methods_by_path: dict[str, set[str]] = {}
+    for method, path in REQUIRED_OPERATIONS:
+        expected_methods_by_path.setdefault(path, set()).add(method)
+    for path, path_item in paths.items():
+        if not isinstance(path_item, dict):
+            return fail(f"path item {path} must be an object")
+        actual_methods = {
+            method
+            for method in path_item
+            if method.lower() in {"get", "put", "post", "patch", "delete"}
+        }
+        expected_methods = expected_methods_by_path[path]
+        if actual_methods != expected_methods:
+            return fail(
+                f"{path} methods mismatch. expected "
+                + ", ".join(sorted(expected_methods))
+                + "; got "
+                + ", ".join(sorted(actual_methods))
+            )
     for (method, path), expected in REQUIRED_OPERATIONS.items():
         path_item = paths.get(path)
         if not isinstance(path_item, dict):
@@ -2438,6 +2576,17 @@ def main() -> int:
                 return fail(
                     f"{method.upper()} {path} description must require protocol genesis hash"
                 )
+            expected_genesis_state = {
+                "expected_revision_header": 0,
+                "previous_event_hash_header": "hash:protocol-genesis",
+                "accepted_status": "active",
+                "accepted_revision": 1,
+                "accepted_event_type": "work_session.created",
+            }
+            if operation.get("x-jarvis-genesis-state") != expected_genesis_state:
+                return fail(
+                    f"{method.upper()} {path} must declare genesis state metadata"
+                )
         if operation.get("tags") != [expected["tag"]]:
             return fail(f"{method.upper()} {path} tag must be {expected['tag']}")
         if operation.get("security") != [{"HostAuth": []}]:
@@ -2470,6 +2619,17 @@ def main() -> int:
         elif actual_identity_match != expected_identity_match:
             return fail(
                 f"{method.upper()} {path} must declare path/body id match"
+            )
+        expected_actor_match = expected["actor_match"]
+        actual_actor_match = operation.get("x-jarvis-actor-body-id-match")
+        if expected_actor_match is None:
+            if actual_actor_match is not None:
+                return fail(
+                    f"{method.upper()} {path} must not declare actor/body id match"
+                )
+        elif actual_actor_match != expected_actor_match:
+            return fail(
+                f"{method.upper()} {path} must declare actor/body id match"
             )
         responses = operation.get("responses", {})
         success_status = expected["success_status"]

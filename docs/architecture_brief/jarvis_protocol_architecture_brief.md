@@ -104,7 +104,7 @@ OpenAPI communication binding. Host implementation stays outside Jarvis.
 | Layer | Responsibility |
 | --- | --- |
 | Protocol semantics | HumanWorker and AgentWorker collaboration and shared learning. |
-| Protocol objects | WorkSession, Policy, Request, Review, Takeover, Contribution, EvidenceManifest, LearningRecord, MemoryProposal, SkillProposal, and related records. |
+| Protocol objects | Worker, Actor, HumanWorker, AgentWorker, WorkSession, JarvisEvent, Policy, PolicyDecision, Request, Review, Takeover, Contribution, EvidenceManifest, LearningRecord, MemoryProposal, SkillProposal, and OutcomeReport. |
 | Protocol operations | Register Worker, register Actor, create WorkSession, read WorkSession, append event, record PolicyDecision, create Request, record Review, record Takeover, record Contribution, create LearningRecord, create MemoryProposal, create SkillProposal, export EvidenceManifest, submit OutcomeReport. |
 | OpenAPI binding | HTTP paths, schemas, security scheme, header parameters, errors, examples, and conformance entry. |
 | Host implementation | UI, auth provider, storage, queue, runtime, isolation mechanism, model provider, deployment, and host workflow. |
@@ -133,7 +133,7 @@ and learning connect inside one WorkSession.
 - Action outside Policy creates a scoped Request.
 - Request is not chat, notification, or authority.
 - Human resolution requires Review or Takeover.
-- Review decisions are approve, deny, narrow, correct, takeover, and
+- Review decisions are answer, approve, deny, narrow, correct, takeover, and
   needs_revision.
 - Takeover creates a lock epoch and rejects stale autonomous continuation.
 
@@ -267,7 +267,10 @@ OutcomeReport
 v0.1 includes the core protocol operations:
 
 ```txt
+register Worker
+register Actor
 create WorkSession
+read WorkSession
 append event
 record PolicyDecision
 create Request
@@ -375,7 +378,7 @@ Jarvis.
 | Host conformance | Provide golden-path and failure-mode fixtures that prove protocol behavior. | Conformance checks behavior, not infrastructure. |
 | Compatibility rules | Map host work into Jarvis WorkSessions and EvidenceManifest exports. | The host remains the host; Jarvis remains the protocol. |
 | External protocol bridges | Record MCP, A2A, ACP, and AG-UI participation as Jarvis evidence and contribution records. | Jarvis does not redefine those protocols. |
-| Evaluation feedback | Use OutcomeReport to carry external outcomes into governed LearningRecords. | Jarvis does not own task routing, scoring, payment, settlement, or marketplace logic. |
+| Evaluation feedback | Use OutcomeReport to reference governed LearningRecord records through `learning_record_refs`. | Jarvis does not own task routing, scoring, payment, settlement, or marketplace logic. |
 | Public protocol package | Maintain the OpenAPI contract, examples, conformance checklist, and protocol architecture brief. | Adoption does not require a runtime owned by Jarvis. |
 
 ### Deferred From v0.1
@@ -394,7 +397,7 @@ HumanGrowthRecord
 SimulatedHumanWorker
 host-owned adapter examples
 full external outcome feedback loop
-compatibility examples
+additional bridge/adopter compatibility examples
 MCP/A2A/ACP/AG-UI bridges
 multi-agent reviewer protocol
 ```

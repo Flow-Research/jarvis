@@ -61,6 +61,7 @@ Golden-path conformance proves:
 - WorkSession records objective, Policy, revision, and event hash state.
 - WorkSession-scoped mutations include the required mutation headers.
 - Accepted WorkSession-scoped state changes record the Actor.
+- Actor-bearing mutation bodies match `Jarvis-Actor-Id`.
 - Accepted WorkSession-scoped state changes verify Actor authority.
 - Accepted WorkSession-scoped state changes check
   `Jarvis-Expected-WorkSession-Revision`.
@@ -304,7 +305,7 @@ Compatible implementations MUST prove:
 - LearningRecord references source events.
 - LearningRecord does not directly create durable memory or active skill
   behavior.
-- OutcomeReport-backed LearningRecord records `outcome_report_refs` and
+- LearningRecord referenced by OutcomeReport records `outcome_report_refs` and
   WorkSession source events that support the learning.
 
 The protocol rejects:
@@ -429,10 +430,12 @@ invalid_transition
 unknown_state
 unsupported_protocol_version
 path_body_id_mismatch
+actor_body_id_mismatch
 missing_objective
 policy_denied
 review_required
 invalid_request_transition
+missing_superseding_request
 approval_scope_expired
 approval_scope_mismatch
 invalid_event_hash
@@ -486,8 +489,12 @@ memory.
 Public compatibility claims MUST use this exact structure:
 
 ```txt
-Implementation <name> supports Jarvis <protocol-version> compatibility,
-verified against <conformance-surface> on <date>.
+Implementation: <name> <implementation-version>
+Protocol compatibility: Jarvis <protocol-version>
+Conformance surface: <conformance-surface>
+Verification date: <date>
+Verifier: <verifier-or-self-attested-status>
+Evidence: <evidence-ref>
 ```
 
 The claim MUST name:
@@ -496,6 +503,11 @@ The claim MUST name:
 - conformance surface
 - fixture or checklist basis
 - verification date
+- retained evidence reference or artifact hash
+- implementation version
+- verifier identity or explicit self-attested status
+
+Claims without independent verification MUST say `self-attested`.
 
 Jarvis compatibility requires this proof:
 
@@ -508,9 +520,13 @@ Contribution attribution.
 EvidenceManifest portable export boundary.
 LearningRecord for human, agent, or pair learning.
 Governed MemoryProposal and SkillProposal.
-OutcomeReport learning hook.
+OutcomeReport references governed LearningRecord records.
+Actor/body binding.
 Required mutation headers.
 Event hash chain.
+Event hash chain conformance verifies previous-hash linkage with symbolic
+`hash:` fixture values. It does not claim digest recomputation for fixture
+examples.
 Protocol error envelope.
 Forbidden host-private export rejection.
 ```

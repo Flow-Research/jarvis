@@ -192,7 +192,6 @@ WorkSession is the source of truth.
 States:
 
 ```txt
-created
 active
 waiting_on_human
 takeover

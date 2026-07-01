@@ -63,7 +63,7 @@ W4,Jun 29-Jul 3,Close v0.1.0 Protocol Alpha and prepare compatible-example revie
 - identify next two compatibility targets","- publish protocol proof walkthrough URL
 - package compatible-example readiness notes
 - prepare team walkthrough
-- collect review notes into next-cycle issues","Jarvis has a v0.1 alpha package of protocol docs, OpenAPI contract, examples, conformance fixtures, compatible-example readiness, and one existing-agent compatibility mapping."
+- collect review notes into next-cycle issues","Jarvis has a v0.1.0 Protocol Alpha package of protocol docs, OpenAPI contract, examples, conformance fixtures, compatible-example readiness, and one existing-agent compatibility mapping."
 Later,After v0.1,Expand only from conformance results and compatible-example evidence.,"- harden object model from real compatible implementations
 - add migration rules
 - add public implementation checklist

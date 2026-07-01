@@ -18,6 +18,7 @@ Every WorkSession-scoped mutation validates Jarvis-Request-Timestamp.
 Every WorkSession-scoped mutation validates Jarvis-Expected-WorkSession-Revision.
 Every WorkSession-scoped mutation validates Jarvis-Previous-Event-Hash.
 Every accepted WorkSession-scoped state change records the Actor.
+Every actor-bearing mutation body matches Jarvis-Actor-Id.
 Every accepted WorkSession-scoped state change verifies Actor authority.
 Every accepted WorkSession-scoped state change checks Jarvis-Expected-WorkSession-Revision.
 Every accepted WorkSession-scoped state change links Jarvis-Previous-Event-Hash.

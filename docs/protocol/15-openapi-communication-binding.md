@@ -127,6 +127,12 @@ Registration does not issue credentials.
 Registration does not define identity storage.
 ```
 
+HumanWorker, AgentWorker, and Policy are v0.1 protocol records referenced by
+WorkSession state, events, evidence, and exports. Jarvis v0.1 does not define
+separate top-level registration resources for those records. Compatible
+implementations MUST preserve and dereference those records when they create,
+read, validate, or export WorkSession protocol state.
+
 The operations are protocol operations. They do not define how the host runs the
 agent, stores records, authenticates users, bills customers, renders UI, or
 deploys infrastructure.
@@ -198,6 +204,15 @@ Jarvis-Previous-Event-Hash
 Missing or invalid mutating headers reject the request before protocol state
 changes.
 
+Actor binding rules:
+
+```txt
+Jarvis-Actor-Id MUST identify the Actor that performs the protocol mutation.
+Mutating operations with an actor-bearing request body MUST bind
+Jarvis-Actor-Id to the operation-specific actor field.
+Actor/body mismatch rejects as actor_body_id_mismatch.
+```
+
 Non-WorkSession protocol mutations MUST include:
 
 ```txt
@@ -236,6 +251,8 @@ Genesis WorkSession mutation
   requires Jarvis-Request-Timestamp
   requires Jarvis-Expected-WorkSession-Revision set to 0
   requires Jarvis-Previous-Event-Hash set to protocol genesis hash
+  accepts the first WorkSession snapshot as active at revision 1
+  records the first event as work_session.created
 
 Worker or Actor registration
   requires HostAuth
@@ -402,8 +419,9 @@ Unknown optional capability is ignored unless it changes a core field meaning.
 ```
 
 Every protocol response declares `Jarvis-Protocol-Version`.
-Protocol responses that expose host-declared optional capabilities declare
-`Jarvis-Host-Capabilities`.
+Every protocol response component declares `Jarvis-Host-Capabilities`.
+Compatible implementations use that header only to advertise host-declared
+optional capabilities. The header does not change core protocol semantics.
 
 Extension rules:
 
@@ -433,6 +451,8 @@ missing_previous_event_hash
 stale_work_session_revision
 missing_idempotency_key
 missing_actor
+path_body_id_mismatch
+actor_body_id_mismatch
 invalid_extension_namespace
 extension_core_field_override
 missing_policy
@@ -444,6 +464,7 @@ review_required
 invalid_request_transition
 missing_review_resolution
 missing_takeover_resolution
+missing_superseding_request
 invalid_approval_scope
 approval_scope_expired
 approval_scope_mismatch
@@ -464,8 +485,10 @@ invalid_evidence_export_state
 missing_contribution_actor
 invalid_contributor_refs
 shared_contribution_without_individual_refs
+duplicate_contributor_ref
 evidence_after_the_fact
 missing_evidence_event_refs
+duplicate_evidence_item_ref
 forbidden_export_field
 silent_memory_mutation
 silent_skill_activation

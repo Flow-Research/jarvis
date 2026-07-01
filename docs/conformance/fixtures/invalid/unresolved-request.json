@@ -290,7 +290,7 @@
           "profile_ref": "canonicalization:v0.1"
         }
       },
-      "request_created": {
+      "request_event": {
         "id": "event-request-created",
         "sequence": 3,
         "type": "request.created",

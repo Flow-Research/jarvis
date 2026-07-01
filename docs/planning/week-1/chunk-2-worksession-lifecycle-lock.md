@@ -43,7 +43,6 @@ Chunk 2 does not:
 Chunk 2 locks these WorkSession states:
 
 ```txt
-created
 active
 waiting_on_human
 takeover
@@ -54,8 +53,9 @@ cancelled
 closed
 ```
 
-`created`, `active`, `waiting_on_human`, `takeover`, and `reconciling` are
-mutable states.
+`active`, `waiting_on_human`, `takeover`, and `reconciling` are mutable states.
+The genesis `createWorkSession` operation starts a WorkSession in active state
+at accepted revision `1`.
 
 `completed`, `failed`, and `cancelled` are terminal outcome states.
 

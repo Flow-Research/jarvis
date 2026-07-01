@@ -9,7 +9,7 @@ digraph G {
   adapters [label="Compatibility Boundaries\ncommand line · local execution · hosted execution · tool use", fillcolor="#eef2ff", color="#4f46e5"];
   hosts [label="Compatible Implementations\nUI · storage · execution · deployment", fillcolor="#fff7ed", color="#ea580c"];
   protocols [label="External Protocol Participation\nevents · actions · messages · tool results", fillcolor="#ffffff"];
-  outcome [label="OutcomeReport Feedback\npost-session outcome -> governed learning", fillcolor="#fffbeb", color="#d97706"];
+  outcome [label="OutcomeReport Feedback\nreferences governed LearningRecords", fillcolor="#fffbeb", color="#d97706"];
   guidance [label="Compatibility Guidance\nhosts produce Jarvis records", fillcolor="#ffffff"];
   deferred [label="Deferred From v0.1\nNotification · CoordinationAct · ProgressUpdate\nObservation visibility · Metrics · Full bridges", fillcolor="#fef2f2", color="#dc2626"];
 
@@ -20,7 +20,7 @@ digraph G {
   adapters -> jarvis [label="produce records"];
   hosts -> jarvis [label="implement"];
   protocols -> jarvis [label="recorded around"];
-  outcome -> jarvis [label="feeds learning"];
+  outcome -> jarvis [label="references records"];
   guidance -> jarvis [label="uses"];
   deferred -> jarvis [style=dashed, label="future extensions"];
 }

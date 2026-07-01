@@ -187,7 +187,7 @@ A conforming implementation proves:
 - WorkSession is the source of truth.
 - Policy gates autonomous action.
 - blocked action creates Request.
-- Review approves, denies, narrows, corrects, or takes over.
+- Review answers, approves, denies, narrows, corrects, or takes over.
 - Takeover prevents stale autonomous mutation.
 - Contributions are attributable.
 - Evidence is captured during the work.

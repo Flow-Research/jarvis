@@ -4,6 +4,9 @@ Status: pass.
 
 Review date: 2026-06-30.
 
+This is a historical Gate 3 audit record. It preserves acceptance evidence from
+that gate and is not current normative protocol text.
+
 Branch: `codex/v0.1-gate-3-conformance-surface-audit`.
 
 Base commit audited: `b093337`.
@@ -85,7 +88,7 @@ Every changed file belongs to a coverage row:
 | G3-14 | public checklist covers Contribution attribution | `docs/conformance/checklist.md:248`, `docs/conformance/checklist.md:252` | pass |
 | G3-15 | public checklist covers EvidenceManifest completeness and capture timing | `docs/conformance/checklist.md:268`, `docs/conformance/checklist.md:272`, `docs/conformance/checklist.md:275` | pass |
 | G3-16 | public checklist covers MemoryProposal and SkillProposal governance | `docs/conformance/checklist.md:317`, `docs/conformance/checklist.md:334` | pass |
-| G3-17 | public checklist covers OutcomeReport learning hook | `docs/conformance/checklist.md:349`, `docs/conformance/checklist.md:358` | pass |
+| G3-17 | public checklist covers OutcomeReport references to governed LearningRecords | `docs/conformance/checklist.md:349`, `docs/conformance/checklist.md:358` | pass |
 | G3-18 | public checklist covers protocol error envelope | `docs/conformance/checklist.md:463`, `docs/conformance/checklist.md:465` | pass |
 | G3-19 | public checklist covers capability negotiation and extension rejection | `docs/conformance/checklist.md:370`, `docs/conformance/checklist.md:374`, `docs/conformance/checklist.md:381` | pass |
 | G3-20 | validator checks global assertion-class coverage | `scripts/check_conformance_fixtures.py:90`, `scripts/check_conformance_fixtures.py:1526`, `scripts/check_conformance_fixtures.py:1691` | pass |

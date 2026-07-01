@@ -146,7 +146,7 @@
       "genesis_request": {
         "id": "ws-invalid-001",
         "protocol_version": "v0.1",
-        "created_by_actor_id": "actor-human-invalid",
+        "created_by_actor_id": "actor-agent-invalid",
         "objective": "Complete governed human-agent work with protocol proof.",
         "human_worker_id": "worker-human-invalid",
         "agent_worker_id": "worker-agent-invalid",

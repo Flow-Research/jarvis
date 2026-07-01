@@ -95,15 +95,23 @@ exist.
 Jarvis compatibility claims MUST use a precise format:
 
 ```txt
-Implementation <name> supports Jarvis <protocol-version> compatibility,
-verified against <conformance-surface> on <date>.
+Implementation: <name> <implementation-version>
+Protocol compatibility: Jarvis <protocol-version>
+Conformance surface: <conformance-surface>
+Verification date: <date>
+Verifier: <verifier-or-self-attested-status>
+Evidence: <evidence-ref>
 ```
 
 Example:
 
 ```txt
-Implementation ExampleHost supports Jarvis v0.1 compatibility, verified
-against the v0.1 golden-path and failure-mode fixtures on 2026-07-03.
+Implementation: ExampleHost 0.1.0
+Protocol compatibility: Jarvis v0.1
+Conformance surface: v0.1 golden-path and failure-mode fixtures
+Verification date: 2026-07-03
+Verifier: self-attested
+Evidence: artifact:examplehost-fixture-run-20260703
 ```
 
 Jarvis rejects vague claims:

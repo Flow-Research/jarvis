@@ -6,7 +6,7 @@ digraph G {
   denied [label="PolicyDecision\n deny / review_required / narrow", fillcolor="#fff7ed", color="#ea580c"];
   request [label="Request\n type · blocking_scope · reason\n requested_action · risk_class\n options · default_if_no_response", fillcolor="#fef2f2", color="#dc2626", penwidth=2];
   blocked [label="Blocked Scope\naction · branch · artifact · tool_call\nexternal_send · final_submission · work_session", fillcolor="#fffbeb", color="#d97706"];
-  review [label="Review\napprove · deny · narrow · correct\nneeds_revision", fillcolor="#eff6ff", color="#2563eb"];
+  review [label="Review\nanswer · approve · deny · narrow\ncorrect · needs_revision", fillcolor="#eff6ff", color="#2563eb"];
   takeover [label="Takeover\nhuman controls declared scope\nlock epoch protects continuation", fillcolor="#eff6ff", color="#2563eb"];
   approval [label="ApprovalScope\nbounded authority only\nno broader than Request or Policy", fillcolor="#f0fdf4", color="#16a34a"];
   fallback [label="Expiry / Safe Fallback\nno new authority\ncontinue safe branch or record limitation", fillcolor="#f8fafc", color="#64748b"];

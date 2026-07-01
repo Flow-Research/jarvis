@@ -103,7 +103,7 @@ Every changed file belongs to a coverage row:
 | ID | Required proof | Evidence | Result |
 | --- | --- | --- | --- |
 | G8-01 | README, OpenAPI metadata, architecture brief, conformance docs, examples, roadmap, demo text, and acceptance decision record use consistent v0.1 status language. | `README.md`, `docs/openapi/jarvis-openapi.yaml`, `docs/architecture_brief/`, `docs/conformance/`, `docs/examples/`, `docs/planning/ROADMAP.md`, `docs/planning/12-30-day-roadmap.md`, `docs/planning/v0.1-acceptance-review/acceptance-decision.md`, `demo/` | pass |
-| G8-02 | OpenAPI `info.version`, OpenAPI `x-jarvis-protocol.version`, fixture `protocol_version`, README status, and acceptance decision status do not conflict. | `info.version: 0.1.0`, `x-jarvis-protocol.version: v0.1`, fixture `protocol_version: v0.1`, README active acceptance status | pass |
+| G8-02 | OpenAPI `info.version`, OpenAPI `x-jarvis-protocol.version`, fixture `protocol_version`, README status, and acceptance decision status do not conflict. | `info.version: 0.1.0`, `x-jarvis-protocol.version: v0.1`, fixture `protocol_version: v0.1`, README release status | pass |
 | G8-03 | OpenAPI `info.version: 0.1.0` identifies the OpenAPI artifact version and `x-jarvis-protocol.version: v0.1` identifies the protocol line. | `docs/openapi/jarvis-openapi.yaml` | pass |
 | G8-04 | Public conformance wording uses exact proof language instead of vague compliance language. | `docs/conformance/checklist.md` | pass |
 | G8-05 | Compatibility claims include protocol version, conformance surface, fixture or checklist basis, and verification date. | `docs/conformance/checklist.md#public-compatibility-claim` | pass |
@@ -122,7 +122,7 @@ Every changed file belongs to a coverage row:
 | OpenAPI artifact version | `info.version: 0.1.0` | pass |
 | OpenAPI protocol line | `x-jarvis-protocol.version: v0.1` | pass |
 | Fixtures | `protocol_version: v0.1` | pass |
-| Architecture brief | `Scope: v0.1 first 30 days` | pass |
+| Architecture brief | `Scope: v0.1.0 Protocol Alpha` | pass |
 | Roadmap | historical Gate 8 roadmap used active acceptance review status and future release target rows | pass |
 | Demo | `Jarvis v0.1` walkthrough with non-normative boundary | pass |
 | Acceptance decision | historical placeholder before final acceptance decision record | pass |

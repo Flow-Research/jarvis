@@ -4,6 +4,9 @@ Status: pass.
 
 Review date: 2026-06-27.
 
+This is a historical Gate 1 audit record. It preserves acceptance evidence from
+that gate and is not current normative protocol text.
+
 Branch: `codex/v0.1-gate-1-protocol-contract-audit`.
 
 Base commit audited: `34db97a`.
@@ -113,7 +116,7 @@ wrapper implementation
 | Finding ID | Blocker ID | Severity | Source | Gate proof affected | Finding | Resolution | Status |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | G1-F1 | G1-B2 | blocker | `README.md`, `docs/protocol/16-positioning-adoption-lock.md`, `docs/planning/sheets/jarvis_roadmap.*` | G1-01 | Some definition and roadmap lines named collaboration without shared learning or omitted v0.1 contract objects. | Updated definitions and roadmap sheet object list to include governed shared learning and full v0.1 contract objects. | resolved |
-| G1-F2 | G1-B1 | blocker | `docs/protocol/06-integration-boundaries.md`, `docs/protocol/11-core-protocol-objects.md`, `docs/protocol/13-contribution-evidence-learning.md`, `docs/protocol/14-protocol-lock.md`, `docs/protocol/09-host-integration.md`, `docs/examples/protocol-records.md` | G1-10, G1-11, G1-12 | OutcomeReport classification, acceptance-event wording, and export boundary were ambiguous. | Locked OutcomeReport as a v0.1 extension protocol object, outside sealed WorkSession export, submitted through non-WorkSession mutation, with OutcomeReport-backed learning linked through `learning_record_refs`, `outcome_report_refs`, and WorkSession source events. OutcomeReport references governed LearningRecord records and does not create them by side effect. | resolved |
+| G1-F2 | G1-B1 | blocker | `docs/protocol/06-integration-boundaries.md`, `docs/protocol/11-core-protocol-objects.md`, `docs/protocol/13-contribution-evidence-learning.md`, `docs/protocol/14-protocol-lock.md`, `docs/protocol/09-host-integration.md`, `docs/examples/protocol-records.md` | G1-10, G1-11, G1-12 | OutcomeReport classification, acceptance-event wording, and export boundary were ambiguous. | Locked OutcomeReport as a v0.1 extension protocol object, outside sealed WorkSession export, submitted through non-WorkSession mutation, with LearningRecord references linked through `learning_record_refs`, `outcome_report_refs`, and WorkSession source events. OutcomeReport references governed LearningRecord records and does not create them by side effect. | resolved |
 | G1-F3 | G1-B2 | blocker | `docs/protocol/01-architecture.md`, `docs/protocol/10-protocol-mvp.md`, `AGENTS.md`, `docs/protocol/15-openapi-communication-binding.md` | G1-01 | Several full object lists omitted `OutcomeReport`, `PolicyDecision`, `JarvisEvent`, Worker, Actor, HumanWorker, or AgentWorker. | Updated object lists to match the v0.1 protocol contract. | resolved |
 | G1-F4 | G1-B4 | blocker | `docs/conformance/checklist.md` | G1-09 | SkillProposal conformance used stale `expired` state. | Replaced with locked `archived` state. | resolved |
 | G1-F5 | G1-B5 | blocker | `README.md`, `AGENTS.md`, `docs/protocol/00-principles.md`, `docs/protocol/02-memory.md`, `docs/protocol/03-autonomy-policy.md`, `docs/protocol/04-work-sessions.md`, `docs/protocol/05-skills-tools.md`, `docs/protocol/08-package-contracts.md`, `docs/protocol/10-protocol-mvp.md`, `docs/protocol/15-openapi-communication-binding.md`, `docs/protocol/16-positioning-adoption-lock.md`, `docs/examples/existing-agent-compatibility.md`, `docs/planning/v0.1-acceptance-review/acceptance-spec.md` | G1-01, G1-06, G1-16 | Several lines used advisory, colloquial, product-facing, or host-workflow phrasing. | Replaced with direct protocol ownership, compatibility, and acceptance language. | resolved |

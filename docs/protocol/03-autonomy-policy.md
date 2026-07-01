@@ -248,8 +248,9 @@ resolution uses compare-and-set from unresolved state to resolved state. Stale,
 replayed, or mismatched approvals are rejected.
 
 Approval does not mutate Policy. Approval creates bounded authority through
-ApprovalScope. Durable Policy changes require a separate governed policy change
-record.
+ApprovalScope. Durable Policy changes are outside v0.1 mutation semantics unless
+they are represented through governed LearningRecord, MemoryProposal, or
+SkillProposal records for future work.
 
 ## Request Surface Boundary
 
@@ -485,12 +486,16 @@ host_execution_bounded
   host-owned execution actions require declared policy refs
 ```
 
-Compatible implementations start with explicit policy refs and tighten or
-extend them through governed policy changes.
+Compatible implementations start with explicit policy refs. Durable Policy
+changes are outside v0.1 mutation semantics unless they are represented through
+governed LearningRecord, MemoryProposal, or SkillProposal records for future
+work.
 
 ## Policy Evolution
 
-Repeated successful reviews inform policy changes. Policy changes remain
-explicit, attributable, and reviewable.
+Repeated successful reviews inform future Policy changes. v0.1 records that
+signal through governed LearningRecord, MemoryProposal, or SkillProposal
+records. Hosts own durable Policy storage and evolution outside the protocol
+mutation surface.
 
 Jarvis does not silently expand autonomy from derived performance signals.
