@@ -8,6 +8,11 @@ Branch: `codex/v0.1-gate-8-publication-discipline-audit`.
 
 Base commit audited: `5fc2651`.
 
+This is a historical Gate 8 audit record. It preserves the publication
+discipline state before the final acceptance decision and before v0.1.0 release
+preparation. Current release status is recorded in
+[v0.1.0.md](../../releases/v0.1.0.md).
+
 Working-tree audit state: Gate 8 audit artifact and publication-discipline
 tightening on top of `5fc2651`.
 
@@ -71,7 +76,7 @@ public adopter registry
 | Conformance docs | `docs/conformance/` | exact proof language, fixture/checklist basis, public compatibility claim structure | pass |
 | Examples | `docs/examples/` | examples remain examples and do not make unverified compatibility claims | pass |
 | Roadmap | `docs/planning/ROADMAP.md`, `docs/planning/12-30-day-roadmap.md` | current status, roadmap-target labels, release-readiness gap entry | pass |
-| Acceptance decision status | `docs/planning/v0.1-acceptance-review/acceptance-decision.md` | pending Gate 9 status and not-accepted release status | pass |
+| Acceptance decision status | `docs/planning/v0.1-acceptance-review/acceptance-decision.md` | historical placeholder before final acceptance decision | pass |
 | Demo text | `demo/index.html`, `demo/assets/app.js` | v0.1 walkthrough label and non-normative boundary | pass |
 | OpenAPI checker | `scripts/check_openapi_contract.py` | version, optional negotiation headers, extension schema, required path/header contract | pass |
 | Acceptance audit artifact | `docs/planning/v0.1-acceptance-review/gate-8-protocol-publication-discipline-audit.md` | proof matrix, gap log, blocker ledger, reviewer evidence | pass |
@@ -120,7 +125,7 @@ Every changed file belongs to a coverage row:
 | Architecture brief | `Scope: v0.1 first 30 days` | pass |
 | Roadmap | active work is v0.1 acceptance review; future release rows are roadmap targets | pass |
 | Demo | `Jarvis v0.1` walkthrough with non-normative boundary | pass |
-| Acceptance decision | `Status: pending Gate 9`; current decision state is not accepted | pass |
+| Acceptance decision | historical placeholder before final acceptance decision record | pass |
 
 ## Release-Readiness Gap Log
 
@@ -149,7 +154,7 @@ No blocker finding remains.
 | G8-F1 | G8-B1 | blocker | `docs/conformance/checklist.md` | G8-04, G8-05 | Public compatibility claim structure was not present in the public conformance checklist. | Added exact claim structure requiring protocol version, conformance surface, fixture or checklist basis, and verification date. | resolved |
 | G8-F2 | G8-B2 | blocker | `docs/planning/ROADMAP.md` | G8-10 | Future release labels used milestone names that read as release claims without an explicit target boundary. | Reworded release strategy rows as roadmap targets and added a sentence rejecting release, tag, certification, long-term-support, governance, and adoption claims. | resolved |
 | G8-F3 | none | note | `docs/architecture_brief/README.md` | G8-01 | Architecture brief README used stale in-progress wording for developed artifacts. | Reworded the brief as v0.1 acceptance material and preserved the host-owned adapter boundary. | closed |
-| G8-F4 | G8-B3 | blocker | acceptance decision status | G8-01, G8-02 | Gate 8 required an acceptance decision status surface, but Gate 9 had not yet created the final decision record. | Added a pending acceptance decision record that states v0.1 is not accepted, released, tagged, certified, or production-adoption claimed. Gate 9 still owns final decision content. | resolved |
+| G8-F4 | G8-B3 | blocker | acceptance decision status | G8-01, G8-02 | Gate 8 required an acceptance decision status surface before the final decision record existed. | Added a historical placeholder acceptance decision record for the pre-acceptance state. The final acceptance decision record now owns current acceptance status. | resolved |
 | G8-F5 | G8-B4 | blocker | `docs/conformance/existing-agent-proof-plan.md`, `docs/examples/existing-agent-compatibility.md`, `docs/examples/compatible-host-mapping.md` | G8-04, G8-05 | Compatibility-facing docs used claim-shaped wording without protocol version, conformance surface, fixture or checklist basis, and verification date. | Added exact public compatibility claim formats and changed example condition headings from compatibility claims to example validity conditions. | resolved |
 | G8-F6 | G8-B5 | blocker | `gate-8-protocol-publication-discipline-audit.md` | G8-09 | Release-readiness rows used `pass`, which is not an allowed publication-discipline classification. | Reclassified existing non-gaps as `not applicable for v0.1` and kept missing publication infrastructure as `next-phase deferral`. | resolved |
 | G8-F7 | G8-B6 | blocker | `docs/protocol/15-openapi-communication-binding.md`, `docs/openapi/jarvis-openapi.yaml` | G8-07, G8-08 | Capability and extension request headers were present in prose but not encoded as OpenAPI parameters. | Added optional `RequiredCapabilitiesHeader` and `ExtensionsHeader` OpenAPI parameters to WorkSession read and export read operations, and updated the OpenAPI checker to enforce them. | resolved |
@@ -171,18 +176,19 @@ No blocker remains.
 
 ## Non-Blocking Future Work
 
-These items stay outside v0.1 acceptance gates until public release preparation:
+At Gate 8, these items stayed outside v0.1 acceptance gates until public
+release preparation:
 
-- add `CHANGELOG.md`
-- add `CONTRIBUTING.md`
-- add `SECURITY.md`
-- add citation metadata
-- add issue templates
-- add PR template
-- add validation CI for local protocol checks
-- add release notes before tag
-- define governance before certification, adopter registry, or official status
-  claims
+- `CHANGELOG.md`: completed after Gate 8.
+- `CONTRIBUTING.md`: completed after Gate 8.
+- `SECURITY.md`: completed after Gate 8.
+- citation metadata: completed after Gate 8.
+- issue templates: completed after Gate 8.
+- PR template: completed after Gate 8.
+- validation CI for local protocol checks: completed after Gate 8.
+- release notes: completed after Gate 8.
+- governance before certification, adopter registry, or official status claims:
+  outside v0.1.0.
 
 ## Reviewer Evidence
 
@@ -222,8 +228,8 @@ Decision rationale:
 Jarvis v0.1 publication discipline now records version consistency, exact
 compatibility claim structure, release-readiness gap classification,
 extension-boundary preservation, and non-normative simulation status. Public
-materials keep v0.1 in active acceptance review until Gate 9 records the final
-decision. The roadmap uses future targets without claiming release, tag,
+materials kept v0.1 in active acceptance review until the final acceptance
+decision. The roadmap used future targets without claiming release, tag,
 certification, long-term support, governance, adoption, or production status.
 Jarvis remains protocol-only.
 ```

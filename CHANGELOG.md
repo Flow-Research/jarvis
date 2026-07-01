@@ -30,8 +30,8 @@ support.
   validator.
 - Existing-agent compatibility mapping and protocol-record examples.
 - Public non-normative simulation.
-- v0.1 acceptance review with Gates 1 through 8 accepted and Gate 9 decision
-  recorded.
+- v0.1 acceptance review with Gates 1 through 8 accepted and final acceptance
+  decision recorded.
 
 ### Boundary
 

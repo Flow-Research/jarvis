@@ -302,31 +302,6 @@ hosts to produce compatible WorkSession, Request, Review, Contribution,
 EvidenceManifest, and LearningRecord records without being rewritten as
 Jarvis-owned agents.
 
-## What Jarvis v0.1 Must Prove
-
-```txt
-1. Create HumanWorker.
-2. Create AgentWorker.
-3. Start WorkSession.
-4. Attach Policy.
-5. Send objective.
-6. AgentWorker action records PolicyDecision before accepted protocol state.
-7. AgentWorker acts inside policy.
-8. AgentWorker hits blocked or review-required scope.
-9. AgentWorker creates Request.
-10. HumanWorker approves, denies, narrows, answers, or takes over.
-11. ApprovalScope bounds approved continuation.
-12. Takeover records lock epoch and reconciliation refs.
-13. Contribution records who did what.
-14. Evidence is captured.
-15. LearningRecord records human, agent, or pair learning.
-16. MemoryProposal or SkillProposal remains governed.
-17. EvidenceManifest exports after terminal WorkSession state.
-18. OutcomeReport carries post-session feedback into governed learning.
-```
-
-v0.1 acceptance requires proof for this loop.
-
 ## Docs
 
 - [docs/README.md](./docs/README.md) - docs index.
@@ -339,12 +314,10 @@ v0.1 acceptance requires proof for this loop.
 - [docs/conformance/](./docs/conformance/) - compatibility mapping,
   conformance entries, fixtures, validator requirements, and existing-agent
   proof plan.
-- [docs/planning/](./docs/planning/) - roadmap, 30-day plan, and upload-ready
-  planning sheets.
 - [docs/reviews/](./docs/reviews/) - protocol readiness and acceptance review
   criteria.
-- [docs/releases/](./docs/releases/) - protocol release notes and tag
-  readiness.
+- [docs/releases/](./docs/releases/) - protocol release notes and validation
+  requirements.
 
 ## Local Checks
 

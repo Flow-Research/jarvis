@@ -67,7 +67,8 @@ The architecture brief packages the protocol architecture into a shareable PDF.
 
 ## Releases
 
-Release docs record protocol scope, validation requirements, and tag readiness.
+Release docs record protocol scope, validation requirements, and release
+status.
 
 - [releases/README.md](./releases/README.md)
 - [releases/v0.1.0.md](./releases/v0.1.0.md)

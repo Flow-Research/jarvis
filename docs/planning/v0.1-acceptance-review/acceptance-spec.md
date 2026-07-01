@@ -254,7 +254,7 @@ accepted gates
 resolved blockers
 future-work deferrals outside acceptance gates
 remaining risks
-release notes required before tag
+release notes recorded for tag
 next-phase entry scope
 ```
 

@@ -14,8 +14,8 @@ The release does not certify Jarvis or any implementation, designate an
 official host, claim production adoption, establish foundation governance, or
 create long-term support.
 
-Gate 9 records this decision because every acceptance gate passed, every
-blocker is resolved, and every accepted gate links evidence.
+The final acceptance decision records this result because every acceptance gate
+passed, every blocker is resolved, and every accepted gate links evidence.
 
 ## Accepted Gates
 
@@ -153,14 +153,14 @@ Hosts own implementation.
 
 | Reviewer | Focus | Initial finding | Resolution | Final status |
 | --- | --- | --- | --- | --- |
-| Goodall | gate evidence and blocker status | acceptance-decision record needed final accepted state and required Decision Rule fields | final record now includes accepted gates, resolved blockers, deferrals, risks, release-note requirements, next-phase scope, and evidence links | no findings |
-| Harvey | public status consistency | public status surfaces needed direct accepted Protocol Alpha language | Gate 9 surfaces separated acceptance from release and tag status; v0.1.0 release status is recorded in release notes | no findings |
-| Peirce | release, tag, certification, public-status boundary | no-claim language omitted official host, foundation governance, and long-term support | Gate 9 surfaces separated acceptance from release and tag status; release notes reject certification, official host, production adoption, foundation governance, and long-term support claims | no findings |
-| Aquinas | future-work deferrals, remaining risks, release notes, next-phase scope | no Gate 9 blocker; provided concrete entries | decision record includes deferrals, risks, release-note requirements, and next-phase entry scope | no findings |
+| Goodall | gate evidence and blocker status | acceptance-decision record needed final accepted state and required Decision Rule fields | final record now includes accepted gates, resolved blockers, deferrals, risks, recorded release notes, next-phase scope, and evidence links | no findings |
+| Harvey | public status consistency | public status surfaces needed direct accepted Protocol Alpha language | final acceptance surfaces separated acceptance from release and tag status; v0.1.0 release status is recorded in release notes | no findings |
+| Peirce | release, tag, certification, public-status boundary | no-claim language omitted official host, foundation governance, and long-term support | final acceptance surfaces separated acceptance from release and tag status; release notes reject certification, official host, production adoption, foundation governance, and long-term support claims | no findings |
+| Aquinas | future-work deferrals, remaining risks, release notes, next-phase scope | no final acceptance blocker; provided concrete entries | decision record includes deferrals, risks, recorded release notes, and next-phase entry scope | no findings |
 
 ## Command Evidence
 
-Commands run for Gate 9:
+Commands run for the final acceptance decision:
 
 | Command | Exit status | Output summary |
 | --- | --- | --- |
