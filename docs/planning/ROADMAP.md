@@ -12,13 +12,17 @@ For the immediate execution plan, see
 For the OpenAPI entry gate, see
 [14-protocol-lock.md](../protocol/14-protocol-lock.md).
 
+For the post-v0.1 SDK helper tooling plan, see
+[post-v0.1-sdk-helper-tooling/README.md](./post-v0.1-sdk-helper-tooling/README.md).
+
 ## Current Status
 
 Week 1 protocol lock is complete.
 
 Current protocol status: Jarvis v0.1.0 is released as Protocol Alpha.
 
-Current active work: next-phase specification after acceptance review.
+Current active work: post-v0.1 SDK helper tooling planning and public docs
+site work.
 
 Release-readiness work for the v0.1.0 tag is complete:
 
@@ -393,6 +397,38 @@ v0.1 is accepted because:
 - public version labels, conformance claims, release-readiness gaps, and
   extension rules pass protocol-publication discipline review
 
+## Post-v0.1 SDK Helper Tooling
+
+Status: planned.
+
+Owner: Developer Experience
+
+Issue scope:
+
+- #64 SDK boundary and package plan
+- #65 TypeScript protocol types and validators
+- #66 Python protocol types and validators
+- #67 conformance runner and protocol helper CLI
+
+Output:
+
+- SDK boundary document
+- package plan
+- TypeScript helper package plan
+- Python helper package plan
+- conformance runner and CLI plan
+- validator and fixture reuse plan
+
+Done when:
+
+- SDK helper surfaces stay limited to protocol implementation helpers
+- TypeScript and Python helper scopes match the OpenAPI contract
+- conformance runner scope matches the fixture contract
+- package plans reject runtime, adapter, wrapper, model orchestration, tool
+  execution, auth, storage, UI, billing, scoring, payment, and deployment
+  behavior
+- local validation passes
+
 ## v0.2 Evidence And Learning Beta
 
 Goal: strengthen the compounding loop.
@@ -508,5 +544,7 @@ and example record mappers.
 5. Run local validation and GitHub validation CI before every protocol change.
 6. Keep adapter code, wrappers, host behavior, and integration code outside
    Jarvis.
-7. Keep every Jarvis SDK discussion limited to protocol implementation helpers.
-8. Start next-phase specification only inside protocol-owned scope.
+7. Execute the post-v0.1 SDK helper tooling plan through #64, #65, #66, and
+   #67.
+8. Keep every Jarvis SDK discussion limited to protocol implementation helpers.
+9. Start next-phase specification only inside protocol-owned scope.
