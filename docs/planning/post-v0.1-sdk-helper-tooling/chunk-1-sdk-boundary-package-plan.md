@@ -125,14 +125,17 @@ packages/typescript/src/headers
 packages/typescript/src/events
 packages/typescript/src/evidence
 packages/typescript/tests
+packages/typescript/fixtures/v0.1
 packages/python/src/jarvis_protocol/generated
 packages/python/src/jarvis_protocol/validators
 packages/python/src/jarvis_protocol/headers
 packages/python/src/jarvis_protocol/events
 packages/python/src/jarvis_protocol/evidence
 packages/python/tests
+packages/python/fixtures/v0.1
 packages/cli/src
 packages/cli/tests
+packages/cli/fixtures/v0.1
 ```
 
 Generated-code policy:
@@ -208,4 +211,5 @@ The SDK plan strengthens protocol implementation only.
 
 The SDK plan does not authorize runtime, adapter, wrapper, host behavior,
 model calls, tool execution, memory engines, UI, auth, storage, queues,
-billing, scoring, payment, or deployment work inside Jarvis.
+billing, scoring, payment, deployment, monitoring, observability, host
+integration, or host workflow work inside Jarvis.

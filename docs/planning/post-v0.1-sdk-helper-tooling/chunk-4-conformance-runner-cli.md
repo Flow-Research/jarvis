@@ -55,7 +55,8 @@ jarvis list rejection-ids
 jarvis print compatibility-claim
 ```
 
-Command names remain final only after Chunk 4 implementation review.
+Command names are normative for this plan and change only through a follow-up
+doc update.
 
 ## Header Check Input
 
@@ -126,7 +127,7 @@ Chunk 4 tests MUST include:
 - stale WorkSession revision
 - forbidden host-private export field
 - sealed WorkSession mutation
-- sealed EvidenceManifest mutation
+- sealed EvidenceManifest export rejection
 - compatibility claim output
 - machine-readable error output
 

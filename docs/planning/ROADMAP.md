@@ -426,7 +426,7 @@ Done when:
 - conformance runner scope matches the fixture contract
 - package plans reject runtime, adapter, wrapper, model orchestration, tool
   execution, auth, storage, UI, billing, scoring, payment, and deployment
-  behavior
+  behavior, monitoring, observability, host integration, and host workflow
 - local validation passes
 
 ## v0.2 Evidence And Learning Beta

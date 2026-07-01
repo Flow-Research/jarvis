@@ -97,7 +97,8 @@ The conformance review verifies fixture compatibility and rejection ids.
 
 The security and zero-trust review verifies mutation headers, Actor headers,
 Actor authority, WorkSession revision, previous event hash, idempotency,
-timestamp, and host-private field rejection.
+timestamp, the PolicyDecision precondition for every AgentWorker action that
+affects a WorkSession, and host-private field rejection.
 
 The developer-experience review verifies that helpers are small, direct, and
 usable by compatible implementations.

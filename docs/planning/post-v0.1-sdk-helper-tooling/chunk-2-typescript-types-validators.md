@@ -143,6 +143,7 @@ Validators MUST reject:
 - silent memory mutation
 - silent skill activation
 - OutcomeReport without LearningRecord reference
+- OutcomeReport without terminal source
 
 ## Test Requirements
 
