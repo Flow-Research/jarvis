@@ -18,12 +18,12 @@ and shared learning.
 
 ## Status
 
-Jarvis v0.1 is accepted as Protocol Alpha.
-This does not release or tag v0.1, certify Jarvis or any implementation,
-designate an official host, claim production adoption, establish foundation
-governance, or create long-term support.
+Jarvis v0.1.0 is released as Protocol Alpha.
+This release does not certify Jarvis or any implementation, designate an
+official host, claim production adoption, establish foundation governance, or
+create long-term support.
 
-Release preparation lives in:
+Release materials:
 
 - [CHANGELOG.md](./CHANGELOG.md)
 - [CONTRIBUTING.md](./CONTRIBUTING.md)

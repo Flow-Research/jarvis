@@ -4,7 +4,8 @@ title: "Jarvis Human-Agent Collaboration and Learning-Loop Protocol"
 type: software
 authors:
   - name: "Flow Research"
-version: "0.1.0-alpha"
+version: "0.1.0"
+date-released: "2026-07-01"
 repository-code: "https://github.com/Flow-Research/jarvis"
 url: "https://github.com/Flow-Research/jarvis"
 license: "MIT"

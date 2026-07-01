@@ -4,12 +4,14 @@ All notable Jarvis protocol changes are recorded here.
 
 ## v0.1.0 - Protocol Alpha
 
-Status: planned tag.
+Status: released.
 
-Jarvis v0.1 is accepted as Protocol Alpha by the v0.1 acceptance decision.
-This changelog entry prepares the public tag. It does not release, tag,
-certify, designate an official host, claim production adoption, establish
-foundation governance, or create long-term support.
+Release date: 2026-07-01.
+
+Jarvis v0.1.0 is the first Protocol Alpha release. This release does not
+certify Jarvis or any implementation, designate an official host, claim
+production adoption, establish foundation governance, or create long-term
+support.
 
 ### Added
 
