@@ -1,10 +1,10 @@
 ## Summary
 
-- 
+-
 
 ## Protocol Surface
 
-- 
+-
 
 ## Boundary Check
 
@@ -13,11 +13,11 @@
 
 ## Compatibility Impact
 
-- 
+-
 
 ## Conformance Impact
 
-- 
+-
 
 ## Validation
 
@@ -27,4 +27,3 @@
 - [ ] `python3 scripts/check_protocol_wording.py`
 - [ ] `git diff --check`
 - [ ] `node --check demo/assets/app.js` if demo JavaScript changed
-

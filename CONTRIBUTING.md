@@ -84,4 +84,3 @@ Soft protocol wording is a defect. The wording guard enforces this rule.
 
 Existing agents remain first-class. A compatible implementation emits Jarvis
 protocol records without rewriting the agent as a Jarvis-owned agent.
-

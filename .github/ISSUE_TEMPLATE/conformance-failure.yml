@@ -33,4 +33,3 @@ body:
       options:
         - label: This issue is about protocol conformance, not host implementation behavior.
           required: true
-

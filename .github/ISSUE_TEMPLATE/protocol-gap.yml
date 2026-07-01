@@ -37,4 +37,3 @@ body:
       options:
         - label: This issue does not request host runtime, UI, auth, storage, billing, model orchestration, tool execution, scoring, payment, deployment, adapter, or wrapper work.
           required: true
-

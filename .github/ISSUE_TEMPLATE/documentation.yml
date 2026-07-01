@@ -25,4 +25,3 @@ body:
       description: Provide direct replacement wording when available.
     validations:
       required: false
-

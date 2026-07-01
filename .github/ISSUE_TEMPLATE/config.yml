@@ -3,4 +3,3 @@ contact_links:
   - name: Security issue
     url: https://github.com/Flow-Research/jarvis/security/advisories/new
     about: Report protocol security issues privately.
-

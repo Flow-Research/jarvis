@@ -47,4 +47,3 @@ foundation governance, or create long-term support.
 - `python3 scripts/check_markdown_links.py`
 - `python3 scripts/check_protocol_wording.py`
 - `git diff --check`
-

@@ -73,4 +73,3 @@ Every EvidenceManifest export excludes host-private fields, credentials,
 secrets, raw runtime state, host-only database ids, deployment details, billing
 data, private scores, UI state, raw auth tokens, provider secrets, session
 cookies, and private keys.
-
