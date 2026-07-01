@@ -176,8 +176,8 @@ No blocker remains.
 
 ## Non-Blocking Future Work
 
-At Gate 8, these items stayed outside v0.1 acceptance gates until public
-release preparation:
+At Gate 8, these items stayed outside v0.1 acceptance gates. They are now
+completed release materials unless marked outside v0.1.0:
 
 - `CHANGELOG.md`: completed after Gate 8.
 - `CONTRIBUTING.md`: completed after Gate 8.

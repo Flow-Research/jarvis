@@ -105,7 +105,7 @@ The v0.1.0 release notes record:
   auth behavior, billing behavior, scoring behavior, payment behavior,
   deployment behavior, certification, adopter registry, official host status,
   long-term support, or production adoption claims.
-- Release-readiness deferrals remain visible.
+- Release-preparation items are complete; governance deferrals remain visible.
 
 ## Next-Phase Entry Scope
 
@@ -113,10 +113,6 @@ Next-phase work starts only after preserving the v0.1 protocol boundary.
 
 Allowed next-phase entry:
 
-- public release preparation: release notes, `SECURITY.md`, validation CI, and
-  visible release-readiness gap tracking
-- repository participation readiness: `CHANGELOG.md`, `CONTRIBUTING.md`,
-  citation metadata, issue templates, and PR template
 - v0.2 Evidence And Learning Beta: richer Contribution taxonomy, stronger
   EvidenceManifest export profiles, limitation and uncertainty records,
   LearningRecord, MemoryProposal, and SkillProposal review-state rules, memory
