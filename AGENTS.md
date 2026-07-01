@@ -224,21 +224,25 @@ and shared learning.
 
 ## Current Execution Focus
 
-The active focus is the v0.1 first-30-days protocol contract.
+The active focus is post-acceptance release preparation and next-phase protocol
+specification.
 
 Protocol lock is complete. Week 2 OpenAPI contract and conformance entry work
 is complete. Week 3 protocol compatibility mapping and conformance fixtures
 are complete. Week 4 compatible examples and public story are complete.
-Current work is v0.1 acceptance review after Week 4 closeout.
+The v0.1 acceptance review is complete. Jarvis v0.1 is accepted as Protocol
+Alpha. This does not release or tag v0.1, certify Jarvis or any
+implementation, designate an official host, claim production adoption,
+establish foundation governance, or create long-term support.
 
 Work on:
 
-- v0.1 acceptance review
-- protocol implementation helper boundary
-- protocol-publication discipline
-- public-readiness gap log
+- release notes required before tag
+- release-readiness gap closure
+- protocol implementation helper boundary after acceptance
+- protocol-publication discipline after acceptance
 - additional conformance evidence only when it preserves the protocol boundary
-- next-phase specification after acceptance review
+- next-phase specification
 
 The v0.1 acceptance review starts from
 [docs/planning/v0.1-acceptance-review/README.md](./docs/planning/v0.1-acceptance-review/README.md)
@@ -251,7 +255,7 @@ Do not add or own adapters, wrappers, host behavior, or integration code in this
 repo.
 Do not add host-specific assumptions to protocol records.
 Do not reopen locked protocol decisions unless a concrete contradiction blocks
-v0.1 acceptance review.
+post-acceptance release preparation or next-phase specification.
 
 ## Wording Rules
 

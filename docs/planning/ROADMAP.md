@@ -17,8 +17,9 @@ For the OpenAPI entry gate, see
 
 Week 1 protocol lock is complete.
 
-Current active work: [v0.1 acceptance review](./v0.1-acceptance-review/README.md)
-after Week 4 closeout.
+Current protocol status: Jarvis v0.1 is accepted as Protocol Alpha.
+
+Current active work: next-phase specification after acceptance review.
 
 Week 2 completed the OpenAPI 3.1 component syntax, path syntax, security scheme
 encoding, protocol examples, and conformance entry rules from the locked Week 1
@@ -34,6 +35,11 @@ conformance checklist, protocol record examples, and public story.
 The v0.1 acceptance review now includes protocol-publication discipline:
 version consistency, precise conformance-claim language, release-readiness gap
 logging, extension boundary checks, and governance-gap classification.
+
+Jarvis v0.1 is accepted as Protocol Alpha. This does not release or tag v0.1,
+certify Jarvis or any implementation, designate an official host, claim
+production adoption, establish foundation governance, or create long-term
+support.
 
 ## Roadmap Contract
 
@@ -92,10 +98,10 @@ run agents, orchestrate models, execute tools, own memory engines, provide UI,
 manage auth, store records, run sandboxes, schedule work, or become host
 adapters.
 
-## Release Strategy
+## Protocol Version Targets
 
 ```txt
-v0.1 target: Protocol Alpha
+v0.1 accepted: Protocol Alpha
   locked vocabulary, OpenAPI 3.1 contract, event envelope, and golden-path
   conformance
 
@@ -111,8 +117,8 @@ v1.0 target: Stable Protocol
   policy
 ```
 
-These are roadmap targets. They are not release, tag, certification,
-long-term-support, governance, or adoption claims.
+Rows after v0.1 are roadmap targets. These rows are not release, tag,
+certification, long-term-support, governance, or adoption claims.
 
 ## v0.1 Protocol Alpha
 
@@ -363,7 +369,9 @@ Done when:
 
 ## v0.1 Acceptance
 
-v0.1 is accepted when:
+Status: complete.
+
+v0.1 is accepted because:
 
 - OpenAPI contract passes the v0.1 acceptance review
 - conformance tests cover the golden path
@@ -402,7 +410,7 @@ Goal: make Jarvis implementable across independent hosts.
 Output:
 
 - host conformance suite
-- compatibility badges
+- compatibility evidence labels
 - version negotiation rules
 - migration examples
 - public implementation checklist
@@ -485,11 +493,12 @@ and example record mappers.
 1. Keep the repository protocol-only.
 2. Keep execution and cloud ownership outside the protocol.
 3. Use `11-core-protocol-objects.md`, `jarvis-openapi.yaml`, and
-   `docs/conformance/` as the source of truth for v0.1 acceptance review.
-4. Review Week 4 closeout against the OpenAPI contract, conformance fixtures,
-   public examples, README, and non-normative simulation boundary.
-5. Record public-readiness gaps before starting next-phase specification.
+   `docs/conformance/` with the accepted v0.1 decision record.
+4. Prepare release notes before any v0.1 tag.
+5. Close release-readiness gaps recorded outside the acceptance gates:
+   `CHANGELOG.md`, `CONTRIBUTING.md`, `SECURITY.md`, citation metadata, issue
+   templates, PR template, and validation CI.
 6. Keep adapter code, wrappers, host behavior, and integration code outside
    Jarvis.
 7. Keep every Jarvis SDK discussion limited to protocol implementation helpers.
-8. Complete protocol-publication discipline review before v0.1 acceptance.
+8. Start next-phase specification only inside protocol-owned scope.
