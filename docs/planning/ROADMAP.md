@@ -17,11 +17,11 @@ For the OpenAPI entry gate, see
 
 Week 1 protocol lock is complete.
 
-Current protocol status: Jarvis v0.1 is accepted as Protocol Alpha.
+Current protocol status: Jarvis v0.1.0 is released as Protocol Alpha.
 
 Current active work: next-phase specification after acceptance review.
 
-Release-readiness work for the v0.1.0 tag tracks:
+Release-readiness work for the v0.1.0 tag is complete:
 
 - changelog
 - contribution rules
@@ -30,7 +30,7 @@ Release-readiness work for the v0.1.0 tag tracks:
 - issue templates
 - PR template
 - validation CI
-- release notes before tag
+- release notes
 
 Week 2 completed the OpenAPI 3.1 component syntax, path syntax, security scheme
 encoding, protocol examples, and conformance entry rules from the locked Week 1
@@ -47,10 +47,9 @@ The v0.1 acceptance review now includes protocol-publication discipline:
 version consistency, precise conformance-claim language, release-readiness gap
 logging, extension boundary checks, and governance-gap classification.
 
-Jarvis v0.1 is accepted as Protocol Alpha. This does not release or tag v0.1,
-certify Jarvis or any implementation, designate an official host, claim
-production adoption, establish foundation governance, or create long-term
-support.
+Jarvis v0.1.0 is released as Protocol Alpha. This release does not certify
+Jarvis or any implementation, designate an official host, claim production
+adoption, establish foundation governance, or create long-term support.
 
 ## Roadmap Contract
 
@@ -505,8 +504,8 @@ and example record mappers.
 2. Keep execution and cloud ownership outside the protocol.
 3. Use `11-core-protocol-objects.md`, `jarvis-openapi.yaml`, and
    `docs/conformance/` with the accepted v0.1 decision record.
-4. Merge release-readiness files before any v0.1 tag.
-5. Run local validation and GitHub validation CI before the tag.
+4. Keep v0.1.0 release materials aligned with the tag.
+5. Run local validation and GitHub validation CI before every protocol change.
 6. Keep adapter code, wrappers, host behavior, and integration code outside
    Jarvis.
 7. Keep every Jarvis SDK discussion limited to protocol implementation helpers.
