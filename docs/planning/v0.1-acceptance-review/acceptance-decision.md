@@ -6,10 +6,13 @@ Decision date: 2026-06-30.
 
 Current decision state: accepted Protocol Alpha.
 
-Jarvis v0.1 is accepted as Protocol Alpha. This does not release or tag v0.1,
-certify Jarvis or any implementation, designate an official host, claim
-production adoption, establish foundation governance, or create long-term
-support.
+Jarvis v0.1 is accepted as Protocol Alpha. This decision record did not release
+or tag v0.1. The v0.1.0 release status is recorded in
+[v0.1.0.md](../../releases/v0.1.0.md).
+
+The release does not certify Jarvis or any implementation, designate an
+official host, claim production adoption, establish foundation governance, or
+create long-term support.
 
 Gate 9 records this decision because every acceptance gate passed, every
 blocker is resolved, and every accepted gate links evidence.
@@ -42,22 +45,24 @@ blocker is resolved, and every accepted gate links evidence.
 
 No acceptance-gate blocker remains.
 
-## Future-Work Deferrals Outside Acceptance Gates
+## Release And Next-Phase Items Outside Acceptance Gates
 
-These items stay outside v0.1 acceptance. They belong to release preparation,
-repository operations, or next-phase protocol work:
+These items stay outside v0.1 acceptance. Completed release-preparation items
+support the v0.1.0 release and do not change acceptance semantics. Governance
+and next-phase items remain outside v0.1.0.
 
-- `CHANGELOG.md`
-- `CONTRIBUTING.md`
-- `SECURITY.md`
-- citation metadata
-- issue templates
-- PR template
-- validation CI for local protocol checks
-- release notes before tag
+- `CHANGELOG.md`: complete.
+- `CONTRIBUTING.md`: complete.
+- `SECURITY.md`: complete.
+- citation metadata: complete.
+- issue templates: complete.
+- PR template: complete.
+- validation CI for local protocol checks: complete.
+- release notes: complete in [v0.1.0.md](../../releases/v0.1.0.md).
 - governance before certification, adopter registry, official-host status,
-  foundation-governance, production-adoption, or long-term-support claims
-- next-phase protocol specification
+  foundation-governance, production-adoption, or long-term-support claims:
+  outside v0.1.0.
+- next-phase protocol specification: future.
 
 ## Remaining Risks
 
@@ -76,17 +81,17 @@ Remaining risks are outside the acceptance gates:
 - Silent learning: learning becomes MemoryProposal or SkillProposal until
   reviewed.
 - SDK creep: Jarvis SDK work stays limited to protocol implementation helpers.
-- Release-status drift: release notes before tag MUST record known limits and
-  MUST NOT claim release, certification, official host status, production
-  adoption, governance, or long-term support.
+- Release-status drift: v0.1.0 release notes record known limits and reject
+  certification, official host status, production adoption, governance, or
+  long-term support claims.
 - Foundation-governance drift: governance claims are rejected until governance
   exists.
 
-## Release Notes Required Before Tag
+## Release Notes Recorded For Tag
 
-Before any v0.1 tag, release notes MUST record:
+The v0.1.0 release notes record:
 
-- Jarvis v0.1 is Protocol Alpha for governed human-agent collaboration and
+- Jarvis v0.1.0 is Protocol Alpha for governed human-agent collaboration and
   shared learning.
 - OpenAPI `info.version: 0.1.0` identifies the OpenAPI artifact.
 - OpenAPI `x-jarvis-protocol.version: v0.1` identifies the protocol line.
@@ -95,7 +100,7 @@ Before any v0.1 tag, release notes MUST record:
   or checklist basis, and verification date.
 - Hosts own UI, auth, storage, queues, execution, isolation, models, tools,
   billing, monitoring, deployment, and host workflow.
-- Jarvis v0.1 does not include SDK implementation, adapters, wrappers, runtime
+- Jarvis v0.1.0 does not include SDK implementation, adapters, wrappers, runtime
   behavior, host UI, model orchestration, tool execution, storage behavior,
   auth behavior, billing behavior, scoring behavior, payment behavior,
   deployment behavior, certification, adopter registry, official host status,
@@ -149,8 +154,8 @@ Hosts own implementation.
 | Reviewer | Focus | Initial finding | Resolution | Final status |
 | --- | --- | --- | --- | --- |
 | Goodall | gate evidence and blocker status | acceptance-decision record needed final accepted state and required Decision Rule fields | final record now includes accepted gates, resolved blockers, deferrals, risks, release-note requirements, next-phase scope, and evidence links | no findings |
-| Harvey | public status consistency | public status surfaces needed direct accepted Protocol Alpha language | README, roadmap, acceptance review README, and decision record now use accepted Protocol Alpha status without release or tag claims | no findings |
-| Peirce | release, tag, certification, public-status boundary | no-claim language omitted official host, foundation governance, and long-term support | public status surfaces now reject release, tag, certification, official host, production adoption, foundation governance, and long-term support claims | no findings |
+| Harvey | public status consistency | public status surfaces needed direct accepted Protocol Alpha language | Gate 9 surfaces separated acceptance from release and tag status; v0.1.0 release status is recorded in release notes | no findings |
+| Peirce | release, tag, certification, public-status boundary | no-claim language omitted official host, foundation governance, and long-term support | Gate 9 surfaces separated acceptance from release and tag status; release notes reject certification, official host, production adoption, foundation governance, and long-term support claims | no findings |
 | Aquinas | future-work deferrals, remaining risks, release notes, next-phase scope | no Gate 9 blocker; provided concrete entries | decision record includes deferrals, risks, release-note requirements, and next-phase entry scope | no findings |
 
 ## Command Evidence
