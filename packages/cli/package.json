@@ -1,0 +1,25 @@
+{
+  "name": "@jarvis-protocol/cli",
+  "version": "0.1.0-alpha.0",
+  "description": "Protocol validation CLI for Jarvis v0.1 records.",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "jarvis": "./dist/index.js"
+  },
+  "files": [
+    "dist/",
+    "fixtures/v0.1/",
+    "README.md",
+    "package.json"
+  ],
+  "jarvis": {
+    "packageStatus": "Protocol Alpha helper tooling",
+    "protocolVersion": "v0.1",
+    "openapiVersion": "0.1.0",
+    "fixtureSet": "v0.1"
+  },
+  "scripts": {
+    "check:boundary": "python3 ../../scripts/check_sdk_boundary.py"
+  }
+}

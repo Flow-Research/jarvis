@@ -116,6 +116,7 @@ python3 scripts/check_conformance_fixtures.py
 python3 scripts/check_openapi_contract.py
 python3 scripts/check_markdown_links.py
 python3 scripts/check_protocol_wording.py
+python3 scripts/check_sdk_boundary.py
 git diff --check
 ```
 

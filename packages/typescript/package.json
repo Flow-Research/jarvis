@@ -1,0 +1,30 @@
+{
+  "name": "@jarvis-protocol/sdk",
+  "version": "0.1.0-alpha.0",
+  "description": "TypeScript protocol helper package for Jarvis v0.1 records.",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "files": [
+    "dist/",
+    "fixtures/v0.1/",
+    "README.md",
+    "package.json"
+  ],
+  "jarvis": {
+    "packageStatus": "Protocol Alpha helper tooling",
+    "protocolVersion": "v0.1",
+    "openapiVersion": "0.1.0",
+    "fixtureSet": "v0.1"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "check:boundary": "python3 ../../scripts/check_sdk_boundary.py"
+  }
+}
