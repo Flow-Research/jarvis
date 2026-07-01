@@ -65,6 +65,13 @@ The architecture brief packages the protocol architecture into a shareable PDF.
 - [architecture_brief/jarvis_protocol_architecture_brief.md](./architecture_brief/jarvis_protocol_architecture_brief.md)
 - [architecture_brief/jarvis_protocol_architecture_brief.pdf](./architecture_brief/jarvis_protocol_architecture_brief.pdf)
 
+## Releases
+
+Release docs record protocol scope, validation requirements, and tag readiness.
+
+- [releases/README.md](./releases/README.md)
+- [releases/v0.1.0.md](./releases/v0.1.0.md)
+
 ## Readiness
 
 Readiness docs lock OpenAPI entry criteria and acceptance criteria without

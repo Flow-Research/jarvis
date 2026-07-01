@@ -1,0 +1,52 @@
+name: Validate Jarvis protocol
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Python dependencies
+        run: python -m pip install pyyaml
+
+      - name: Validate conformance fixtures
+        run: python3 scripts/check_conformance_fixtures.py
+
+      - name: Validate OpenAPI contract
+        run: python3 scripts/check_openapi_contract.py
+
+      - name: Validate Markdown links
+        run: python3 scripts/check_markdown_links.py
+
+      - name: Validate protocol wording
+        run: python3 scripts/check_protocol_wording.py
+
+      - name: Check committed whitespace
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            git fetch origin "${{ github.base_ref }}" --depth=1
+            git diff --check "origin/${{ github.base_ref }}...HEAD"
+          else
+            git diff-tree --check --no-commit-id --root -r HEAD
+          fi
+
+      - name: Validate demo JavaScript syntax
+        run: node --check demo/assets/app.js

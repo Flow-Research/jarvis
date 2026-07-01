@@ -21,6 +21,17 @@ Current protocol status: Jarvis v0.1 is accepted as Protocol Alpha.
 
 Current active work: next-phase specification after acceptance review.
 
+Release-readiness work for the v0.1.0 tag tracks:
+
+- changelog
+- contribution rules
+- security policy
+- citation metadata
+- issue templates
+- PR template
+- validation CI
+- release notes before tag
+
 Week 2 completed the OpenAPI 3.1 component syntax, path syntax, security scheme
 encoding, protocol examples, and conformance entry rules from the locked Week 1
 protocol decisions.
@@ -494,10 +505,8 @@ and example record mappers.
 2. Keep execution and cloud ownership outside the protocol.
 3. Use `11-core-protocol-objects.md`, `jarvis-openapi.yaml`, and
    `docs/conformance/` with the accepted v0.1 decision record.
-4. Prepare release notes before any v0.1 tag.
-5. Close release-readiness gaps recorded outside the acceptance gates:
-   `CHANGELOG.md`, `CONTRIBUTING.md`, `SECURITY.md`, citation metadata, issue
-   templates, PR template, and validation CI.
+4. Merge release-readiness files before any v0.1 tag.
+5. Run local validation and GitHub validation CI before the tag.
 6. Keep adapter code, wrappers, host behavior, and integration code outside
    Jarvis.
 7. Keep every Jarvis SDK discussion limited to protocol implementation helpers.

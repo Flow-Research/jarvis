@@ -1,0 +1,36 @@
+name: Conformance failure
+description: Report a conformance fixture, validator, or OpenAPI contract failure.
+title: "[conformance] "
+labels:
+  - conformance
+body:
+  - type: textarea
+    id: failing_check
+    attributes:
+      label: Failing check
+      description: Paste the command and failure output.
+      placeholder: python3 scripts/check_conformance_fixtures.py
+    validations:
+      required: true
+  - type: textarea
+    id: affected_files
+    attributes:
+      label: Affected files
+      description: List the fixture, OpenAPI, docs, or script files involved.
+    validations:
+      required: true
+  - type: textarea
+    id: expected_protocol_behavior
+    attributes:
+      label: Expected protocol behavior
+      description: State the protocol rule the check enforces.
+    validations:
+      required: true
+  - type: checkboxes
+    id: boundary
+    attributes:
+      label: Boundary confirmation
+      options:
+        - label: This issue is about protocol conformance, not host implementation behavior.
+          required: true
+

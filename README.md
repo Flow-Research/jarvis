@@ -23,6 +23,13 @@ This does not release or tag v0.1, certify Jarvis or any implementation,
 designate an official host, claim production adoption, establish foundation
 governance, or create long-term support.
 
+Release preparation lives in:
+
+- [CHANGELOG.md](./CHANGELOG.md)
+- [CONTRIBUTING.md](./CONTRIBUTING.md)
+- [SECURITY.md](./SECURITY.md)
+- [docs/releases/v0.1.0.md](./docs/releases/v0.1.0.md)
+
 ## Interactive Simulation
 
 The simulation is non-normative public explanation. It is not protocol proof
@@ -336,6 +343,8 @@ v0.1 acceptance requires proof for this loop.
   planning sheets.
 - [docs/reviews/](./docs/reviews/) - protocol readiness and acceptance review
   criteria.
+- [docs/releases/](./docs/releases/) - protocol release notes and tag
+  readiness.
 
 ## Local Checks
 

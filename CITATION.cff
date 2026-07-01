@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "If you use Jarvis, cite the repository release for the protocol version you used."
+title: "Jarvis Human-Agent Collaboration and Learning-Loop Protocol"
+type: software
+authors:
+  - name: "Flow Research"
+version: "0.1.0-alpha"
+repository-code: "https://github.com/Flow-Research/jarvis"
+url: "https://github.com/Flow-Research/jarvis"
+license: "MIT"
+abstract: "Jarvis is the human-agent collaboration and learning-loop protocol for governed WorkSessions, reviewable Requests, attributable Contributions, portable EvidenceManifest records, and governed shared Learning."
