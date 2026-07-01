@@ -224,7 +224,7 @@
           "pattern": "Fixture memory update."
         },
         "provenance": [
-          "event-invalid-001"
+          "event-worksession-created"
         ],
         "confidence": 0.7,
         "review_required": false,
@@ -233,6 +233,17 @@
           "review-invalid-001"
         ],
         "created_at": "2026-06-16T10:18:00Z"
+      }
+    },
+    "reviews": {
+      "invalid": {
+        "id": "review-invalid-001",
+        "work_session_id": "ws-invalid-001",
+        "reviewer_actor_id": "actor-human-invalid",
+        "reviewer_worker_id": "worker-human-invalid",
+        "target_ref": "memory_proposal:memory-invalid-001",
+        "decision": "approve",
+        "created_at": "2026-06-16T10:30:00Z"
       }
     }
   },

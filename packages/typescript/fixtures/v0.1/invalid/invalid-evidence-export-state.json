@@ -201,9 +201,7 @@
           {
             "id": "evidence-invalid-001",
             "work_session_id": "ws-invalid-001",
-            "source_event_refs": [
-              "event-invalid-001"
-            ],
+            "source_event_refs": [],
             "captured_by_actor_id": "actor-agent-invalid",
             "evidence_type": "source_summary",
             "artifact_ref": "artifact:invalid",
@@ -214,15 +212,9 @@
             "limitation_refs": []
           }
         ],
-        "policy_decision_refs": [
-          "pd-invalid-001"
-        ],
-        "request_refs": [
-          "req-invalid-001"
-        ],
-        "review_refs": [
-          "review-invalid-001"
-        ],
+        "policy_decision_refs": [],
+        "request_refs": [],
+        "review_refs": [],
         "takeover_refs": [],
         "contribution_refs": [
           "contrib-invalid-001"
@@ -247,9 +239,7 @@
         ],
         "contributor_type": "agent",
         "contribution_type": "execution",
-        "event_refs": [
-          "event-invalid-001"
-        ],
+        "event_refs": [],
         "created_at": "2026-06-16T10:15:00Z",
         "evidence_refs": [
           "evidence-invalid-001"
