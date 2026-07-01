@@ -226,7 +226,8 @@ and shared learning.
 
 ## Current Execution Focus
 
-The active focus is next-phase protocol specification after the v0.1.0 release.
+The active focus is post-v0.1 SDK helper tooling planning and public docs site
+work.
 
 Protocol lock is complete. Week 2 OpenAPI contract and conformance entry work
 is complete. Week 3 protocol compatibility mapping and conformance fixtures
@@ -241,12 +242,20 @@ create long-term support.
 Work on:
 
 - next-phase protocol specification
+- post-v0.1 SDK helper tooling plan
+- SDK helper boundary and package plan
+- TypeScript protocol types and validators
+- Python protocol types and validators
+- conformance runner and protocol helper CLI
 - additional conformance evidence only when it preserves the protocol boundary
 
 The v0.1 acceptance review record starts from
 [docs/planning/v0.1-acceptance-review/README.md](./docs/planning/v0.1-acceptance-review/README.md)
 and
 [docs/planning/v0.1-acceptance-review/acceptance-spec.md](./docs/planning/v0.1-acceptance-review/acceptance-spec.md).
+
+The post-v0.1 SDK helper tooling plan starts from
+[docs/planning/post-v0.1-sdk-helper-tooling/README.md](./docs/planning/post-v0.1-sdk-helper-tooling/README.md).
 
 Do not build host implementations in this repo.
 Do not build runtime features in this repo.

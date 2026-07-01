@@ -25,6 +25,13 @@ stable.
 - [15-openapi-communication-binding.md](./protocol/15-openapi-communication-binding.md)
 - [16-positioning-adoption-lock.md](./protocol/16-positioning-adoption-lock.md)
 
+## Active Planning
+
+Active planning docs define current post-v0.1 execution without changing
+normative protocol rules.
+
+- [post-v0.1-sdk-helper-tooling/README.md](./planning/post-v0.1-sdk-helper-tooling/README.md)
+
 ## Planning Archive
 
 Planning docs record historical v0.1 release execution and are non-normative.
