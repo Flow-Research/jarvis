@@ -18,6 +18,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          persist-credentials: false
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -40,10 +41,13 @@ jobs:
         run: python3 scripts/check_protocol_wording.py
 
       - name: Check committed whitespace
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BASE_REF: ${{ github.base_ref }}
         run: |
-          if [ "${{ github.event_name }}" = "pull_request" ]; then
-            git fetch origin "${{ github.base_ref }}" --depth=1
-            git diff --check "origin/${{ github.base_ref }}...HEAD"
+          if [ "$EVENT_NAME" = "pull_request" ]; then
+            git fetch origin "$BASE_REF" --depth=1
+            git diff --check "origin/$BASE_REF...HEAD"
           else
             git diff-tree --check --no-commit-id --root -r HEAD
           fi
