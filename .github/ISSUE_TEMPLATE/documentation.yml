@@ -1,0 +1,27 @@
+name: Documentation issue
+description: Report unclear Jarvis protocol documentation.
+title: "[docs] "
+labels:
+  - documentation
+body:
+  - type: textarea
+    id: page
+    attributes:
+      label: Page or section
+      description: Link or name the documentation page and section.
+    validations:
+      required: true
+  - type: textarea
+    id: issue
+    attributes:
+      label: Issue
+      description: Describe the unclear wording, broken link, or protocol contradiction.
+    validations:
+      required: true
+  - type: textarea
+    id: direct_wording
+    attributes:
+      label: Direct protocol wording
+      description: Provide direct replacement wording when available.
+    validations:
+      required: false

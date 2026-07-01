@@ -1,0 +1,39 @@
+name: Protocol gap
+description: Report a missing or unclear Jarvis protocol rule.
+title: "[protocol-gap] "
+labels:
+  - protocol
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form for protocol contract gaps only.
+        Jarvis does not own host runtime, UI, auth, storage, billing, model orchestration, tool execution, scoring, payment, deployment, adapters, or wrappers.
+  - type: textarea
+    id: protocol_surface
+    attributes:
+      label: Protocol surface
+      description: Name the affected protocol object, lifecycle rule, OpenAPI operation, conformance fixture, or wording rule.
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: Describe the missing, ambiguous, or conflicting protocol rule.
+    validations:
+      required: true
+  - type: textarea
+    id: expected_rule
+    attributes:
+      label: Expected rule
+      description: State the direct protocol rule that resolves the gap.
+    validations:
+      required: true
+  - type: checkboxes
+    id: boundary
+    attributes:
+      label: Boundary confirmation
+      options:
+        - label: This issue does not request host runtime, UI, auth, storage, billing, model orchestration, tool execution, scoring, payment, deployment, adapter, or wrapper work.
+          required: true
