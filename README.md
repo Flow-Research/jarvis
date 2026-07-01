@@ -120,8 +120,9 @@ The loop is:
 HumanWorker + AgentWorker -> WorkSession -> Review -> Evidence -> Shared Learning
 ```
 
-The human gets better. The agent gets better. The relationship gets better.
-WorkSession is the durable record of that collaboration and learning loop.
+Confirmed LearningRecords, MemoryProposals, and SkillProposals give future
+WorkSessions portable learning inputs. WorkSession is the durable record of
+that collaboration and learning loop.
 
 Jarvis formalizes the loop where:
 
@@ -249,7 +250,8 @@ OutcomeReport
 8. Human judgment remains central.
 9. Execution is delegable; accountability remains attributable.
 10. HumanWorker and AgentWorker both learn.
-11. Every completed WorkSession improves the next WorkSession.
+11. Compatible implementations carry accepted learning into future WorkSessions
+    when accepted records are in scope.
 12. Jarvis stays protocol-only; hosts and external systems implement or
     integrate with it without becoming it.
 

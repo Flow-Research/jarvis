@@ -192,6 +192,6 @@ public README
 simulation proof path
 ```
 
-v0.1 is not accepted by this closeout. v0.1 acceptance requires a separate
-review of the full protocol contract, OpenAPI binding, conformance surface,
-examples, and public story after Week 4 is merged.
+This closeout did not accept v0.1 by itself. The later v0.1 acceptance review
+accepted the full protocol contract, OpenAPI binding, conformance surface,
+examples, and public story.

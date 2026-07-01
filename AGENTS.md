@@ -109,7 +109,7 @@ The next WorkSession carries confirmed learning forward.
 
 ## Protocol Shape
 
-Jarvis v0.1 has five layers:
+Jarvis v0.1 has four protocol layers and one explicit outside-Jarvis boundary:
 
 ```txt
 Layer 1: Protocol semantics
@@ -122,9 +122,11 @@ Layer 2: Protocol objects
   OutcomeReport
 
 Layer 3: Protocol operations
-  create WorkSession, append event, create Request, record Review,
-  start Takeover, reconcile Takeover, record Contribution,
-  export EvidenceManifest, submit OutcomeReport
+  register Worker, register Actor, create WorkSession, read WorkSession,
+  append event, record PolicyDecision, create Request, record Review,
+  record Takeover, record Contribution, create LearningRecord,
+  create MemoryProposal, create SkillProposal, export EvidenceManifest,
+  submit OutcomeReport
 
 Layer 4: OpenAPI 3.1 communication binding
   HTTP paths, operations, parameters, request bodies, response bodies,

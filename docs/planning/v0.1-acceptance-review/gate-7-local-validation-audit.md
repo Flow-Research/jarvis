@@ -111,7 +111,7 @@ without changing v0.1 acceptance commands:
 | --- | --- | --- | --- | --- |
 | Darwin | command coverage | no blocker; required Gate 7 command set complete | no change required | no findings |
 | Bernoulli | script protocol boundary | no blocker; validators stay local and artifact-focused | recorded future hardening notes as non-blocking | no findings |
-| Erdos | audit structure | reviewer evidence and branch diff placeholders were pending | replaced pending reviewer rows and final diff evidence before staging | no findings |
+| Erdos | audit structure | reviewer evidence and branch diff placeholders needed finalization | replaced placeholder reviewer rows and final diff evidence before staging | no findings |
 | Dirac | demo public-readiness check | no blocker; demo syntax check is correct supplemental evidence and no demo misrepresentation found | clarified supplemental public-readiness role | no findings |
 
 ## Command Evidence

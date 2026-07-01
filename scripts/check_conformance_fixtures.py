@@ -1388,7 +1388,7 @@ def validate_invalid_fixture_semantics(path: Path, fixture: dict[str, Any]) -> N
         active_takeovers = [
             takeover
             for takeover in all_records(records, "takeovers")
-            if takeover.get("state") == "active"
+            if takeover.get("state") == "human_active"
         ]
         actor = actor_by_id(records, operation.get("actor_id"))
         work_session_id = target_work_session_id(operation, body)
@@ -1425,7 +1425,7 @@ def validate_invalid_fixture_semantics(path: Path, fixture: dict[str, Any]) -> N
         ):
             raise FixtureError(
                 f"{rel(path)}: stale_takeover_epoch fixture MUST show AgentWorker "
-                "continuing during active Takeover"
+                "continuing during human_active Takeover"
             )
 
     elif expected_error_id == "invalid_evidence_export_state":

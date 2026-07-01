@@ -507,9 +507,13 @@ EvidenceItem
   policy_decision_id
   mime/type
   byte length
-  storage uri
+  artifact_ref
+  portable opaque ref
   redaction lineage
 ```
+
+Host storage locations stay host-owned unless represented through a portable,
+non-secret opaque ref.
 
 Redacted exports are derived artifacts. They never replace raw immutable
 evidence inside the WorkSession record.

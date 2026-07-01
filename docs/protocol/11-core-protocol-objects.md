@@ -1474,8 +1474,10 @@ Rules:
 - Takeover increments the lock epoch.
 - Agent actions from an old lock epoch are stale and rejected.
 - Resume requires reconciliation.
-- Takeover creates or references LearningRecord, MemoryProposal, or
-  SkillProposal records when it changes future WorkSession behavior.
+- When Takeover changes future WorkSession behavior, compatible implementations
+  record that change through LearningRecord, MemoryProposal, or SkillProposal
+  operations.
+- Takeover does not silently mutate durable learning.
 - Allowed Takeover transitions are `requested -> locked`, `requested -> closed`,
   `locked -> human_active`, `locked -> reconciliation_required`,
   `locked -> closed`, `human_active -> reconciliation_required`,

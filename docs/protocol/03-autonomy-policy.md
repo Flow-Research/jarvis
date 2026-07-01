@@ -281,8 +281,9 @@ the WorkSession records the difference
 agent resumes with updated context after reconciliation
 ```
 
-Takeover creates or references LearningRecord, MemoryProposal, or SkillProposal
-records when the takeover changes future WorkSession behavior.
+When Takeover changes future WorkSession behavior, compatible implementations
+record that change through LearningRecord, MemoryProposal, or SkillProposal
+operations. Takeover does not silently mutate durable learning.
 
 Takeover has protocol locking semantics:
 

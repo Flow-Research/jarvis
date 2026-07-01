@@ -12,7 +12,7 @@ digraph G {
 
   export -> external [label="evaluated by external system"];
   external -> outcome [label="reported through"];
-  outcome -> learning [label="creates or references"];
+  outcome -> learning [label="references governed"];
   learning -> proposal [label="proposes governed update"];
   boundary -> outcome [style=dashed, label="does not enter core"];
 }

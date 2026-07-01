@@ -107,7 +107,7 @@
         "id": "policy-invalid-bounded",
         "owner_worker_id": "worker-human-invalid",
         "created_by_actor_id": "actor-human-invalid",
-        "autonomy_level": "bounded",
+        "autonomy_level": "bounded_execute",
         "allowed_actions": [
           {
             "action": "read_local_context",
@@ -133,8 +133,11 @@
         ],
         "escalation_rules": [
           {
+            "trigger": "policy_review_required",
             "risk_class": "medium",
-            "action": "create_request"
+            "required_action": "create_request",
+            "reviewer_ref": "worker-human-invalid",
+            "reason": "Policy requires human review before continuation."
           }
         ],
         "created_at": "2026-06-16T10:00:00Z"
@@ -207,7 +210,8 @@
             "content_hash": "hash:evidence-invalid",
             "trust_label": "unreviewed",
             "redaction_state": "redacted",
-            "captured_at": "2026-06-16T10:10:00Z"
+            "captured_at": "2026-06-16T10:10:00Z",
+            "limitation_refs": []
           }
         ],
         "policy_decision_refs": [
@@ -220,12 +224,36 @@
           "review-invalid-001"
         ],
         "takeover_refs": [],
-        "contribution_refs": [],
+        "contribution_refs": [
+          "contrib-invalid-001"
+        ],
         "export_profile": {
           "profile": "portable_evidence_manifest",
           "version": "v0.1"
         },
         "generated_at": "2026-06-16T10:25:00Z"
+      }
+    },
+    "contributions": {
+      "valid": {
+        "id": "contrib-invalid-001",
+        "work_session_id": "ws-invalid-001",
+        "contributor_refs": [
+          {
+            "worker_id": "worker-agent-invalid",
+            "actor_id": "actor-agent-invalid",
+            "contribution_role": "agent"
+          }
+        ],
+        "contributor_type": "agent",
+        "contribution_type": "execution",
+        "event_refs": [
+          "event-invalid-001"
+        ],
+        "created_at": "2026-06-16T10:15:00Z",
+        "evidence_refs": [
+          "evidence-invalid-001"
+        ]
       }
     }
   },

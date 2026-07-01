@@ -129,6 +129,7 @@ EvidenceManifest
 LearningRecord
 MemoryProposal
 SkillProposal
+OutcomeReport
 ```
 
 These names are stable for the v0.1 OpenAPI contract.
@@ -346,8 +347,10 @@ Rules:
 - Takeover creates or increments a lock epoch.
 - AgentWorker actions from an old lock epoch reject as `stale_takeover_epoch`.
 - Resume requires reconciliation refs.
-- Takeover creates or references LearningRecord, MemoryProposal, or
-  SkillProposal records when it changes future WorkSession behavior.
+- When Takeover changes future WorkSession behavior, compatible implementations
+  record that change through LearningRecord, MemoryProposal, or SkillProposal
+  operations.
+- Takeover does not silently mutate durable learning.
 - During locked and human_active states, AgentWorker autonomous continuation for
   the affected scope is paused.
 

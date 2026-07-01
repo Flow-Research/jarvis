@@ -65,7 +65,7 @@ ApprovalScope bounds Review-approved continuation
 Takeover lock epoch and reconciliation refs bound Takeover continuation
 Contribution recorded
 EvidenceManifest exported without host-private fields
-LearningRecord created
+LearningRecord operation recorded
 MemoryProposal or SkillProposal remains governed
 OutcomeReport enters post-session feedback without sealed-record mutation
 ```

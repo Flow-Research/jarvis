@@ -428,6 +428,7 @@ for these ids unless fixtures are added.
 invalid_transition
 unknown_state
 unsupported_protocol_version
+path_body_id_mismatch
 missing_objective
 policy_denied
 review_required

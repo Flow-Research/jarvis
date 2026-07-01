@@ -155,6 +155,8 @@ Expected result:
 - Worker registration, Actor registration, and OutcomeReport submission do not
   require `Jarvis-Expected-WorkSession-Revision` or
   `Jarvis-Previous-Event-Hash`
+- OpenAPI path/body identity checks reject mismatched ids as
+  `path_body_id_mismatch`
 - WorkSession-scoped and export read operations require
   `Jarvis-Protocol-Version`, host authentication, and `Jarvis-Actor-Id`, and
   do not require mutation-only idempotency, expected revision, or previous event

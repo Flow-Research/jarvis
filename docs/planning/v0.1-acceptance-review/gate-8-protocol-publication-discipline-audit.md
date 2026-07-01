@@ -118,12 +118,12 @@ Every changed file belongs to a coverage row:
 
 | Surface | Version or status | Gate 8 decision |
 | --- | --- | --- |
-| README status | `v0.1 acceptance review is active`; v0.1 is not accepted, released, or tagged | pass |
+| README status | historical Gate 8 status was active acceptance review; current release status is recorded in [v0.1.0.md](../../releases/v0.1.0.md) | pass |
 | OpenAPI artifact version | `info.version: 0.1.0` | pass |
 | OpenAPI protocol line | `x-jarvis-protocol.version: v0.1` | pass |
 | Fixtures | `protocol_version: v0.1` | pass |
 | Architecture brief | `Scope: v0.1 first 30 days` | pass |
-| Roadmap | active work is v0.1 acceptance review; future release rows are roadmap targets | pass |
+| Roadmap | historical Gate 8 roadmap used active acceptance review status and future release target rows | pass |
 | Demo | `Jarvis v0.1` walkthrough with non-normative boundary | pass |
 | Acceptance decision | historical placeholder before final acceptance decision record | pass |
 
@@ -131,17 +131,17 @@ Every changed file belongs to a coverage row:
 
 | Item | Current state | Classification | Reason |
 | --- | --- | --- | --- |
-| CHANGELOG | absent | next-phase deferral | v0.1 is not tagged. Release notes before tag cover the first public release record. |
-| CONTRIBUTING guide | absent | next-phase deferral | contribution workflow does not block protocol contract acceptance. |
-| SECURITY policy | absent | next-phase deferral | disclosure process is required before public tag. It does not change v0.1 protocol semantics. |
-| CITATION metadata | absent | next-phase deferral | citation metadata improves public research use. It does not block contract acceptance. |
+| CHANGELOG | complete after Gate 8 | completed release material | release notes and changelog now cover the first public release record. |
+| CONTRIBUTING guide | complete after Gate 8 | completed release material | contribution workflow is documented and does not change protocol semantics. |
+| SECURITY policy | complete after Gate 8 | completed release material | disclosure process is documented and does not change protocol semantics. |
+| CITATION metadata | complete after Gate 8 | completed release material | citation metadata improves public research use and does not change protocol semantics. |
 | license clarity | `LICENSE` present | not applicable for v0.1 | no missing license gap exists in v0.1 acceptance review. |
-| issue templates | absent | next-phase deferral | public triage templates belong to repository operations before wider adoption. |
-| PR template | absent | next-phase deferral | PR template improves maintainer workflow before wider adoption. |
-| CI workflows | GitHub Pages workflow present only | next-phase deferral | validation CI for protocol checks remains required before tag. |
-| governance process | absent | next-phase deferral | governance is required before certification, adopter registry, or official status claims. |
+| issue templates | complete after Gate 8 | completed release material | public triage templates are repository operations and do not change protocol semantics. |
+| PR template | complete after Gate 8 | completed release material | PR template improves maintainer workflow and does not change protocol semantics. |
+| CI workflows | validation CI complete after Gate 8 | completed release material | validation CI runs protocol checks and does not change protocol semantics. |
+| governance process | outside v0.1.0 | next-phase deferral | governance is required before certification, adopter registry, or official status claims. |
 | public website | GitHub Pages simulation present | not applicable for v0.1 | public website gap is not present for v0.1 acceptance; the demo remains non-normative explanation and not protocol proof. |
-| release notes | absent | next-phase deferral | release notes are required before tag. |
+| release notes | complete after Gate 8 | completed release material | release notes record v0.1.0 scope, limits, and validation requirements. |
 | known-limit coverage | present in acceptance review and roadmap boundaries | not applicable for v0.1 | known-limit coverage gap is not present; v0.1 excludes host implementation, runtime, adapters, governance, certification, and release claims. |
 | conformance report format | public claim structure added to conformance checklist | not applicable for v0.1 | conformance report format gap is not present; claims name protocol version, conformance surface, fixture or checklist basis, and verification date. |
 
@@ -196,7 +196,7 @@ completed release materials unless marked outside v0.1.0:
 | --- | --- | --- | --- | --- |
 | Locke | status and version consistency | no blocker; version labels and acceptance status were consistent | kept roadmap target wording because it strengthens public status clarity | no findings |
 | Popper | conformance and compatibility claim wording | compatibility proof and examples used claim-shaped language without Gate 8 claim fields | added exact public compatibility claim format and changed example conditions to validity conditions | no findings |
-| Poincare | release-readiness gaps and forbidden claims | missing pending acceptance decision record, pending reviewer/command placeholders, and invalid gap-log classifications | added pending decision record, replaced placeholders, and used only allowed gap classifications | no findings |
+| Poincare | release-readiness gaps and forbidden claims | pre-finalization acceptance record, reviewer evidence, command evidence, and gap-log classifications needed completion | completed decision record, replaced placeholders, and recorded current release-material status | no findings |
 | Faraday | prose, OpenAPI, fixture, and extension consistency | unresolved audit evidence, missing optional negotiation headers in OpenAPI, and overclaimed fixture-backed extension proof | added optional negotiation header parameters to OpenAPI and checker, completed evidence rows, and narrowed extension proof wording to checklist/OpenAPI-backed coverage | no findings |
 
 ## Command Evidence

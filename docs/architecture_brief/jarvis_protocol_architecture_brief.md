@@ -11,7 +11,7 @@ evidence-backed, portable human-agent work that improves across WorkSessions.
 
 Jarvis is a protocol. Hosts own implementation.
 
-<p class="meta">Scope: v0.1 first 30 days, with future interoperability context.</p>
+<p class="meta">Scope: v0.1.0 Protocol Alpha, with future interoperability context.</p>
 
 </section>
 
@@ -33,8 +33,7 @@ deployment architecture.
 
 <div class="callout">
 v0.1 locks the protocol contract, examples, conformance entry, and
-compatibility boundary. Host implementation work stays outside the v0.1 core
-until the OpenAPI contract and conformance gate are stable.
+compatibility boundary. Host implementation work stays outside the v0.1 core.
 </div>
 
 ## Architecture Principles
@@ -106,7 +105,7 @@ OpenAPI communication binding. Host implementation stays outside Jarvis.
 | --- | --- |
 | Protocol semantics | HumanWorker and AgentWorker collaboration and shared learning. |
 | Protocol objects | WorkSession, Policy, Request, Review, Takeover, Contribution, EvidenceManifest, LearningRecord, MemoryProposal, SkillProposal, and related records. |
-| Protocol operations | Create WorkSession, append event, create Request, record Review, start Takeover, record Contribution, export EvidenceManifest, submit OutcomeReport. |
+| Protocol operations | Register Worker, register Actor, create WorkSession, read WorkSession, append event, record PolicyDecision, create Request, record Review, record Takeover, record Contribution, create LearningRecord, create MemoryProposal, create SkillProposal, export EvidenceManifest, submit OutcomeReport. |
 | OpenAPI binding | HTTP paths, schemas, security scheme, header parameters, errors, examples, and conformance entry. |
 | Host implementation | UI, auth provider, storage, queue, runtime, isolation mechanism, model provider, deployment, and host workflow. |
 
@@ -219,14 +218,14 @@ semantics.
 
 <div class="page-break"></div>
 
-## v0.1 First 30 Days
+## v0.1.0 First 30 Days
 
-The first 30 days produce a usable protocol contract.
+The first 30 days produced a usable protocol contract.
 
 | Area | v0.1 Work |
 | --- | --- |
 | `components.schemas` | Encode Worker, Actor, HumanWorker, AgentWorker, WorkSession, JarvisEvent, Policy, PolicyDecision, Request, Review, Takeover, Contribution, EvidenceManifest, LearningRecord, MemoryProposal, SkillProposal, and OutcomeReport. |
-| `paths` | Encode create WorkSession, append event, record PolicyDecision, create Request, record Review, start/reconcile Takeover, record Contribution, create learning records, export EvidenceManifest, and submit OutcomeReport. |
+| `paths` | Encode register Worker, register Actor, create WorkSession, read WorkSession, append event, record PolicyDecision, create Request, record Review, record Takeover, record Contribution, create LearningRecord, create MemoryProposal, create SkillProposal, export EvidenceManifest, and submit OutcomeReport. |
 | `securitySchemes` + `parameters` | Encode `HostAuth` as the security scheme and encode ActorHeader, ProtocolVersionHeader, IdempotencyHeader, RequestTimestampHeader, RevisionHeader, and PreviousHashHeader as header parameters. |
 | Errors | Encode protocol error ids and required error envelope. |
 | Examples | Provide first examples for WorkSession, Request, Review, and EvidenceManifest export. |
@@ -273,9 +272,11 @@ append event
 record PolicyDecision
 create Request
 record Review
-start/reconcile Takeover
+record Takeover
 record Contribution
 create LearningRecord
+create MemoryProposal
+create SkillProposal
 export EvidenceManifest
 submit OutcomeReport
 ```
@@ -330,9 +331,9 @@ Minimal example:
 
 ```txt
 External task reviewer rejects submission
-  -> OutcomeReport submitted
-  -> LearningRecord created
-  -> MemoryProposal or SkillProposal proposed
+  -> governed LearningRecord exists or is created through its own operation
+  -> OutcomeReport submitted with learning_record_refs
+  -> MemoryProposal or SkillProposal proposed through governed review
 ```
 
 ### Protocol Error Entry
@@ -375,7 +376,7 @@ Jarvis.
 | Compatibility rules | Map host work into Jarvis WorkSessions and EvidenceManifest exports. | The host remains the host; Jarvis remains the protocol. |
 | External protocol bridges | Record MCP, A2A, ACP, and AG-UI participation as Jarvis evidence and contribution records. | Jarvis does not redefine those protocols. |
 | Evaluation feedback | Use OutcomeReport to carry external outcomes into governed LearningRecords. | Jarvis does not own task routing, scoring, payment, settlement, or marketplace logic. |
-| Public protocol package | Publish OpenAPI contract, examples, conformance checklist, and protocol architecture brief. | Adoption does not require a runtime owned by Jarvis. |
+| Public protocol package | Maintain the OpenAPI contract, examples, conformance checklist, and protocol architecture brief. | Adoption does not require a runtime owned by Jarvis. |
 
 ### Deferred From v0.1
 

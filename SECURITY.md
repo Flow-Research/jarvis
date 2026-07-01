@@ -33,8 +33,8 @@ Hosts own:
 
 ## Reporting Security Issues
 
-Report protocol security issues through a private maintainer channel until a
-public security advisory process exists.
+Report protocol security issues through GitHub Security Advisories:
+https://github.com/Flow-Research/jarvis/security/advisories/new.
 
 Do not open a public issue for a vulnerability that exposes credentials,
 private keys, private records, or exploitable security details.

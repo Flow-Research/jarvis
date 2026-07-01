@@ -22,9 +22,11 @@ Layer 2: Protocol objects
   OutcomeReport
 
 Layer 3: Protocol operations
-  create WorkSession, append event, create Request, record Review,
-  start Takeover, reconcile Takeover, record Contribution,
-  export EvidenceManifest, submit OutcomeReport
+  register Worker, register Actor, create WorkSession, read WorkSession,
+  append event, record PolicyDecision, create Request, record Review,
+  record Takeover, record Contribution, create LearningRecord,
+  create MemoryProposal, create SkillProposal, export EvidenceManifest,
+  submit OutcomeReport
 
 Layer 4: OpenAPI 3.1 communication binding
   HTTP paths, operations, parameters, request bodies, response bodies,
@@ -128,6 +130,16 @@ Registration does not define identity storage.
 The operations are protocol operations. They do not define how the host runs the
 agent, stores records, authenticates users, bills customers, renders UI, or
 deploys infrastructure.
+
+Path/body identity rule:
+
+```txt
+PUT /workers/{worker_id} requires body.id to equal worker_id.
+PUT /actors/{actor_id} requires body.id to equal actor_id.
+WorkSession-scoped mutations require body.work_session_id to equal
+work_session_id.
+Mismatched path and body ids reject as path_body_id_mismatch.
+```
 
 ## Security Model
 
@@ -362,11 +374,10 @@ identity provider, auth backend, session store, or account system.
 OpenAPI defines the static contract. Protocol compatibility still uses explicit
 version, capability, and extension fields.
 
-Jarvis uses:
+Jarvis v0.1 request negotiation uses:
 
 ```txt
 Jarvis-Protocol-Version
-Jarvis-Host-Capabilities
 Jarvis-Required-Capabilities
 Jarvis-Extensions
 ```
@@ -384,11 +395,15 @@ Jarvis-Protocol-Version to that version.
 Capability negotiation rules:
 
 ```txt
-Jarvis-Host-Capabilities declares supported optional capabilities.
-Jarvis-Required-Capabilities declares capabilities required by the caller.
+Operations that list Jarvis-Required-Capabilities MAY accept that header.
+Operations that list Jarvis-Extensions MAY accept that header.
 Unsupported required capability rejects as unsupported_capability.
 Unknown optional capability is ignored unless it changes a core field meaning.
 ```
+
+Every protocol response declares `Jarvis-Protocol-Version`.
+Protocol responses that expose host-declared optional capabilities declare
+`Jarvis-Host-Capabilities`.
 
 Extension rules:
 
