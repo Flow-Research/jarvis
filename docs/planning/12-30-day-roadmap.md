@@ -1,9 +1,15 @@
 # 30-Day Roadmap
 
-This roadmap turns Jarvis from design into a credible protocol proof.
+Status: complete.
+
+This is a historical v0.1 planning record. Current normative protocol rules
+live in [docs/protocol](../protocol), [docs/openapi](../openapi), and
+[docs/conformance](../conformance).
+
+This roadmap turned Jarvis from design into a credible protocol proof.
 
 Jarvis is the human-agent collaboration and learning-loop protocol. The first
-30-day proof shows that existing human-agent work maps into Jarvis protocol
+30-day proof showed that existing human-agent work maps into Jarvis protocol
 records without moving host implementation into Jarvis.
 
 ## Thesis
@@ -139,7 +145,8 @@ OpenAPI contract must answer:
 - how blocked action creates Request
 - how HumanWorker response records Review or Takeover
 - how Contribution and EvidenceManifest records are exported
-- how OutcomeReport feeds post-session learning
+- how OutcomeReport references governed LearningRecord records through
+  `learning_record_refs`
 
 Done when:
 

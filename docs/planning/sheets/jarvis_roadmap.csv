@@ -1,6 +1,6 @@
 Jarvis Roadmap
 Definition,"Jarvis is the human-agent collaboration and learning-loop protocol. It defines Worker, Actor, HumanWorker, AgentWorker, WorkSession, JarvisEvent, Policy, PolicyDecision, Request, Review, Takeover, Contribution, EvidenceManifest, LearningRecord, MemoryProposal, SkillProposal, and OutcomeReport so existing agents and host applications collaborate with humans without replacing their runtimes."
-Near-term priority,"Near-term priority: make Jarvis OpenAPI-ready: protocol lock, OpenAPI 3.1 communication binding, version and capability negotiation, zero-trust security model, portable export, and conformance entry fixtures. Compatible example starts only after the protocol contract and conformance entry rules are stable. Keep scope narrow: protocol records first, OpenAPI contract second, conformance third, compatibility mapping fourth, compatible example last."
+Near-term priority,"Near-term priority: maintain the v0.1.0 Protocol Alpha contract and define next-phase protocol targets after acceptance review. Keep scope narrow: protocol records first, OpenAPI contract second, conformance third, compatibility mapping fourth, compatible example last."
 
 Week,Date range,Primary goal,Protocol lock + research,OpenAPI + conformance,Compatibility + interoperability,Compatible example,Done when
 Now,Jun 2-5,Turn Jarvis into an implementation-ready protocol lock.,"- freeze v0.1 protocol lock
@@ -51,7 +51,7 @@ W3,Jun 22-26,Prove Jarvis with conformance fixtures and protocol compatibility m
 - human response -> Review or Takeover","- prepare compatible examples after the conformance gate
 - define host-private fields that stay out of export
 - update simulation narrative if needed","Two compatible implementation shapes produce valid Jarvis records for the same collaboration loop without sharing runtime, UI, storage, or execution stack."
-W4,Jun 29-Jul 3,Freeze v0.1 alpha and prepare compatible-example review.,"- close protocol lock gaps
+W4,Jun 29-Jul 3,Close v0.1.0 Protocol Alpha and prepare compatible-example review.,"- close protocol lock gaps
 - publish compatibility notes
 - summarize decisions and non-goals
 - prepare v0.2 evidence/learning backlog","- freeze v0.1 OpenAPI contract
@@ -63,7 +63,7 @@ W4,Jun 29-Jul 3,Freeze v0.1 alpha and prepare compatible-example review.,"- clos
 - identify next two compatibility targets","- publish protocol proof walkthrough URL
 - package compatible-example readiness notes
 - prepare team walkthrough
-- collect review notes into next-cycle issues","Jarvis has a v0.1 alpha package of protocol docs, OpenAPI contract, examples, conformance fixtures, compatible-example readiness, and one existing-agent compatibility mapping."
+- collect review notes into next-cycle issues","Jarvis has a v0.1.0 Protocol Alpha package of protocol docs, OpenAPI contract, examples, conformance fixtures, compatible-example readiness, and one existing-agent compatibility mapping."
 Later,After v0.1,Expand only from conformance results and compatible-example evidence.,"- harden object model from real compatible implementations
 - add migration rules
 - add public implementation checklist
@@ -73,7 +73,8 @@ Later,After v0.1,Expand only from conformance results and compatible-example evi
 - memory and skill compatibility rules","- more agent compatibility mappings
 - MCP/A2A/AG-UI integration notes
 - SDK-neutral compatibility examples
-- compatibility badges","- additional compatible examples
+- compatibility evidence labels and claim-format examples
+- no certification or adopter badge","- additional compatible examples
 - public proof refresh
 - team onboarding sheet
 - protocol review sessions","Expansion is justified by valid exports, conformance failures, compatibility pain, and compatible-example evidence, not by unproven feature expansion."

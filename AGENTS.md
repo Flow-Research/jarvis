@@ -109,7 +109,7 @@ The next WorkSession carries confirmed learning forward.
 
 ## Protocol Shape
 
-Jarvis v0.1 has five layers:
+Jarvis v0.1 has four protocol layers and one explicit outside-Jarvis boundary:
 
 ```txt
 Layer 1: Protocol semantics
@@ -122,9 +122,11 @@ Layer 2: Protocol objects
   OutcomeReport
 
 Layer 3: Protocol operations
-  create WorkSession, append event, create Request, record Review,
-  start Takeover, reconcile Takeover, record Contribution,
-  export EvidenceManifest, submit OutcomeReport
+  register Worker, register Actor, create WorkSession, read WorkSession,
+  append event, record PolicyDecision, create Request, record Review,
+  record Takeover, record Contribution, create LearningRecord,
+  create MemoryProposal, create SkillProposal, export EvidenceManifest,
+  submit OutcomeReport
 
 Layer 4: OpenAPI 3.1 communication binding
   HTTP paths, operations, parameters, request bodies, response bodies,
@@ -224,27 +226,24 @@ and shared learning.
 
 ## Current Execution Focus
 
-The active focus is post-acceptance release preparation and next-phase protocol
-specification.
+The active focus is next-phase protocol specification after the v0.1.0 release.
 
 Protocol lock is complete. Week 2 OpenAPI contract and conformance entry work
 is complete. Week 3 protocol compatibility mapping and conformance fixtures
 are complete. Week 4 compatible examples and public story are complete.
-The v0.1 acceptance review is complete. Jarvis v0.1 is accepted as Protocol
-Alpha. This does not release or tag v0.1, certify Jarvis or any
-implementation, designate an official host, claim production adoption,
-establish foundation governance, or create long-term support.
+The v0.1 acceptance review is complete. Jarvis v0.1.0 is released as Protocol
+Alpha.
+
+The release does not certify Jarvis or any implementation, designate an
+official host, claim production adoption, establish foundation governance, or
+create long-term support.
 
 Work on:
 
-- release notes required before tag
-- release-readiness gap closure
-- protocol implementation helper boundary after acceptance
-- protocol-publication discipline after acceptance
+- next-phase protocol specification
 - additional conformance evidence only when it preserves the protocol boundary
-- next-phase specification
 
-The v0.1 acceptance review starts from
+The v0.1 acceptance review record starts from
 [docs/planning/v0.1-acceptance-review/README.md](./docs/planning/v0.1-acceptance-review/README.md)
 and
 [docs/planning/v0.1-acceptance-review/acceptance-spec.md](./docs/planning/v0.1-acceptance-review/acceptance-spec.md).
@@ -255,7 +254,7 @@ Do not add or own adapters, wrappers, host behavior, or integration code in this
 repo.
 Do not add host-specific assumptions to protocol records.
 Do not reopen locked protocol decisions unless a concrete contradiction blocks
-post-acceptance release preparation or next-phase specification.
+v0.1.0 release integrity or next-phase specification.
 
 ## Wording Rules
 

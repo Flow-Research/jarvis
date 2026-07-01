@@ -39,7 +39,8 @@ how AgentWorker actions record PolicyDecision
 how blocked action creates Request
 how HumanWorker response records Review or Takeover
 how Contribution and EvidenceManifest records are exported
-how OutcomeReport feeds post-session learning
+how OutcomeReport references governed LearningRecord records through
+learning_record_refs
 ```
 
 ## Week 3 Result

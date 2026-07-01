@@ -4,6 +4,9 @@ Status: pass.
 
 Review date: 2026-06-30.
 
+This is a historical Gate 2 audit record. It preserves acceptance evidence from
+that gate and is not current normative protocol text.
+
 Branch: `codex/v0.1-gate-2-openapi-binding-audit`.
 
 Base commit audited: `35fd13f`.

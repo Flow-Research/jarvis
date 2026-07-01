@@ -43,71 +43,28 @@ A host owns these choices:
 
 None of these choices belong to Jarvis.
 
-## Minimal Protocol Flow
+## Minimal Protocol Operation Sequence
 
-```ts
-const human = createHumanWorker({
-  role: "reviewer",
-  policy_authority: true,
-  review_authority: true
-});
+A compatible host proves the minimal flow through OpenAPI protocol operations:
 
-const agent = createAgentWorker({
-  role: "executor",
-  autonomy_level: "bounded_execute"
-});
-
-const work = startWorkSession({
-  objective: "Inspect this project and propose the next implementation step",
-  human_worker_id: human.worker_id,
-  agent_worker_id: agent.worker_id,
-  policy_id: "bounded_policy"
-});
-
-recordEvent(work.id, {
-  actor_id: human.actor_id,
-  type: "objective_recorded"
-});
-
-const decision = evaluatePolicy({
-  work_session_id: work.id,
-  actor_id: agent.actor_id,
-  requested_action: "network_fetch:example.com"
-});
-
-if (decision.result === "denied") {
-  const request = createRequest({
-    work_session_id: work.id,
-    requester_worker_id: agent.worker_id,
-    requester_actor_id: agent.actor_id,
-    reason: "missing_permission",
-    requested_action: "network_fetch:example.com",
-    risk_class: "network_fetch"
-  });
-
-  recordReview({
-    work_session_id: work.id,
-    reviewer_worker_id: human.worker_id,
-    reviewer_actor_id: human.actor_id,
-    target_ref: request.id,
-    decision: "narrow",
-    required_changes: "Allow one host for this WorkSession only."
-  });
-}
-
-recordContribution({
-  work_session_id: work.id,
-  contributor_worker_id: agent.worker_id,
-  contributor_actor_id: agent.actor_id,
-  contributor_type: "agent",
-  contribution_type: "draft_artifact"
-});
-
-exportEvidenceManifest(work.id);
+```txt
+1. registerWorker and registerActor with non-WorkSession mutation headers.
+2. createWorkSession with expected revision 0 and
+   Jarvis-Previous-Event-Hash set to hash:protocol-genesis.
+3. recordPolicyDecision before accepted AgentWorker protocol state.
+4. appendJarvisEvent only after Actor authority, expected revision, and
+   previous event hash pass.
+5. createRequest for denied, blocked, or review-required scope.
+6. recordReview or recordTakeover to resolve the Request.
+7. recordContribution with attributable contributor refs.
+8. exportEvidenceManifest only from a valid terminal WorkSession state.
+9. createLearningRecord, MemoryProposal, or SkillProposal only through
+   governed protocol records.
+10. submitOutcomeReport as a non-WorkSession mutation.
 ```
 
-This is protocol shape only. It does not prescribe how functions are hosted,
-where records are stored, or how the agent executes.
+This sequence is protocol shape only. Hosts own functions, storage, execution,
+identity, UI, and deployment.
 
 ## Export Boundary
 

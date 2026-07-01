@@ -25,18 +25,11 @@ stable.
 - [15-openapi-communication-binding.md](./protocol/15-openapi-communication-binding.md)
 - [16-positioning-adoption-lock.md](./protocol/16-positioning-adoption-lock.md)
 
-## Planning
+## Planning Archive
 
-Planning docs and sheets track execution.
+Planning docs record historical v0.1 release execution and are non-normative.
 
-- [ROADMAP.md](./planning/ROADMAP.md)
-- [12-30-day-roadmap.md](./planning/12-30-day-roadmap.md)
-- [week-1/README.md](./planning/week-1/README.md)
-- [week-2/README.md](./planning/week-2/README.md)
-- [week-3/README.md](./planning/week-3/README.md)
-- [week-3/closeout.md](./planning/week-3/closeout.md)
-- [sheets/jarvis_roadmap.csv](./planning/sheets/jarvis_roadmap.csv)
-- [sheets/jarvis_roadmap.xlsx](./planning/sheets/jarvis_roadmap.xlsx)
+- [v0.1-acceptance-review/README.md](./planning/v0.1-acceptance-review/README.md)
 
 ## Conformance
 
@@ -67,7 +60,8 @@ The architecture brief packages the protocol architecture into a shareable PDF.
 
 ## Releases
 
-Release docs record protocol scope, validation requirements, and tag readiness.
+Release docs record protocol scope, validation requirements, and release
+status.
 
 - [releases/README.md](./releases/README.md)
 - [releases/v0.1.0.md](./releases/v0.1.0.md)

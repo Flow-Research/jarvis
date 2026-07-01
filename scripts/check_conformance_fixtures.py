@@ -285,6 +285,7 @@ def openapi_operations(openapi: dict[str, Any]) -> dict[str, dict[str, Any]]:
                 "parameters": operation_parameter_names(openapi, operation),
                 "has_request_body": "requestBody" in operation,
                 "statuses": set(responses) if isinstance(responses, dict) else set(),
+                "actor_body_match": operation.get("x-jarvis-actor-body-id-match"),
             }
     return operations
 
@@ -814,6 +815,21 @@ def validate_operation(
             raise FixtureError(
                 f"{rel(path)}: createWorkSession work_session_id must match body id"
             )
+    actor_body_match = operation_info.get("actor_body_match")
+    if actor_body_match is not None and expected_error_id != "missing_actor":
+        if not isinstance(actor_body_match, dict):
+            raise FixtureError(
+                f"{rel(OPENAPI_PATH)}: {operation_id} actor/body match MUST be an object"
+            )
+        body_field = actor_body_match.get("body_field")
+        if not isinstance(body_field, str):
+            raise FixtureError(
+                f"{rel(OPENAPI_PATH)}: {operation_id} actor/body match missing body_field"
+            )
+        if not isinstance(body, dict) or body.get(body_field) != actor_header:
+            raise FixtureError(
+                f"{rel(path)}: {operation_id} body {body_field} mismatches Jarvis-Actor-Id"
+            )
 
     validate_work_session_header_binding(
         path,
@@ -875,6 +891,12 @@ def validate_operation(
         ):
             raise FixtureError(
                 f"{rel(path)}: {operation_id} expected_event_ref work_session_id mismatch"
+            )
+        if operation_id == "createWorkSession" and produced.get("type") != (
+            "work_session.created"
+        ):
+            raise FixtureError(
+                f"{rel(path)}: createWorkSession expected_event_ref MUST be work_session.created"
             )
         expected_revision = headers.get("Jarvis-Expected-WorkSession-Revision")
         if isinstance(expected_revision, int) and produced.get("sequence") != (
@@ -941,6 +963,13 @@ def validate_work_session_header_binding(
         ):
             raise FixtureError(
                 f"{rel(path)}: createWorkSession previous hash MUST be protocol genesis"
+            )
+        if isinstance(body, dict) and (
+            body.get("revision") != 0
+            or body.get("last_event_hash") != PROTOCOL_GENESIS_HASH
+        ):
+            raise FixtureError(
+                f"{rel(path)}: createWorkSession body MUST represent genesis precondition"
             )
         return
 
@@ -1293,6 +1322,10 @@ def validate_invalid_fixture_semantics(path: Path, fixture: dict[str, Any]) -> N
             raise FixtureError(
                 f"{rel(path)}: missing_review_resolution fixture MUST use review-resolved status"
             )
+        if body.get("resolved_at") is None:
+            raise FixtureError(
+                f"{rel(path)}: missing_review_resolution fixture MUST include resolved_at"
+            )
         if body.get("resolved_by_review_id"):
             raise FixtureError(
                 f"{rel(path)}: missing_review_resolution fixture MUST omit Review resolution"
@@ -1306,6 +1339,10 @@ def validate_invalid_fixture_semantics(path: Path, fixture: dict[str, Any]) -> N
         if body.get("status") != "takeover" or body.get("resolved_by_takeover_id"):
             raise FixtureError(
                 f"{rel(path)}: missing_takeover_resolution fixture MUST omit Takeover resolution"
+            )
+        if body.get("resolved_at") is None:
+            raise FixtureError(
+                f"{rel(path)}: missing_takeover_resolution fixture MUST include resolved_at"
             )
 
     elif expected_error_id == "request_unresolved":
@@ -1388,7 +1425,7 @@ def validate_invalid_fixture_semantics(path: Path, fixture: dict[str, Any]) -> N
         active_takeovers = [
             takeover
             for takeover in all_records(records, "takeovers")
-            if takeover.get("state") == "active"
+            if takeover.get("state") == "human_active"
         ]
         actor = actor_by_id(records, operation.get("actor_id"))
         work_session_id = target_work_session_id(operation, body)
@@ -1425,7 +1462,7 @@ def validate_invalid_fixture_semantics(path: Path, fixture: dict[str, Any]) -> N
         ):
             raise FixtureError(
                 f"{rel(path)}: stale_takeover_epoch fixture MUST show AgentWorker "
-                "continuing during active Takeover"
+                "continuing during human_active Takeover"
             )
 
     elif expected_error_id == "invalid_evidence_export_state":
@@ -1482,13 +1519,17 @@ def validate_invalid_fixture_semantics(path: Path, fixture: dict[str, Any]) -> N
             raise FixtureError(
                 f"{rel(path)}: silent_memory_mutation fixture MUST silently accept memory"
             )
+        if not body.get("review_refs"):
+            raise FixtureError(
+                f"{rel(path)}: silent_memory_mutation fixture MUST isolate review_required"
+            )
 
     elif expected_error_id == "silent_skill_activation":
         if not isinstance(body, dict):
             raise FixtureError(
                 f"{rel(path)}: silent_skill_activation fixture MUST submit SkillProposal"
             )
-        if body.get("status") != "active" or body.get("review_refs"):
+        if body.get("status") != "accepted" or body.get("review_refs"):
             raise FixtureError(
                 f"{rel(path)}: silent_skill_activation fixture MUST activate without review"
             )
@@ -1527,7 +1568,7 @@ def validate_invalid_fixture_semantics(path: Path, fixture: dict[str, Any]) -> N
         else:
             required_grants_by_operation = {
                 "recordReview": "review:approve",
-                "startTakeover": "takeover:start",
+                "recordTakeover": "takeover:start",
                 "appendJarvisEvent": "action:execute_after_policy",
             }
             required_grant = required_grants_by_operation.get(operation.get("operation_id"))
@@ -1609,6 +1650,18 @@ def validate_event_chain(path: Path, fixture: dict[str, Any]) -> None:
         event_hash = event.get("event_hash")
         if not isinstance(event_hash, str):
             raise FixtureError(f"{rel(path)}: jarvis event {event_name} missing event_hash")
+        canonicalization = event.get("canonicalization")
+        if not isinstance(canonicalization, dict):
+            raise FixtureError(
+                f"{rel(path)}: jarvis event {event_name} missing canonicalization"
+            )
+        if (
+            canonicalization.get("serialization") != "json-c14n"
+            or canonicalization.get("hash_method") != "sha256"
+        ):
+            raise FixtureError(
+                f"{rel(path)}: jarvis event {event_name} MUST use v0.1 canonicalization"
+            )
         if event_hash in seen_hashes:
             raise FixtureError(f"{rel(path)}: duplicate event_hash {event_hash}")
         seen_hashes.add(event_hash)

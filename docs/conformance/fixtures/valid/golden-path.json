@@ -298,7 +298,7 @@
         "context_manifest_ref": "context:task-brief",
         "contribution_ledger_ref": "ledger:ws-golden-001"
       },
-      "created": {
+      "active": {
         "id": "ws-golden-001",
         "protocol_version": "v0.1",
         "created_by_actor_id": "actor-human-golden",
@@ -791,7 +791,7 @@
           "profile_ref": "canonicalization:v0.1"
         }
       },
-      "request_created": {
+      "request_event": {
         "id": "event-request-created",
         "sequence": 3,
         "type": "request.created",

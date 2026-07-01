@@ -208,8 +208,8 @@ Rules:
 
 - Learning is not only agent memory.
 - Jarvis records human learning, agent learning, and pair learning.
-- LearningRecord references source events. OutcomeReport-backed LearningRecords
-  record `outcome_report_refs` when external feedback exists. `source_event_refs`
+- LearningRecord references source events. LearningRecord records
+  `outcome_report_refs` when an OutcomeReport references it. `source_event_refs`
   continue to reference the WorkSession events that support the learning.
   OutcomeReport submission does not append a JarvisEvent to a sealed WorkSession
   event log.

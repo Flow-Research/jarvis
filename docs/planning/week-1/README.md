@@ -1,10 +1,16 @@
 # Week 1 Execution Spec
 
+Status: complete.
+
+This is a historical v0.1 planning record. Current normative protocol rules
+live in [../../protocol](../../protocol), [../../openapi](../../openapi), and
+[../../conformance](../../conformance).
+
 Week 1 locked the Jarvis protocol before Week 2 encoded the OpenAPI contract.
 
-This week does not build a host implementation, runtime features, adapters, UI, or
-demo flows. This week locks the protocol meaning, lifecycle, zero-trust
-security boundary, and positioning needed for Week 2 OpenAPI work.
+Week 1 did not build a host implementation, runtime features, adapters, UI, or
+demo flows. Week 1 locked the protocol meaning, lifecycle, zero-trust security
+boundary, and positioning needed for Week 2 OpenAPI work.
 
 ## Week 1 Goal
 

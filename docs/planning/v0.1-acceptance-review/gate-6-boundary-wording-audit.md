@@ -4,6 +4,9 @@ Status: pass.
 
 Review date: 2026-06-30.
 
+This is a historical Gate 6 audit record. It preserves acceptance evidence from
+that gate and is not current normative protocol text.
+
 Branch: `codex/v0.1-gate-6-boundary-wording-audit`.
 
 Base commit audited: `e4cbcad`.

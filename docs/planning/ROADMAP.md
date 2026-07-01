@@ -3,9 +3,8 @@
 Jarvis is the open-source human-agent collaboration and learning-loop
 compatibility protocol.
 
-The roadmap turns the protocol into a locked OpenAPI 3.1 contract, conformance
-tests, examples, and documentation. It does not create an execution
-stack.
+This roadmap records the completed v0.1.0 Protocol Alpha work and defines
+next-phase protocol targets. It does not create an execution stack.
 
 For the immediate execution plan, see
 [12-30-day-roadmap.md](./12-30-day-roadmap.md).
@@ -71,6 +70,7 @@ Jarvis owns:
 - LearningRecord
 - MemoryProposal
 - SkillProposal
+- OutcomeReport
 - protocol event envelope
 - protocol export format
 - OpenAPI 3.1 communication binding
@@ -224,8 +224,8 @@ Output:
 - OpenAPI 3.1 document
 - component schemas for Worker, Actor, HumanWorker, AgentWorker, WorkSession,
   JarvisEvent, Policy, PolicyDecision, Request, Review, Takeover,
-  Contribution, EvidenceManifest, LearningRecord, MemoryProposal, and
-  SkillProposal
+  Contribution, EvidenceManifest, LearningRecord, MemoryProposal,
+  SkillProposal, and OutcomeReport
 - paths for core protocol operations
 - security scheme and required protocol headers
 - protocol error responses

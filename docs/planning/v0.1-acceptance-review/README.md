@@ -114,9 +114,12 @@ next-phase entry notes
 ```
 
 The acceptance decision record marks Jarvis v0.1 accepted as Protocol Alpha.
-This does not release or tag v0.1, certify Jarvis or any implementation,
-designate an official host, claim production adoption, establish foundation
-governance, or create long-term support.
+The acceptance decision itself did not release or tag v0.1. The v0.1.0 release
+status is recorded in [v0.1.0.md](../../releases/v0.1.0.md).
+
+The release does not certify Jarvis or any implementation, designate an
+official host, claim production adoption, establish foundation governance, or
+create long-term support.
 
 The review rejects any attempt to turn Jarvis into an agent framework, runtime,
 host product, adapter layer, tool executor, UI surface, auth system, storage

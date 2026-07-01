@@ -1,11 +1,15 @@
 # Week 4: Compatible Examples And Public Story
 
-Week 4 turns the locked protocol, OpenAPI contract, conformance fixtures, and
-existing-agent proof plan into public compatibility artifacts.
-
 Status: complete.
 
-Week 4 does not build adapters, wrappers, host runtimes, UI, model calls, tool
+This is a historical v0.1 planning record. Current normative protocol rules
+live in [../../protocol](../../protocol), [../../openapi](../../openapi), and
+[../../conformance](../../conformance).
+
+Week 4 turned the locked protocol, OpenAPI contract, conformance fixtures, and
+existing-agent proof plan into public compatibility artifacts.
+
+Week 4 did not build adapters, wrappers, host runtimes, UI, model calls, tool
 execution, storage, auth, billing, scoring, payment, deployment behavior, or
 SDK implementation.
 

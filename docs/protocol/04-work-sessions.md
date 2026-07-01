@@ -59,7 +59,6 @@ host execution objects.
 WorkSession states are:
 
 ```txt
-created
 active
 waiting_on_human
 takeover
@@ -73,12 +72,9 @@ closed
 State meanings:
 
 ```txt
-created
-  WorkSession exists with HumanWorker, AgentWorker, objective, Policy, initial
-  revision, and initial event hash.
-
 active
-  HumanWorker and AgentWorker continue work inside Policy.
+  WorkSession exists with HumanWorker, AgentWorker, objective, Policy, initial
+  accepted revision, initial event hash, and active collaboration state.
 
 waiting_on_human
   One or more declared scopes are blocked on HumanWorker Review, context,
@@ -106,18 +102,15 @@ closed
   accepted except idempotent replay of the same accepted request.
 ```
 
-`created`, `active`, `waiting_on_human`, `takeover`, and `reconciling` are
-mutable states. `completed`, `failed`, and `cancelled` are terminal outcome
-states. `closed` is the sealed archival state.
+`active`, `waiting_on_human`, `takeover`, and `reconciling` are mutable states.
+`completed`, `failed`, and `cancelled` are terminal outcome states. `closed` is
+the sealed archival state.
 
 ## Transition Table
 
 Compatible implementations MUST enforce this state machine:
 
 ```txt
-created -> active
-created -> cancelled
-
 active -> waiting_on_human
 active -> takeover
 active -> completed
@@ -150,9 +143,6 @@ cancelled -> closed
 Rejected transitions include:
 
 ```txt
-created -> completed
-created -> failed
-created -> closed
 active -> closed
 waiting_on_human -> closed
 takeover -> active
@@ -168,7 +158,6 @@ failed -> cancelled
 cancelled -> active
 cancelled -> completed
 cancelled -> failed
-closed -> created
 closed -> active
 closed -> waiting_on_human
 closed -> takeover
@@ -185,47 +174,44 @@ Any transition not listed as allowed is rejected.
 Every allowed WorkSession state transition uses one canonical event type:
 
 ```txt
-genesis -> created                 work_session_started
+genesis -> active                  work_session.created
 
-created -> active                 work_session_activated
-created -> cancelled              work_session_cancelled
+active -> waiting_on_human         work_session.waiting_on_human
+active -> takeover                 work_session.takeover
+active -> completed                work_session.completed
+active -> failed                   work_session.failed
+active -> cancelled                work_session.cancelled
 
-active -> waiting_on_human         work_session_waiting_on_human
-active -> takeover                 work_session_takeover
-active -> completed                work_session_completed
-active -> failed                   work_session_failed
-active -> cancelled                work_session_cancelled
+waiting_on_human -> active         work_session.activated
+waiting_on_human -> takeover       work_session.takeover
+waiting_on_human -> completed      work_session.completed
+waiting_on_human -> failed         work_session.failed
+waiting_on_human -> cancelled      work_session.cancelled
 
-waiting_on_human -> active         work_session_activated
-waiting_on_human -> takeover       work_session_takeover
-waiting_on_human -> completed      work_session_completed
-waiting_on_human -> failed         work_session_failed
-waiting_on_human -> cancelled      work_session_cancelled
+takeover -> reconciling            work_session.reconciling
+takeover -> failed                 work_session.failed
+takeover -> cancelled              work_session.cancelled
 
-takeover -> reconciling            work_session_reconciling
-takeover -> failed                 work_session_failed
-takeover -> cancelled              work_session_cancelled
+reconciling -> active              work_session.activated
+reconciling -> waiting_on_human    work_session.waiting_on_human
+reconciling -> completed           work_session.completed
+reconciling -> failed              work_session.failed
+reconciling -> cancelled           work_session.cancelled
 
-reconciling -> active              work_session_activated
-reconciling -> waiting_on_human    work_session_waiting_on_human
-reconciling -> completed           work_session_completed
-reconciling -> failed              work_session_failed
-reconciling -> cancelled           work_session_cancelled
-
-completed -> closed                work_session_closed
-failed -> closed                   work_session_closed
-cancelled -> closed                work_session_closed
+completed -> closed                work_session.closed
+failed -> closed                   work_session.closed
+cancelled -> closed                work_session.closed
 ```
 
 Takeover object events remain separate:
 
 ```txt
-human_takeover_started
-human_takeover_finished
+takeover.started
+takeover.finished
 ```
 
-`work_session_takeover` records the WorkSession state transition.
-`human_takeover_started` records the Takeover object and declared
+`work_session.takeover` records the WorkSession state transition.
+`takeover.started` records the Takeover object and declared
 human-controlled scope. Both records reference the same takeover id.
 
 ## Events
@@ -233,32 +219,32 @@ human-controlled scope. Both records reference the same takeover id.
 Important transitions and work records are evented:
 
 ```txt
-work_session_started
-work_session_activated
-work_session_waiting_on_human
-work_session_takeover
-work_session_reconciling
-work_session_completed
-work_session_failed
-work_session_cancelled
-work_session_closed
-message_added
-plan_proposed
-tool_requested
-tool_allowed
-tool_denied
-tool_executed
-artifact_created
-request_created
-request_resolved
-request_closed
-human_takeover_started
-human_takeover_finished
-review_added
-memory_proposed
-memory_confirmed
-skill_proposed
-skill_updated
+work_session.created
+work_session.activated
+work_session.waiting_on_human
+work_session.takeover
+work_session.reconciling
+work_session.completed
+work_session.failed
+work_session.cancelled
+work_session.closed
+message.added
+plan.proposed
+tool.requested
+tool.allowed
+tool.denied
+tool.executed
+artifact.created
+request.created
+request.resolved
+request.closed
+takeover.started
+takeover.finished
+review.recorded
+memory.proposed
+memory.confirmed
+skill.proposed
+skill.updated
 ```
 
 The event log records the protocol basis for observability, debugging,
@@ -284,7 +270,7 @@ State-change events include `blocked_scope_resolution_refs` whenever the
 transition leaves `waiting_on_human`. State-change events include
 `reconciliation_refs` only when the transition leaves `reconciling`.
 
-`work_session_started` creates the initial `created` state. WorkSession creation
+`work_session.created` creates the initial `active` state. WorkSession creation
 uses expected revision `0` and `Jarvis-Previous-Event-Hash` equal to the
 protocol genesis hash. The start event sets `JarvisEvent.previous_hash` to the
 same genesis hash. The accepted start event sets `revision` to `1` and
@@ -466,7 +452,8 @@ Review
   reviewer_worker_id
   reviewer_actor_id
   target event/contribution/artifact
-  decision: approve | deny | narrow | correct | takeover | needs_revision
+  decision: answer | approve | deny | narrow | correct | takeover |
+    needs_revision
   notes
   resulting actions
 ```
@@ -507,9 +494,13 @@ EvidenceItem
   policy_decision_id
   mime/type
   byte length
-  storage uri
+  artifact_ref
+  portable opaque ref
   redaction lineage
 ```
+
+Host storage locations stay host-owned unless represented through a portable,
+non-secret opaque ref.
 
 Redacted exports are derived artifacts. They never replace raw immutable
 evidence inside the WorkSession record.

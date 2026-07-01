@@ -49,10 +49,14 @@ records the human-agent collaboration contract around that work.
 A public compatibility claim using this example MUST use this format:
 
 ```txt
-Implementation <name> supports Jarvis v0.1 compatibility, verified against the
-existing-agent compatibility example, existing-agent proof plan, public
-conformance checklist, and v0.1 golden-path and failure-mode fixtures on
-<verification-date>.
+Implementation: <name> <implementation-version>
+Protocol compatibility: Jarvis v0.1
+Conformance surface: existing-agent compatibility example, existing-agent proof
+plan, public conformance checklist, and v0.1 golden-path and failure-mode
+fixtures
+Verification date: <verification-date>
+Verifier: <verifier-or-self-attested-status>
+Evidence: <evidence-ref>
 ```
 
 The existing agent remains native. Jarvis records how the HumanWorker and
@@ -147,12 +151,12 @@ The compatible host creates these records:
 ```txt
 WorkSession.id = work-session-existing-agent-001
 WorkSession.objective = Produce an evidence-backed draft with reviewed external-source use.
-WorkSession.human_worker_id = human-worker-existing-agent
-WorkSession.agent_worker_id = agent-worker-native-agent
+WorkSession.human_worker_id = worker-human-existing-agent
+WorkSession.agent_worker_id = worker-native-agent
 WorkSession.policy_id = policy-existing-agent-001
 WorkSession.status = active
-WorkSession.revision = 0
-WorkSession.last_event_hash = hash:genesis
+WorkSession.revision = 1
+WorkSession.last_event_hash = hash:event-worksession-created
 
 Policy.id = policy-existing-agent-001
 Policy.allowed_actions = inspect_local_context, summarize_local_evidence, draft_artifact
@@ -238,13 +242,13 @@ Review.created_at = 2026-06-12T18:36:00Z
 Review.approval_scope.request_id = request-native-source-001
 Review.approval_scope.review_id = review-native-source-001
 Review.approval_scope.policy_decision_id = policy-decision-native-source-001
-Review.approval_scope.request_revision = 1
-Review.approval_scope.request_event_hash = hash:event-request-native-source
+Review.approval_scope.request_revision = 5
+Review.approval_scope.request_event_hash = hash:event-request-native-source-001
 Review.approval_scope.normalized_action_hash = hash:action-fetch-native-source
 Review.approval_scope.approved_action.action = fetch_external_source
 Review.approval_scope.allowed_scope.scope_ref = scope:approved-source-family
 Review.approval_scope.denied_scope.scope_ref = scope:credentials-and-external-sends
-Review.approval_scope.expires_at = 2026-06-12T18:36:00Z
+Review.approval_scope.expires_at = 2026-06-12T19:06:00Z
 Review.approval_scope.max_uses = 1
 Review.approval_scope.applies_to_work_session_id = work-session-existing-agent-001
 Review.approval_scope.applies_to_actor_id = actor-native-agent
@@ -328,9 +332,9 @@ JarvisEvent.id = event-takeover-native-final-001
 JarvisEvent.object_ref = takeover-native-final-001
 JarvisEvent.event_hash = hash:event-takeover-native-final
 
-JarvisEvent.id = event-evidence-native-export-001
-JarvisEvent.object_ref = evidence-manifest-native-agent-001
-JarvisEvent.event_hash = hash:event-evidence-native-export
+JarvisEvent.id = event-evidence-native-captured-001
+JarvisEvent.object_ref = evidence-item-native-approved-source-001
+JarvisEvent.event_hash = hash:event-evidence-native-captured
 
 JarvisEvent.id = event-native-final-001
 JarvisEvent.object_ref = contribution-native-agent-001
@@ -346,7 +350,7 @@ Contribution.contributor_refs[1].actor_id = actor-native-agent
 Contribution.contributor_refs[1].contribution_role = agent
 Contribution.contributor_type = shared
 Contribution.contribution_type = artifact
-Contribution.event_refs = event-review-native-source-001, event-takeover-native-final-001, event-evidence-native-export-001, event-native-final-001
+Contribution.event_refs = event-review-native-source-001, event-takeover-native-final-001, event-evidence-native-captured-001, event-native-final-001
 ```
 
 Both Review and Takeover branches export one portable proof:
@@ -393,9 +397,9 @@ LearningRecord.id = learning-record-native-agent-001
 LearningRecord.work_session_id = work-session-existing-agent-001
 LearningRecord.created_by_actor_id = actor-human-existing-agent
 LearningRecord.subject_type = pair
-LearningRecord.subject_ref = ref:pair:human-worker-existing-agent:agent-worker-native-agent
+LearningRecord.subject_ref = ref:pair:worker-human-existing-agent:worker-native-agent
 LearningRecord.lesson_type = native_agent_bounded_source_review
-LearningRecord.source_event_refs = event-review-native-source-001, event-takeover-native-final-001, event-evidence-native-export-001
+LearningRecord.source_event_refs = event-review-native-source-001, event-takeover-native-final-001, event-evidence-native-captured-001
 LearningRecord.review_state = accepted
 LearningRecord.scope = scope:native-agent-source-review
 LearningRecord.created_at = 2026-06-12T18:53:00Z

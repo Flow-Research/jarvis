@@ -97,7 +97,7 @@ Required proof:
 - public checklist covers EvidenceManifest export completeness and capture
   timing
 - public checklist covers MemoryProposal and SkillProposal governance
-- public checklist covers OutcomeReport learning hook
+- public checklist covers OutcomeReport references to governed LearningRecords
 - public checklist covers protocol error envelope
 - public checklist covers capability negotiation and extension rejection
 
@@ -254,7 +254,7 @@ accepted gates
 resolved blockers
 future-work deferrals outside acceptance gates
 remaining risks
-release notes required before tag
+release notes recorded for tag
 next-phase entry scope
 ```
 

@@ -1,5 +1,11 @@
 # Week 2: OpenAPI Contract And Conformance Entry
 
+Status: complete.
+
+This is a historical v0.1 planning record. Current normative protocol rules
+live in [../../protocol](../../protocol), [../../openapi](../../openapi), and
+[../../conformance](../../conformance).
+
 Week 2 turned the locked protocol into the first OpenAPI 3.1 contract shape and
 conformance entry.
 
@@ -37,7 +43,8 @@ how AgentWorker actions record PolicyDecision
 how blocked action creates Request
 how HumanWorker response records Review or Takeover
 how Contribution and EvidenceManifest records are exported
-how OutcomeReport feeds post-session learning
+how OutcomeReport references governed LearningRecord records through
+learning_record_refs
 ```
 
 The contract remains protocol-only. Hosts own implementation.

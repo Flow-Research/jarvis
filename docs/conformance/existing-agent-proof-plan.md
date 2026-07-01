@@ -66,9 +66,13 @@ export payloads.
 A public compatibility claim for this proof MUST use this format:
 
 ```txt
-Implementation <name> supports Jarvis v0.1 compatibility, verified against the
-existing-agent proof plan, public conformance checklist, and v0.1 golden-path
-and failure-mode fixtures on <verification-date>.
+Implementation: <name> <implementation-version>
+Protocol compatibility: Jarvis v0.1
+Conformance surface: existing-agent proof plan, public conformance checklist,
+and v0.1 golden-path and failure-mode fixtures
+Verification date: <verification-date>
+Verifier: <verifier-or-self-attested-status>
+Evidence: <evidence-ref>
 ```
 
 The proof behind that claim is:

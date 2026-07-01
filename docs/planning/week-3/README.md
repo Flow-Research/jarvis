@@ -1,9 +1,13 @@
 # Week 3: Protocol Compatibility Mapping And Conformance Fixtures
 
+Status: complete.
+
+This is a historical v0.1 planning record. Current normative protocol rules
+live in [../../protocol](../../protocol), [../../openapi](../../openapi), and
+[../../conformance](../../conformance).
+
 Week 3 proved the Week 2 OpenAPI contract through protocol compatibility
 mapping and conformance fixtures.
-
-Status: complete.
 
 Week 3 does not build adapters, wrappers, host runtimes, UI, model calls, tool
 execution, storage, auth, billing, scoring, payment, or deployment behavior.

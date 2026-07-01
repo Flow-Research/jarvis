@@ -44,6 +44,10 @@ paths:
         Jarvis-Request-Timestamp. This non-WorkSession mutation does not
         require WorkSession revision or previous event hash.
       x-jarvis-operation-class: non_worksession_mutation
+      x-jarvis-path-body-id-match:
+        path_parameter: worker_id
+        body_field: id
+        rejection_id: path_body_id_mismatch
       tags:
         - Workers
       security:
@@ -73,6 +77,10 @@ paths:
         Jarvis-Request-Timestamp. This non-WorkSession mutation does not
         require WorkSession revision or previous event hash.
       x-jarvis-operation-class: non_worksession_mutation
+      x-jarvis-path-body-id-match:
+        path_parameter: actor_id
+        body_field: id
+        rejection_id: path_body_id_mismatch
       tags:
         - Workers
       security:
@@ -100,8 +108,20 @@ paths:
         implementations MUST verify Actor authority, HostAuth, all six Jarvis
         mutation headers, expected revision `0`, and
         `Jarvis-Previous-Event-Hash` equal to `hash:protocol-genesis` before
-        accepting the WorkSession creation state.
+        accepting the WorkSession creation state. The accepted WorkSession
+        snapshot starts as `active` at revision `1` with first event type
+        `work_session.created`.
       x-jarvis-operation-class: worksession_genesis_mutation
+      x-jarvis-actor-body-id-match:
+        header: Jarvis-Actor-Id
+        body_field: created_by_actor_id
+        rejection_id: actor_body_id_mismatch
+      x-jarvis-genesis-state:
+        expected_revision_header: 0
+        previous_event_hash_header: hash:protocol-genesis
+        accepted_status: active
+        accepted_revision: 1
+        accepted_event_type: work_session.created
       tags:
         - WorkSessions
       security:
@@ -157,6 +177,14 @@ paths:
         six Jarvis mutation headers, current WorkSession revision, and previous
         event hash before accepting protocol state.
       x-jarvis-operation-class: worksession_scoped_mutation
+      x-jarvis-path-body-id-match:
+        path_parameter: work_session_id
+        body_field: work_session_id
+        rejection_id: path_body_id_mismatch
+      x-jarvis-actor-body-id-match:
+        header: Jarvis-Actor-Id
+        body_field: actor_id
+        rejection_id: actor_body_id_mismatch
       tags:
         - WorkSessions
       security:
@@ -186,6 +214,14 @@ paths:
         Actor authority, HostAuth, all six Jarvis mutation headers, current
         WorkSession revision, and previous event hash.
       x-jarvis-operation-class: worksession_scoped_mutation
+      x-jarvis-path-body-id-match:
+        path_parameter: work_session_id
+        body_field: work_session_id
+        rejection_id: path_body_id_mismatch
+      x-jarvis-actor-body-id-match:
+        header: Jarvis-Actor-Id
+        body_field: actor_id
+        rejection_id: actor_body_id_mismatch
       tags:
         - ControlPlane
       security:
@@ -216,6 +252,14 @@ paths:
         Actor authority, HostAuth, all six Jarvis mutation headers, current
         WorkSession revision, and previous event hash.
       x-jarvis-operation-class: worksession_scoped_mutation
+      x-jarvis-path-body-id-match:
+        path_parameter: work_session_id
+        body_field: work_session_id
+        rejection_id: path_body_id_mismatch
+      x-jarvis-actor-body-id-match:
+        header: Jarvis-Actor-Id
+        body_field: requester_actor_id
+        rejection_id: actor_body_id_mismatch
       tags:
         - ControlPlane
       security:
@@ -241,11 +285,20 @@ paths:
       summary: Record HumanWorker Review.
       description: |
         Records HumanWorker judgment over a Request or protocol target.
-        Review resolves Request scopes through approve, deny, narrow, correct,
-        takeover, or needs_revision decisions. Compatible implementations MUST
-        verify Actor authority, HostAuth, all six Jarvis mutation headers,
-        current WorkSession revision, and previous event hash.
+        Review resolves Request scopes through answer, approve, deny, narrow,
+        correct, takeover, or needs_revision decisions. Compatible
+        implementations MUST verify Actor authority, HostAuth, all six Jarvis
+        mutation headers, current WorkSession revision, and previous event
+        hash.
       x-jarvis-operation-class: worksession_scoped_mutation
+      x-jarvis-path-body-id-match:
+        path_parameter: work_session_id
+        body_field: work_session_id
+        rejection_id: path_body_id_mismatch
+      x-jarvis-actor-body-id-match:
+        header: Jarvis-Actor-Id
+        body_field: reviewer_actor_id
+        rejection_id: actor_body_id_mismatch
       tags:
         - ControlPlane
       security:
@@ -276,6 +329,14 @@ paths:
         mutation headers, current WorkSession revision, previous event hash,
         and Takeover lock epoch rules.
       x-jarvis-operation-class: worksession_scoped_mutation
+      x-jarvis-path-body-id-match:
+        path_parameter: work_session_id
+        body_field: work_session_id
+        rejection_id: path_body_id_mismatch
+      x-jarvis-actor-body-id-match:
+        header: Jarvis-Actor-Id
+        body_field: controlling_actor_id
+        rejection_id: actor_body_id_mismatch
       tags:
         - ControlPlane
       security:
@@ -306,6 +367,10 @@ paths:
         mutation headers, current WorkSession revision, and previous event
         hash.
       x-jarvis-operation-class: worksession_scoped_mutation
+      x-jarvis-path-body-id-match:
+        path_parameter: work_session_id
+        body_field: work_session_id
+        rejection_id: path_body_id_mismatch
       tags:
         - Attribution
       security:
@@ -335,6 +400,14 @@ paths:
         verify Actor authority, HostAuth, all six Jarvis mutation headers,
         current WorkSession revision, and previous event hash.
       x-jarvis-operation-class: worksession_scoped_mutation
+      x-jarvis-path-body-id-match:
+        path_parameter: work_session_id
+        body_field: work_session_id
+        rejection_id: path_body_id_mismatch
+      x-jarvis-actor-body-id-match:
+        header: Jarvis-Actor-Id
+        body_field: created_by_actor_id
+        rejection_id: actor_body_id_mismatch
       tags:
         - Learning
       security:
@@ -364,6 +437,14 @@ paths:
         six Jarvis mutation headers, current WorkSession revision, previous
         event hash, provenance, and review-required state.
       x-jarvis-operation-class: worksession_scoped_mutation
+      x-jarvis-path-body-id-match:
+        path_parameter: work_session_id
+        body_field: work_session_id
+        rejection_id: path_body_id_mismatch
+      x-jarvis-actor-body-id-match:
+        header: Jarvis-Actor-Id
+        body_field: proposed_by_actor_id
+        rejection_id: actor_body_id_mismatch
       tags:
         - Learning
       security:
@@ -394,6 +475,14 @@ paths:
         current WorkSession revision, previous event hash, provenance, and
         review-required state.
       x-jarvis-operation-class: worksession_scoped_mutation
+      x-jarvis-path-body-id-match:
+        path_parameter: work_session_id
+        body_field: work_session_id
+        rejection_id: path_body_id_mismatch
+      x-jarvis-actor-body-id-match:
+        header: Jarvis-Actor-Id
+        body_field: proposed_by_actor_id
+        rejection_id: actor_body_id_mismatch
       tags:
         - Learning
       security:
@@ -453,6 +542,10 @@ paths:
         Jarvis-Request-Timestamp. This non-WorkSession mutation does not
         require WorkSession revision or previous event hash.
       x-jarvis-operation-class: non_worksession_mutation
+      x-jarvis-actor-body-id-match:
+        header: Jarvis-Actor-Id
+        body_field: accepted_by_actor_id
+        rejection_id: actor_body_id_mismatch
       tags:
         - Feedback
       security:
@@ -544,7 +637,6 @@ components:
     WorkSessionStatus:
       type: string
       enum:
-        - created
         - active
         - waiting_on_human
         - takeover
@@ -611,6 +703,7 @@ components:
     ReviewDecision:
       type: string
       enum:
+        - answer
         - approve
         - deny
         - narrow
@@ -703,6 +796,8 @@ components:
         - stale_work_session_revision
         - missing_idempotency_key
         - missing_actor
+        - path_body_id_mismatch
+        - actor_body_id_mismatch
         - invalid_extension_namespace
         - extension_core_field_override
         - missing_policy
@@ -714,6 +809,7 @@ components:
         - invalid_request_transition
         - missing_review_resolution
         - missing_takeover_resolution
+        - missing_superseding_request
         - invalid_approval_scope
         - approval_scope_expired
         - approval_scope_mismatch
@@ -822,10 +918,12 @@ components:
       properties:
         serialization:
           type: string
-          minLength: 1
+          enum:
+            - json-c14n
         hash_method:
           type: string
-          minLength: 1
+          enum:
+            - sha256
         profile_ref:
           $ref: "#/components/schemas/OpaqueRef"
     ProtocolTraceContext:
@@ -1902,6 +2000,7 @@ components:
               decision:
                 enum:
                   - deny
+                  - answer
                   - correct
                   - takeover
                   - needs_revision
@@ -2750,90 +2849,165 @@ components:
   responses:
     WorkerResponse:
       description: Worker protocol record accepted.
+      headers:
+        Jarvis-Protocol-Version:
+          $ref: "#/components/headers/ProtocolVersionResponseHeader"
+        Jarvis-Host-Capabilities:
+          $ref: "#/components/headers/HostCapabilitiesHeader"
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/Worker"
     ActorResponse:
       description: Actor protocol record accepted.
+      headers:
+        Jarvis-Protocol-Version:
+          $ref: "#/components/headers/ProtocolVersionResponseHeader"
+        Jarvis-Host-Capabilities:
+          $ref: "#/components/headers/HostCapabilitiesHeader"
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/Actor"
     WorkSessionResponse:
       description: WorkSession protocol record.
+      headers:
+        Jarvis-Protocol-Version:
+          $ref: "#/components/headers/ProtocolVersionResponseHeader"
+        Jarvis-Host-Capabilities:
+          $ref: "#/components/headers/HostCapabilitiesHeader"
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/WorkSession"
     JarvisEventResponse:
       description: JarvisEvent protocol record accepted.
+      headers:
+        Jarvis-Protocol-Version:
+          $ref: "#/components/headers/ProtocolVersionResponseHeader"
+        Jarvis-Host-Capabilities:
+          $ref: "#/components/headers/HostCapabilitiesHeader"
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/JarvisEvent"
     PolicyDecisionResponse:
       description: PolicyDecision protocol record accepted.
+      headers:
+        Jarvis-Protocol-Version:
+          $ref: "#/components/headers/ProtocolVersionResponseHeader"
+        Jarvis-Host-Capabilities:
+          $ref: "#/components/headers/HostCapabilitiesHeader"
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/PolicyDecision"
     RequestResponse:
       description: Request protocol record accepted.
+      headers:
+        Jarvis-Protocol-Version:
+          $ref: "#/components/headers/ProtocolVersionResponseHeader"
+        Jarvis-Host-Capabilities:
+          $ref: "#/components/headers/HostCapabilitiesHeader"
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/Request"
     ReviewResponse:
       description: Review protocol record accepted.
+      headers:
+        Jarvis-Protocol-Version:
+          $ref: "#/components/headers/ProtocolVersionResponseHeader"
+        Jarvis-Host-Capabilities:
+          $ref: "#/components/headers/HostCapabilitiesHeader"
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/Review"
     TakeoverResponse:
       description: Takeover protocol record accepted.
+      headers:
+        Jarvis-Protocol-Version:
+          $ref: "#/components/headers/ProtocolVersionResponseHeader"
+        Jarvis-Host-Capabilities:
+          $ref: "#/components/headers/HostCapabilitiesHeader"
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/Takeover"
     ContributionResponse:
       description: Contribution protocol record accepted.
+      headers:
+        Jarvis-Protocol-Version:
+          $ref: "#/components/headers/ProtocolVersionResponseHeader"
+        Jarvis-Host-Capabilities:
+          $ref: "#/components/headers/HostCapabilitiesHeader"
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/Contribution"
     LearningRecordResponse:
       description: LearningRecord protocol record accepted.
+      headers:
+        Jarvis-Protocol-Version:
+          $ref: "#/components/headers/ProtocolVersionResponseHeader"
+        Jarvis-Host-Capabilities:
+          $ref: "#/components/headers/HostCapabilitiesHeader"
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/LearningRecord"
     MemoryProposalResponse:
       description: MemoryProposal protocol record accepted.
+      headers:
+        Jarvis-Protocol-Version:
+          $ref: "#/components/headers/ProtocolVersionResponseHeader"
+        Jarvis-Host-Capabilities:
+          $ref: "#/components/headers/HostCapabilitiesHeader"
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/MemoryProposal"
     SkillProposalResponse:
       description: SkillProposal protocol record accepted.
+      headers:
+        Jarvis-Protocol-Version:
+          $ref: "#/components/headers/ProtocolVersionResponseHeader"
+        Jarvis-Host-Capabilities:
+          $ref: "#/components/headers/HostCapabilitiesHeader"
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/SkillProposal"
     EvidenceManifestResponse:
       description: EvidenceManifest protocol export.
+      headers:
+        Jarvis-Protocol-Version:
+          $ref: "#/components/headers/ProtocolVersionResponseHeader"
+        Jarvis-Host-Capabilities:
+          $ref: "#/components/headers/HostCapabilitiesHeader"
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/EvidenceManifest"
     OutcomeReportResponse:
       description: OutcomeReport protocol record accepted.
+      headers:
+        Jarvis-Protocol-Version:
+          $ref: "#/components/headers/ProtocolVersionResponseHeader"
+        Jarvis-Host-Capabilities:
+          $ref: "#/components/headers/HostCapabilitiesHeader"
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/OutcomeReport"
     ProtocolErrorResponse:
       description: Jarvis protocol error.
+      headers:
+        Jarvis-Protocol-Version:
+          $ref: "#/components/headers/ProtocolVersionResponseHeader"
+        Jarvis-Host-Capabilities:
+          $ref: "#/components/headers/HostCapabilitiesHeader"
       content:
         application/json:
           schema:

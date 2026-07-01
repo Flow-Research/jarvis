@@ -4,6 +4,9 @@ Status: pass.
 
 Review date: 2026-06-30.
 
+This is a historical Gate 4 audit record. It preserves acceptance evidence from
+that gate and is not current normative protocol text.
+
 Branch: `codex/v0.1-gate-4-compatibility-examples`.
 
 Base commit audited: `fd360db`.

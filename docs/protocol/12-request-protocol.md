@@ -461,6 +461,10 @@ Review is append-only human judgment.
 Review decisions have these protocol effects:
 
 ```txt
+answer
+  resolves the target Request with HumanWorker information or judgment and does
+  not grant new authority.
+
 approve
   resolves the target Request and creates ApprovalScope.
 
@@ -486,9 +490,9 @@ needs_revision
 ```
 
 Review does not silently change durable memory, skill behavior, or Policy.
-Review creates LearningRecord, MemoryProposal, SkillProposal, or policy change
-proposal records when it changes future WorkSession behavior. Those records
-remain governed.
+Review requires or references separate governed LearningRecord, MemoryProposal,
+or SkillProposal records when it changes future WorkSession behavior. Review
+does not create those records as a side effect.
 
 ## Takeover Lifecycle
 
@@ -546,11 +550,11 @@ taxonomy. Compatible implementations encode it through canonical JarvisEvents
 defined for WorkSessions.
 
 ```txt
-plan_proposed OR tool_requested
-PolicyDecision recorded as protocol state
-request_created
-review_added OR human_takeover_started OR request_closed
-request_resolved OR request_closed
+plan.proposed OR tool.requested
+policy_decision.recorded
+request.created
+review.recorded OR takeover.started OR request.closed
+request.resolved OR request.closed
 continued work inside approved scope
 LearningRecord, MemoryProposal, or SkillProposal
 ```
@@ -640,7 +644,8 @@ HumanWorker denies network access.
   Future work prefers local evidence before external access.
 
 HumanWorker narrows approval.
-  PolicyProposal records a more precise grant pattern.
+  LearningRecord or SkillProposal records the precise grant pattern for future
+  WorkSessions.
 
 HumanWorker corrects final submission.
   SkillProposal records the corrected review process.
@@ -651,7 +656,7 @@ HumanWorker takes over.
 
 Learning remains governed. Request resolution or closure records a learning
 proposal when the resolved branch changes future WorkSession behavior, but it
-cannot silently confirm durable memory, skill, or policy changes.
+cannot silently confirm durable memory or skill changes.
 
 ## Conformance Tests
 
