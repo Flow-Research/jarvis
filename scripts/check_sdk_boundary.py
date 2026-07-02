@@ -26,6 +26,10 @@ EXPECTED_JARVIS_METADATA = {
 
 REQUIRED_PATHS = [
     "package.json",
+    "scripts/check_python_package_artifacts.py",
+    "scripts/generate_python_openapi_surface.py",
+    "scripts/run_python_package_tests.mjs",
+    "scripts/run_python_package_tests.py",
     "packages/README.md",
     "packages/typescript/package.json",
     "packages/typescript/README.md",
@@ -48,11 +52,17 @@ REQUIRED_PATHS = [
     "packages/python/README.md",
     "packages/python/src/jarvis_protocol/__init__.py",
     "packages/python/src/jarvis_protocol/generated",
+    "packages/python/src/jarvis_protocol/generated/__init__.py",
+    "packages/python/src/jarvis_protocol/generated/openapi_types.py",
+    "packages/python/src/jarvis_protocol/generated/schema_metadata.py",
     "packages/python/src/jarvis_protocol/validators",
     "packages/python/src/jarvis_protocol/headers",
     "packages/python/src/jarvis_protocol/events",
     "packages/python/src/jarvis_protocol/evidence",
     "packages/python/tests",
+    "packages/python/tests/test_fixtures.py",
+    "packages/python/tests/test_helpers.py",
+    "packages/python/tests/test_type_surface.py",
     "packages/python/fixtures/v0.1",
     "packages/cli/package.json",
     "packages/cli/README.md",
@@ -240,6 +250,8 @@ def check_root_package() -> None:
         "python3 scripts/check_sdk_boundary.py"
     ):
         raise AssertionError("package.json: check:sdk-boundary script missing")
+    if scripts.get("test:python") != "node scripts/run_python_package_tests.mjs":
+        raise AssertionError("package.json: test:python script MUST use Python test launcher")
     check_manifest_values("package.json", collect_npm_manifest_values("package.json", package))
 
 

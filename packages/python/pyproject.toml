@@ -8,6 +8,9 @@ version = "0.1.0a0"
 description = "Python protocol helper package for Jarvis v0.1 records."
 readme = "README.md"
 requires-python = ">=3.10"
+dependencies = [
+  "typing_extensions>=4.9"
+]
 license = { text = "MIT" }
 keywords = ["jarvis", "protocol", "human-agent", "conformance"]
 classifiers = [
