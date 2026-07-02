@@ -316,6 +316,9 @@ git diff --check
 
 Fixture changes MUST run `python3 scripts/check_conformance_fixtures.py`.
 
+SDK boundary, package, helper, and fixture-snapshot changes MUST run
+`python3 scripts/check_sdk_boundary.py`.
+
 ## Required References
 
 Before changing protocol direction, read:

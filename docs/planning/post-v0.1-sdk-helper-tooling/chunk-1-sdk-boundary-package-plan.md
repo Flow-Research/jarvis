@@ -191,6 +191,77 @@ OpenAPI artifact version: 0.1.0
 release status: Protocol Alpha
 ```
 
+## Compatibility Statement
+
+SDK helper packages target one explicit protocol line and one explicit OpenAPI
+artifact version at a time.
+
+Each package manifest MUST identify:
+
+```txt
+package version
+supported Jarvis protocol version
+supported OpenAPI artifact version
+supported fixture set version
+package status
+```
+
+Jarvis v0.1 helper packages target:
+
+```txt
+supported Jarvis protocol version: v0.1
+supported OpenAPI artifact version: 0.1.0
+supported fixture set version: v0.1
+package status: Protocol Alpha helper tooling
+```
+
+Compatible implementations use these labels to verify that a helper package,
+OpenAPI binding, and fixture set belong to the same protocol line.
+
+## Deprecation Policy
+
+Deprecation does not weaken protocol validation.
+
+Deprecation does not remove required headers, Actor authority checks,
+PolicyDecision preconditions, Request/Review/Takeover rules, contribution
+attribution, EvidenceManifest export rules, LearningRecord governance, or
+host-private field rejection.
+
+Every deprecation MUST include:
+
+```txt
+deprecated helper or command
+replacement helper or command
+affected protocol version
+affected OpenAPI artifact version
+affected fixture set
+conformance impact
+release note
+```
+
+Removal waits for a later package line unless the helper violates the locked
+Jarvis protocol boundary or contradicts the OpenAPI contract.
+
+## Repository Foundation
+
+Chunk 1 creates package foundation files without SDK implementation code:
+
+```txt
+package.json
+packages/README.md
+packages/typescript/package.json
+packages/typescript/README.md
+packages/python/pyproject.toml
+packages/python/README.md
+packages/python/src/jarvis_protocol/__init__.py
+packages/cli/package.json
+packages/cli/README.md
+packages/*/fixtures/v0.1
+scripts/check_sdk_boundary.py
+```
+
+The repository foundation MUST pass `python3 scripts/check_sdk_boundary.py`.
+
 ## Acceptance Criteria
 
 Chunk 1 is complete when:
@@ -202,6 +273,7 @@ Chunk 1 is complete when:
 - Python package scope is ready for #66.
 - conformance runner scope is ready for #67.
 - package versioning ties helpers to Jarvis v0.1 and OpenAPI 0.1.0.
+- package foundation paths pass `python3 scripts/check_sdk_boundary.py`.
 - local validation passes.
 - review lanes have no valid unresolved findings.
 

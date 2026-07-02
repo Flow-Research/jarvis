@@ -1,0 +1,288 @@
+{
+  "fixture_id": "invalid-missing-takeover-resolution-v01",
+  "protocol_version": "v0.1",
+  "kind": "invalid",
+  "title": "Reject Request takeover without Takeover",
+  "description": "The protocol rejects Request state that claims takeover resolution without a Takeover record.",
+  "source_contract_refs": [
+    "docs/conformance/failure-modes.md",
+    "docs/conformance/compatibility-mapping.md",
+    "docs/conformance/checklist.md",
+    "docs/protocol/15-openapi-communication-binding.md",
+    "docs/openapi/jarvis-openapi.yaml#/components/schemas/ProtocolError",
+    "docs/openapi/jarvis-openapi.yaml#/components/schemas/Worker",
+    "docs/openapi/jarvis-openapi.yaml#/components/schemas/Actor",
+    "docs/openapi/jarvis-openapi.yaml#/components/schemas/Policy",
+    "docs/openapi/jarvis-openapi.yaml#/components/schemas/WorkSession",
+    "docs/openapi/jarvis-openapi.yaml#/components/schemas/Request",
+    "docs/openapi/jarvis-openapi.yaml#/components/schemas/PolicyDecision"
+  ],
+  "host_shape_ref": "command_line_host_boundary",
+  "records": {
+    "workers": {
+      "human": {
+        "id": "worker-human-invalid",
+        "type": "human",
+        "role": "responsible reviewer",
+        "authority_scope": {
+          "grants": [
+            "policy:own",
+            "review:approve",
+            "takeover:start"
+          ]
+        },
+        "accountability_scope": {
+          "accountable_for": [
+            "objective",
+            "policy",
+            "final_review"
+          ]
+        }
+      },
+      "agent": {
+        "id": "worker-agent-invalid",
+        "type": "agent",
+        "role": "bounded executor",
+        "authority_scope": {
+          "grants": [
+            "action:propose",
+            "action:execute_after_policy",
+            "evidence:capture"
+          ]
+        },
+        "accountability_scope": {
+          "accountable_for": [
+            "policy_checked_execution",
+            "evidence_capture"
+          ]
+        }
+      }
+    },
+    "actors": {
+      "human": {
+        "id": "actor-human-invalid",
+        "worker_id": "worker-human-invalid",
+        "type": "human",
+        "event_authority": {
+          "can_append_events": true,
+          "allowed_event_types": [
+            "work_session.created",
+            "review.recorded",
+            "work_session.completed",
+            "learning.recorded"
+          ]
+        },
+        "contribution_scope": {
+          "contribution_roles": [
+            "human",
+            "shared"
+          ]
+        },
+        "created_at": "2026-06-16T10:00:00Z",
+        "valid_from": "2026-06-16T10:00:00Z"
+      },
+      "agent": {
+        "id": "actor-agent-invalid",
+        "worker_id": "worker-agent-invalid",
+        "type": "agent",
+        "event_authority": {
+          "can_append_events": true,
+          "allowed_event_types": [
+            "policy_decision.recorded",
+            "request.created",
+            "evidence.captured"
+          ]
+        },
+        "contribution_scope": {
+          "contribution_roles": [
+            "agent",
+            "shared"
+          ]
+        },
+        "created_at": "2026-06-16T10:00:00Z",
+        "valid_from": "2026-06-16T10:00:00Z"
+      }
+    },
+    "policies": {
+      "bounded": {
+        "id": "policy-invalid-bounded",
+        "owner_worker_id": "worker-human-invalid",
+        "created_by_actor_id": "actor-human-invalid",
+        "autonomy_level": "bounded_execute",
+        "allowed_actions": [
+          {
+            "action": "read_local_context",
+            "scope_ref": "scope:local"
+          }
+        ],
+        "denied_actions": [
+          {
+            "action": "send_external",
+            "scope_ref": "scope:external"
+          }
+        ],
+        "review_required_actions": [
+          {
+            "action": "fetch_external_source",
+            "scope_ref": "scope:external"
+          }
+        ],
+        "risk_classes": [
+          "low",
+          "medium",
+          "high"
+        ],
+        "escalation_rules": [
+          {
+            "trigger": "policy_review_required",
+            "risk_class": "medium",
+            "required_action": "create_request",
+            "reviewer_ref": "worker-human-invalid",
+            "reason": "Policy requires human review before continuation."
+          }
+        ],
+        "created_at": "2026-06-16T10:00:00Z"
+      }
+    },
+    "work_sessions": {
+      "genesis_request": {
+        "id": "ws-invalid-001",
+        "protocol_version": "v0.1",
+        "created_by_actor_id": "actor-human-invalid",
+        "objective": "Complete governed human-agent work with protocol proof.",
+        "human_worker_id": "worker-human-invalid",
+        "agent_worker_id": "worker-agent-invalid",
+        "policy_id": "policy-invalid-bounded",
+        "status": "active",
+        "revision": 0,
+        "last_event_hash": "hash:protocol-genesis",
+        "event_log_ref": "event-log:ws-invalid-001",
+        "created_at": "2026-06-16T10:01:00Z",
+        "updated_at": "2026-06-16T10:01:00Z"
+      },
+      "active": {
+        "id": "ws-invalid-001",
+        "protocol_version": "v0.1",
+        "created_by_actor_id": "actor-human-invalid",
+        "objective": "Complete governed human-agent work with protocol proof.",
+        "human_worker_id": "worker-human-invalid",
+        "agent_worker_id": "worker-agent-invalid",
+        "policy_id": "policy-invalid-bounded",
+        "status": "active",
+        "revision": 1,
+        "last_event_hash": "hash:event-worksession-created",
+        "event_log_ref": "event-log:ws-invalid-001",
+        "created_at": "2026-06-16T10:01:00Z",
+        "updated_at": "2026-06-16T10:01:00Z"
+      },
+      "completed": {
+        "id": "ws-invalid-001",
+        "protocol_version": "v0.1",
+        "created_by_actor_id": "actor-human-invalid",
+        "objective": "Complete governed human-agent work with protocol proof.",
+        "human_worker_id": "worker-human-invalid",
+        "agent_worker_id": "worker-agent-invalid",
+        "policy_id": "policy-invalid-bounded",
+        "status": "completed",
+        "revision": 5,
+        "last_event_hash": "hash:event-worksession-completed",
+        "event_log_ref": "event-log:ws-invalid-001",
+        "created_at": "2026-06-16T10:01:00Z",
+        "updated_at": "2026-06-16T10:30:00Z"
+      }
+    },
+    "policy_decisions": {
+      "blocking": {
+        "id": "pd-invalid-001",
+        "work_session_id": "ws-invalid-001",
+        "actor_id": "actor-agent-invalid",
+        "policy_id": "policy-invalid-bounded",
+        "requested_action": {
+          "action": "fetch_external_source",
+          "target_ref": "source:external-reference",
+          "scope_ref": "scope:external"
+        },
+        "normalized_action_hash": "hash:action-fetch-external-source",
+        "risk_class": "medium",
+        "result": "deny",
+        "reason": "Fixture policy decision body.",
+        "created_at": "2026-06-16T10:04:00Z",
+        "request_id": "req-invalid-001"
+      }
+    },
+    "requests": {
+      "invalid": {
+        "id": "req-invalid-001",
+        "protocol_version": "v0.1",
+        "work_session_id": "ws-invalid-001",
+        "requester_actor_id": "actor-agent-invalid",
+        "requester_worker_id": "worker-agent-invalid",
+        "target_human_worker_id": "worker-human-invalid",
+        "policy_decision_id": "pd-invalid-001",
+        "type": "permission",
+        "blocking_scope": "action",
+        "reason_code": "policy_denied",
+        "reason_summary": "External source action requires HumanWorker resolution.",
+        "requested_action": {
+          "action": "fetch_external_source",
+          "target_ref": "source:external-reference",
+          "scope_ref": "scope:external"
+        },
+        "requested_outcome": "Resolve the blocked action.",
+        "risk_class": "medium",
+        "human_decision_needed": "Approve, deny, narrow, correct, or take over the blocked action.",
+        "options": [
+          {
+            "id": "option-deny",
+            "label": "Deny",
+            "effect": "The AgentWorker continues without external source access.",
+            "risk_class": "low"
+          }
+        ],
+        "default_if_no_response": {
+          "action": "continue_with_limited_evidence",
+          "reason": "The blocked action remains stopped."
+        },
+        "status": "takeover",
+        "created_at": "2026-06-16T10:05:00Z",
+        "expires_at": "2026-06-16T10:35:00Z",
+        "resolved_at": "2026-06-16T10:08:00Z"
+      }
+    }
+  },
+  "operations": [
+    {
+      "operation_id": "createRequest",
+      "method": "POST",
+      "path": "/work-sessions/ws-invalid-001/requests",
+      "headers": {
+        "Authorization": "HostAuth fixture",
+        "Jarvis-Protocol-Version": "v0.1",
+        "Jarvis-Actor-Id": "actor-agent-invalid",
+        "Jarvis-Idempotency-Key": "idem-policy-invalid",
+        "Jarvis-Request-Timestamp": "2026-06-16T10:05:00Z",
+        "Jarvis-Expected-WorkSession-Revision": 1,
+        "Jarvis-Previous-Event-Hash": "hash:event-worksession-created"
+      },
+      "actor_id": "actor-agent-invalid",
+      "expected_status": 400,
+      "expected_error_id": "missing_takeover_resolution",
+      "expected_error_field": "records.requests.invalid.resolved_by_takeover_id",
+      "work_session_id": "ws-invalid-001",
+      "body_ref": "records.requests.invalid"
+    }
+  ],
+  "assertions": [
+    {
+      "assertion_id": "assert-missing-takeover-resolution",
+      "class": "request_resolution_gate",
+      "target_ref": "records.requests.invalid",
+      "required_state": "Request takeover resolution requires resolved_by_takeover_id or Takeover-backed resolution.",
+      "expected_result": "reject",
+      "expected_error_id": "missing_takeover_resolution"
+    }
+  ],
+  "expected_result": "reject",
+  "expected_error_id": "missing_takeover_resolution",
+  "expected_error_field": "records.requests.invalid.resolved_by_takeover_id"
+}

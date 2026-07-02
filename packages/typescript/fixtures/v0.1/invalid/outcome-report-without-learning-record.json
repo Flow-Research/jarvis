@@ -1,0 +1,238 @@
+{
+  "fixture_id": "invalid-outcome-report-without-learning-record-v01",
+  "protocol_version": "v0.1",
+  "kind": "invalid",
+  "title": "Reject OutcomeReport without LearningRecord",
+  "description": "The protocol rejects OutcomeReport that does not reference a LearningRecord.",
+  "source_contract_refs": [
+    "docs/conformance/failure-modes.md",
+    "docs/conformance/compatibility-mapping.md",
+    "docs/conformance/checklist.md",
+    "docs/protocol/15-openapi-communication-binding.md",
+    "docs/openapi/jarvis-openapi.yaml#/components/schemas/ProtocolError",
+    "docs/openapi/jarvis-openapi.yaml#/components/schemas/Worker",
+    "docs/openapi/jarvis-openapi.yaml#/components/schemas/Actor",
+    "docs/openapi/jarvis-openapi.yaml#/components/schemas/Policy",
+    "docs/openapi/jarvis-openapi.yaml#/components/schemas/WorkSession",
+    "docs/openapi/jarvis-openapi.yaml#/components/schemas/OutcomeReport"
+  ],
+  "host_shape_ref": "command_line_host_boundary",
+  "records": {
+    "workers": {
+      "human": {
+        "id": "worker-human-invalid",
+        "type": "human",
+        "role": "responsible reviewer",
+        "authority_scope": {
+          "grants": [
+            "policy:own",
+            "review:approve",
+            "takeover:start"
+          ]
+        },
+        "accountability_scope": {
+          "accountable_for": [
+            "objective",
+            "policy",
+            "final_review"
+          ]
+        }
+      },
+      "agent": {
+        "id": "worker-agent-invalid",
+        "type": "agent",
+        "role": "bounded executor",
+        "authority_scope": {
+          "grants": [
+            "action:propose",
+            "action:execute_after_policy",
+            "evidence:capture"
+          ]
+        },
+        "accountability_scope": {
+          "accountable_for": [
+            "policy_checked_execution",
+            "evidence_capture"
+          ]
+        }
+      }
+    },
+    "actors": {
+      "human": {
+        "id": "actor-human-invalid",
+        "worker_id": "worker-human-invalid",
+        "type": "human",
+        "event_authority": {
+          "can_append_events": true,
+          "allowed_event_types": [
+            "work_session.created",
+            "review.recorded",
+            "work_session.completed",
+            "learning.recorded"
+          ]
+        },
+        "contribution_scope": {
+          "contribution_roles": [
+            "human",
+            "shared"
+          ]
+        },
+        "created_at": "2026-06-16T10:00:00Z",
+        "valid_from": "2026-06-16T10:00:00Z"
+      },
+      "agent": {
+        "id": "actor-agent-invalid",
+        "worker_id": "worker-agent-invalid",
+        "type": "agent",
+        "event_authority": {
+          "can_append_events": true,
+          "allowed_event_types": [
+            "policy_decision.recorded",
+            "request.created",
+            "evidence.captured"
+          ]
+        },
+        "contribution_scope": {
+          "contribution_roles": [
+            "agent",
+            "shared"
+          ]
+        },
+        "created_at": "2026-06-16T10:00:00Z",
+        "valid_from": "2026-06-16T10:00:00Z"
+      }
+    },
+    "policies": {
+      "bounded": {
+        "id": "policy-invalid-bounded",
+        "owner_worker_id": "worker-human-invalid",
+        "created_by_actor_id": "actor-human-invalid",
+        "autonomy_level": "bounded_execute",
+        "allowed_actions": [
+          {
+            "action": "read_local_context",
+            "scope_ref": "scope:local"
+          }
+        ],
+        "denied_actions": [
+          {
+            "action": "send_external",
+            "scope_ref": "scope:external"
+          }
+        ],
+        "review_required_actions": [
+          {
+            "action": "fetch_external_source",
+            "scope_ref": "scope:external"
+          }
+        ],
+        "risk_classes": [
+          "low",
+          "medium",
+          "high"
+        ],
+        "escalation_rules": [
+          {
+            "trigger": "policy_review_required",
+            "risk_class": "medium",
+            "required_action": "create_request",
+            "reviewer_ref": "worker-human-invalid",
+            "reason": "Policy requires human review before continuation."
+          }
+        ],
+        "created_at": "2026-06-16T10:00:00Z"
+      }
+    },
+    "work_sessions": {
+      "genesis_request": {
+        "id": "ws-invalid-001",
+        "protocol_version": "v0.1",
+        "created_by_actor_id": "actor-human-invalid",
+        "objective": "Complete governed human-agent work with protocol proof.",
+        "human_worker_id": "worker-human-invalid",
+        "agent_worker_id": "worker-agent-invalid",
+        "policy_id": "policy-invalid-bounded",
+        "status": "active",
+        "revision": 0,
+        "last_event_hash": "hash:protocol-genesis",
+        "event_log_ref": "event-log:ws-invalid-001",
+        "created_at": "2026-06-16T10:01:00Z",
+        "updated_at": "2026-06-16T10:01:00Z"
+      },
+      "active": {
+        "id": "ws-invalid-001",
+        "protocol_version": "v0.1",
+        "created_by_actor_id": "actor-human-invalid",
+        "objective": "Complete governed human-agent work with protocol proof.",
+        "human_worker_id": "worker-human-invalid",
+        "agent_worker_id": "worker-agent-invalid",
+        "policy_id": "policy-invalid-bounded",
+        "status": "active",
+        "revision": 1,
+        "last_event_hash": "hash:event-worksession-created",
+        "event_log_ref": "event-log:ws-invalid-001",
+        "created_at": "2026-06-16T10:01:00Z",
+        "updated_at": "2026-06-16T10:01:00Z"
+      },
+      "completed": {
+        "id": "ws-invalid-001",
+        "protocol_version": "v0.1",
+        "created_by_actor_id": "actor-human-invalid",
+        "objective": "Complete governed human-agent work with protocol proof.",
+        "human_worker_id": "worker-human-invalid",
+        "agent_worker_id": "worker-agent-invalid",
+        "policy_id": "policy-invalid-bounded",
+        "status": "completed",
+        "revision": 5,
+        "last_event_hash": "hash:event-worksession-completed",
+        "event_log_ref": "event-log:ws-invalid-001",
+        "created_at": "2026-06-16T10:01:00Z",
+        "updated_at": "2026-06-16T10:30:00Z"
+      }
+    },
+    "outcome_reports": {
+      "invalid": {
+        "id": "outcome-report-invalid",
+        "work_session_id": "ws-invalid-001",
+        "source_ref": "source:completed-worksession:ws-invalid-001",
+        "reporter_ref": "reporter:fixture-evaluator",
+        "accepted_by_actor_id": "actor-human-invalid",
+        "outcome": "accepted",
+        "learning_record_refs": [],
+        "received_at": "2026-06-16T10:30:00Z"
+      }
+    }
+  },
+  "operations": [
+    {
+      "operation_id": "submitOutcomeReport",
+      "method": "POST",
+      "path": "/outcome-reports",
+      "headers": {
+        "Authorization": "HostAuth fixture",
+        "Jarvis-Protocol-Version": "v0.1",
+        "Jarvis-Actor-Id": "actor-human-invalid",
+        "Jarvis-Idempotency-Key": "idem-outcome-invalid",
+        "Jarvis-Request-Timestamp": "2026-06-16T10:05:00Z"
+      },
+      "actor_id": "actor-human-invalid",
+      "expected_status": 400,
+      "expected_error_id": "outcome_report_without_learning_record",
+      "expected_error_field": "records.outcome_reports.invalid.learning_record_refs",
+      "body_ref": "records.outcome_reports.invalid"
+    }
+  ],
+  "assertions": [
+    {
+      "assertion_id": "assert-outcome-report-without-learning-record",
+      "class": "learning_governance_gate",
+      "target_ref": "records.outcome_reports.invalid",
+      "required_state": "OutcomeReport must reference LearningRecord.",
+      "expected_result": "reject",
+      "expected_error_id": "outcome_report_without_learning_record"
+    }
+  ],
+  "expected_result": "reject",
+  "expected_error_id": "outcome_report_without_learning_record",
+  "expected_error_field": "records.outcome_reports.invalid.learning_record_refs"
+}
