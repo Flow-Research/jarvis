@@ -363,6 +363,8 @@ The protocol rejects:
 
 - OutcomeReport without LearningRecord as
   `outcome_report_without_learning_record`
+- OutcomeReport without terminal WorkSession source as
+  `outcome_report_requires_terminal_source`
 - sealed WorkSession mutation from OutcomeReport as
   `sealed_work_session_mutation`
 - sealed EvidenceManifest mutation from OutcomeReport as
@@ -415,6 +417,7 @@ These rejection gates have current invalid fixtures.
 | memory mutates silently | `silent_memory_mutation` | [silent-memory-mutation.json](./fixtures/invalid/silent-memory-mutation.json) |
 | skill activates silently | `silent_skill_activation` | [silent-skill-activation.json](./fixtures/invalid/silent-skill-activation.json) |
 | OutcomeReport lacks LearningRecord | `outcome_report_without_learning_record` | [outcome-report-without-learning-record.json](./fixtures/invalid/outcome-report-without-learning-record.json) |
+| OutcomeReport source is not terminal | `outcome_report_requires_terminal_source` | [outcome-report-requires-terminal-source.json](./fixtures/invalid/outcome-report-requires-terminal-source.json) |
 
 ## Non-Fixture-Backed Protocol Error Ids
 

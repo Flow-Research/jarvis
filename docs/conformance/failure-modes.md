@@ -62,6 +62,7 @@ forbidden_host_private_field
 silent_memory_mutation
 silent_skill_activation
 outcome_report_without_learning_record
+outcome_report_requires_terminal_source
 ```
 
 ## Required Failure Boundaries

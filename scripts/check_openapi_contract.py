@@ -1158,6 +1158,7 @@ REQUIRED_ENUMS = {
         "sealed_work_session_mutation",
         "sealed_evidence_mutation",
         "outcome_report_without_learning_record",
+        "outcome_report_requires_terminal_source",
         "unsupported_capability",
         "forbidden_host_private_field",
     },
@@ -1586,6 +1587,7 @@ REQUIRED_CONFORMANCE_REJECTION_IDS = {
     "silent_memory_mutation",
     "silent_skill_activation",
     "outcome_report_without_learning_record",
+    "outcome_report_requires_terminal_source",
 }
 PORTABLE_VALUE_REF = {"$ref": "#/components/schemas/PortableValue"}
 FORBIDDEN_PORTABLE_KEY_PATTERN = (

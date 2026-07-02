@@ -29,12 +29,20 @@ REQUIRED_PATHS = [
     "packages/README.md",
     "packages/typescript/package.json",
     "packages/typescript/README.md",
+    "packages/typescript/src/index.js",
+    "packages/typescript/src/index.d.ts",
     "packages/typescript/src/generated",
+    "packages/typescript/src/generated/openapi-types.d.ts",
+    "packages/typescript/src/generated/schema-metadata.js",
+    "packages/typescript/src/generated/schema-metadata.d.ts",
     "packages/typescript/src/validators",
     "packages/typescript/src/headers",
     "packages/typescript/src/events",
     "packages/typescript/src/evidence",
     "packages/typescript/tests",
+    "packages/typescript/tests/fixtures.test.js",
+    "packages/typescript/tests/helpers.test.js",
+    "packages/typescript/tests/type-surface.test.js",
     "packages/typescript/fixtures/v0.1",
     "packages/python/pyproject.toml",
     "packages/python/README.md",
@@ -252,6 +260,39 @@ def check_npm_packages() -> None:
             )
         if package.get("jarvis") != EXPECTED_JARVIS_METADATA:
             raise AssertionError(f"{relative}: jarvis metadata mismatch")
+        if relative == "packages/typescript/package.json":
+            files = package.get("files")
+            if not isinstance(files, list) or "src/" not in files:
+                raise AssertionError(
+                    "packages/typescript/package.json: files MUST include src/"
+                )
+            exports = package.get("exports", {})
+            root_export = exports.get(".") if isinstance(exports, dict) else None
+            if not isinstance(root_export, dict) or root_export.get("import") != (
+                "./src/index.js"
+            ) or root_export.get("types") != "./src/index.d.ts":
+                raise AssertionError(
+                    "packages/typescript/package.json: root export MUST expose src helpers"
+                )
+            if exports.get("./package.json") != "./package.json":
+                raise AssertionError(
+                    "packages/typescript/package.json: package metadata export missing"
+                )
+            if exports.get("./fixtures/v0.1/*") != "./fixtures/v0.1/*":
+                raise AssertionError(
+                    "packages/typescript/package.json: fixture snapshot export missing"
+                )
+            if package.get("types") != "./src/index.d.ts":
+                raise AssertionError(
+                    "packages/typescript/package.json: types MUST be ./src/index.d.ts"
+                )
+            scripts = package.get("scripts")
+            if not isinstance(scripts, dict) or scripts.get("test") != (
+                "node --test tests/*.test.js"
+            ):
+                raise AssertionError(
+                    "packages/typescript/package.json: test script missing"
+                )
         check_manifest_values(relative, collect_npm_manifest_values(relative, package))
 
 

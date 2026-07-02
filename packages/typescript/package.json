@@ -6,7 +6,7 @@
   "type": "module",
   "sideEffects": false,
   "files": [
-    "dist/",
+    "src/",
     "fixtures/v0.1/",
     "README.md",
     "package.json"
@@ -19,12 +19,16 @@
   },
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
-    }
+      "types": "./src/index.d.ts",
+      "import": "./src/index.js"
+    },
+    "./package.json": "./package.json",
+    "./fixtures/v0.1/*": "./fixtures/v0.1/*"
   },
-  "types": "./dist/index.d.ts",
+  "types": "./src/index.d.ts",
   "scripts": {
-    "check:boundary": "python3 ../../scripts/check_sdk_boundary.py"
+    "generate:openapi": "python3 ../../scripts/generate_typescript_openapi_surface.py",
+    "check:boundary": "python3 ../../scripts/check_sdk_boundary.py",
+    "test": "node --test tests/*.test.js"
   }
 }

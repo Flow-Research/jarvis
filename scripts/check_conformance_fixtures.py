@@ -116,6 +116,9 @@ REQUIRED_INVALID_FIXTURES = {
     "outcome-report-without-learning-record.json": (
         "outcome_report_without_learning_record"
     ),
+    "outcome-report-requires-terminal-source.json": (
+        "outcome_report_requires_terminal_source"
+    ),
     "sealed-evidence-mutation.json": "sealed_evidence_mutation",
     "sealed-work-session-mutation.json": "sealed_work_session_mutation",
     "silent-memory-mutation.json": "silent_memory_mutation",
@@ -1542,6 +1545,30 @@ def validate_invalid_fixture_semantics(path: Path, fixture: dict[str, Any]) -> N
         if body.get("learning_record_refs"):
             raise FixtureError(
                 f"{rel(path)}: outcome_report_without_learning_record fixture MUST omit learning refs"
+            )
+
+    elif expected_error_id == "outcome_report_requires_terminal_source":
+        if not isinstance(body, dict):
+            raise FixtureError(
+                f"{rel(path)}: outcome_report_requires_terminal_source fixture MUST submit OutcomeReport"
+            )
+        work_session_id = body.get("work_session_id")
+        candidates = [
+            state
+            for state in all_records(records, "work_sessions")
+            if state.get("id") == work_session_id
+        ]
+        if not candidates:
+            raise FixtureError(
+                f"{rel(path)}: outcome_report_requires_terminal_source fixture MUST include source WorkSession"
+            )
+        if any(state.get("status") in TERMINAL_WORK_SESSION_STATES for state in candidates):
+            raise FixtureError(
+                f"{rel(path)}: outcome_report_requires_terminal_source fixture MUST keep source WorkSession non-terminal"
+            )
+        if not body.get("learning_record_refs"):
+            raise FixtureError(
+                f"{rel(path)}: outcome_report_requires_terminal_source fixture MUST keep learning refs valid"
             )
 
     elif expected_error_id == "unauthorized_actor":

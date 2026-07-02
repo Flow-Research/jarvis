@@ -498,6 +498,7 @@ skill_expands_tool_access_without_policy_review
 sealed_work_session_mutation
 sealed_evidence_mutation
 outcome_report_without_learning_record
+outcome_report_requires_terminal_source
 unsupported_capability
 forbidden_host_private_field
 ```

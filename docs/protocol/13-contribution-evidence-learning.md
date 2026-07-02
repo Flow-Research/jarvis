@@ -313,6 +313,7 @@ Rejections:
 sealed_work_session_mutation
 sealed_evidence_mutation
 outcome_report_without_learning_record
+outcome_report_requires_terminal_source
 ```
 
 ## Conformance
