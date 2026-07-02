@@ -322,6 +322,8 @@ SDK boundary, package, helper, and fixture-snapshot changes MUST run
 TypeScript helper changes MUST run
 `npm --workspace @jarvis-protocol/sdk test`.
 
+Python helper changes MUST run `npm run test:python`.
+
 ## Required References
 
 Before changing protocol direction, read:
