@@ -9,6 +9,7 @@ from jarvis_protocol import (
     hash_protocol_value,
     protocol_error,
     validate_approval_scope,
+    validate_evidence_manifest,
     validate_event_hash_chain,
     validate_mutation_headers,
     validate_operation_headers,
@@ -234,7 +235,8 @@ class HelperValidationTests(unittest.TestCase):
                 "Jarvis-Idempotency-Key": "idem-test",
             }
         )
-        self.assertTrue(extra_headers.valid, extra_headers.errors)
+        self.assertFalse(extra_headers.valid)
+        self.assertEqual(extra_headers.errors[0]["error_id"], "invalid_export")
 
     def test_outcome_report_requires_terminal_work_session_source(self) -> None:
         report = {
@@ -267,6 +269,60 @@ class HelperValidationTests(unittest.TestCase):
         )
         self.assertFalse(wrong_source.valid)
         self.assertEqual(wrong_source.errors[0]["error_id"], "outcome_report_requires_terminal_source")
+
+    def test_evidence_manifest_requires_terminal_work_session_source(self) -> None:
+        manifest = {
+            "id": "evidence-test",
+            "work_session_id": "ws-test",
+            "generated_by_actor_id": "actor-human-test",
+            "objective": "test",
+            "event_chain_root": "hash:root",
+            "evidence_item_refs": [
+                {
+                    "id": "evidence-item-test",
+                    "work_session_id": "ws-test",
+                    "source_event_refs": ["event-test"],
+                    "captured_by_actor_id": "actor-agent-test",
+                    "evidence_type": "artifact",
+                    "artifact_ref": "artifact:test",
+                    "content_hash": "hash:content",
+                    "trust_label": "verified",
+                    "redaction_state": "none",
+                    "captured_at": "2026-06-16T10:00:00Z",
+                    "limitation_refs": [],
+                },
+            ],
+            "policy_decision_refs": [],
+            "request_refs": [],
+            "review_refs": [],
+            "takeover_refs": [],
+            "contribution_refs": [],
+            "export_profile": {
+                "profile": "portable",
+            },
+            "generated_at": "2026-06-16T10:00:00Z",
+        }
+        missing_source = validate_evidence_manifest(manifest)
+        self.assertFalse(missing_source.valid)
+        self.assertEqual(missing_source.errors[0]["error_id"], "invalid_evidence_export_state")
+
+        active_source = validate_evidence_manifest(manifest, {"work_session": {"id": "ws-test", "status": "active"}})
+        self.assertFalse(active_source.valid)
+        self.assertEqual(active_source.errors[0]["error_id"], "invalid_evidence_export_state")
+
+        completed_source = validate_evidence_manifest(
+            manifest,
+            {"work_session": {"id": "ws-test", "status": "completed"}},
+        )
+        self.assertTrue(completed_source.valid, completed_source.errors)
+
+        wrong_source = validate_evidence_manifest(
+            manifest,
+            {"work_session": {"id": "ws-other", "status": "completed"}},
+        )
+        self.assertFalse(wrong_source.valid)
+        self.assertEqual(wrong_source.errors[0]["error_id"], "invalid_evidence_export_state")
+        self.assertEqual(wrong_source.errors[0]["field"], "work_session_id")
 
     def test_protocol_error_helper_emits_openapi_error_envelope(self) -> None:
         error = protocol_error(
@@ -377,6 +433,35 @@ class HelperValidationTests(unittest.TestCase):
         self.assertEqual(result.errors[0]["error_id"], "invalid_export")
         self.assertEqual(result.errors[0]["field"], "object_type")
 
+    def test_protocol_record_validation_rejects_nested_host_private_fields(self) -> None:
+        result = validate_protocol_record(
+            "JarvisEvent",
+            {
+                "id": "event-test",
+                "sequence": 1,
+                "type": "work_session.created",
+                "work_session_id": "ws-test",
+                "actor_id": "actor-test",
+                "timestamp": "2026-06-16T10:00:00Z",
+                "payload": {
+                    "object_type": "work_session",
+                    "object_id": "ws-test",
+                    "action": "created",
+                    "raw_runtime_state": "host-only",
+                },
+                "previous_hash": "hash:protocol-genesis",
+                "event_hash": "hash:event-test",
+                "canonicalization": {
+                    "serialization": "json-c14n",
+                    "hash_method": "sha256",
+                    "profile_ref": "canonicalization:v0.1",
+                },
+            },
+        )
+        self.assertFalse(result.valid)
+        self.assertEqual(result.errors[0]["error_id"], "forbidden_host_private_field")
+        self.assertEqual(result.errors[0]["field"], "payload.raw_runtime_state")
+
     def test_canonicalization_and_hashing_are_stable_across_key_order(self) -> None:
         left = {"b": 2, "a": {"y": True, "x": "yes"}}
         right = {"a": {"x": "yes", "y": True}, "b": 2}
@@ -408,7 +493,7 @@ class HelperValidationTests(unittest.TestCase):
             ]
         )
         self.assertFalse(result.valid)
-        self.assertEqual(result.errors[0]["error_id"], "invalid_previous_event_hash")
+        self.assertEqual(result.errors[0]["error_id"], "invalid_event_hash")
         self.assertEqual(result.errors[0]["field"], "event_hash")
 
     def test_event_hash_chain_rejects_malformed_sequence(self) -> None:
@@ -457,7 +542,7 @@ class HelperValidationTests(unittest.TestCase):
             ]
         )
         self.assertFalse(result.valid)
-        self.assertEqual(result.errors[0]["error_id"], "invalid_previous_event_hash")
+        self.assertEqual(result.errors[0]["error_id"], "invalid_event_hash")
         self.assertEqual(result.errors[0]["field"], "event_hash")
 
     def test_host_private_field_scanner_returns_forbidden_path(self) -> None:

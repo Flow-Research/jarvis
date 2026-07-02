@@ -2,6 +2,8 @@
 
 Issue: #67.
 
+Status: implemented.
+
 Chunk 4 defines the conformance runner and protocol helper CLI.
 
 ## Scope

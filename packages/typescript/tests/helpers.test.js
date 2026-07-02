@@ -6,6 +6,7 @@ import {
   findForbiddenHostPrivateField,
   hashProtocolValue,
   protocolError,
+  validateEvidenceManifest,
   validateEventHashChain,
   validateMutationHeaders,
   validateOperationHeaders,
@@ -137,6 +138,15 @@ test("read headers reject mutation-only requirements", () => {
     "Jarvis-Actor-Id": "actor-test",
   });
   assert.equal(accepted.valid, true);
+
+  const extraMutationHeader = validateReadHeaders({
+    Authorization: "HostAuth test",
+    "Jarvis-Protocol-Version": "v0.1",
+    "Jarvis-Actor-Id": "actor-test",
+    "Jarvis-Idempotency-Key": "idem-test",
+  });
+  assert.equal(extraMutationHeader.valid, false);
+  assert.equal(extraMutationHeader.errors[0].error_id, "invalid_export");
 });
 
 test("OutcomeReport requires a terminal WorkSession source", () => {
@@ -170,6 +180,62 @@ test("OutcomeReport requires a terminal WorkSession source", () => {
   });
   assert.equal(wrongSource.valid, false);
   assert.equal(wrongSource.errors[0].error_id, "outcome_report_requires_terminal_source");
+});
+
+test("EvidenceManifest export requires terminal WorkSession source", () => {
+  const manifest = {
+    id: "evidence-test",
+    work_session_id: "ws-test",
+    generated_by_actor_id: "actor-human-test",
+    objective: "test",
+    event_chain_root: "hash:root",
+    evidence_item_refs: [
+      {
+        id: "evidence-item-test",
+        work_session_id: "ws-test",
+        source_event_refs: ["event-test"],
+        captured_by_actor_id: "actor-agent-test",
+        evidence_type: "artifact",
+        artifact_ref: "artifact:test",
+        content_hash: "hash:content",
+        trust_label: "verified",
+        redaction_state: "none",
+        captured_at: "2026-06-16T10:00:00Z",
+        limitation_refs: [],
+      },
+    ],
+    policy_decision_refs: [],
+    request_refs: [],
+    review_refs: [],
+    takeover_refs: [],
+    contribution_refs: [],
+    export_profile: {
+      profile: "portable",
+    },
+    generated_at: "2026-06-16T10:00:00Z",
+  };
+
+  const missingSource = validateEvidenceManifest(manifest);
+  assert.equal(missingSource.valid, false);
+  assert.equal(missingSource.errors[0].error_id, "invalid_evidence_export_state");
+
+  const activeSource = validateEvidenceManifest(manifest, {
+    workSession: { id: "ws-test", status: "active" },
+  });
+  assert.equal(activeSource.valid, false);
+  assert.equal(activeSource.errors[0].error_id, "invalid_evidence_export_state");
+
+  const completedSource = validateEvidenceManifest(manifest, {
+    workSession: { id: "ws-test", status: "completed" },
+  });
+  assert.equal(completedSource.valid, true);
+
+  const wrongSource = validateEvidenceManifest(manifest, {
+    workSession: { id: "ws-other", status: "completed" },
+  });
+  assert.equal(wrongSource.valid, false);
+  assert.equal(wrongSource.errors[0].error_id, "invalid_evidence_export_state");
+  assert.equal(wrongSource.errors[0].field, "work_session_id");
 });
 
 test("protocol error helper emits the OpenAPI error envelope", () => {
@@ -213,10 +279,44 @@ test("closed schema validation rejects unknown protocol fields", () => {
   assert.equal(result.errors[0].error_id, "invalid_export");
 });
 
+test("generic schema validation rejects unknown protocol object type", () => {
+  const result = validateProtocolRecord("NotAProtocolObject", {});
+  assert.equal(result.valid, false);
+  assert.equal(result.errors[0].error_id, "invalid_export");
+  assert.equal(result.errors[0].field, "object_type");
+});
+
 test("generic schema validation rejects non-object records as invalid export", () => {
   const result = validateProtocolRecord("Request", null);
   assert.equal(result.valid, false);
   assert.equal(result.errors[0].error_id, "invalid_export");
+});
+
+test("protocol record validation rejects nested host-private fields", () => {
+  const result = validateProtocolRecord("JarvisEvent", {
+    id: "event-test",
+    sequence: 1,
+    type: "work_session.created",
+    work_session_id: "ws-test",
+    actor_id: "actor-test",
+    timestamp: "2026-06-16T10:00:00Z",
+    payload: {
+      object_type: "work_session",
+      object_id: "ws-test",
+      action: "created",
+      raw_runtime_state: "host-only",
+    },
+    previous_hash: "hash:protocol-genesis",
+    event_hash: "hash:event-test",
+    canonicalization: {
+      serialization: "json-c14n",
+      hash_method: "sha256",
+      profile_ref: "canonicalization:v0.1",
+    },
+  });
+  assert.equal(result.valid, false);
+  assert.equal(result.errors[0].error_id, "forbidden_host_private_field");
+  assert.equal(result.errors[0].field, "payload.raw_runtime_state");
 });
 
 test("canonicalization and hashing are stable across object key order", () => {
@@ -257,9 +357,72 @@ test("event hash-chain helper rejects broken previous hashes", () => {
   assert.equal(invalid.errors[0].error_id, "invalid_previous_event_hash");
 });
 
+test("event hash-chain helper rejects malformed sequence and duplicate event hash", () => {
+  const malformedSequence = validateEventHashChain([
+    {
+      sequence: 0,
+      previous_hash: "hash:protocol-genesis",
+      event_hash: "hash:first",
+    },
+  ]);
+  assert.equal(malformedSequence.valid, false);
+  assert.equal(malformedSequence.errors[0].error_id, "invalid_export");
+  assert.equal(malformedSequence.errors[0].field, "sequence");
+
+  const duplicateSequence = validateEventHashChain([
+    {
+      sequence: 1,
+      previous_hash: "hash:protocol-genesis",
+      event_hash: "hash:first",
+    },
+    {
+      sequence: 1,
+      previous_hash: "hash:first",
+      event_hash: "hash:second",
+    },
+  ]);
+  assert.equal(duplicateSequence.valid, false);
+  assert.equal(duplicateSequence.errors[0].error_id, "invalid_export");
+  assert.equal(duplicateSequence.errors[0].field, "sequence");
+
+  const missingHash = validateEventHashChain([
+    {
+      sequence: 1,
+      previous_hash: "hash:protocol-genesis",
+    },
+  ]);
+  assert.equal(missingHash.valid, false);
+  assert.equal(missingHash.errors[0].error_id, "invalid_event_hash");
+  assert.equal(missingHash.errors[0].field, "event_hash");
+
+  const duplicateHash = validateEventHashChain([
+    {
+      sequence: 1,
+      previous_hash: "hash:protocol-genesis",
+      event_hash: "hash:same",
+    },
+    {
+      sequence: 2,
+      previous_hash: "hash:same",
+      event_hash: "hash:same",
+    },
+  ]);
+  assert.equal(duplicateHash.valid, false);
+  assert.equal(duplicateHash.errors[0].error_id, "invalid_event_hash");
+  assert.equal(duplicateHash.errors[0].field, "event_hash");
+});
+
 test("host-private field scanner returns the forbidden path", () => {
   assert.equal(
     findForbiddenHostPrivateField({ export_profile: {}, session_cookie: "secret" }),
     "session_cookie",
+  );
+  assert.equal(
+    findForbiddenHostPrivateField({ export_profile: {}, "private-key": "secret" }),
+    "private-key",
+  );
+  assert.equal(
+    findForbiddenHostPrivateField({ export_profile: {}, rawPrompt: "secret" }),
+    "rawPrompt",
   );
 });

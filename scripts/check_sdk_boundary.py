@@ -67,7 +67,9 @@ REQUIRED_PATHS = [
     "packages/cli/package.json",
     "packages/cli/README.md",
     "packages/cli/src",
+    "packages/cli/src/index.js",
     "packages/cli/tests",
+    "packages/cli/tests/cli.test.js",
     "packages/cli/fixtures/v0.1",
 ]
 
@@ -304,6 +306,33 @@ def check_npm_packages() -> None:
             ):
                 raise AssertionError(
                     "packages/typescript/package.json: test script missing"
+                )
+        if relative == "packages/cli/package.json":
+            files = package.get("files")
+            if not isinstance(files, list) or "src/" not in files:
+                raise AssertionError(
+                    "packages/cli/package.json: files MUST include src/"
+                )
+            bin_value = package.get("bin")
+            if not isinstance(bin_value, dict) or bin_value.get("jarvis") != (
+                "./src/index.js"
+            ):
+                raise AssertionError(
+                    "packages/cli/package.json: jarvis bin MUST expose src/index.js"
+                )
+            dependencies = package.get("dependencies")
+            if not isinstance(dependencies, dict) or dependencies.get("@jarvis-protocol/sdk") != (
+                "0.1.0-alpha.0"
+            ):
+                raise AssertionError(
+                    "packages/cli/package.json: CLI MUST depend on SDK helper package"
+                )
+            scripts = package.get("scripts")
+            if not isinstance(scripts, dict) or scripts.get("test") != (
+                "node --test tests/*.test.js"
+            ):
+                raise AssertionError(
+                    "packages/cli/package.json: test script missing"
                 )
         check_manifest_values(relative, collect_npm_manifest_values(relative, package))
 

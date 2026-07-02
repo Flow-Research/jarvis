@@ -324,6 +324,8 @@ TypeScript helper changes MUST run
 
 Python helper changes MUST run `npm run test:python`.
 
+CLI helper changes MUST run `npm run test:cli`.
+
 ## Required References
 
 Before changing protocol direction, read:
