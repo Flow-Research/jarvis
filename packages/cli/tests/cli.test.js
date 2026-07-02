@@ -192,6 +192,19 @@ test("validate evidence-manifest rejects host-private export field", async () =>
   }
 });
 
+test("validate evidence-manifest rejects malformed input envelope", async () => {
+  const golden = readJson(join(fixtureRoot, "valid/golden-path.json"));
+  const input = writeJsonTemp(golden.records.evidence_manifests.portable_export);
+  try {
+    const result = await run(["validate", "evidence-manifest", input.file]);
+    assert.equal(result.code, 1);
+    assert.equal(result.payload.errors[0].error_id, "invalid_export");
+    assert.equal(result.payload.errors[0].field, "evidence_manifest");
+  } finally {
+    input.cleanup();
+  }
+});
+
 test("validate evidence-manifest rejects host-private separator variants", async () => {
   const golden = readJson(join(fixtureRoot, "valid/golden-path.json"));
   const evidenceManifest = structuredClone(golden.records.evidence_manifests.portable_export);

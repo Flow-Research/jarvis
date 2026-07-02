@@ -122,58 +122,62 @@ OBJECT_BY_OPERATION = {
     "exportEvidenceManifest": "EvidenceManifest",
 }
 
-OPERATION_METHOD_BY_ID = {
-    "registerWorker": "PUT",
-    "registerActor": "PUT",
-    "createWorkSession": "POST",
-    "getWorkSession": "GET",
-    "appendJarvisEvent": "POST",
-    "recordPolicyDecision": "POST",
-    "createRequest": "POST",
-    "recordReview": "POST",
-    "recordTakeover": "POST",
-    "recordContribution": "POST",
-    "createLearningRecord": "POST",
-    "createMemoryProposal": "POST",
-    "createSkillProposal": "POST",
-    "exportEvidenceManifest": "GET",
-    "submitOutcomeReport": "POST",
-}
-
-OPERATION_PATH_BY_ID = {
-    "registerWorker": "/workers/{worker_id}",
-    "registerActor": "/actors/{actor_id}",
-    "createWorkSession": "/work-sessions",
-    "getWorkSession": "/work-sessions/{work_session_id}",
-    "appendJarvisEvent": "/work-sessions/{work_session_id}/events",
-    "recordPolicyDecision": "/work-sessions/{work_session_id}/policy-decisions",
-    "createRequest": "/work-sessions/{work_session_id}/requests",
-    "recordReview": "/work-sessions/{work_session_id}/reviews",
-    "recordTakeover": "/work-sessions/{work_session_id}/takeovers",
-    "recordContribution": "/work-sessions/{work_session_id}/contributions",
-    "createLearningRecord": "/work-sessions/{work_session_id}/learning-records",
-    "createMemoryProposal": "/work-sessions/{work_session_id}/memory-proposals",
-    "createSkillProposal": "/work-sessions/{work_session_id}/skill-proposals",
-    "exportEvidenceManifest": "/work-sessions/{work_session_id}/export",
-    "submitOutcomeReport": "/outcome-reports",
-}
-
-OPERATION_STATUS_BY_ID = {
-    "registerWorker": {200, 400},
-    "registerActor": {200, 400},
-    "createWorkSession": {201, 400},
-    "getWorkSession": {200, 400},
-    "appendJarvisEvent": {201, 400},
-    "recordPolicyDecision": {201, 400},
-    "createRequest": {201, 400},
-    "recordReview": {201, 400},
-    "recordTakeover": {201, 400},
-    "recordContribution": {201, 400},
-    "createLearningRecord": {201, 400},
-    "createMemoryProposal": {201, 400},
-    "createSkillProposal": {201, 400},
-    "exportEvidenceManifest": {200, 400},
-    "submitOutcomeReport": {202, 400},
+OPERATION_BINDINGS_BY_ID = {
+    "registerWorker": {"method": "PUT", "path": "/workers/{worker_id}", "statuses": {200, 400}},
+    "registerActor": {"method": "PUT", "path": "/actors/{actor_id}", "statuses": {200, 400}},
+    "createWorkSession": {"method": "POST", "path": "/work-sessions", "statuses": {201, 400}},
+    "getWorkSession": {"method": "GET", "path": "/work-sessions/{work_session_id}", "statuses": {200, 400}},
+    "appendJarvisEvent": {
+        "method": "POST",
+        "path": "/work-sessions/{work_session_id}/events",
+        "statuses": {201, 400},
+    },
+    "recordPolicyDecision": {
+        "method": "POST",
+        "path": "/work-sessions/{work_session_id}/policy-decisions",
+        "statuses": {201, 400},
+    },
+    "createRequest": {
+        "method": "POST",
+        "path": "/work-sessions/{work_session_id}/requests",
+        "statuses": {201, 400},
+    },
+    "recordReview": {
+        "method": "POST",
+        "path": "/work-sessions/{work_session_id}/reviews",
+        "statuses": {201, 400},
+    },
+    "recordTakeover": {
+        "method": "POST",
+        "path": "/work-sessions/{work_session_id}/takeovers",
+        "statuses": {201, 400},
+    },
+    "recordContribution": {
+        "method": "POST",
+        "path": "/work-sessions/{work_session_id}/contributions",
+        "statuses": {201, 400},
+    },
+    "createLearningRecord": {
+        "method": "POST",
+        "path": "/work-sessions/{work_session_id}/learning-records",
+        "statuses": {201, 400},
+    },
+    "createMemoryProposal": {
+        "method": "POST",
+        "path": "/work-sessions/{work_session_id}/memory-proposals",
+        "statuses": {201, 400},
+    },
+    "createSkillProposal": {
+        "method": "POST",
+        "path": "/work-sessions/{work_session_id}/skill-proposals",
+        "statuses": {201, 400},
+    },
+    "exportEvidenceManifest": {
+        "method": "GET",
+        "path": "/work-sessions/{work_session_id}/export",
+        "statuses": {200, 400},
+    },
+    "submitOutcomeReport": {"method": "POST", "path": "/outcome-reports", "statuses": {202, 400}},
 }
 
 ACTOR_BODY_FIELD_BY_OPERATION = {
@@ -328,13 +332,15 @@ def _worker_grants(worker: Mapping[str, Any] | None) -> set[str]:
 
 def _operation_method(operation: Mapping[str, Any] | None) -> Any:
     if operation:
-        return OPERATION_METHOD_BY_ID.get(operation.get("operation_id"), operation.get("method"))
+        binding = OPERATION_BINDINGS_BY_ID.get(operation.get("operation_id"))
+        return binding["method"] if binding else operation.get("method")
     return None
 
 
 def _operation_path(operation: Mapping[str, Any] | None) -> str:
     if operation:
-        return OPERATION_PATH_BY_ID.get(operation.get("operation_id"), operation.get("path", ""))
+        binding = OPERATION_BINDINGS_BY_ID.get(operation.get("operation_id"))
+        return binding["path"] if binding else operation.get("path", "")
     return ""
 
 
@@ -352,7 +358,8 @@ def _operation_path_matches_template(template: str, path: Any) -> bool:
 
 def _operation_binding_error(operation: Mapping[str, Any] | None) -> dict[str, Any] | None:
     operation_id = operation.get("operation_id") if operation else None
-    if operation_id not in OPERATION_METHOD_BY_ID:
+    binding = OPERATION_BINDINGS_BY_ID.get(operation_id)
+    if not binding:
         return protocol_error(
             "invalid_export",
             {
@@ -361,7 +368,7 @@ def _operation_binding_error(operation: Mapping[str, Any] | None) -> dict[str, A
                 "reason": "Fixture operation_id MUST exist in the Jarvis OpenAPI binding.",
             },
         )
-    if operation.get("method") != OPERATION_METHOD_BY_ID[operation_id]:
+    if operation.get("method") != binding["method"]:
         return protocol_error(
             "invalid_export",
             {
@@ -370,7 +377,7 @@ def _operation_binding_error(operation: Mapping[str, Any] | None) -> dict[str, A
                 "reason": "Fixture operation method MUST match the Jarvis OpenAPI binding.",
             },
         )
-    if not _operation_path_matches_template(OPERATION_PATH_BY_ID[operation_id], operation.get("path")):
+    if not _operation_path_matches_template(binding["path"], operation.get("path")):
         return protocol_error(
             "invalid_export",
             {
@@ -379,7 +386,7 @@ def _operation_binding_error(operation: Mapping[str, Any] | None) -> dict[str, A
                 "reason": "Fixture operation path MUST match the Jarvis OpenAPI binding.",
             },
         )
-    if operation.get("expected_status") not in OPERATION_STATUS_BY_ID[operation_id]:
+    if operation.get("expected_status") not in binding["statuses"]:
         return protocol_error(
             "invalid_export",
             {
@@ -1443,9 +1450,10 @@ def _detect_fixture_error(
 ) -> dict[str, Any] | None:
     records = fixture.get("records", {}) if isinstance(fixture.get("records"), dict) else {}
     body = _operation_body(fixture, operation)
-    binding_shape_error = _operation_binding_error(operation)
-    if binding_shape_error:
-        return binding_shape_error
+    if operation is not None:
+        binding_shape_error = _operation_binding_error(operation)
+        if binding_shape_error:
+            return binding_shape_error
     header_result = validate_operation_headers(operation, {"skip_timestamp_skew": True})
     if not header_result.valid:
         return header_result.errors[0]

@@ -55,6 +55,17 @@ Validate an EvidenceManifest export:
 jarvis validate evidence-manifest evidence-manifest.json
 ```
 
+The EvidenceManifest file MUST use this envelope:
+
+```json
+{
+  "evidence_manifest": {},
+  "work_session": {}
+}
+```
+
+`work_session` is required when enforcing terminal-source export validation.
+
 Check operation headers:
 
 ```bash

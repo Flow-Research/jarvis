@@ -122,30 +122,45 @@ const REQUIRED_FIXTURE_PATHS = Object.freeze([
 ]);
 
 export async function runCli(args, io = defaultIo()) {
-  const sdk = await loadSdk();
+  let sdk;
   try {
+    sdk = await loadSdk();
     const parsed = parseArgs(args);
     const outcome = await dispatch(sdk, parsed);
     writeJson(io.stdout, outcome.payload);
     return outcome.code;
   } catch (error) {
+    const reason = error instanceof Error ? error.message : String(error);
     writeJson(io.stdout, {
-      protocol_version: sdk.PROTOCOL_VERSION ?? CLI_PROTOCOL_VERSION,
+      protocol_version: sdk?.PROTOCOL_VERSION ?? CLI_PROTOCOL_VERSION,
       command: "jarvis",
       passed: false,
       valid: false,
-      errors: [
-        sdk.protocolError("invalid_export", {
-          objectType: "CLI",
-          field: "argv",
-          reason: error instanceof Error ? error.message : String(error),
-          remediation: "Run a supported Jarvis CLI command with the required input file.",
-          traceId: "trace:jarvis-cli",
-        }),
-      ],
+      errors: [cliProtocolError(sdk, "argv", reason)],
     });
     return 1;
   }
+}
+
+function cliProtocolError(sdk, field, reason) {
+  if (sdk?.protocolError) {
+    return sdk.protocolError("invalid_export", {
+      objectType: "CLI",
+      field,
+      reason,
+      remediation: "Run a supported Jarvis CLI command with the required input file.",
+      traceId: "trace:jarvis-cli",
+    });
+  }
+  return {
+    error_id: "invalid_export",
+    protocol_version: CLI_PROTOCOL_VERSION,
+    object_type: "CLI",
+    field,
+    reason,
+    remediation: "Run a supported Jarvis CLI command with the required input file.",
+    trace_id: "trace:jarvis-cli",
+  };
 }
 
 async function loadSdk() {
@@ -272,7 +287,15 @@ function validateRecordCommand(sdk, file) {
 
 function validateEvidenceManifestCommand(sdk, file) {
   const input = readJsonFile(file);
-  const manifest = input.evidence_manifest ?? input.evidenceManifest ?? input.record ?? input;
+  const manifest = input.evidence_manifest ?? input.evidenceManifest ?? input.record;
+  if (manifest === undefined) {
+    return failureOutcome(
+      sdk,
+      "validate evidence-manifest",
+      "evidence_manifest",
+      "EvidenceManifest input MUST include evidence_manifest, evidenceManifest, or record.",
+    );
+  }
   const workSession = input.work_session ?? input.workSession;
   const result = sdk.validateEvidenceManifest(manifest, { workSession });
   return validationOutcome(sdk, "validate evidence-manifest", result, { file });

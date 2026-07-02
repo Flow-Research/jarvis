@@ -116,58 +116,66 @@ const OBJECT_BY_OPERATION = Object.freeze({
   exportEvidenceManifest: "EvidenceManifest",
 });
 
-const OPERATION_METHOD_BY_ID = Object.freeze({
-  registerWorker: "PUT",
-  registerActor: "PUT",
-  createWorkSession: "POST",
-  getWorkSession: "GET",
-  appendJarvisEvent: "POST",
-  recordPolicyDecision: "POST",
-  createRequest: "POST",
-  recordReview: "POST",
-  recordTakeover: "POST",
-  recordContribution: "POST",
-  createLearningRecord: "POST",
-  createMemoryProposal: "POST",
-  createSkillProposal: "POST",
-  exportEvidenceManifest: "GET",
-  submitOutcomeReport: "POST",
-});
-
-const OPERATION_PATH_BY_ID = Object.freeze({
-  registerWorker: "/workers/{worker_id}",
-  registerActor: "/actors/{actor_id}",
-  createWorkSession: "/work-sessions",
-  getWorkSession: "/work-sessions/{work_session_id}",
-  appendJarvisEvent: "/work-sessions/{work_session_id}/events",
-  recordPolicyDecision: "/work-sessions/{work_session_id}/policy-decisions",
-  createRequest: "/work-sessions/{work_session_id}/requests",
-  recordReview: "/work-sessions/{work_session_id}/reviews",
-  recordTakeover: "/work-sessions/{work_session_id}/takeovers",
-  recordContribution: "/work-sessions/{work_session_id}/contributions",
-  createLearningRecord: "/work-sessions/{work_session_id}/learning-records",
-  createMemoryProposal: "/work-sessions/{work_session_id}/memory-proposals",
-  createSkillProposal: "/work-sessions/{work_session_id}/skill-proposals",
-  exportEvidenceManifest: "/work-sessions/{work_session_id}/export",
-  submitOutcomeReport: "/outcome-reports",
-});
-
-const OPERATION_STATUS_BY_ID = Object.freeze({
-  registerWorker: new Set([200, 400]),
-  registerActor: new Set([200, 400]),
-  createWorkSession: new Set([201, 400]),
-  getWorkSession: new Set([200, 400]),
-  appendJarvisEvent: new Set([201, 400]),
-  recordPolicyDecision: new Set([201, 400]),
-  createRequest: new Set([201, 400]),
-  recordReview: new Set([201, 400]),
-  recordTakeover: new Set([201, 400]),
-  recordContribution: new Set([201, 400]),
-  createLearningRecord: new Set([201, 400]),
-  createMemoryProposal: new Set([201, 400]),
-  createSkillProposal: new Set([201, 400]),
-  exportEvidenceManifest: new Set([200, 400]),
-  submitOutcomeReport: new Set([202, 400]),
+const OPERATION_BINDINGS_BY_ID = Object.freeze({
+  registerWorker: Object.freeze({ method: "PUT", path: "/workers/{worker_id}", statuses: new Set([200, 400]) }),
+  registerActor: Object.freeze({ method: "PUT", path: "/actors/{actor_id}", statuses: new Set([200, 400]) }),
+  createWorkSession: Object.freeze({ method: "POST", path: "/work-sessions", statuses: new Set([201, 400]) }),
+  getWorkSession: Object.freeze({
+    method: "GET",
+    path: "/work-sessions/{work_session_id}",
+    statuses: new Set([200, 400]),
+  }),
+  appendJarvisEvent: Object.freeze({
+    method: "POST",
+    path: "/work-sessions/{work_session_id}/events",
+    statuses: new Set([201, 400]),
+  }),
+  recordPolicyDecision: Object.freeze({
+    method: "POST",
+    path: "/work-sessions/{work_session_id}/policy-decisions",
+    statuses: new Set([201, 400]),
+  }),
+  createRequest: Object.freeze({
+    method: "POST",
+    path: "/work-sessions/{work_session_id}/requests",
+    statuses: new Set([201, 400]),
+  }),
+  recordReview: Object.freeze({
+    method: "POST",
+    path: "/work-sessions/{work_session_id}/reviews",
+    statuses: new Set([201, 400]),
+  }),
+  recordTakeover: Object.freeze({
+    method: "POST",
+    path: "/work-sessions/{work_session_id}/takeovers",
+    statuses: new Set([201, 400]),
+  }),
+  recordContribution: Object.freeze({
+    method: "POST",
+    path: "/work-sessions/{work_session_id}/contributions",
+    statuses: new Set([201, 400]),
+  }),
+  createLearningRecord: Object.freeze({
+    method: "POST",
+    path: "/work-sessions/{work_session_id}/learning-records",
+    statuses: new Set([201, 400]),
+  }),
+  createMemoryProposal: Object.freeze({
+    method: "POST",
+    path: "/work-sessions/{work_session_id}/memory-proposals",
+    statuses: new Set([201, 400]),
+  }),
+  createSkillProposal: Object.freeze({
+    method: "POST",
+    path: "/work-sessions/{work_session_id}/skill-proposals",
+    statuses: new Set([201, 400]),
+  }),
+  exportEvidenceManifest: Object.freeze({
+    method: "GET",
+    path: "/work-sessions/{work_session_id}/export",
+    statuses: new Set([200, 400]),
+  }),
+  submitOutcomeReport: Object.freeze({ method: "POST", path: "/outcome-reports", statuses: new Set([202, 400]) }),
 });
 
 const ACTOR_BODY_FIELD_BY_OPERATION = Object.freeze({
@@ -305,11 +313,11 @@ function workerGrants(worker) {
 }
 
 function operationMethod(operation) {
-  return OPERATION_METHOD_BY_ID[operation?.operation_id] ?? operation?.method;
+  return OPERATION_BINDINGS_BY_ID[operation?.operation_id]?.method ?? operation?.method;
 }
 
 function operationPath(operation) {
-  return OPERATION_PATH_BY_ID[operation?.operation_id] ?? operation?.path ?? "";
+  return OPERATION_BINDINGS_BY_ID[operation?.operation_id]?.path ?? operation?.path ?? "";
 }
 
 function escapeRegex(value) {
@@ -331,28 +339,29 @@ function operationPathMatchesTemplate(template, path) {
 
 function operationBindingError(operation) {
   const operationId = operation?.operation_id;
-  if (!operationId || !(operationId in OPERATION_METHOD_BY_ID)) {
+  const binding = OPERATION_BINDINGS_BY_ID[operationId];
+  if (!binding) {
     return protocolError("invalid_export", {
       objectType: "FixtureOperation",
       field: "operation_id",
       reason: "Fixture operation_id MUST exist in the Jarvis OpenAPI binding.",
     });
   }
-  if (operation.method !== OPERATION_METHOD_BY_ID[operationId]) {
+  if (operation.method !== binding.method) {
     return protocolError("invalid_export", {
       objectType: "FixtureOperation",
       field: "method",
       reason: "Fixture operation method MUST match the Jarvis OpenAPI binding.",
     });
   }
-  if (!operationPathMatchesTemplate(OPERATION_PATH_BY_ID[operationId], operation.path)) {
+  if (!operationPathMatchesTemplate(binding.path, operation.path)) {
     return protocolError("invalid_export", {
       objectType: "FixtureOperation",
       field: "path",
       reason: "Fixture operation path MUST match the Jarvis OpenAPI binding.",
     });
   }
-  if (!OPERATION_STATUS_BY_ID[operationId].has(operation.expected_status)) {
+  if (!binding.statuses.has(operation.expected_status)) {
     return protocolError("invalid_export", {
       objectType: "FixtureOperation",
       field: "expected_status",
@@ -1174,9 +1183,11 @@ export function validateFixture(fixture) {
 function detectFixtureError(fixture, operation) {
   const records = fixture.records ?? {};
   const body = operationBody(fixture, operation);
-  const bindingShapeError = operationBindingError(operation);
-  if (bindingShapeError) {
-    return bindingShapeError;
+  if (operation) {
+    const bindingShapeError = operationBindingError(operation);
+    if (bindingShapeError) {
+      return bindingShapeError;
+    }
   }
   const headerResult = validateOperationHeaders(operation);
   if (!headerResult.valid) {
