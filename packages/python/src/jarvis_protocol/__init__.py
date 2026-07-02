@@ -49,6 +49,13 @@ READ_HEADERS = (
     "Jarvis-Actor-Id",
 )
 
+MUTATION_ONLY_HEADERS = (
+    "Jarvis-Idempotency-Key",
+    "Jarvis-Request-Timestamp",
+    "Jarvis-Expected-WorkSession-Revision",
+    "Jarvis-Previous-Event-Hash",
+)
+
 TERMINAL_WORK_SESSION_STATES = (
     "completed",
     "failed",
@@ -113,6 +120,60 @@ OBJECT_BY_OPERATION = {
     "createSkillProposal": "SkillProposal",
     "submitOutcomeReport": "OutcomeReport",
     "exportEvidenceManifest": "EvidenceManifest",
+}
+
+OPERATION_METHOD_BY_ID = {
+    "registerWorker": "PUT",
+    "registerActor": "PUT",
+    "createWorkSession": "POST",
+    "getWorkSession": "GET",
+    "appendJarvisEvent": "POST",
+    "recordPolicyDecision": "POST",
+    "createRequest": "POST",
+    "recordReview": "POST",
+    "recordTakeover": "POST",
+    "recordContribution": "POST",
+    "createLearningRecord": "POST",
+    "createMemoryProposal": "POST",
+    "createSkillProposal": "POST",
+    "exportEvidenceManifest": "GET",
+    "submitOutcomeReport": "POST",
+}
+
+OPERATION_PATH_BY_ID = {
+    "registerWorker": "/workers/{worker_id}",
+    "registerActor": "/actors/{actor_id}",
+    "createWorkSession": "/work-sessions",
+    "getWorkSession": "/work-sessions/{work_session_id}",
+    "appendJarvisEvent": "/work-sessions/{work_session_id}/events",
+    "recordPolicyDecision": "/work-sessions/{work_session_id}/policy-decisions",
+    "createRequest": "/work-sessions/{work_session_id}/requests",
+    "recordReview": "/work-sessions/{work_session_id}/reviews",
+    "recordTakeover": "/work-sessions/{work_session_id}/takeovers",
+    "recordContribution": "/work-sessions/{work_session_id}/contributions",
+    "createLearningRecord": "/work-sessions/{work_session_id}/learning-records",
+    "createMemoryProposal": "/work-sessions/{work_session_id}/memory-proposals",
+    "createSkillProposal": "/work-sessions/{work_session_id}/skill-proposals",
+    "exportEvidenceManifest": "/work-sessions/{work_session_id}/export",
+    "submitOutcomeReport": "/outcome-reports",
+}
+
+OPERATION_STATUS_BY_ID = {
+    "registerWorker": {200, 400},
+    "registerActor": {200, 400},
+    "createWorkSession": {201, 400},
+    "getWorkSession": {200, 400},
+    "appendJarvisEvent": {201, 400},
+    "recordPolicyDecision": {201, 400},
+    "createRequest": {201, 400},
+    "recordReview": {201, 400},
+    "recordTakeover": {201, 400},
+    "recordContribution": {201, 400},
+    "createLearningRecord": {201, 400},
+    "createMemoryProposal": {201, 400},
+    "createSkillProposal": {201, 400},
+    "exportEvidenceManifest": {200, 400},
+    "submitOutcomeReport": {202, 400},
 }
 
 ACTOR_BODY_FIELD_BY_OPERATION = {
@@ -265,6 +326,71 @@ def _worker_grants(worker: Mapping[str, Any] | None) -> set[str]:
     return {grant for grant in grants if isinstance(grant, str)} if isinstance(grants, list) else set()
 
 
+def _operation_method(operation: Mapping[str, Any] | None) -> Any:
+    if operation:
+        return OPERATION_METHOD_BY_ID.get(operation.get("operation_id"), operation.get("method"))
+    return None
+
+
+def _operation_path(operation: Mapping[str, Any] | None) -> str:
+    if operation:
+        return OPERATION_PATH_BY_ID.get(operation.get("operation_id"), operation.get("path", ""))
+    return ""
+
+
+def _operation_path_matches_template(template: str, path: Any) -> bool:
+    if not _is_nonempty_string(template) or not _is_nonempty_string(path):
+        return False
+    parts = []
+    for segment in template.split("/"):
+        if re.fullmatch(r"\{[^/]+\}", segment):
+            parts.append(r"[^/]+")
+        else:
+            parts.append(re.escape(segment))
+    return re.fullmatch("/".join(parts), path) is not None
+
+
+def _operation_binding_error(operation: Mapping[str, Any] | None) -> dict[str, Any] | None:
+    operation_id = operation.get("operation_id") if operation else None
+    if operation_id not in OPERATION_METHOD_BY_ID:
+        return protocol_error(
+            "invalid_export",
+            {
+                "object_type": "FixtureOperation",
+                "field": "operation_id",
+                "reason": "Fixture operation_id MUST exist in the Jarvis OpenAPI binding.",
+            },
+        )
+    if operation.get("method") != OPERATION_METHOD_BY_ID[operation_id]:
+        return protocol_error(
+            "invalid_export",
+            {
+                "object_type": "FixtureOperation",
+                "field": "method",
+                "reason": "Fixture operation method MUST match the Jarvis OpenAPI binding.",
+            },
+        )
+    if not _operation_path_matches_template(OPERATION_PATH_BY_ID[operation_id], operation.get("path")):
+        return protocol_error(
+            "invalid_export",
+            {
+                "object_type": "FixtureOperation",
+                "field": "path",
+                "reason": "Fixture operation path MUST match the Jarvis OpenAPI binding.",
+            },
+        )
+    if operation.get("expected_status") not in OPERATION_STATUS_BY_ID[operation_id]:
+        return protocol_error(
+            "invalid_export",
+            {
+                "object_type": "FixtureOperation",
+                "field": "expected_status",
+                "reason": "Fixture operation expected_status MUST match the Jarvis OpenAPI binding.",
+            },
+        )
+    return None
+
+
 def _target_work_session_id(operation: Mapping[str, Any] | None, body: Mapping[str, Any] | None) -> Any:
     if operation and operation.get("work_session_id") is not None:
         return operation.get("work_session_id")
@@ -323,6 +449,34 @@ def _outcome_report_source_work_session(
         if snapshot.get("status") in TERMINAL_WORK_SESSION_STATES:
             return snapshot
     return candidates[0] if candidates else None
+
+
+def _evidence_manifest_source_work_session(
+    fixture: Mapping[str, Any],
+    evidence_manifest: Mapping[str, Any] | None,
+    operation: Mapping[str, Any] | None,
+) -> dict[str, Any] | None:
+    records = fixture.get("records", {}) if isinstance(fixture.get("records"), dict) else {}
+    expected_field = fixture.get("expected_error_field")
+    if (
+        fixture.get("expected_error_id") == "invalid_evidence_export_state"
+        and _is_nonempty_string(expected_field)
+        and expected_field.endswith(".status")
+    ):
+        referenced = _get_ref(fixture, expected_field.removesuffix(".status"))
+        if isinstance(referenced, dict):
+            return referenced
+    work_session_id = evidence_manifest.get("work_session_id") if isinstance(evidence_manifest, dict) else None
+    for snapshot in _all_records(records, "work_sessions"):
+        if snapshot.get("id") == work_session_id and snapshot.get("status") in TERMINAL_WORK_SESSION_STATES:
+            return snapshot
+    operation_snapshot = _work_session_snapshot_for_operation(records, operation, evidence_manifest)
+    if operation_snapshot:
+        return operation_snapshot
+    for snapshot in _all_records(records, "work_sessions"):
+        if snapshot.get("id") == work_session_id:
+            return snapshot
+    return None
 
 
 def _operation_body_binding_error(
@@ -399,7 +553,7 @@ def _operation_state_error(
 ) -> dict[str, Any] | None:
     if operation and operation.get("operation_id") == "createWorkSession":
         return _create_work_session_genesis_error(operation) or _create_work_session_body_genesis_error(body)
-    path = operation.get("path") if operation else None
+    path = _operation_path(operation)
     if not isinstance(path, str) or not path.startswith("/work-sessions"):
         return None
     headers = operation.get("headers", {}) if operation else {}
@@ -494,6 +648,15 @@ def _evidence_manifest_export_error(
             },
         )
     work_session_status = work_session.get("status") if isinstance(work_session, dict) else None
+    if not work_session_status:
+        return protocol_error(
+            "invalid_evidence_export_state",
+            {
+                "object_type": "EvidenceManifest",
+                "field": "work_session.status",
+                "reason": "EvidenceManifest export requires a terminal WorkSession source.",
+            },
+        )
     if work_session_status and work_session_status not in TERMINAL_WORK_SESSION_STATES:
         return protocol_error(
             "invalid_evidence_export_state",
@@ -501,6 +664,19 @@ def _evidence_manifest_export_error(
                 "object_type": "EvidenceManifest",
                 "field": "work_session.status",
                 "reason": "EvidenceManifest export requires a terminal WorkSession source.",
+            },
+        )
+    if (
+        not isinstance(work_session, dict)
+        or not isinstance(evidence_manifest, dict)
+        or work_session.get("id") != evidence_manifest.get("work_session_id")
+    ):
+        return protocol_error(
+            "invalid_evidence_export_state",
+            {
+                "object_type": "EvidenceManifest",
+                "field": "work_session_id",
+                "reason": "EvidenceManifest source WorkSession id MUST match EvidenceManifest.work_session_id.",
             },
         )
     return None
@@ -738,7 +914,20 @@ def validate_mutation_headers(headers: Any, options: Mapping[str, Any] | None = 
 def validate_read_headers(headers: Any, options: Mapping[str, Any] | None = None) -> ValidationResult:
     options = dict(options or {})
     options["required_headers"] = READ_HEADERS
-    return validate_headers(headers, options)
+    result = validate_headers(headers, options)
+    if not result.valid:
+        return result
+    forbidden_header = next((header for header in MUTATION_ONLY_HEADERS if header in headers), None)
+    if forbidden_header:
+        return _fail(
+            "invalid_export",
+            {
+                "object_type": "headers",
+                "field": f"headers.{forbidden_header}",
+                "reason": "Read operations MUST NOT include mutation-only headers.",
+            },
+        )
+    return result
 
 
 def validate_operation_headers(
@@ -746,8 +935,8 @@ def validate_operation_headers(
     options: Mapping[str, Any] | None = None,
 ) -> ValidationResult:
     options = dict(options or {})
-    method = operation.get("method") if operation else None
-    path = operation.get("path", "") if operation else ""
+    method = _operation_method(operation)
+    path = _operation_path(operation)
     work_session_scoped = isinstance(path, str) and path.startswith("/work-sessions")
     header_result = (
         validate_read_headers(operation.get("headers") if operation else None, options)
@@ -1100,7 +1289,7 @@ def validate_event_hash_chain(
         event_hash = event.get("event_hash")
         if not _is_nonempty_string(event_hash) or not event_hash.startswith("hash:"):
             return _fail(
-                "invalid_previous_event_hash",
+                "invalid_event_hash",
                 {
                     "object_type": "JarvisEvent",
                     "field": "event_hash",
@@ -1109,7 +1298,7 @@ def validate_event_hash_chain(
             )
         if event_hash in seen_hashes:
             return _fail(
-                "invalid_previous_event_hash",
+                "invalid_event_hash",
                 {
                     "object_type": "JarvisEvent",
                     "field": "event_hash",
@@ -1139,6 +1328,17 @@ def validate_protocol_record(
     options: Mapping[str, Any] | None = None,
 ) -> ValidationResult:
     options = options or {}
+    if object_type in OPENAPI_SCHEMA_NAMES:
+        forbidden = find_forbidden_host_private_field(record)
+        if forbidden:
+            return _fail(
+                "forbidden_host_private_field",
+                {
+                    "object_type": object_type,
+                    "field": forbidden,
+                    "reason": "Protocol records MUST NOT expose host-private fields.",
+                },
+            )
     validators = {
         "Request": validate_request,
         "Takeover": validate_takeover,
@@ -1184,6 +1384,9 @@ def validate_fixture(fixture: Any) -> ValidationResult:
     for operation_item in operations if isinstance(operations, list) else []:
         if not isinstance(operation_item, dict):
             continue
+        binding_shape_error = _operation_binding_error(operation_item)
+        if binding_shape_error:
+            return validation_result([binding_shape_error])
         header_result = validate_operation_headers(operation_item, {"skip_timestamp_skew": True})
         if not header_result.valid:
             return header_result
@@ -1210,7 +1413,11 @@ def validate_fixture(fixture: Any) -> ValidationResult:
             return validation_result([accepted_error])
         if operation_item.get("operation_id") == "exportEvidenceManifest":
             manifests = _all_records(fixture.get("records", {}), "evidence_manifests")
-            manifest_result = validate_evidence_manifest(manifests[0] if manifests else None)
+            manifest = manifests[0] if manifests else None
+            manifest_result = validate_evidence_manifest(
+                manifest,
+                {"work_session": _evidence_manifest_source_work_session(fixture, manifest, operation_item)},
+            )
             if not manifest_result.valid:
                 return manifest_result
         object_type = OBJECT_BY_OPERATION.get(operation_item.get("operation_id"))
@@ -1236,6 +1443,9 @@ def _detect_fixture_error(
 ) -> dict[str, Any] | None:
     records = fixture.get("records", {}) if isinstance(fixture.get("records"), dict) else {}
     body = _operation_body(fixture, operation)
+    binding_shape_error = _operation_binding_error(operation)
+    if binding_shape_error:
+        return binding_shape_error
     header_result = validate_operation_headers(operation, {"skip_timestamp_skew": True})
     if not header_result.valid:
         return header_result.errors[0]
@@ -1297,7 +1507,7 @@ def _detect_fixture_error(
             },
         )
 
-    is_mutation_operation = not operation or operation.get("method") != "GET"
+    is_mutation_operation = _operation_method(operation) != "GET"
     if (
         is_mutation_operation
         and isinstance(work_session, dict)
@@ -1377,7 +1587,11 @@ def _detect_fixture_error(
 
     if operation and operation.get("operation_id") == "exportEvidenceManifest":
         manifests = _all_records(records, "evidence_manifests")
-        export_error = _evidence_manifest_export_error(manifests[0] if manifests else None, work_session)
+        manifest = manifests[0] if manifests else None
+        export_error = _evidence_manifest_export_error(
+            manifest,
+            _evidence_manifest_source_work_session(fixture, manifest, operation) or work_session,
+        )
         if export_error:
             return export_error
 
@@ -1424,6 +1638,7 @@ __all__ = list(OPENAPI_TYPE_NAMES)
 __all__ += [
     "FORBIDDEN_EXPORT_KEY_TOKENS",
     "NON_WORKSESSION_MUTATION_HEADERS",
+    "MUTATION_ONLY_HEADERS",
     "OPENAPI_SCHEMA_NAMES",
     "PROTOCOL_VERSION",
     "READ_HEADERS",

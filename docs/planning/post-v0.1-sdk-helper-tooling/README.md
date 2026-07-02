@@ -1,6 +1,6 @@
 # Post-v0.1 SDK Helper Tooling Plan
 
-Status: planned.
+Status: implemented.
 
 Jarvis v0.1.0 is released as Protocol Alpha. Post-v0.1 SDK helper tooling
 starts after the protocol contract, OpenAPI binding, conformance fixtures,
@@ -125,7 +125,7 @@ before PR ready.
 
 ## Done State
 
-SDK helper tooling planning is complete when:
+SDK helper tooling implementation is complete when:
 
 - Chunk 1 locks allowed and rejected SDK surfaces.
 - Chunk 2 defines TypeScript helper scope without runtime behavior.

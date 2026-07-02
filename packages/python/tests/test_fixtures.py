@@ -24,7 +24,11 @@ class FixtureValidationTests(unittest.TestCase):
 
     def test_golden_path_outcome_report_requires_terminal_work_session(self) -> None:
         fixture = read_json(FIXTURE_ROOT / "valid/golden-path.json")
-        fixture["records"]["work_sessions"]["completed"]["status"] = "active"
+        fixture["records"]["work_sessions"]["outcome_active"] = {
+            **copy.deepcopy(fixture["records"]["work_sessions"]["active"]),
+            "id": "ws-outcome-active",
+        }
+        fixture["records"]["outcome_reports"]["post_session"]["work_session_id"] = "ws-outcome-active"
         result = validate_fixture(fixture)
         self.assertFalse(result.valid)
         self.assertEqual(result.errors[0]["error_id"], "outcome_report_requires_terminal_source")
@@ -60,6 +64,38 @@ class FixtureValidationTests(unittest.TestCase):
         self.assertFalse(result.valid)
         self.assertEqual(result.errors[0]["error_id"], "invalid_previous_event_hash")
 
+    def test_fixture_validation_rejects_operation_id_read_downgrade(self) -> None:
+        fixture = read_json(FIXTURE_ROOT / "valid/golden-path.json")
+        operation = next(op for op in fixture["operations"] if op["operation_id"] == "createRequest")
+        operation["method"] = "GET"
+        operation["path"] = "/work-sessions/ws-golden-001/export"
+        operation["headers"] = {
+            "Authorization": "HostAuth fixture",
+            "Jarvis-Protocol-Version": "v0.1",
+            "Jarvis-Actor-Id": operation["actor_id"],
+        }
+        result = validate_fixture(fixture)
+        self.assertFalse(result.valid)
+        self.assertEqual(result.errors[0]["error_id"], "invalid_export")
+        self.assertEqual(result.errors[0]["field"], "method")
+
+    def test_fixture_validation_rejects_operation_path_and_status_drift(self) -> None:
+        path_fixture = read_json(FIXTURE_ROOT / "valid/golden-path.json")
+        path_operation = next(op for op in path_fixture["operations"] if op["operation_id"] == "createRequest")
+        path_operation["path"] = "/work-sessions/ws-golden-001/export"
+        path_result = validate_fixture(path_fixture)
+        self.assertFalse(path_result.valid)
+        self.assertEqual(path_result.errors[0]["error_id"], "invalid_export")
+        self.assertEqual(path_result.errors[0]["field"], "path")
+
+        status_fixture = read_json(FIXTURE_ROOT / "valid/golden-path.json")
+        status_operation = next(op for op in status_fixture["operations"] if op["operation_id"] == "createRequest")
+        status_operation["expected_status"] = 418
+        status_result = validate_fixture(status_fixture)
+        self.assertFalse(status_result.valid)
+        self.assertEqual(status_result.errors[0]["error_id"], "invalid_export")
+        self.assertEqual(status_result.errors[0]["field"], "expected_status")
+
     def test_fixture_validation_rejects_accepted_agent_action_without_prior_policy_decision(self) -> None:
         fixture = read_json(FIXTURE_ROOT / "valid/golden-path.json")
         fixture["records"]["jarvis_events"]["evidence_captured"]["timestamp"] = "2026-06-16T10:03:00Z"
@@ -82,7 +118,6 @@ class FixtureValidationTests(unittest.TestCase):
         result = validate_fixture(fixture)
         self.assertFalse(result.valid)
         self.assertEqual(result.errors[0]["error_id"], "unsupported_protocol_version")
-
 
     def test_fixture_validation_rejects_host_private_cookie_fields(self) -> None:
         fixture = read_json(FIXTURE_ROOT / "valid/golden-path.json")

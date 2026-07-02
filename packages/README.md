@@ -1,7 +1,6 @@
 # Jarvis SDK Helper Packages
 
-This directory contains package foundations for Jarvis protocol helper
-tooling.
+This directory contains Jarvis protocol helper packages.
 
 The packages help compatible implementations create, validate, hash, export,
 and test Jarvis protocol records.

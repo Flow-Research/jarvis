@@ -21,7 +21,11 @@ test("valid golden-path fixture is accepted", () => {
 
 test("golden-path OutcomeReport requires a terminal WorkSession source", () => {
   const fixture = readJson(join(fixtureRoot, "valid/golden-path.json"));
-  fixture.records.work_sessions.completed.status = "active";
+  fixture.records.work_sessions.outcome_active = {
+    ...fixture.records.work_sessions.active,
+    id: "ws-outcome-active",
+  };
+  fixture.records.outcome_reports.post_session.work_session_id = "ws-outcome-active";
   const result = validateFixture(fixture);
   assert.equal(result.valid, false);
   assert.equal(result.errors[0]?.error_id, "outcome_report_requires_terminal_source");
@@ -52,6 +56,40 @@ test("fixture validation rejects unrepresented WorkSession previous hash", () =>
   const result = validateFixture(fixture);
   assert.equal(result.valid, false);
   assert.equal(result.errors[0]?.error_id, "invalid_previous_event_hash");
+});
+
+test("fixture validation rejects operation-id read downgrade", () => {
+  const fixture = readJson(join(fixtureRoot, "valid/golden-path.json"));
+  const operation = fixture.operations.find((op) => op.operation_id === "createRequest");
+  operation.method = "GET";
+  operation.path = "/work-sessions/ws-golden-001/export";
+  operation.headers = {
+    Authorization: "HostAuth fixture",
+    "Jarvis-Protocol-Version": "v0.1",
+    "Jarvis-Actor-Id": operation.actor_id,
+  };
+  const result = validateFixture(fixture);
+  assert.equal(result.valid, false);
+  assert.equal(result.errors[0]?.error_id, "invalid_export");
+  assert.equal(result.errors[0]?.field, "method");
+});
+
+test("fixture validation rejects operation path and status drift", () => {
+  const pathFixture = readJson(join(fixtureRoot, "valid/golden-path.json"));
+  const pathOperation = pathFixture.operations.find((op) => op.operation_id === "createRequest");
+  pathOperation.path = "/work-sessions/ws-golden-001/export";
+  const pathResult = validateFixture(pathFixture);
+  assert.equal(pathResult.valid, false);
+  assert.equal(pathResult.errors[0]?.error_id, "invalid_export");
+  assert.equal(pathResult.errors[0]?.field, "path");
+
+  const statusFixture = readJson(join(fixtureRoot, "valid/golden-path.json"));
+  const statusOperation = statusFixture.operations.find((op) => op.operation_id === "createRequest");
+  statusOperation.expected_status = 418;
+  const statusResult = validateFixture(statusFixture);
+  assert.equal(statusResult.valid, false);
+  assert.equal(statusResult.errors[0]?.error_id, "invalid_export");
+  assert.equal(statusResult.errors[0]?.field, "expected_status");
 });
 
 test("fixture validation rejects host-private cookie fields in exports", () => {

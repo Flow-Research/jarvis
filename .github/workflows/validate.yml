@@ -51,6 +51,9 @@ jobs:
       - name: Test Python protocol helpers
         run: npm run test:python
 
+      - name: Test CLI protocol helpers
+        run: npm run test:cli
+
       - name: Check committed whitespace
         env:
           EVENT_NAME: ${{ github.event_name }}

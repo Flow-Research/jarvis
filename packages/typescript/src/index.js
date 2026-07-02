@@ -43,6 +43,13 @@ export const READ_HEADERS = Object.freeze([
   "Jarvis-Actor-Id",
 ]);
 
+export const MUTATION_ONLY_HEADERS = Object.freeze([
+  "Jarvis-Idempotency-Key",
+  "Jarvis-Request-Timestamp",
+  "Jarvis-Expected-WorkSession-Revision",
+  "Jarvis-Previous-Event-Hash",
+]);
+
 export const TERMINAL_WORK_SESSION_STATES = Object.freeze([
   "completed",
   "failed",
@@ -107,6 +114,60 @@ const OBJECT_BY_OPERATION = Object.freeze({
   createSkillProposal: "SkillProposal",
   submitOutcomeReport: "OutcomeReport",
   exportEvidenceManifest: "EvidenceManifest",
+});
+
+const OPERATION_METHOD_BY_ID = Object.freeze({
+  registerWorker: "PUT",
+  registerActor: "PUT",
+  createWorkSession: "POST",
+  getWorkSession: "GET",
+  appendJarvisEvent: "POST",
+  recordPolicyDecision: "POST",
+  createRequest: "POST",
+  recordReview: "POST",
+  recordTakeover: "POST",
+  recordContribution: "POST",
+  createLearningRecord: "POST",
+  createMemoryProposal: "POST",
+  createSkillProposal: "POST",
+  exportEvidenceManifest: "GET",
+  submitOutcomeReport: "POST",
+});
+
+const OPERATION_PATH_BY_ID = Object.freeze({
+  registerWorker: "/workers/{worker_id}",
+  registerActor: "/actors/{actor_id}",
+  createWorkSession: "/work-sessions",
+  getWorkSession: "/work-sessions/{work_session_id}",
+  appendJarvisEvent: "/work-sessions/{work_session_id}/events",
+  recordPolicyDecision: "/work-sessions/{work_session_id}/policy-decisions",
+  createRequest: "/work-sessions/{work_session_id}/requests",
+  recordReview: "/work-sessions/{work_session_id}/reviews",
+  recordTakeover: "/work-sessions/{work_session_id}/takeovers",
+  recordContribution: "/work-sessions/{work_session_id}/contributions",
+  createLearningRecord: "/work-sessions/{work_session_id}/learning-records",
+  createMemoryProposal: "/work-sessions/{work_session_id}/memory-proposals",
+  createSkillProposal: "/work-sessions/{work_session_id}/skill-proposals",
+  exportEvidenceManifest: "/work-sessions/{work_session_id}/export",
+  submitOutcomeReport: "/outcome-reports",
+});
+
+const OPERATION_STATUS_BY_ID = Object.freeze({
+  registerWorker: new Set([200, 400]),
+  registerActor: new Set([200, 400]),
+  createWorkSession: new Set([201, 400]),
+  getWorkSession: new Set([200, 400]),
+  appendJarvisEvent: new Set([201, 400]),
+  recordPolicyDecision: new Set([201, 400]),
+  createRequest: new Set([201, 400]),
+  recordReview: new Set([201, 400]),
+  recordTakeover: new Set([201, 400]),
+  recordContribution: new Set([201, 400]),
+  createLearningRecord: new Set([201, 400]),
+  createMemoryProposal: new Set([201, 400]),
+  createSkillProposal: new Set([201, 400]),
+  exportEvidenceManifest: new Set([200, 400]),
+  submitOutcomeReport: new Set([202, 400]),
 });
 
 const ACTOR_BODY_FIELD_BY_OPERATION = Object.freeze({
@@ -243,6 +304,64 @@ function workerGrants(worker) {
   return new Set(grants.filter((grant) => typeof grant === "string"));
 }
 
+function operationMethod(operation) {
+  return OPERATION_METHOD_BY_ID[operation?.operation_id] ?? operation?.method;
+}
+
+function operationPath(operation) {
+  return OPERATION_PATH_BY_ID[operation?.operation_id] ?? operation?.path ?? "";
+}
+
+function escapeRegex(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function operationPathMatchesTemplate(template, path) {
+  if (!isNonEmptyString(template) || !isNonEmptyString(path)) {
+    return false;
+  }
+  const pattern = `^${template.split("/").map((segment) => {
+    if (/^\{[^/]+\}$/.test(segment)) {
+      return "[^/]+";
+    }
+    return escapeRegex(segment);
+  }).join("/")}$`;
+  return new RegExp(pattern).test(path);
+}
+
+function operationBindingError(operation) {
+  const operationId = operation?.operation_id;
+  if (!operationId || !(operationId in OPERATION_METHOD_BY_ID)) {
+    return protocolError("invalid_export", {
+      objectType: "FixtureOperation",
+      field: "operation_id",
+      reason: "Fixture operation_id MUST exist in the Jarvis OpenAPI binding.",
+    });
+  }
+  if (operation.method !== OPERATION_METHOD_BY_ID[operationId]) {
+    return protocolError("invalid_export", {
+      objectType: "FixtureOperation",
+      field: "method",
+      reason: "Fixture operation method MUST match the Jarvis OpenAPI binding.",
+    });
+  }
+  if (!operationPathMatchesTemplate(OPERATION_PATH_BY_ID[operationId], operation.path)) {
+    return protocolError("invalid_export", {
+      objectType: "FixtureOperation",
+      field: "path",
+      reason: "Fixture operation path MUST match the Jarvis OpenAPI binding.",
+    });
+  }
+  if (!OPERATION_STATUS_BY_ID[operationId].has(operation.expected_status)) {
+    return protocolError("invalid_export", {
+      objectType: "FixtureOperation",
+      field: "expected_status",
+      reason: "Fixture operation expected_status MUST match the Jarvis OpenAPI binding.",
+    });
+  }
+  return null;
+}
+
 function targetWorkSessionId(operation, body) {
   return operation?.work_session_id ?? body?.work_session_id ?? body?.id;
 }
@@ -282,6 +401,30 @@ function outcomeReportSourceWorkSession(records, outcomeReport) {
   return (
     candidates.find((snapshot) => TERMINAL_WORK_SESSION_STATES.includes(snapshot.status))
     ?? candidates[0]
+  );
+}
+
+function evidenceManifestSourceWorkSession(fixture, evidenceManifest, operation) {
+  const records = fixture?.records ?? {};
+  const expectedField = fixture?.expected_error_field;
+  if (
+    fixture?.expected_error_id === "invalid_evidence_export_state"
+    && isNonEmptyString(expectedField)
+    && expectedField.endsWith(".status")
+  ) {
+    const referenced = getRef(fixture, expectedField.slice(0, -".status".length));
+    if (isPlainObject(referenced)) {
+      return referenced;
+    }
+  }
+  const workSessionId = evidenceManifest?.work_session_id;
+  return (
+    allRecords(records, "work_sessions").find((snapshot) => {
+      return snapshot.id === workSessionId
+        && TERMINAL_WORK_SESSION_STATES.includes(snapshot.status);
+    })
+    ?? workSessionSnapshotForOperation(records, operation, evidenceManifest)
+    ?? allRecords(records, "work_sessions").find((snapshot) => snapshot.id === workSessionId)
   );
 }
 
@@ -329,7 +472,7 @@ function operationStateError(records, operation, body) {
   if (operation?.operation_id === "createWorkSession") {
     return createWorkSessionGenesisError(operation);
   }
-  if (!operation?.path?.startsWith("/work-sessions")) {
+  if (!operationPath(operation).startsWith("/work-sessions")) {
     return null;
   }
   if (revision === undefined || previousHash === undefined) {
@@ -371,6 +514,14 @@ function pathForKey(basePath, key) {
   return basePath ? `${basePath}.${key}` : key;
 }
 
+function compactKey(value) {
+  return value.toLowerCase().replace(/[^a-z0-9]+/g, "");
+}
+
+const FORBIDDEN_EXPORT_COMPACT_KEY_TOKENS = new Set(
+  FORBIDDEN_EXPORT_KEY_TOKENS.map((token) => compactKey(token)),
+);
+
 function evidenceManifestExportError(evidenceManifest, workSession) {
   const forbidden = findForbiddenHostPrivateField(evidenceManifest);
   if (forbidden) {
@@ -381,11 +532,25 @@ function evidenceManifestExportError(evidenceManifest, workSession) {
     });
   }
   const workSessionStatus = workSession?.status;
+  if (!workSessionStatus) {
+    return protocolError("invalid_evidence_export_state", {
+      objectType: "EvidenceManifest",
+      field: "work_session.status",
+      reason: "EvidenceManifest export requires a terminal WorkSession source.",
+    });
+  }
   if (workSessionStatus && !TERMINAL_WORK_SESSION_STATES.includes(workSessionStatus)) {
     return protocolError("invalid_evidence_export_state", {
       objectType: "EvidenceManifest",
       field: "work_session.status",
       reason: "EvidenceManifest export requires a terminal WorkSession source.",
+    });
+  }
+  if (workSession?.id !== evidenceManifest?.work_session_id) {
+    return protocolError("invalid_evidence_export_state", {
+      objectType: "EvidenceManifest",
+      field: "work_session_id",
+      reason: "EvidenceManifest source WorkSession id MUST match EvidenceManifest.work_session_id.",
     });
   }
   return null;
@@ -406,9 +571,12 @@ export function findForbiddenHostPrivateField(value, basePath = "") {
   }
   for (const [key, child] of Object.entries(value)) {
     const normalized = key.toLowerCase();
+    const compact = compactKey(key);
     if (
       FORBIDDEN_EXPORT_KEY_TOKENS.includes(normalized)
       || FORBIDDEN_EXPORT_KEY_TOKENS.some((token) => normalized.includes(token))
+      || FORBIDDEN_EXPORT_COMPACT_KEY_TOKENS.has(compact)
+      || [...FORBIDDEN_EXPORT_COMPACT_KEY_TOKENS].some((token) => compact.includes(token))
     ) {
       return pathForKey(basePath, key);
     }
@@ -421,6 +589,13 @@ export function findForbiddenHostPrivateField(value, basePath = "") {
 }
 
 export function validateSchemaRecord(objectType, record) {
+  if (!OPENAPI_SCHEMA_NAMES.includes(objectType)) {
+    return fail("invalid_export", {
+      objectType,
+      field: "object_type",
+      reason: `${objectType} MUST be defined by the OpenAPI schema.`,
+    });
+  }
   if (!isPlainObject(record)) {
     return fail("invalid_export", {
       objectType,
@@ -472,10 +647,22 @@ export function validateMutationHeaders(headers, options = {}) {
 }
 
 export function validateReadHeaders(headers, options = {}) {
-  return validateHeaders(headers, {
+  const result = validateHeaders(headers, {
     ...options,
     requiredHeaders: READ_HEADERS,
   });
+  if (!result.valid) {
+    return result;
+  }
+  const forbiddenHeader = MUTATION_ONLY_HEADERS.find((header) => header in headers);
+  if (forbiddenHeader) {
+    return fail("invalid_export", {
+      objectType: "headers",
+      field: `headers.${forbiddenHeader}`,
+      reason: "Read operations MUST NOT include mutation-only headers.",
+    });
+  }
+  return result;
 }
 
 export function validateHeaders(headers, options = {}) {
@@ -552,8 +739,8 @@ export function validateHeaders(headers, options = {}) {
 }
 
 export function validateOperationHeaders(operation) {
-  const method = operation?.method;
-  const path = operation?.path ?? "";
+  const method = operationMethod(operation);
+  const path = operationPath(operation);
   const workSessionScoped = path.startsWith("/work-sessions");
   const headerResult = method === "GET"
     ? validateReadHeaders(operation?.headers)
@@ -833,6 +1020,42 @@ export function validateEventHashChain(events, options = {}) {
       reason: "Event hash-chain validation requires events.",
     });
   }
+  const seenSequences = new Set();
+  const seenHashes = new Set();
+  for (const event of events) {
+    const sequence = event?.sequence;
+    if (!isPlainObject(event) || !isInteger(sequence) || sequence <= 0) {
+      return fail("invalid_export", {
+        objectType: "JarvisEvent",
+        field: "sequence",
+        reason: "JarvisEvent.sequence MUST be a positive integer.",
+      });
+    }
+    if (seenSequences.has(sequence)) {
+      return fail("invalid_export", {
+        objectType: "JarvisEvent",
+        field: "sequence",
+        reason: "JarvisEvent.sequence MUST be unique.",
+      });
+    }
+    seenSequences.add(sequence);
+    const eventHash = event.event_hash;
+    if (!isNonEmptyString(eventHash) || !eventHash.startsWith("hash:")) {
+      return fail("invalid_event_hash", {
+        objectType: "JarvisEvent",
+        field: "event_hash",
+        reason: "JarvisEvent.event_hash MUST use the hash: prefix.",
+      });
+    }
+    if (seenHashes.has(eventHash)) {
+      return fail("invalid_event_hash", {
+        objectType: "JarvisEvent",
+        field: "event_hash",
+        reason: "JarvisEvent.event_hash MUST be unique.",
+      });
+    }
+    seenHashes.add(eventHash);
+  }
   const ordered = [...events].sort((left, right) => left.sequence - right.sequence);
   let previousHash = options.genesisHash ?? "hash:protocol-genesis";
   for (const event of ordered) {
@@ -849,6 +1072,16 @@ export function validateEventHashChain(events, options = {}) {
 }
 
 export function validateProtocolRecord(objectType, record, options = {}) {
+  if (OPENAPI_SCHEMA_NAMES.includes(objectType)) {
+    const forbidden = findForbiddenHostPrivateField(record);
+    if (forbidden) {
+      return fail("forbidden_host_private_field", {
+        objectType,
+        field: forbidden,
+        reason: "Protocol records MUST NOT expose host-private fields.",
+      });
+    }
+  }
   switch (objectType) {
     case "Request":
       return validateRequest(record, options);
@@ -894,6 +1127,10 @@ export function validateFixture(fixture) {
     return validationResult([error]);
   }
   for (const op of fixture.operations ?? []) {
+    const bindingShapeError = operationBindingError(op);
+    if (bindingShapeError) {
+      return validationResult([bindingShapeError]);
+    }
     const headerResult = validateOperationHeaders(op);
     if (!headerResult.valid) {
       return headerResult;
@@ -909,7 +1146,9 @@ export function validateFixture(fixture) {
     }
     if (op.operation_id === "exportEvidenceManifest") {
       const manifest = allRecords(fixture.records ?? {}, "evidence_manifests")[0];
-      const manifestResult = validateEvidenceManifest(manifest);
+      const manifestResult = validateEvidenceManifest(manifest, {
+        workSession: evidenceManifestSourceWorkSession(fixture, manifest, op),
+      });
       if (!manifestResult.valid) {
         return manifestResult;
       }
@@ -935,6 +1174,10 @@ export function validateFixture(fixture) {
 function detectFixtureError(fixture, operation) {
   const records = fixture.records ?? {};
   const body = operationBody(fixture, operation);
+  const bindingShapeError = operationBindingError(operation);
+  if (bindingShapeError) {
+    return bindingShapeError;
+  }
   const headerResult = validateOperationHeaders(operation);
   if (!headerResult.valid) {
     return headerResult.errors[0];
@@ -989,7 +1232,7 @@ function detectFixtureError(fixture, operation) {
     });
   }
 
-  const isMutationOperation = operation?.method !== "GET";
+  const isMutationOperation = operationMethod(operation) !== "GET";
   if (isMutationOperation && workSession?.status && TERMINAL_WORK_SESSION_STATES.includes(workSession.status)) {
     return protocolError("sealed_work_session_mutation", {
       field: "records.work_sessions.completed.status",
@@ -1058,7 +1301,10 @@ function detectFixtureError(fixture, operation) {
 
   if (operation?.operation_id === "exportEvidenceManifest") {
     const manifest = allRecords(records, "evidence_manifests")[0];
-    const exportError = evidenceManifestExportError(manifest, workSession);
+    const exportError = evidenceManifestExportError(
+      manifest,
+      evidenceManifestSourceWorkSession(fixture, manifest, operation) ?? workSession,
+    );
     if (exportError) {
       return exportError;
     }

@@ -21,8 +21,7 @@ Week 1 protocol lock is complete.
 
 Current protocol status: Jarvis v0.1.0 is released as Protocol Alpha.
 
-Current active work: post-v0.1 SDK helper tooling planning and public docs
-site work.
+Current active work: public docs site work and implementation proof planning.
 
 Release-readiness work for the v0.1.0 tag is complete:
 
@@ -399,7 +398,7 @@ v0.1 is accepted because:
 
 ## Post-v0.1 SDK Helper Tooling
 
-Status: planned.
+Status: implemented.
 
 Owner: Developer Experience
 
@@ -417,6 +416,7 @@ Output:
 - TypeScript helper package plan
 - Python helper package plan
 - conformance runner and CLI plan
+- conformance runner and protocol helper CLI package
 - validator and fixture reuse plan
 
 Done when:
@@ -544,7 +544,7 @@ and example record mappers.
 5. Run local validation and GitHub validation CI before every protocol change.
 6. Keep adapter code, wrappers, host behavior, and integration code outside
    Jarvis.
-7. Execute the post-v0.1 SDK helper tooling plan through #64, #65, #66, and
-   #67.
-8. Keep every Jarvis SDK discussion limited to protocol implementation helpers.
-9. Start next-phase specification only inside protocol-owned scope.
+7. Keep every Jarvis SDK discussion limited to protocol implementation helpers.
+8. Continue public documentation site work inside protocol-owned scope.
+9. Start implementation proof only through Jarvis protocol records, not host
+   runtime ownership.
