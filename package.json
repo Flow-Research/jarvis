@@ -13,7 +13,7 @@
   "scripts": {
     "check:protocol": "python3 scripts/check_conformance_fixtures.py && python3 scripts/check_openapi_contract.py && python3 scripts/check_markdown_links.py && python3 scripts/check_protocol_wording.py && git diff --check",
     "check:sdk-boundary": "python3 scripts/check_sdk_boundary.py",
-    "test:python": "PYTHONPATH=packages/python/src python3 -m unittest discover -s packages/python/tests && python3 scripts/check_python_package_artifacts.py",
+    "test:python": "node scripts/run_python_package_tests.mjs",
     "test:typescript": "npm --workspace @jarvis-protocol/sdk test"
   }
 }

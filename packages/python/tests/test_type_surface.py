@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-import tomllib
+import re
 import unittest
 
 import yaml
@@ -16,6 +16,11 @@ from jarvis_protocol import (
     SCHEMA_REQUIRED_FIELDS,
 )
 from jarvis_protocol.generated import openapi_types
+
+try:
+    import tomllib
+except ModuleNotFoundError:  # pragma: no cover - exercised on Python 3.10
+    tomllib = None
 
 
 PACKAGE_ROOT = Path(__file__).resolve().parents[1]
@@ -84,7 +89,7 @@ class TypeSurfaceTests(unittest.TestCase):
             self.assertIn(name, jarvis_protocol.__all__)
 
     def test_package_metadata_marks_protocol_alpha(self) -> None:
-        data = tomllib.loads((PACKAGE_ROOT / "pyproject.toml").read_text(encoding="utf-8"))
+        data = load_pyproject_data(PACKAGE_ROOT / "pyproject.toml")
         self.assertEqual(data["project"]["name"], "jarvis-protocol")
         self.assertEqual(data["project"]["version"], "0.1.0a0")
         self.assertEqual(data["tool"]["jarvis"]["protocol-version"], "v0.1")
@@ -116,6 +121,65 @@ def json_for_compare(path: Path) -> object:
     import json
 
     return json.loads(path.read_text(encoding="utf-8"))
+
+
+def load_pyproject_data(path: Path) -> dict[str, object]:
+    text = path.read_text(encoding="utf-8")
+    if tomllib is not None:
+        return tomllib.loads(text)
+
+    return {
+        "project": {
+            "name": toml_string(text, "project", "name"),
+            "version": toml_string(text, "project", "version"),
+        },
+        "tool": {
+            "jarvis": {
+                "protocol-version": toml_string(text, "tool.jarvis", "protocol-version"),
+                "fixture-set": toml_string(text, "tool.jarvis", "fixture-set"),
+            },
+            "hatch": {
+                "build": {
+                    "targets": {
+                        "wheel": {
+                            "force-include": {
+                                "fixtures/v0.1": toml_force_include_fixture(text),
+                            },
+                        },
+                    },
+                },
+            },
+        },
+    }
+
+
+def toml_section(text: str, name: str) -> str:
+    match = re.search(
+        rf"(?ms)^\[{re.escape(name)}\]\s*$\n(?P<body>.*?)(?=^\[|\Z)",
+        text,
+    )
+    if match is None:
+        raise AssertionError(f"pyproject missing [{name}]")
+    return match.group("body")
+
+
+def toml_string(text: str, section: str, key: str) -> str:
+    body = toml_section(text, section)
+    match = re.search(rf'(?m)^{re.escape(key)}\s*=\s*"([^"]+)"\s*$', body)
+    if match is None:
+        raise AssertionError(f"pyproject missing {section}.{key}")
+    return match.group(1)
+
+
+def toml_force_include_fixture(text: str) -> str:
+    body = toml_section(text, "tool.hatch.build.targets.wheel")
+    match = re.search(
+        r'(?m)^force-include\s*=\s*\{\s*"fixtures/v0\.1"\s*=\s*"([^"]+)"\s*\}\s*$',
+        body,
+    )
+    if match is None:
+        raise AssertionError("pyproject missing wheel fixture force-include")
+    return match.group(1)
 
 
 if __name__ == "__main__":

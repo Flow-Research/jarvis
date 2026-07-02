@@ -96,6 +96,28 @@ class HelperValidationTests(unittest.TestCase):
         self.assertFalse(result.valid)
         self.assertEqual(result.errors[0]["field"], "headers.Authorization")
 
+    def test_required_mutation_headers_reject_null_values(self) -> None:
+        base_headers = {
+            "Authorization": "HostAuth test",
+            "Jarvis-Protocol-Version": "v0.1",
+            "Jarvis-Actor-Id": "actor-test",
+            "Jarvis-Idempotency-Key": "idem-test",
+            "Jarvis-Request-Timestamp": "2026-06-16T10:00:00Z",
+            "Jarvis-Expected-WorkSession-Revision": 0,
+            "Jarvis-Previous-Event-Hash": "hash:protocol-genesis",
+        }
+        cases = [
+            ("Jarvis-Request-Timestamp", "missing_request_timestamp"),
+            ("Jarvis-Expected-WorkSession-Revision", "missing_expected_work_session_revision"),
+            ("Jarvis-Previous-Event-Hash", "invalid_previous_event_hash"),
+        ]
+        for header, error_id in cases:
+            headers = dict(base_headers)
+            headers[header] = None
+            result = validate_mutation_headers(headers)
+            self.assertFalse(result.valid, header)
+            self.assertEqual(result.errors[0]["error_id"], error_id)
+
     def test_approval_scope_requires_review_timestamp_when_review_context_exists(self) -> None:
         approval_scope = {
             "id": "approval-test",
@@ -349,6 +371,12 @@ class HelperValidationTests(unittest.TestCase):
         self.assertFalse(result.valid)
         self.assertEqual(result.errors[0]["error_id"], "invalid_export")
 
+    def test_generic_schema_validation_rejects_unknown_object_type(self) -> None:
+        result = validate_protocol_record("TypoObject", {})
+        self.assertFalse(result.valid)
+        self.assertEqual(result.errors[0]["error_id"], "invalid_export")
+        self.assertEqual(result.errors[0]["field"], "object_type")
+
     def test_canonicalization_and_hashing_are_stable_across_key_order(self) -> None:
         left = {"b": 2, "a": {"y": True, "x": "yes"}}
         right = {"a": {"x": "yes", "y": True}, "b": 2}
@@ -372,6 +400,65 @@ class HelperValidationTests(unittest.TestCase):
         )
         self.assertFalse(invalid.valid)
         self.assertEqual(invalid.errors[0]["error_id"], "invalid_previous_event_hash")
+
+    def test_event_hash_chain_rejects_missing_event_hash(self) -> None:
+        result = validate_event_hash_chain(
+            [
+                {"sequence": 1, "previous_hash": "hash:protocol-genesis"},
+            ]
+        )
+        self.assertFalse(result.valid)
+        self.assertEqual(result.errors[0]["error_id"], "invalid_previous_event_hash")
+        self.assertEqual(result.errors[0]["field"], "event_hash")
+
+    def test_event_hash_chain_rejects_malformed_sequence(self) -> None:
+        result = validate_event_hash_chain(
+            [
+                {
+                    "sequence": "1",
+                    "previous_hash": "hash:protocol-genesis",
+                    "event_hash": "hash:first",
+                },
+            ]
+        )
+        self.assertFalse(result.valid)
+        self.assertEqual(result.errors[0]["error_id"], "invalid_export")
+        self.assertEqual(result.errors[0]["field"], "sequence")
+
+    def test_event_hash_chain_rejects_nonpositive_or_duplicate_sequence(self) -> None:
+        nonpositive = validate_event_hash_chain(
+            [
+                {
+                    "sequence": 0,
+                    "previous_hash": "hash:protocol-genesis",
+                    "event_hash": "hash:first",
+                },
+            ]
+        )
+        self.assertFalse(nonpositive.valid)
+        self.assertEqual(nonpositive.errors[0]["error_id"], "invalid_export")
+        self.assertEqual(nonpositive.errors[0]["field"], "sequence")
+
+        duplicate = validate_event_hash_chain(
+            [
+                {"sequence": 1, "previous_hash": "hash:protocol-genesis", "event_hash": "hash:first"},
+                {"sequence": 1, "previous_hash": "hash:first", "event_hash": "hash:second"},
+            ]
+        )
+        self.assertFalse(duplicate.valid)
+        self.assertEqual(duplicate.errors[0]["error_id"], "invalid_export")
+        self.assertEqual(duplicate.errors[0]["field"], "sequence")
+
+    def test_event_hash_chain_rejects_duplicate_event_hash(self) -> None:
+        result = validate_event_hash_chain(
+            [
+                {"sequence": 1, "previous_hash": "hash:protocol-genesis", "event_hash": "hash:same"},
+                {"sequence": 2, "previous_hash": "hash:same", "event_hash": "hash:same"},
+            ]
+        )
+        self.assertFalse(result.valid)
+        self.assertEqual(result.errors[0]["error_id"], "invalid_previous_event_hash")
+        self.assertEqual(result.errors[0]["field"], "event_hash")
 
     def test_host_private_field_scanner_returns_forbidden_path(self) -> None:
         self.assertEqual(

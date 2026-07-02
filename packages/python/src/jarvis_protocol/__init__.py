@@ -554,6 +554,15 @@ def _accepted_operation_error(
 
 
 def validate_schema_record(object_type: str, record: Any) -> ValidationResult:
+    if object_type not in OPENAPI_SCHEMA_NAMES:
+        return _fail(
+            "invalid_export",
+            {
+                "object_type": object_type,
+                "field": "object_type",
+                "reason": f"{object_type} MUST be defined by the OpenAPI schema.",
+            },
+        )
     if not isinstance(record, dict):
         return _fail(
             "invalid_export",
@@ -656,8 +665,12 @@ def validate_headers(headers: Any, options: Mapping[str, Any] | None = None) -> 
             },
         )
     request_timestamp = headers.get("Jarvis-Request-Timestamp")
+    request_timestamp_present = "Jarvis-Request-Timestamp" in headers
     parsed_request_timestamp = _timestamp(request_timestamp)
-    if request_timestamp is not None and parsed_request_timestamp is None:
+    if (
+        ("Jarvis-Request-Timestamp" in required_headers or request_timestamp_present)
+        and parsed_request_timestamp is None
+    ):
         return _fail(
             "missing_request_timestamp",
             {
@@ -680,7 +693,11 @@ def validate_headers(headers: Any, options: Mapping[str, Any] | None = None) -> 
                 },
             )
     revision = headers.get("Jarvis-Expected-WorkSession-Revision")
-    if revision is not None and (not _is_int(revision) or revision < 0):
+    revision_present = "Jarvis-Expected-WorkSession-Revision" in headers
+    if (
+        ("Jarvis-Expected-WorkSession-Revision" in required_headers or revision_present)
+        and (not _is_int(revision) or revision < 0)
+    ):
         return _fail(
             "missing_expected_work_session_revision",
             {
@@ -689,8 +706,13 @@ def validate_headers(headers: Any, options: Mapping[str, Any] | None = None) -> 
             },
         )
     previous_hash = headers.get("Jarvis-Previous-Event-Hash")
-    if previous_hash is not None and (
-        not _is_nonempty_string(previous_hash) or not previous_hash.startswith("hash:")
+    previous_hash_present = "Jarvis-Previous-Event-Hash" in headers
+    if (
+        ("Jarvis-Previous-Event-Hash" in required_headers or previous_hash_present)
+        and (
+            not _is_nonempty_string(previous_hash)
+            or not previous_hash.startswith("hash:")
+        )
     ):
         return _fail(
             "invalid_previous_event_hash",
@@ -1052,7 +1074,50 @@ def validate_event_hash_chain(
                 "reason": "Event hash-chain validation requires events.",
             },
         )
-    ordered = sorted(events, key=lambda event: event.get("sequence", 0) if isinstance(event, dict) else 0)
+    seen_sequences: set[int] = set()
+    seen_hashes: set[str] = set()
+    for event in events:
+        sequence = event.get("sequence") if isinstance(event, dict) else None
+        if not isinstance(event, dict) or not _is_int(sequence) or sequence <= 0:
+            return _fail(
+                "invalid_export",
+                {
+                    "object_type": "JarvisEvent",
+                    "field": "sequence",
+                    "reason": "JarvisEvent.sequence MUST be a positive integer.",
+                },
+            )
+        if sequence in seen_sequences:
+            return _fail(
+                "invalid_export",
+                {
+                    "object_type": "JarvisEvent",
+                    "field": "sequence",
+                    "reason": "JarvisEvent.sequence MUST be unique.",
+                },
+            )
+        seen_sequences.add(sequence)
+        event_hash = event.get("event_hash")
+        if not _is_nonempty_string(event_hash) or not event_hash.startswith("hash:"):
+            return _fail(
+                "invalid_previous_event_hash",
+                {
+                    "object_type": "JarvisEvent",
+                    "field": "event_hash",
+                    "reason": "JarvisEvent.event_hash MUST use the hash: prefix.",
+                },
+            )
+        if event_hash in seen_hashes:
+            return _fail(
+                "invalid_previous_event_hash",
+                {
+                    "object_type": "JarvisEvent",
+                    "field": "event_hash",
+                    "reason": "JarvisEvent.event_hash MUST be unique.",
+                },
+            )
+        seen_hashes.add(event_hash)
+    ordered = sorted(events, key=lambda event: event["sequence"])
     previous_hash = options.get("genesis_hash") or "hash:protocol-genesis"
     for event in ordered:
         if not isinstance(event, dict) or event.get("previous_hash") != previous_hash:
@@ -1064,7 +1129,7 @@ def validate_event_hash_chain(
                     "reason": "JarvisEvent.previous_hash MUST link to the previous event hash.",
                 },
             )
-        previous_hash = event.get("event_hash")
+        previous_hash = event["event_hash"]
     return _pass()
 
 
@@ -1355,8 +1420,8 @@ def _detect_fixture_error(
     return None
 
 
-__all__ = [
-    *OPENAPI_TYPE_NAMES,
+__all__ = list(OPENAPI_TYPE_NAMES)
+__all__ += [
     "FORBIDDEN_EXPORT_KEY_TOKENS",
     "NON_WORKSESSION_MUTATION_HEADERS",
     "OPENAPI_SCHEMA_NAMES",
