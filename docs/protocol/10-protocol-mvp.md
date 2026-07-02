@@ -182,6 +182,8 @@ The v0.1 conformance suite checks:
   `skill_expands_tool_access_without_policy_review`,
   `sealed_work_session_mutation`, `sealed_evidence_mutation`, and
   `outcome_report_without_learning_record`.
+- OutcomeReport source-state rejection id is
+  `outcome_report_requires_terminal_source`.
 - exported protocol records do not require host-private infrastructure
   fields.
 - OpenAPI security entry checks require `HostAuth`; OpenAPI header parameter

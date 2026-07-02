@@ -31,6 +31,7 @@ host-private export field
 silent memory mutation
 silent skill activation
 OutcomeReport without LearningRecord
+OutcomeReport with non-terminal source WorkSession
 ```
 
 ## Required Rejection Ids
@@ -62,6 +63,7 @@ forbidden_host_private_field
 silent_memory_mutation
 silent_skill_activation
 outcome_report_without_learning_record
+outcome_report_requires_terminal_source
 ```
 
 ## Required Failure Boundaries
@@ -85,6 +87,7 @@ Export contains forbidden host-private fields.
 Memory changes without governed proposal and review state.
 Skill changes without governed proposal and review state.
 OutcomeReport lacks LearningRecord reference.
+OutcomeReport source WorkSession is not terminal.
 ```
 
 Failure-mode conformance protects the human-agent collaboration and learning

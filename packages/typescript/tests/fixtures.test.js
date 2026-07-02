@@ -1,0 +1,109 @@
+import assert from "node:assert/strict";
+import { readdirSync, readFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
+import test from "node:test";
+
+import { validateFixture } from "../src/index.js";
+
+const packageRoot = dirname(dirname(fileURLToPath(import.meta.url)));
+const fixtureRoot = join(packageRoot, "fixtures/v0.1");
+
+function readJson(path) {
+  return JSON.parse(readFileSync(path, "utf8"));
+}
+
+test("valid golden-path fixture is accepted", () => {
+  const fixture = readJson(join(fixtureRoot, "valid/golden-path.json"));
+  const result = validateFixture(fixture);
+  assert.equal(result.valid, true, JSON.stringify(result.errors, null, 2));
+});
+
+test("golden-path OutcomeReport requires a terminal WorkSession source", () => {
+  const fixture = readJson(join(fixtureRoot, "valid/golden-path.json"));
+  fixture.records.work_sessions.completed.status = "active";
+  const result = validateFixture(fixture);
+  assert.equal(result.valid, false);
+  assert.equal(result.errors[0]?.error_id, "outcome_report_requires_terminal_source");
+});
+
+test("fixture validation binds operation body Actor fields to Actor header", () => {
+  const fixture = readJson(join(fixtureRoot, "valid/golden-path.json"));
+  fixture.records.reviews.approve_source.reviewer_actor_id = "actor-agent-golden";
+  const result = validateFixture(fixture);
+  assert.equal(result.valid, false);
+  assert.equal(result.errors[0]?.error_id, "actor_body_id_mismatch");
+});
+
+test("fixture validation enforces WorkSession genesis headers", () => {
+  const fixture = readJson(join(fixtureRoot, "valid/golden-path.json"));
+  const operation = fixture.operations.find((op) => op.operation_id === "createWorkSession");
+  operation.headers["Jarvis-Expected-WorkSession-Revision"] = 1;
+  const result = validateFixture(fixture);
+  assert.equal(result.valid, false);
+  assert.equal(result.errors[0]?.error_id, "stale_work_session_revision");
+});
+
+test("fixture validation rejects unrepresented WorkSession previous hash", () => {
+  const fixture = readJson(join(fixtureRoot, "valid/golden-path.json"));
+  const operation = fixture.operations.find((op) => op.operation_id === "recordReview");
+  operation.headers["Jarvis-Expected-WorkSession-Revision"] = 999;
+  operation.headers["Jarvis-Previous-Event-Hash"] = "hash:unrepresented";
+  const result = validateFixture(fixture);
+  assert.equal(result.valid, false);
+  assert.equal(result.errors[0]?.error_id, "invalid_previous_event_hash");
+});
+
+test("fixture validation rejects host-private cookie fields in exports", () => {
+  const fixture = readJson(join(fixtureRoot, "valid/golden-path.json"));
+  fixture.records.evidence_manifests.portable_export.evidence_item_refs[0].cookie = "secret";
+  const result = validateFixture(fixture);
+  assert.equal(result.valid, false);
+  assert.equal(result.errors[0]?.error_id, "forbidden_host_private_field");
+});
+
+test("fixture validation rejects unknown nested EvidenceItemRef fields", () => {
+  const fixture = readJson(join(fixtureRoot, "valid/golden-path.json"));
+  fixture.records.evidence_manifests.portable_export.evidence_item_refs[0].unexpected_extra = "host";
+  const result = validateFixture(fixture);
+  assert.equal(result.valid, false);
+  assert.equal(result.errors[0]?.error_id, "invalid_export");
+});
+
+test("fixture validation allows read-only fetch from terminal WorkSession state", () => {
+  const fixture = readJson(join(fixtureRoot, "valid/golden-path.json"));
+  fixture.records.work_sessions = {
+    completed: fixture.records.work_sessions.completed,
+    genesis_request: fixture.records.work_sessions.genesis_request,
+    active: fixture.records.work_sessions.active,
+  };
+  fixture.operations.unshift({
+    operation_id: "getWorkSession",
+    method: "GET",
+    path: "/work-sessions/ws-golden-001",
+    headers: {
+      Authorization: "HostAuth fixture",
+      "Jarvis-Protocol-Version": "v0.1",
+      "Jarvis-Actor-Id": "actor-human-golden",
+    },
+    actor_id: "actor-human-golden",
+    work_session_id: "ws-golden-001",
+    expected_status: 200,
+  });
+  const result = validateFixture(fixture);
+  assert.equal(result.valid, true, JSON.stringify(result.errors, null, 2));
+});
+
+test("invalid fixture set is rejected with expected protocol errors", () => {
+  const invalidRoot = join(fixtureRoot, "invalid");
+  for (const fileName of readdirSync(invalidRoot).filter((name) => name.endsWith(".json"))) {
+    const fixture = readJson(join(invalidRoot, fileName));
+    const result = validateFixture(fixture);
+    assert.equal(result.valid, false, `${fileName} should be rejected`);
+    assert.equal(
+      result.errors[0]?.error_id,
+      fixture.expected_error_id,
+      `${fileName} should reject as ${fixture.expected_error_id}`,
+    );
+  }
+});

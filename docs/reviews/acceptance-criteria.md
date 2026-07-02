@@ -147,7 +147,8 @@ Expected result:
   `tool_self_confirmed_memory`,
   `skill_expands_tool_access_without_policy_review`,
   `sealed_work_session_mutation`, `sealed_evidence_mutation`,
-  `outcome_report_without_learning_record`, and
+  `outcome_report_without_learning_record`,
+  `outcome_report_requires_terminal_source`, and
   `forbidden_host_private_field`
 - exported records contain no host-private infrastructure requirement
 - OpenAPI security entry checks require `HostAuth`; OpenAPI header parameter

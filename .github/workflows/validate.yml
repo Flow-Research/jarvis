@@ -45,6 +45,9 @@ jobs:
       - name: Validate SDK boundary
         run: python3 scripts/check_sdk_boundary.py
 
+      - name: Test TypeScript protocol helpers
+        run: npm --workspace @jarvis-protocol/sdk test
+
       - name: Check committed whitespace
         env:
           EVENT_NAME: ${{ github.event_name }}
