@@ -1552,6 +1552,13 @@ def validate_invalid_fixture_semantics(path: Path, fixture: dict[str, Any]) -> N
             raise FixtureError(
                 f"{rel(path)}: outcome_report_requires_terminal_source fixture MUST submit OutcomeReport"
             )
+        error_field = fixture.get("expected_error_field")
+        if not isinstance(error_field, str) or not error_field.endswith(".status"):
+            raise FixtureError(
+                f"{rel(path)}: outcome_report_requires_terminal_source fixture MUST target status"
+            )
+        target_ref = error_field.removesuffix(".status")
+        referenced_work_session = resolved_state_ref(path, fixture, target_ref)
         work_session_id = body.get("work_session_id")
         candidates = [
             state
@@ -1561,6 +1568,14 @@ def validate_invalid_fixture_semantics(path: Path, fixture: dict[str, Any]) -> N
         if not candidates:
             raise FixtureError(
                 f"{rel(path)}: outcome_report_requires_terminal_source fixture MUST include source WorkSession"
+            )
+        if referenced_work_session not in candidates:
+            raise FixtureError(
+                f"{rel(path)}: outcome_report_requires_terminal_source fixture expected_error_field MUST reference the source WorkSession"
+            )
+        if referenced_work_session.get("status") in TERMINAL_WORK_SESSION_STATES:
+            raise FixtureError(
+                f"{rel(path)}: outcome_report_requires_terminal_source fixture MUST target non-terminal status"
             )
         if any(state.get("status") in TERMINAL_WORK_SESSION_STATES for state in candidates):
             raise FixtureError(

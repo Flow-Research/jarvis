@@ -300,24 +300,34 @@ function operationBodyBindingError(operation, body) {
   return null;
 }
 
+function createWorkSessionGenesisError(operation) {
+  if (operation?.operation_id !== "createWorkSession") {
+    return null;
+  }
+  const headers = operation?.headers ?? {};
+  const revision = headers["Jarvis-Expected-WorkSession-Revision"];
+  const previousHash = headers["Jarvis-Previous-Event-Hash"];
+  if (revision !== 0) {
+    return protocolError("stale_work_session_revision", {
+      field: "headers.Jarvis-Expected-WorkSession-Revision",
+      reason: "createWorkSession MUST use WorkSession revision 0.",
+    });
+  }
+  if (previousHash !== "hash:protocol-genesis") {
+    return protocolError("invalid_previous_event_hash", {
+      field: "headers.Jarvis-Previous-Event-Hash",
+      reason: "createWorkSession MUST use hash:protocol-genesis as previous event hash.",
+    });
+  }
+  return null;
+}
+
 function operationStateError(records, operation, body) {
   const headers = operation?.headers ?? {};
   const revision = headers["Jarvis-Expected-WorkSession-Revision"];
   const previousHash = headers["Jarvis-Previous-Event-Hash"];
   if (operation?.operation_id === "createWorkSession") {
-    if (revision !== 0) {
-      return protocolError("stale_work_session_revision", {
-        field: "headers.Jarvis-Expected-WorkSession-Revision",
-        reason: "createWorkSession MUST use WorkSession revision 0.",
-      });
-    }
-    if (previousHash !== "hash:protocol-genesis") {
-      return protocolError("invalid_previous_event_hash", {
-        field: "headers.Jarvis-Previous-Event-Hash",
-        reason: "createWorkSession MUST use hash:protocol-genesis as previous event hash.",
-      });
-    }
-    return null;
+    return createWorkSessionGenesisError(operation);
   }
   if (!operation?.path?.startsWith("/work-sessions")) {
     return null;
@@ -361,6 +371,26 @@ function pathForKey(basePath, key) {
   return basePath ? `${basePath}.${key}` : key;
 }
 
+function evidenceManifestExportError(evidenceManifest, workSession) {
+  const forbidden = findForbiddenHostPrivateField(evidenceManifest);
+  if (forbidden) {
+    return protocolError("forbidden_host_private_field", {
+      objectType: "EvidenceManifest",
+      field: forbidden,
+      reason: "EvidenceManifest MUST exclude host-private fields.",
+    });
+  }
+  const workSessionStatus = workSession?.status;
+  if (workSessionStatus && !TERMINAL_WORK_SESSION_STATES.includes(workSessionStatus)) {
+    return protocolError("invalid_evidence_export_state", {
+      objectType: "EvidenceManifest",
+      field: "work_session.status",
+      reason: "EvidenceManifest export requires a terminal WorkSession source.",
+    });
+  }
+  return null;
+}
+
 export function findForbiddenHostPrivateField(value, basePath = "") {
   if (Array.isArray(value)) {
     for (let index = 0; index < value.length; index += 1) {
@@ -392,7 +422,7 @@ export function findForbiddenHostPrivateField(value, basePath = "") {
 
 export function validateSchemaRecord(objectType, record) {
   if (!isPlainObject(record)) {
-    return fail("missing_jarvis_event", {
+    return fail("invalid_export", {
       objectType,
       field: objectType,
       reason: `${objectType} MUST be an object.`,
@@ -537,21 +567,9 @@ export function validateOperationHeaders(operation) {
       reason: "operation.actor_id MUST match Jarvis-Actor-Id.",
     });
   }
-  if (operation?.operation_id === "createWorkSession") {
-    const revision = operation?.headers?.["Jarvis-Expected-WorkSession-Revision"];
-    const previousHash = operation?.headers?.["Jarvis-Previous-Event-Hash"];
-    if (revision !== 0) {
-      return fail("stale_work_session_revision", {
-        field: "headers.Jarvis-Expected-WorkSession-Revision",
-        reason: "createWorkSession MUST use WorkSession revision 0.",
-      });
-    }
-    if (previousHash !== "hash:protocol-genesis") {
-      return fail("invalid_previous_event_hash", {
-        field: "headers.Jarvis-Previous-Event-Hash",
-        reason: "createWorkSession MUST use hash:protocol-genesis as previous event hash.",
-      });
-    }
+  const genesisError = createWorkSessionGenesisError(operation);
+  if (genesisError) {
+    return validationResult([genesisError]);
   }
   return pass();
 }
@@ -698,13 +716,9 @@ export function validateEvidenceManifest(evidenceManifest, options = {}) {
   if (!schema.valid) {
     return schema;
   }
-  const forbidden = findForbiddenHostPrivateField(evidenceManifest);
-  if (forbidden) {
-    return fail("forbidden_host_private_field", {
-      objectType: "EvidenceManifest",
-      field: forbidden,
-      reason: "EvidenceManifest MUST exclude host-private fields.",
-    });
+  const exportError = evidenceManifestExportError(evidenceManifest, options.workSession);
+  if (exportError) {
+    return validationResult([exportError]);
   }
   if (Array.isArray(evidenceManifest.evidence_item_refs)) {
     for (let index = 0; index < evidenceManifest.evidence_item_refs.length; index += 1) {
@@ -722,14 +736,6 @@ export function validateEvidenceManifest(evidenceManifest, options = {}) {
         ]);
       }
     }
-  }
-  const workSessionStatus = options.workSession?.status;
-  if (workSessionStatus && !TERMINAL_WORK_SESSION_STATES.includes(workSessionStatus)) {
-    return fail("invalid_evidence_export_state", {
-      objectType: "EvidenceManifest",
-      field: "work_session.status",
-      reason: "EvidenceManifest export requires a terminal WorkSession source.",
-    });
   }
   return pass();
 }
@@ -903,14 +909,6 @@ export function validateFixture(fixture) {
     }
     if (op.operation_id === "exportEvidenceManifest") {
       const manifest = allRecords(fixture.records ?? {}, "evidence_manifests")[0];
-      const forbiddenField = findForbiddenHostPrivateField(manifest);
-      if (forbiddenField) {
-        return fail("forbidden_host_private_field", {
-          objectType: "EvidenceManifest",
-          field: `records.evidence_manifests.${forbiddenField}`,
-          reason: "EvidenceManifest MUST NOT expose host-private fields.",
-        });
-      }
       const manifestResult = validateEvidenceManifest(manifest);
       if (!manifestResult.valid) {
         return manifestResult;
@@ -991,7 +989,8 @@ function detectFixtureError(fixture, operation) {
     });
   }
 
-  if (operation?.operation_id !== "exportEvidenceManifest" && workSession?.status && TERMINAL_WORK_SESSION_STATES.includes(workSession.status)) {
+  const isMutationOperation = operation?.method !== "GET";
+  if (isMutationOperation && workSession?.status && TERMINAL_WORK_SESSION_STATES.includes(workSession.status)) {
     return protocolError("sealed_work_session_mutation", {
       field: "records.work_sessions.completed.status",
       reason: "Sealed WorkSession records cannot be mutated.",
@@ -1059,21 +1058,10 @@ function detectFixtureError(fixture, operation) {
 
   if (operation?.operation_id === "exportEvidenceManifest") {
     const manifest = allRecords(records, "evidence_manifests")[0];
-    const forbiddenField = findForbiddenHostPrivateField(manifest);
-    if (forbiddenField) {
-      return protocolError("forbidden_host_private_field", {
-        objectType: "EvidenceManifest",
-        field: `records.evidence_manifests.${forbiddenField}`,
-        reason: "EvidenceManifest MUST NOT expose host-private fields.",
-      });
+    const exportError = evidenceManifestExportError(manifest, workSession);
+    if (exportError) {
+      return exportError;
     }
-  }
-
-  if (operation?.operation_id === "exportEvidenceManifest" && workSession?.status && !TERMINAL_WORK_SESSION_STATES.includes(workSession.status)) {
-    return protocolError("invalid_evidence_export_state", {
-      field: "records.work_sessions.active.status",
-      reason: "EvidenceManifest export requires a terminal WorkSession source.",
-    });
   }
 
   if (body?.type === "evidence_manifest.mutated") {

@@ -70,6 +70,30 @@ test("fixture validation rejects unknown nested EvidenceItemRef fields", () => {
   assert.equal(result.errors[0]?.error_id, "invalid_export");
 });
 
+test("fixture validation allows read-only fetch from terminal WorkSession state", () => {
+  const fixture = readJson(join(fixtureRoot, "valid/golden-path.json"));
+  fixture.records.work_sessions = {
+    completed: fixture.records.work_sessions.completed,
+    genesis_request: fixture.records.work_sessions.genesis_request,
+    active: fixture.records.work_sessions.active,
+  };
+  fixture.operations.unshift({
+    operation_id: "getWorkSession",
+    method: "GET",
+    path: "/work-sessions/ws-golden-001",
+    headers: {
+      Authorization: "HostAuth fixture",
+      "Jarvis-Protocol-Version": "v0.1",
+      "Jarvis-Actor-Id": "actor-human-golden",
+    },
+    actor_id: "actor-human-golden",
+    work_session_id: "ws-golden-001",
+    expected_status: 200,
+  });
+  const result = validateFixture(fixture);
+  assert.equal(result.valid, true, JSON.stringify(result.errors, null, 2));
+});
+
 test("invalid fixture set is rejected with expected protocol errors", () => {
   const invalidRoot = join(fixtureRoot, "invalid");
   for (const fileName of readdirSync(invalidRoot).filter((name) => name.endsWith(".json"))) {

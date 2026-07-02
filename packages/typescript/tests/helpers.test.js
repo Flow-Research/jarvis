@@ -213,6 +213,12 @@ test("closed schema validation rejects unknown protocol fields", () => {
   assert.equal(result.errors[0].error_id, "invalid_export");
 });
 
+test("generic schema validation rejects non-object records as invalid export", () => {
+  const result = validateProtocolRecord("Request", null);
+  assert.equal(result.valid, false);
+  assert.equal(result.errors[0].error_id, "invalid_export");
+});
+
 test("canonicalization and hashing are stable across object key order", () => {
   const left = { b: 2, a: { y: true, x: "yes" } };
   const right = { a: { x: "yes", y: true }, b: 2 };

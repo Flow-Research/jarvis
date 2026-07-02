@@ -31,6 +31,7 @@ host-private export field
 silent memory mutation
 silent skill activation
 OutcomeReport without LearningRecord
+OutcomeReport with non-terminal source WorkSession
 ```
 
 ## Required Rejection Ids
@@ -86,6 +87,7 @@ Export contains forbidden host-private fields.
 Memory changes without governed proposal and review state.
 Skill changes without governed proposal and review state.
 OutcomeReport lacks LearningRecord reference.
+OutcomeReport source WorkSession is not terminal.
 ```
 
 Failure-mode conformance protects the human-agent collaboration and learning
