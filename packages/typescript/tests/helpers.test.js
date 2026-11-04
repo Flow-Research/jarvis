@@ -668,6 +668,21 @@ test("canonicalization and hashing are stable across object key order", () => {
   assert.equal(hashProtocolValue(left), hashProtocolValue(right));
 });
 
+test("non-ASCII text hashes identically in every SDK", () => {
+  // Non-ASCII text stays unescaped in canonical form, as in the Python SDK.
+  // The Python test pins the same hash, so both SDKs fail if either drifts.
+  const value = {
+    summary: "\u1eccm\u1ecd\u0301 \u00c0d\u00f9k\u00e9 approved the plan \u2713",
+    locale: "yo-NG",
+    notes: ["caf\u00e9", "\u4e2d\u6587", "\u{1f44d}\u{1f3fe}"],
+  };
+  assert.ok(canonicalizeProtocolValue(value).includes("\u00c0d\u00f9k\u00e9"));
+  assert.equal(
+    hashProtocolValue(value),
+    "hash:387159d2a495d6a7260680e7e89ac031ece5c83e9abd5066ce6b420ca830739e",
+  );
+});
+
 test("event hash-chain helper rejects broken previous hashes", () => {
   const valid = validateEventHashChain([
     {
