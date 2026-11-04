@@ -758,6 +758,20 @@ class HelperValidationTests(unittest.TestCase):
         self.assertEqual(canonicalize_protocol_value(left), canonicalize_protocol_value(right))
         self.assertEqual(hash_protocol_value(left), hash_protocol_value(right))
 
+    def test_non_ascii_text_hashes_identically_in_every_sdk(self) -> None:
+        # Non-ASCII text stays unescaped in canonical form, as in the TypeScript SDK.
+        # The TypeScript test pins the same hash, so both SDKs fail if either drifts.
+        value = {
+            "summary": "\u1eccm\u1ecd\u0301 \xc0d\xf9k\xe9 approved the plan \u2713",
+            "locale": "yo-NG",
+            "notes": ["caf\xe9", "\u4e2d\u6587", "\U0001f44d\U0001f3fe"],
+        }
+        self.assertIn("\xc0d\xf9k\xe9", canonicalize_protocol_value(value))
+        self.assertEqual(
+            hash_protocol_value(value),
+            "hash:387159d2a495d6a7260680e7e89ac031ece5c83e9abd5066ce6b420ca830739e",
+        )
+
     def test_event_hash_chain_helper_rejects_broken_previous_hashes(self) -> None:
         valid = validate_event_hash_chain(
             [
