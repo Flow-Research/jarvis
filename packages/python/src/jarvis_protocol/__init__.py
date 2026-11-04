@@ -1730,7 +1730,7 @@ def validate_outcome_report(
 
 
 def canonicalize_protocol_value(value: Any) -> str:
-    return json.dumps(_sort_protocol_value(value), separators=(",", ":"), ensure_ascii=True)
+    return json.dumps(_sort_protocol_value(value), separators=(",", ":"), ensure_ascii=False)
 
 
 def _sort_protocol_value(value: Any) -> Any:
